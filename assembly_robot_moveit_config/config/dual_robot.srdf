@@ -3,4 +3,48 @@
     This is a format for representing semantic information about the robot structure.
     A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
 -->
-<robot name="dual_robot" />
+<robot name="dual_robot">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="rob1_arm">
+        <chain base_link="rob1_real_base_link" tip_link="rob1_real_ee_link" />
+    </group>
+    <group name="rob2_arm">
+        <chain base_link="rob2_real_base_link" tip_link="rob2_real_ee_link" />
+    </group>
+    <group name="rob1_hand">
+        <joint name="rob1_ur_gripper_fixed_joint" />
+        <joint name="rob1_finger_joint" />
+        <joint name="rob1_left_outer_finger_joint" />
+        <joint name="rob1_left_inner_finger_joint" />
+        <joint name="rob1_left_inner_finger_pad_joint" />
+        <joint name="rob1_left_inner_knuckle_joint" />
+        <joint name="rob1_right_inner_knuckle_joint" />
+        <joint name="rob1_right_outer_knuckle_joint" />
+        <joint name="rob1_right_outer_finger_joint" />
+        <joint name="rob1_right_inner_finger_joint" />
+        <joint name="rob1_right_inner_finger_pad_joint" />
+    </group>
+    <group name="rob2_hand">
+        <joint name="rob2_ur_gripper_fixed_joint" />
+        <joint name="rob2_finger_joint" />
+        <joint name="rob2_left_outer_finger_joint" />
+        <joint name="rob2_left_inner_finger_joint" />
+        <joint name="rob2_left_inner_finger_pad_joint" />
+        <joint name="rob2_left_inner_knuckle_joint" />
+        <joint name="rob2_right_inner_knuckle_joint" />
+        <joint name="rob2_right_outer_knuckle_joint" />
+        <joint name="rob2_right_outer_finger_joint" />
+        <joint name="rob2_right_inner_finger_joint" />
+        <joint name="rob2_right_inner_finger_pad_joint" />
+    </group>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="rob1_arm_hand" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
+    <end_effector name="rob2_arm_hand" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="rob1_virtual_joint" type="fixed" parent_frame="table" child_link="rob1_real_ee_link" />
+    <virtual_joint name="rob2_virtual_joint" type="fixed" parent_frame="table" child_link="rob2_real_ee_link" />
+</robot>

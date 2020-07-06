@@ -1,2 +1,23 @@
 controller_list:
-  []
+  - name: fake_rob1_arm_controller
+    joints:
+      - rob1_shoulder_pan_joint
+      - rob1_shoulder_lift_joint
+      - rob1_elbow_joint
+      - rob1_wrist_1_joint
+      - rob1_wrist_2_joint
+      - rob1_wrist_3_joint
+  - name: fake_rob2_arm_controller
+    joints:
+      - rob2_shoulder_pan_joint
+      - rob2_shoulder_lift_joint
+      - rob2_elbow_joint
+      - rob2_wrist_1_joint
+      - rob2_wrist_2_joint
+      - rob2_wrist_3_joint
+  - name: fake_rob1_hand_controller
+    joints:
+      - rob1_finger_joint
+  - name: fake_rob2_hand_controller
+    joints:
+      - rob2_finger_joint
