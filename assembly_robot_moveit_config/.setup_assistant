@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: assembly_robot_description
+    relative_path: urdf/rob1_rob2_multiarm.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/dual_robot.srdf
+  CONFIG:
+    author_name: HyunJun-Kim
+    author_email: tktkkt2000@gmail.com
+    generated_timestamp: 1594036140

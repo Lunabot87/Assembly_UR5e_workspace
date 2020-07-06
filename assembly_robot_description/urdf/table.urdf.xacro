@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot 
+    xmlns:xacro="http://ros.org/wiki/xacro" name="table">
+
+
+
+    <link name="bar1">
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="0.03 0.03 1.5" />
+         </geometry>
+         <material name="bar1">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.03 0.03 1.5"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="bar2">
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="0.03 0.03 1.5" />
+         </geometry>
+         <material name="bar2">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.03 0.03 1.5"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="bar3">
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="0.03 0.03 1.5" />
+         </geometry>
+         <material name="bar3">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.03 0.03 1.5"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="bar4">
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+           <box size="0.03 0.03 1.5" />
+         </geometry>
+         <material name="bar4">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.03 0.03 1.5"/>
+         </geometry>
+       </collision>
+     </link>
+
+
+
+    <link name="table">
+       <visual>
+         <origin xyz="0 0 -0.4" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 2 0.8" />
+         </geometry>
+         <material name="table">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 -0.4" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 2 0.8"/>
+         </geometry>
+       </collision>
+     </link>
+
+
+    <joint name="table_bar1" type="fixed">
+      <parent link="table" />
+      <child link="bar1" />
+      <origin xyz="0.585 0.985 0.75" rpy="0.0 0.0 0" />
+    </joint>
+
+    <joint name="table_bar2" type="fixed">
+      <parent link="table" />
+      <child link="bar2" />
+      <origin xyz="-0.585 0.985 0.75" rpy="0.0 0.0 0" />
+    </joint>
+
+    <joint name="table_bar3" type="fixed">
+      <parent link="table" />
+      <child link="bar3" />
+      <origin xyz="0.585 -0.985 0.75" rpy="0.0 0.0 0" />
+    </joint>
+
+    <joint name="table_bar4" type="fixed">
+      <parent link="table" />
+      <child link="bar4" />
+      <origin xyz="-0.585 -0.985 0.75" rpy="0.0 0.0 0" />
+    </joint>
+</robot>
