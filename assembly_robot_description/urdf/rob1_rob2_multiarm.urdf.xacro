@@ -5,6 +5,13 @@
     <xacro:include filename="$(find assembly_robot_description)/urdf/rob2_gripper.urdf.xacro" />
     <xacro:include filename="$(find assembly_robot_description)/urdf/table.urdf.xacro" />
 
+    <link name="world"/>
+
+    <joint name="world_table" type="fixed">
+        <parent link="world" />
+        <child link="table" />
+        <origin xyz="0 0.0 0.8" rpy="0.0 0.0 0" />
+    </joint>
 
     <joint name = "rob1_robot_body" type = "fixed">
         <parent link = "table"/>
@@ -12,6 +19,7 @@
         <axis xyz = "0 0 0"/>
         <origin xyz = "0 0.76 0.01" rpy = "0 0 0"/>
     </joint>
+
     <joint name = "rob2_robot_body" type = "fixed">
         <parent link = "table"/>
         <child link = "rob2_world"/>
