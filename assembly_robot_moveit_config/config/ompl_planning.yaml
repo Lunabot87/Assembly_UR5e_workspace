@@ -173,7 +173,7 @@ rob2_arm:
     - SPARS
     - SPARStwo
 rob1_hand:
-  default_planner_config: None
+  default_planner_config: ""
   planner_configs:
     - SBL
     - EST
@@ -199,7 +199,7 @@ rob1_hand:
     - SPARS
     - SPARStwo
 rob2_hand:
-  default_planner_config: None
+  default_planner_config: ""
   planner_configs:
     - SBL
     - EST
