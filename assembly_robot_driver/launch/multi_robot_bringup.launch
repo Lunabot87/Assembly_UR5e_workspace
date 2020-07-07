@@ -1,13 +1,21 @@
 <launch>
   <arg name="rviz" value="true"/>
 
-  <include file="$(find assembly_robot_driver)/launch/rob1_robot_driver.launch">
-    <arg name="robot_ip" value="192.168.13.101"/>
-  </include>
+  <group ns="rob1">
+    <include file="$(find assembly_robot_driver)/launch/robot_driver.launch">
+      <arg name="robot_ip" value="192.168.13.101"/>
+      <arg name="prefix" value="rob1_"/>
+      <arg name="reverse_port" value="50001"/>
+    </include>
+  </group>
 
-  <include file="$(find assembly_robot_driver)/launch/rob2_robot_driver.launch">
-    <arg name="robot_ip" value="192.168.13.100"/>
-  </include>
+  <group ns="rob2">
+    <include file="$(find assembly_robot_driver)/launch/robot_driver.launch">
+      <arg name="robot_ip" value="192.168.13.100"/>
+      <arg name="prefix" value="rob2_"/>
+      <arg name="reverse_port" value="50002"/>
+    </include>
+  </group>
 
 <!--   <include file="$(find tuto_bringup)/launch/tutobot_gripper_bringup.launch"/> -->
 

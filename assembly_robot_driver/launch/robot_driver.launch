@@ -13,7 +13,8 @@
   <arg name="limited" default="false"/>
   <arg name="min_payload"  default="0.0"/>
   <arg name="max_payload"  default="5.0"/>
-  <arg name="prefix" default="rob1_" />
+  <arg name="prefix" default="" />
+  <arg name="reverse_port" default="50001" />
   <arg name="max_velocity" default="10.0"/> <!-- [rad/s] -->
   <arg name="servoj_time" default="0.008" />
   <arg name="base_frame" default="$(arg prefix)base" />
@@ -36,7 +37,7 @@
   <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
 
   <!-- driver -->
-  <node name="rob1_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
+  <node name="rob2_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
   <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
     <param name="prefix" type="str" value="$(arg prefix)" />
     <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
@@ -46,8 +47,9 @@
     <param name="servoj_time" type="double" value="$(arg servoj_time)" />
     <param name="base_frame" type="str" value="$(arg base_frame)"/>
     <param name="tool_frame" type="str" value="$(arg tool_frame)"/>
+    <param name="reverse_port" type="double" value="$(arg reverse_port)" />
 
-    <remap from="/joint_states" to="/rob1/joint_states"/>
+    <remap from="/joint_states" to="/rob2/joint_states"/>
   </node>
 
 </launch>
