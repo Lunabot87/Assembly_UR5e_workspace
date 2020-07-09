@@ -1,0 +1,6 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find assembly_robot_description)/urdf/rob1_rob2_multiarm.urdf.xacro' --inorder use_nominal_extrinsics:=true" />
+
+</launch>
+
