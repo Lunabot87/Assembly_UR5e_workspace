@@ -1,27 +1,66 @@
+#-*- coding:utf-8 -*-
+
+
+_KHOLECHECKOFFSET = 0.28 # 애들이 정함
+#python 규칙 상수는 _대문자
+
+def main():
+	# 1. 정렬
+	# pin - rob1 근처에 모두 위치
+	# part - 큰 파트 중 base part 는 rob1, rob2의 workspace가 겹치는 부분에 존재
+	#      - 나머지 파트들은 작업 공정 순서 및 크기를 고려하여 배열 했다고 가정
+	#	   - 엉덩이 판은 조립 공정 상 특수한 위치에 배치해야 하나 일단 고려하지 않는다. 
+	#      - 즉, 정렬이 끝나면 parent part의 위치는 더이상 움직이지 않는다고 가정
+	arrange()
+
+	# 2. 조립 
+	# wait for callback - step.msg(맨 처음 정렬한 상태의 데이터)
+##############################################
+def assembly_cb(msg):
+	mode = Assembly_mode()
+
+	for i in range(len(msg.asms)):
+
+		if msg.asms[i].type is 'insert_pin':
+			mode.insert_pin(msg.asms[i])
+
+		elif msg.asms[i].type is 'insert_part':
+			mode.insert_part(msg.asms[i])
+
+		elif msg.asms[i].type is 'screw':
+			mode.screw(msg.asms[i])
+
+		elif msg.asms[i].type is 'flip':
+			mode.flip(msg.asms[i])
+		
+##############################################
+# asm.msg 를 나누어 준다
 
 
 class Assembly_mode():
-	def __init__():
+	def __init__(self):
+		self.process = Assembly_process()
 
-	def insert_pin(asm_msg):
+	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 
-		real_insert_target_pose = fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
-		grab_pin(asm_msg.child, False)
-		insert_spiral_motion(real_insert_target_pose)
+		real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
+		self.process.grab_pin(asm_msg.child, False)
+		self.process.insert_spiral_motion(real_insert_target_pose)
 
-	def insert_part(asm_msg):
+	def insert_part(self, asm_msg):
 		# rob1, rob2 작업, rob1이 작업 중심
-		sorted_insert_target_poses = sort_insert_target(asm_msg.parents)
+		sorted_insert_target_poses = self.process.sort_insert_target(asm_msg.parents)
 		## move() - parent part는 고정, child part가 rob1이 작업을 할 수 있는 위치에 없으면 할수 있는 위치로 옮긴다
-		is_moved = hand_over_part(sorted_insert_target_poses, asm_msg)
-		grab_part(asm_msg.child, is_moved)
-		insert_part_motion(sorted_insert_target_poses[0])
+		is_moved = self.process.hand_over_part(sorted_insert_target_poses, asm_msg)
+		self.process.grab_part(asm_msg.child, is_moved)
+		self.process.insert_part_motion(sorted_insert_target_poses[0])
 
 
 
 class Assembly_process():
 	def __init__(self):
 		self.params = get_param_from_grasp_yaml()
+		self.motion = Assembly_motion()
 
 	def fine_tune_insert_target():
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
@@ -37,36 +76,38 @@ class Assembly_process():
 		# 작업하는 로봇이 바뀐 경우 True 반환, 그대로인 경우 False 반환
 		rob = rob1
 		# rob1이 낄 수 있거나 rob2가 낄수 있거나, 둘다 안되는 경우는 발생 x 가정
-		if !check_reachability(insert_target_pose, rob):
+		if not check_reachability(insert_target_pose, rob):
 			rob = rob2 
-		if !check_reachability(asm_msg.child.pose, rob):
+		if not check_reachability(asm_msg.child.pose, rob):
 			pass_part_to_other_rob(asm_msg.child.pose, COMMON_AREA_TARGET_POSE, rob)
 			return True
+
+		# check_reachability, pass_part_to_other_rob 생성 필요
 		return False
 
-	def grab_pin(asm_child_msg, is_moved):
-		grasp = make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
-		pick_up(grasp)
+	def grab_pin(self, asm_child_msg, is_moved):
+		grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
+		self.motion.pick_up(grasp)
 
-	def grab_part(asm_child_msg, is_moved):
+	def grab_part(self, asm_child_msg, is_moved):
 		if is_moved is True:
-			grasp = make_grasp_msg(asm_child_msg.part)
+			grasp = self.make_grasp_msg(asm_child_msg.part)
 		else:
-			grasp = make_grasp_msg(asm_child_msg.part, asm_child_msg.pose)
-		pick_up(grasp)
+			grasp = self.make_grasp_msg(asm_child_msg.part, asm_child_msg.pose)
+		self.motion.pick_up(grasp)
 
-	def insert_spiral_motion(num_of_trial=5, real_insert_target_pose):
+	def insert_spiral_motion(self, real_insert_target_pose, num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복
 		# target pose와 grasp_config.yaml 의 데이터를 합쳐서 approach, retreat도 결정 
 		for i in range(num_of_trial):
-			if sprial_motion(real_insert_target_pose):
+			if self.motion.sprial_motion(real_insert_target_pose):
 				break
 
 	def insert_part_motion(sorted_insert_target_poses):
 		## ??? 
 		pass
 
-	def sort_insert_target(asm_parents_msg):
+	def sort_insert_target(self, asm_parents_msg):
 		groups = dict()
 		singles = []
 		for parent in len(asm_parents_msg):
@@ -78,7 +119,7 @@ class Assembly_process():
 			else:
 				singles.append(parent.target)
 
-		insert_sorted_poses = sort_priority(groups, singles) 
+		insert_sorted_poses = self.sort_priority(groups, singles) 
 		return insert_sorted_poses
 
 	def sort_priority(groups, singles):
@@ -86,7 +127,7 @@ class Assembly_process():
 		# 추후 child를 잡고 있는 위치 값도 들어가야 함(무게중심의 기준값으로 친다)
 		pass
 
-	def make_grasp_msg(part_name, child_frame_pose):
+	def make_grasp_msg(self, part_name, child_frame_pose):
 		# child_frame_pose가 들어오면, part_name을 pick_config.yaml에서 찾아서
 		# 해당하는 part_grasp_target_pose 값과 child_frame_pose를 합쳐서 grasping pose(robot base frame 기준) 결정
 		# child_frame_pose가 들어오지 않으면, pick_config.yaml에서 
@@ -102,18 +143,21 @@ class Assembly_process():
 
 
 class Assembly_motion():
-	def __init__():
+	def __init__(self):
 		self.group1 = moveit_commander.MoveGroupCommander("rob1")
 		self.group2 = moveit_commander.MoveGroupCommander("rob2")
 		self.rob1 = urx.Robot('''rob1_ip''')
 		self.rob2 = urx.Robot('''rob2_ip''')
 
-	def pick_up(grasp):
+	def pick_up(self, grasp):
 		self.group1.go(grasp.pre_grasp)
 		self.group1.go(grasp.grasp)
 		self.group1.go(grasp.post_grasp)
 
 	def move_to(target_pose):
+		print "move_to"
+		#수정전 임시 출력 
+
 	def sprial_motion():
 		# spiral motion을 진행하면서 pin을 insert 하는 작업
 		# force값을 받아서 pin이 insert가 되었는지 아닌지 확인
