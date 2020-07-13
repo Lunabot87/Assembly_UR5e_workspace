@@ -1,10 +1,11 @@
-#-*- coding:utf-8 -*-
 #!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
 
 import rospy
 
-from Assembly_msgs import Step
-
+import Assembly_Mode
+from assembly_robot_msgs.msg import Step
 
 def main():
 	# 1. 정렬
@@ -49,3 +50,7 @@ def assembly_cb(msg):
 ###############################################
 def arrange():
 	print "assembly_start"
+
+
+if __name__ == '__main__':
+ 	main()
