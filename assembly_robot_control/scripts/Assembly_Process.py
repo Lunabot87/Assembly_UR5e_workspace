@@ -3,7 +3,8 @@
 import Assembly_Motion
 
 
-_KHOLECHECKOFFSET = 0.28
+_KHOLECHECKOFFSET = 0.28 # 애들이 정함
+#python 규칙 상수는 _대문자
 
 
 class Assembly_process():
@@ -14,6 +15,7 @@ class Assembly_process():
 	def fine_tune_insert_target():
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
 		# kHoleCheckOffset
+		# 7/22 적용
 		return target_pose
 
 	def hand_over_part(self, insert_target_pose, asm_msg):

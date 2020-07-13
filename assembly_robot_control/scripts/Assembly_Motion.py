@@ -1,5 +1,8 @@
 #-*- coding:utf-8 -*-
 
+import moveit_commander
+import moveit_msgs.msg
+
 class Assembly_motion():
 	def __init__(self):
 		self.group1 = moveit_commander.MoveGroupCommander("rob1")

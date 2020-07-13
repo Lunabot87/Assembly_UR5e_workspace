@@ -1,8 +1,10 @@
 #-*- coding:utf-8 -*-
+#!/usr/bin/env python
 
+import rospy
 
- # 애들이 정함
-#python 규칙 상수는 _대문자
+from Assembly_msgs import Step
+
 
 def main():
 	# 1. 정렬
@@ -11,7 +13,13 @@ def main():
 	#      - 나머지 파트들은 작업 공정 순서 및 크기를 고려하여 배열 했다고 가정
 	#	   - 엉덩이 판은 조립 공정 상 특수한 위치에 배치해야 하나 일단 고려하지 않는다. 
 	#      - 즉, 정렬이 끝나면 parent part의 위치는 더이상 움직이지 않는다고 가정
-	arrange()
+	arrange() #정렬 완료되었다 가정
+	#
+
+	rospy.init_node('Assembly_example', anonymous=True)
+	rospy.Subscriber("Assembly_Step", Step, assembly_cb)
+	rospy.spin()
+
 
 	# 2. 조립 
 	# wait for callback - step.msg(맨 처음 정렬한 상태의 데이터)
@@ -35,3 +43,9 @@ def assembly_cb(msg):
 		
 ##############################################
 # asm.msg 를 나누어 준다
+
+
+	#임시 함수(윤종헌 Lab.)
+###############################################
+def arrange():
+	print "assembly_start"
