@@ -1,5 +1,8 @@
 #-*- coding:utf-8 -*-
 
+import time
+import urx
+import logging
 import moveit_commander
 import moveit_msgs.msg
 
@@ -7,8 +10,8 @@ class Assembly_motion():
 	def __init__(self):
 		self.group1 = moveit_commander.MoveGroupCommander("rob1")
 		self.group2 = moveit_commander.MoveGroupCommander("rob2")
-		self.rob1 = urx.Robot('''rob1_ip''')
-		self.rob2 = urx.Robot('''rob2_ip''')
+		self.rob1 = urx.Robot("192.168.13.101", use_rt=True)
+		self.rob2 = urx.Robot("192.168.13.100", use_rt=True)
 
 	def pick_up(self, grasp):
 		self.group1.go(grasp.pre_grasp)
