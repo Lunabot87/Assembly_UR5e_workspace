@@ -15,7 +15,7 @@ class Robotiq_2f_Gripper(object):
 
 		self._set_gripper()
 		time.sleep(2)
-		self.action_gripper(255)
+		self.action_gripper(0)
 
 
 
@@ -51,7 +51,7 @@ class Robotiq_2f_Gripper(object):
 		msg += "\ttextmsg(\"gripper setting complete\")\n"
 		msg += "end\n"
 		socket.send(msg.encode('ascii'))
-		time.sleep(5)
+		time.sleep(2)
 		print("gripper_set")
 
 
