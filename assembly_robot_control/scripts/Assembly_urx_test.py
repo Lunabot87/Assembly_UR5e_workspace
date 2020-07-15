@@ -10,7 +10,7 @@ import random
 sys.path.append('../../assembly_robot_gripper_control/scripts')
 from Robotiq_2f_Gripper import Robotiq_2f_Gripper
 
-start_pose = [0.01934323142607855, -0.753240435450635, 0.24928563206499854, 3.1388263581464297, 0.00010558903307717413, 0.00015309316489978483]
+start_pose = [0.07926447587050217, -0.5351783236056872, 0.5511638848859853, 3.1363137055133308, -0.000665493946621783, -0.001176621750041618]
 
 def _format_move(command, tpose, acc, vel, radius=0, prefix=""):
     tpose = [round(i, 6) for i in tpose]
@@ -25,17 +25,20 @@ def get_spiral_cmd(initial):
     radius = 0.0005
 
     force_mod = [0,0,1,0,0,0]
-    force_toq = [0,0,4,0,0,0] 
+    force_toq = [0,0,7,0,0,0] 
 
     # spiral motion
-    R = 0.006
-    revolution = 8
+    R = 0.006 #0.003 #0.006
+    revolution = 8 #4 #8 
     dth = m.pi/10
     th_len_1 = int(revolution*2*m.pi/dth) # len(th_array)-1
     dr = R/th_len_1 # R*0.005
 
     th_array = np.arange(0, revolution*2*m.pi+dth, step=dth)    
     r_array = np.arange(0, R+dr, step=dr)    
+    th_array = np.concatenate((th_array, np.arange(dth, 2*m.pi+dth, step=dth)), axis=None)
+    r_array = np.concatenate((r_array, np.ones(th_len_1/revolution)*R), axis=None)
+
     # print th_array
 
     spiral_list = []
@@ -85,10 +88,10 @@ def main():
     error = 0.006
     random_error_x = error*random.uniform(-1, 1)
     random_error_y = error*random.uniform(-1, 1)
-    # random_error_x = 0
-    # random_error_y = -error
-    start_pose[0] += random_error_x
-    start_pose[1] += random_error_y
+    # random_error_x = 0.00140919120041
+    # random_error_y = 0.0052389419886
+    start_pose[0] += -error #random_error_x
+    start_pose[1] += 0 #random_error_y
     print "error_x={}, error_y={}".format(random_error_x, random_error_y)
     rob1.movel(start_pose, wait=True)
 
@@ -121,6 +124,7 @@ def main():
             force = rob1.get_tcp_force()
             # print force[2]
             if force[2] > 3:
+                print force[2]
                 rob1.send_program("end_force_mode()")
                 break
         except KeyboardInterrupt:
@@ -140,8 +144,9 @@ def main():
     while(True):
         try:
             force = rob1.get_tcp_force()
-            print force[0], force[1]
-            if abs(force[0]) > 7 or abs(force[1]) > 7:
+            # print force[0], force[1]
+            if abs(force[0]) > 10 or abs(force[1]) > 10:
+                print force[0], force[1]
                 rob1.send_program("end_force_mode()")
                 break
         except KeyboardInterrupt:
@@ -159,7 +164,7 @@ def main():
     cmd_str  = "def real_insert():"
     cmd_str += "\tforce_mode_set_damping(0.005)\n"
     cmd_str += "\twhile (True):\n"
-    cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+    cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
     cmd_str += "\t\tsync()\n"
     cmd_str += "\tend\n"
     cmd_str += "end\n"
@@ -168,8 +173,10 @@ def main():
     while(True):
         try:
             force = rob1.get_tcp_force()
-            print force[2]
+            # print force[2]
             if force[2] > 50:
+                print force[2]
+                time.sleep(1)
                 rob1.send_program("end_force_mode()")
                 break
         except KeyboardInterrupt:
