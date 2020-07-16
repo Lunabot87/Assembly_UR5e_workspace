@@ -21,7 +21,7 @@ class Robotiq_2f_Gripper(object):
 
 	def _set_gripper(self, speed = 255, force = 100):
 
-		socket = self.socket
+		# socket = self.socket
 
 		msg  = "def UR5_gripper_set():\n"
 		msg += "\tsocket_open(\"127.0.0.1\", 63352, \"gripper_socket\")\n"
@@ -50,20 +50,23 @@ class Robotiq_2f_Gripper(object):
 		msg += "\tsleep(0.5)\n"
 		msg += "\ttextmsg(\"gripper setting complete\")\n"
 		msg += "end\n"
-		socket.send(msg.encode('ascii'))
-		time.sleep(2)
+		# socket.send(msg.encode('ascii'))
+		# time.sleep(2)
 		print("gripper_set")
+
+		return msg
 
 
 	def action_gripper(self, action_pos, wait_time = 2):
-		socket = self.socket
+		# socket = self.socket
 
 		msg  = "def UR5_gripper_action():\n"
 		msg += "\tsocket_open(\"127.0.0.1\", 63352, \"gripper_socket\")\n"
 		msg += "\tsocket_set_var(\"POS\", %s, \"gripper_socket\")\n"%(str(action_pos)) #catched chair!
 		msg += "end\n"
-		socket.send(msg.encode('ascii'))
+		# socket.send(msg.encode('ascii'))
 		time.sleep(wait_time)
+		
 
 if __name__ == '__main__':
 	grip = Robotiq_2f_Gripper("192.168.13.101")
