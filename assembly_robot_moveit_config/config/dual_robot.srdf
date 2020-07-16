@@ -41,9 +41,19 @@
         <joint name="rob2_right_inner_finger_joint" />
         <joint name="rob2_right_inner_finger_pad_joint" />
     </group>
+    <group name="rob1_arm_hand">
+        <group name="rob1_arm" />
+        <group name="rob1_hand" />
+    </group>
+    <group name="rob2_arm_hand">
+        <group name="rob2_arm" />
+        <group name="rob2_hand" />
+    </group>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="rob1_arm_hand" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
-    <end_effector name="rob2_arm_hand" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
+    <end_effector name="rob1_arm_eef" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
+    <end_effector name="rob2_arm_eef" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
+    <end_effector name="rob1_arm_hand_eef" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
+    <end_effector name="rob2_arm_hand_eef" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="bar1" link2="bar2" reason="Never" />
     <disable_collisions link1="bar1" link2="bar3" reason="Never" />
@@ -202,17 +212,6 @@
     <disable_collisions link1="rob1_forearm_link" link2="rob1_wrist_2_link" reason="Never" />
     <disable_collisions link1="rob1_forearm_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_forearm_link" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_forearm_link" link2="rob2_right_outer_knuckle" reason="Never" />
     <disable_collisions link1="rob1_forearm_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_forearm_link" link2="rob2_upper_arm_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger" link2="rob1_left_inner_finger_pad" reason="Adjacent" />
@@ -230,23 +229,7 @@
     <disable_collisions link1="rob1_left_inner_finger" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob1_left_inner_knuckle" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob1_left_outer_finger" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob1_left_outer_knuckle" reason="Never" />
@@ -261,23 +244,7 @@
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_finger_pad" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob1_left_outer_finger" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob1_left_outer_knuckle" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob1_right_inner_finger" reason="Never" />
@@ -291,23 +258,7 @@
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_left_inner_knuckle" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob1_left_outer_knuckle" reason="Adjacent" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob1_right_inner_finger" reason="Never" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob1_right_inner_finger_pad" reason="Never" />
@@ -320,22 +271,7 @@
     <disable_collisions link1="rob1_left_outer_finger" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_finger" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_finger" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob1_right_inner_finger" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob1_right_inner_finger_pad" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob1_right_inner_knuckle" reason="Never" />
@@ -347,23 +283,7 @@
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_left_outer_knuckle" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob1_right_inner_finger_pad" reason="Adjacent" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob1_right_inner_knuckle" reason="Default" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob1_right_outer_finger" reason="Adjacent" />
@@ -375,22 +295,7 @@
     <disable_collisions link1="rob1_right_inner_finger" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob2_ee_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob1_right_inner_knuckle" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob1_right_outer_finger" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob1_right_outer_knuckle" reason="Never" />
@@ -400,23 +305,7 @@
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_finger_pad" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob1_right_outer_finger" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob1_right_outer_knuckle" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob1_robotiq_arg2f_base_link" reason="Adjacent" />
@@ -425,23 +314,7 @@
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_right_inner_knuckle" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob1_right_outer_knuckle" reason="Adjacent" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob1_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob1_wrist_1_link" reason="Never" />
@@ -449,82 +322,24 @@
     <disable_collisions link1="rob1_right_outer_finger" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_finger" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_finger" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob1_robotiq_arg2f_base_link" reason="Adjacent" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob1_wrist_1_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob1_wrist_2_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_right_outer_knuckle" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob1_wrist_1_link" reason="Never" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob1_wrist_2_link" reason="Never" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob1_wrist_3_link" reason="Adjacent" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_shoulder_link" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_robotiq_arg2f_base_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob1_upper_arm_link" reason="Adjacent" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_ee_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_shoulder_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_upper_arm_link" reason="Never" />
     <disable_collisions link1="rob1_shoulder_link" link2="rob2_wrist_1_link" reason="Never" />
@@ -534,82 +349,23 @@
     <disable_collisions link1="rob1_upper_arm_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_upper_arm_link" link2="rob2_ee_link" reason="Never" />
     <disable_collisions link1="rob1_upper_arm_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_upper_arm_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_upper_arm_link" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_upper_arm_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob1_wrist_2_link" reason="Adjacent" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob1_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_1_link" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_1_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_2_link" link2="rob1_wrist_3_link" reason="Adjacent" />
     <disable_collisions link1="rob1_wrist_2_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_2_link" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_2_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_2_link" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_2_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_3_link" link2="rob2_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_3_link" link2="rob2_ee_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_forearm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_left_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_left_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_left_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_left_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_left_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_right_inner_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_right_inner_finger_pad" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_right_inner_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_right_outer_finger" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_right_outer_knuckle" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_3_link" link2="rob2_shoulder_link" reason="Never" />
     <disable_collisions link1="rob1_wrist_3_link" link2="rob2_upper_arm_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_wrist_1_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_wrist_2_link" reason="Never" />
-    <disable_collisions link1="rob1_wrist_3_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob2_base_link" link2="rob2_shoulder_link" reason="Adjacent" />
     <disable_collisions link1="rob2_base_link" link2="table" reason="Adjacent" />
     <disable_collisions link1="rob2_ee_link" link2="rob2_left_inner_finger" reason="Never" />
