@@ -2,10 +2,10 @@ moveit_setup_assistant_config:
   URDF:
     package: assembly_robot_description
     relative_path: urdf/rob1_rob2_multiarm.urdf.xacro
-    xacro_args: ""
+    xacro_args: --inorder use_nominal_extrinsics:=true
   SRDF:
     relative_path: config/dual_robot.srdf
   CONFIG:
     author_name: HyunJun-Kim
     author_email: tktkkt2000@gmail.com
-    generated_timestamp: 1594900337
+    generated_timestamp: 1595218257
