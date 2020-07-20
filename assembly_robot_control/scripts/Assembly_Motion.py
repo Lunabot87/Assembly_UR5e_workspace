@@ -6,8 +6,8 @@ from Assembly_Urx import UrxMotion
 
 class Assembly_motion():
     def __init__(self):
-        # self.mg_rob1 = moveit_commander.MoveGroupCommander("rob1")
-        # self.mg_rob2 = moveit_commander.MoveGroupCommander("rob2")
+        self.mg_rob1 = moveit_commander.MoveGroupCommander("rob1")
+        self.mg_rob2 = moveit_commander.MoveGroupCommander("rob2")
         self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
     
@@ -22,7 +22,7 @@ class Assembly_motion():
 
     def hand_over_pin(self):
         NotImplementedError
-
+        
     def sprial_motion(self):
         # spiral motion을 진행하면서 pin을 insert 하는 작업
         # force값을 받아서 pin이 insert가 되었는지 아닌지 확인
@@ -32,13 +32,16 @@ class Assembly_motion():
         return is_inserted
 
 def main():
-    rob1 = UrxMotion("192.168.13.101")
+    am = Assembly_motion()
+    am.grab_pin() # grab_pin은 무조건 rob1이
+    # insert pin을 할 hole의 위치에 따라서 다른 로봇 팔이 fix할 위치도 결정되어 있음
+    # target_pose1이 어느 로봇에 더 기까운지로 spiral motion을 할 로봇이 결정
+    am.fix_part()
+    am.insert_spiral_motion(target_pose1)
 
-    exchange_pin_pose_rob1 = [0.006926903133457668, -0.522865513543282, 0.8865461745794542, 1.208677247239153, 1.209773090726131, -1.2086506031939017]
-    exchange_pin_pose_rob2 = [-0.018465001144859182, -0.5537246715577478, 0.8888033542107026, 1.2091777727575899, -1.209075954976332, 1.2095379430867241]
 
-    rob1.robot.send_program("movej(p[0.006926903133457668, -0.522865513543282, 0.8865461745794542, 1.208677247239153, 1.209773090726131, -1.2086506031939017])")
 
+  
 
 if __name__ == '__main__':
     main()

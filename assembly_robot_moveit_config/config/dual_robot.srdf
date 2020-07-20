@@ -41,19 +41,59 @@
         <joint name="rob2_right_inner_finger_joint" />
         <joint name="rob2_right_inner_finger_pad_joint" />
     </group>
-    <group name="rob1_arm_hand">
-        <group name="rob1_arm" />
-        <group name="rob1_hand" />
-    </group>
-    <group name="rob2_arm_hand">
-        <group name="rob2_arm" />
-        <group name="rob2_hand" />
-    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="rob1_hand_over_pin" group="rob1_arm">
+        <joint name="rob1_elbow_joint" value="0.861019" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.4115" />
+        <joint name="rob1_shoulder_pan_joint" value="1.26081" />
+        <joint name="rob1_wrist_1_joint" value="-2.59245" />
+        <joint name="rob1_wrist_2_joint" value="-1.262" />
+        <joint name="rob1_wrist_3_joint" value="1.57476" />
+    </group_state>
+    <group_state name="rob1_pre_hand_over_pin" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="1.1898112297058105" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.6090036831297816" />
+        <joint name="rob1_elbow_joint" value="1.0736168066607874" />        
+        <joint name="rob1_wrist_1_joint" value="-2.6081143818297328" />
+        <joint name="rob1_wrist_2_joint" value="-1.190704647694723" />
+        <joint name="rob1_wrist_3_joint" value="1.5754528045654297" />
+    </group_state>
+    <group_state name="rob1_pin1_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="2.0929408073425293" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.6921888790526332" />
+        <joint name="rob1_elbow_joint" value="2.246387783681051" />        
+        <joint name="rob1_wrist_1_joint" value="-2.1255299053587855" />
+        <joint name="rob1_wrist_2_joint" value="-1.5662253538714808" />
+        <joint name="rob1_wrist_3_joint" value="2.096367359161377" />
+    </group_state>
+    <group_state name="rob1_pin1_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="2.093252658843994" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.5034073156169434" />
+        <joint name="rob1_elbow_joint" value="2.3713038603412073" />        
+        <joint name="rob1_wrist_1_joint" value="-2.4392763576903285" />
+        <joint name="rob1_wrist_2_joint" value="-1.5671966711627405" />
+        <joint name="rob1_wrist_3_joint" value="2.097517490386963" />
+    </group_state>
+
+    <group_state name="rob2_hand_over_pin" group="rob2_arm">
+        <joint name="rob2_elbow_joint" value="0.735936" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.31725" />
+        <joint name="rob2_shoulder_pan_joint" value="1.2289" />
+        <joint name="rob2_wrist_1_joint" value="-2.56033" />
+        <joint name="rob2_wrist_2_joint" value="-1.22984" />
+        <joint name="rob2_wrist_3_joint" value="-1.56783" />
+    </group_state>
+    <group_state name="rob2_pre_hand_over_pin" group="rob2_arm">
+        <joint name="rob2_shoulder_pan_joint" value="1.1643433570861816" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.51138527811084" />
+        <joint name="rob2_elbow_joint" value="0.9686983267413538" />
+        <joint name="rob2_wrist_1_joint" value="-2.5994135342040003" />
+        <joint name="rob2_wrist_2_joint" value="-1.1651447455035608" />
+        <joint name="rob2_wrist_3_joint" value="-1.567374054585592" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="rob1_arm_eef" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
     <end_effector name="rob2_arm_eef" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
-    <end_effector name="rob1_arm_hand_eef" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
-    <end_effector name="rob2_arm_hand_eef" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="bar1" link2="bar2" reason="Never" />
     <disable_collisions link1="bar1" link2="bar3" reason="Never" />
