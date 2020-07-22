@@ -5,6 +5,9 @@ from tf import *
 from geometry_msgs.msg import *
 from math import pi
 
+import moveit_commander
+import moveit_msgs.msg
+
 class TF_test():
 
 	def __init__(self):
@@ -15,6 +18,24 @@ class TF_test():
 		self.TFlist = []
 		self.TF_name_list = ['circle_1', 'circle_2', 'circle_3']
 		self.br = TransformBroadcaster()
+
+		moveit_commander.roscpp_initialize(sys.argv)
+		scene = moveit_commander.PlanningSceneInterface()
+
+		item = geometry_msgs.msg.PoseStamped()
+		item.header.frame_id = "world"
+
+		item.pose.position.x = -0.318
+		item.pose.position.y = 0.274
+		item.pose.position.z = 1.0
+		item.pose.orientation.x = 0
+		item.pose.orientation.y = 0
+		item.pose.orientation.z = 0
+		item.pose.orientation.w = 1
+
+		pose = [-0.318, 0.274, 0.003, 0, 0, 0]
+
+		scene.add_mesh("part5", item , "/home/care/test_ws/src/tuto_bot/tuto_scripts/stl/chair part5.SLDPRT.STL")
 
 	def main(self):
 		rospy.spin()

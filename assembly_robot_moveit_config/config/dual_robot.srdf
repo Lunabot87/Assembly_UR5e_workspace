@@ -74,6 +74,16 @@
         <joint name="rob1_wrist_2_joint" value="-1.5671966711627405" />
         <joint name="rob1_wrist_3_joint" value="2.097517490386963" />
     </group_state>
+    <group_state name="rob1_pin1_camera_check" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="1.1444621086120605" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.6819082699217738" />
+        <joint name="rob1_elbow_joint" value="2.0596793333636683" />        
+        <joint name="rob1_wrist_1_joint" value="-0.3790343564799805" />
+        <joint name="rob1_wrist_2_joint" value="1.1472630500793457" />
+        <joint name="rob1_wrist_3_joint" value="3.1459975242614746" />
+    </group_state>
+
+
 
     <group_state name="rob2_hand_over_pin" group="rob2_arm">
         <joint name="rob2_elbow_joint" value="0.735936" />
@@ -91,6 +101,7 @@
         <joint name="rob2_wrist_2_joint" value="-1.1651447455035608" />
         <joint name="rob2_wrist_3_joint" value="-1.567374054585592" />
     </group_state>
+
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="rob1_arm_eef" parent_link="rob1_real_ee_link" group="rob1_hand" parent_group="rob1_arm" />
     <end_effector name="rob2_arm_eef" parent_link="rob2_real_ee_link" group="rob2_hand" parent_group="rob2_arm" />

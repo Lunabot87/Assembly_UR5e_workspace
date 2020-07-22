@@ -9,9 +9,13 @@ import random
 class UrxMotion():
 
     def __init__(self, robot_ip):
-        self.robot = urx.Robot(robot_ip, use_rt=True)
+        self.robot_ip = robot_ip
+        self.robot = urx.URRobot(robot_ip, use_rt=True)
         self.robot.send_program(self._set_gripper())
         time.sleep(3)
+
+    def reset(self):
+        self.robot = urx.URRobot(self.robot_ip, use_rt=True)
 
     def _format_move(self, command, tpose, acc, vel, radius=0, prefix=""):
         tpose = [round(i, 6) for i in tpose]
@@ -29,8 +33,8 @@ class UrxMotion():
         force_toq = [0,0,7,0,0,0] 
 
         # spiral motion
-        R = 0.006 #0.003 #0.006
-        revolution = 8 #4 #8 
+        R = 0.006 #0.003
+        revolution = 8 #4
         dth = m.pi/10
         th_len_1 = int(revolution*2*m.pi/dth) # len(th_array)-1
         dr = R/th_len_1 # R*0.005
@@ -141,15 +145,15 @@ class UrxMotion():
         robot.send_program(self._gripper_move(pos))
 
         while True:
-            if robot.get_digital_out(1) != 0:
-                robot.send_program("set_digital_out(1, False)")
+            if self.robot.get_digital_out(1) != 0:
+                self.robot.send_program("set_digital_out(1, False)")
                 print "gripper_move_and_wait complete"
                 break
             else:
                 continue
 
 
-    def spiral_motion(self, start_pose):
+    def spiral_motion(self):
 
         #############################error test################################
         # move to initial pose
@@ -161,19 +165,22 @@ class UrxMotion():
         # print "error_x={}, error_y={}".format(random_error_x, random_error_y)
         #######################################################################
 
-        robot = self.robot
+        # robot = self.robot
 
-        robot.movel(start_pose, wait=True)
+        # robot.movel(start_pose, wait=True)
 
-        while(True):
-            current = robot.getl()
-            dist = np.linalg.norm(np.array(current)-np.array(start_pose))
-            if dist < 0.001:
-                break
-        
-        robot.send_program("zero_ftsensor()")
+        # while(True):
+        #     current = robot.getl()
+        #     dist = np.linalg.norm(np.array(current)-np.array(start_pose))
+        #     if dist < 0.001:
+        #         break
+
+        time.sleep(1)
+
+        self.robot.send_program("zero_ftsensor()")
         time.sleep(0.2)
-        
+        print self.robot.get_tcp_force()
+
         # go down
         print "="*20 +"go_down"+"="*20
         force_mod = [0,0,1,0,0,0]
@@ -181,43 +188,51 @@ class UrxMotion():
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
         cmd_str += "\twhile (True):\n"
         cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
         time.sleep(0.1)
-        robot.send_program(cmd_str)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.2)
+
+        print self.robot.get_tcp_force()
 
         while(True):
             try:
-                force = robot.get_tcp_force()
+                print "try"
+                force = self.robot.get_tcp_force()
+                print force[2]
                 # print force[2]
-                if force[2] > 3:
+                if abs(force[2]) > 3:
                     print force[2]
-                    robot.send_program("end_force_mode()")
+                    self.robot.send_program("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                robot.send_program("end_force_mode()")
+                self.robot.send_program("end_force_mode()")
                 break
+
+
         time.sleep(0.1)
 
         # spiral    
         print "="*20 +"spiral"+"="*20
-        initial = robot.getl()
+        initial = self.robot.getl()
         spiral_cmd = self._get_spiral_cmd(initial)
-        robot.send_program(spiral_cmd)
+        self.robot.send_program(spiral_cmd)
 
         while(True):
             try:
-                force = robot.get_tcp_force()
+                force = self.robot.get_tcp_force()
                 # print force[0], force[1]
                 if abs(force[0]) > 10 or abs(force[1]) > 10:
                     print force[0], force[1]
-                    robot.send_program("end_force_mode()")
+                    self.robot.send_program("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                robot.send_program("end_force_mode()")
+                self.robot.send_program("end_force_mode()")
                 break
         time.sleep(0.1)
 
@@ -232,22 +247,22 @@ class UrxMotion():
         cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
-        robot.send_program(cmd_str)
+        self.robot.send_program(cmd_str)
 
 
         ##############################수정 필요할수 있음###########################
 
         while(True):
             try:
-                force = robot.get_tcp_force()
+                force = self.robot.get_tcp_force()
                 # print force[2]
                 if force[2] > 50:
                     print force[2]
                     time.sleep(1)
-                    robot.send_program("end_force_mode()")
+                    self.robot.send_program("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                robot.send_program("end_force_mode()")
+                self.robot.send_program("end_force_mode()")
                 break
 
         ########################################################################
@@ -257,10 +272,14 @@ def main():
     rob1 = UrxMotion("192.168.13.101")
     rob2 = UrxMotion("192.168.13.100")
 
-    rob1.gripper_move_and_wait(255)
-    rob2.gripper_move_and_wait(255)
+    #rob1.gripper_move_and_wait(255)
+    #rob2.gripper_move_and_wait(255)
 
-    start_pose = [0.07926447587050217, -0.5351783236056872, 0.5511638848859853, 3.1363137055133308, -0.000665493946621783, -0.001176621750041618]
+    #start_pose = [0.07926447587050217, -0.5351783236056872, 0.5511638848859853, 3.1363137055133308, -0.000665493946621783, -0.001176621750041618]
+
+    start_pose = [-0.02697849875540569, -0.46200054319238953, 0.33038970569878207, -3.141160888357369, -7.144981375453567e-05, -4.9131992091015026e-05]
+
+    rob1.spiral_motion(start_pose)
 
 if __name__ == '__main__':
     main()
