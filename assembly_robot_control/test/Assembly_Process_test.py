@@ -1,22 +1,43 @@
+#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import Assembly_Motion
+import Assembly_Motion_test
+from tf import *
 
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
 #python 규칙 상수는 _대문자
 
 
-class Assembly_process():
+class Assembly_process(Assembly_Motion_test):
+
 	def __init__(self):
-		self.params = get_param_from_grasp_yaml()
-		self.motion = Assembly_motion()
+		rospy.init_node('Assembly_Process', anonymous=True)
+		# self.params = get_param_from_grasp_yaml()
+		# self.motion = Assembly_motion()
+		self.listener = TransformListener()
+		print "go!"
 
 	def fine_tune_insert_target():
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
 		# kHoleCheckOffset
 		# 7/22 적용
 		return target_pose
+
+	def hand_over_pin_check(self, target_name, pin_name):
+		
+		pick_up_pin(pin_name)
+
+		rob1_xyz, rob1_rpy = listener.lookupTransform('/rob1_real_base_link', target_name, rospy.Time(0))
+		rob2_xyz, rob2_rpy = listener.lookupTransform('/rob2_real_base_link', target_name, rospy.Time(0))
+
+		dist = np.linalg.norm(np.array(rob1_xyz))-np.linalg.norm(np.array(rob2_xyz))
+		if dist > 0:
+			hand_over_pin()
+			return True
+		else:
+			return False
+
 
 	def hand_over_part(self, insert_target_pose, asm_msg):
 		# 1. 낄 수 있는지 2. 들 수 있는지 확인
@@ -36,9 +57,11 @@ class Assembly_process():
 		# check_reachability, pass_part_to_other_rob 생성 필요
 		return False
 
-	def grab_pin(self, asm_child_msg, is_moved):
-		grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
-		self.motion.pick_up(grasp)
+
+	#이부분이 의미가 없어짐 
+	# def grab_pin(self, asm_child_msg, is_moved):
+	# 	grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
+	# 	self.motion.pick_up_pin(grasp)
 
 	def grab_part(self, asm_child_msg, is_moved):
 		if is_moved is True:
@@ -90,3 +113,11 @@ class Assembly_process():
 
 	def make_insert_msg(part_name, child_frame_pose):
 		pass
+
+def main():
+	am = Assembly_process()
+	am.pick_up_pin("1")
+	am.hand_over_pin()
+
+if __name__ == '__main__':
+	main()
