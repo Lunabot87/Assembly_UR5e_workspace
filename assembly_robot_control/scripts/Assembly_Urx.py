@@ -15,7 +15,13 @@ class UrxMotion():
         time.sleep(3)
 
     def reset(self):
-        self.robot = urx.URRobot(self.robot_ip, use_rt=True)
+        connected = False 
+        while not connected:      
+            try:         
+                self.robot = urx.URRobot(self.robot_ip, use_rt=True)        
+                connected = True    
+            except:     
+                time.sleep(1)  
 
     def _format_move(self, command, tpose, acc, vel, radius=0, prefix=""):
         tpose = [round(i, 6) for i in tpose]
@@ -179,7 +185,7 @@ class UrxMotion():
 
         self.robot.send_program("zero_ftsensor()")
         time.sleep(0.2)
-        print self.robot.get_tcp_force()
+        # print self.robot.get_tcp_force()
 
         # go down
         print "="*20 +"go_down"+"="*20
@@ -198,13 +204,13 @@ class UrxMotion():
         self.robot.send_program(cmd_str)
         time.sleep(0.2)
 
-        print self.robot.get_tcp_force()
+        # print self.robot.get_tcp_force()
 
         while(True):
             try:
-                print "try"
+                # print "try"
                 force = self.robot.get_tcp_force()
-                print force[2]
+                # print force[2]
                 # print force[2]
                 if abs(force[2]) > 3:
                     print force[2]
@@ -266,6 +272,18 @@ class UrxMotion():
                 break
 
         ########################################################################
+
+        self.gripper_move_and_wait(0)
+
+        post_pose = self.robot.getl()
+        post_pose[2] += 0.3
+        self.robot.movel(post_pose)
+
+        while(True):
+            current = self.robot.getl()
+            dist = np.linalg.norm(np.array(current)-np.array(post_pose))
+            if dist < 0.001:
+                break
 
 
 def main():

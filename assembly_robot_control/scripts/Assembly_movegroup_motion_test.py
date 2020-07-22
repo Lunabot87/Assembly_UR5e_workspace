@@ -38,7 +38,7 @@ def main():
     pub = rospy.Publisher('/camera_op', Float32, queue_size=10)
 
     mg_rob1 = moveit_commander.MoveGroupCommander("rob1_arm")
-    mg_rob2 = moveit_commander.MoveGroupCommander("rob2_arm")
+    #mg_rob2 = moveit_commander.MoveGroupCommander("rob2_arm")
     
     urx_rob1 = UrxMotion("192.168.13.101")
     #urx_rob2 = UrxMotion("192.168.13.100")
@@ -53,36 +53,36 @@ def main():
     rob1_pin1_camera_check = mg_rob1.get_named_target_values("rob1_pin1_camera_check")
 
 
-    # # move rob1 to rob1_pin1_pre_grasp
-    # rob1_plan = mg_rob1.plan(rob1_pin1_pre_grasp)
-    # print "go?" 
+    # move rob1 to rob1_pin1_pre_grasp
+    rob1_plan = mg_rob1.plan(rob1_pin1_pre_grasp)
+    print "go?" 
     # raw_input()
-    # mg_rob1.execute(rob1_plan)
+    mg_rob1.execute(rob1_plan)
 
-    # # move rob1 to rob1_pin1_grasp
-    # rob1_plan = mg_rob1.plan(rob1_pin1_grasp)
-    # print "go?" 
+    # move rob1 to rob1_pin1_grasp
+    rob1_plan = mg_rob1.plan(rob1_pin1_grasp)
+    print "go?" 
     # raw_input()
-    # mg_rob1.execute(rob1_plan)
+    mg_rob1.execute(rob1_plan)
 
-    # # rob1 close gripper
-    # urx_rob1.gripper_move_and_wait(CLOSE)
+    # rob1 close gripper
+    urx_rob1.gripper_move_and_wait(CLOSE)
 
-    # # move rob1 to rob1_pin1_pre_grasp
-    # rob1_plan = mg_rob1.plan(rob1_pin1_pre_grasp)
-    # print "go?" 
+    # move rob1 to rob1_pin1_pre_grasp
+    rob1_plan = mg_rob1.plan(rob1_pin1_pre_grasp)
+    print "go?" 
     # raw_input()
-    # mg_rob1.execute(rob1_plan)
+    mg_rob1.execute(rob1_plan)
 
     # check camera_pose
     rob1_plan = mg_rob1.plan(rob1_pin1_camera_check)
     print "go?" 
-    raw_input()
+    # raw_input()
     mg_rob1.execute(rob1_plan)
 
 
     print "pub"
-    raw_input()
+    # raw_input()
 
     data = Float32()
     data.data = 1
@@ -90,7 +90,7 @@ def main():
 
 
     print "run!!!!"
-    raw_input()
+    # raw_input()
 
     time.sleep(2)
 
@@ -111,7 +111,7 @@ def main():
     mg_rob1.set_pose_target(Pose)
     rob1_plan = mg_rob1.plan()
     print "go?" 
-    raw_input()
+    # raw_input()
     mg_rob1.execute(rob1_plan)
 
     print "go"
@@ -122,11 +122,10 @@ def main():
     # print start_pose
     print "========="
     print "spiral?"
-    raw_input()
+    # raw_input()
     
     urx_rob1.reset()
     urx_rob1.spiral_motion()
-    rospy.spin()
 
 
 
