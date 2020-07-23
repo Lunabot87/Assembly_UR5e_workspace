@@ -1,5 +1,8 @@
 #!/usr/bin/env python
+import tf
 import rospy
+import time
+from sensor_msgs.msg import JointState
 from moveit_commander import MoveGroupCommander
 from ur5e_inv_kin_wrapper import UR5eInvKinWrapper
 
@@ -7,7 +10,9 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 	def __init__(self, group_name):
 		# super(MoveGroupCommanderWrapper, self).__init__(group_name)
 		MoveGroupCommander.__init__(self, group_name)
+		# self.ur5e = UR5eInvKinWrapper()
 		self.ur5e = UR5eInvKinWrapper()
+		self.listener = tf.TransformListener()
 
 	def get_name(self):
 		'''
@@ -17,15 +22,23 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 		# return super(MoveGroupCommanderWrapper, self).get_name()
 		return MoveGroupCommander.get_name(self)
 
+	def _array_to_js(self, array):
+		js = JointState()
+		js.position = array
+		return js
+
 	def move_to_pose_goal(self, pose_goal):
 		current_joint = self.get_current_joint_values()
-		# selected_joint_goal = self.ur5e.inv_kin(current_joint, pose_goal)
-		# selected_joint_goal = self.ur5e.inv_kin(current_joint, pose_goal, 0)
-		joint_goal_dictionary = self.ur5e.inv_kin_all(current_joint, pose_goal)
-		
-		print selected_joint_goal
-		return self.go(selected_joint_goal, wait=True)
 
+		(trans, rot) = self.listener.lookupTransform('/rob1_real_base_link', '/rob1_real_ee_link', rospy.Time(0))
+		trans[0] += 0.05
+		trans[2] += 0.05
+		
+		joints = self.ur5e.solve_and_sort(trans, rot, current_joint)
+		js = self._array_to_js(joints[:, 0])
+		traj = self.plan(js) # returns tuple (bool, JointTrajectory, float, MoveItErrorCodes)
+		
+		return traj
 
 # def main():
 # 	pass
@@ -35,6 +48,5 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
 
 rospy.init_node('move_group_wrapper_test', anonymous=True)
-move_group = MoveGroupCommanderWrapper('rob1_arm')
-print move_group.get_name()
-print move_group.get_current_joint_values()
+mg = MoveGroupCommanderWrapper('rob1_arm')
+# mg.move_to_pose_goal(None)
