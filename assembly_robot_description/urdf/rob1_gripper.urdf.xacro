@@ -46,7 +46,7 @@
 
     <link name="${prefix}real_ee_link"/>
 
-    <xacro:ur5e_robot prefix="rob1_" joint_limited="false"/>
+    <xacro:ur5e_robot prefix="rob1_" joint_limited="true"/>
     <!-- <xacro:ur5_robot prefix="" joint_limited="false"/> -->
     <!-- gripper -->
     <xacro:if value="$(arg gripper_enabled)">  
