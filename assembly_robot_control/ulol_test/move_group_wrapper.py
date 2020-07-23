@@ -10,7 +10,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 	def __init__(self, group_name):
 		# super(MoveGroupCommanderWrapper, self).__init__(group_name)
 		MoveGroupCommander.__init__(self, group_name)
-		# self.ur5e = UR5eInvKinWrapper()
+		
 		self.ur5e = UR5eInvKinWrapper()
 		self.listener = tf.TransformListener()
 
@@ -33,7 +33,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 		(trans, rot) = self.listener.lookupTransform('/rob1_real_base_link', '/rob1_real_ee_link', rospy.Time(0))
 		trans[0] += 0.05
 		trans[2] += 0.05
-		
+
 		joints = self.ur5e.solve_and_sort(trans, rot, current_joint)
 		js = self._array_to_js(joints[:, 0])
 		traj = self.plan(js) # returns tuple (bool, JointTrajectory, float, MoveItErrorCodes)
