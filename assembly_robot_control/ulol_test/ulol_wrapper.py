@@ -18,16 +18,16 @@ ROB1_JOINTS = ['rob1_shoulder_pan_joint','rob1_shoulder_lift_joint','rob1_elbow_
 ROB2_JOINTS = ['rob2_shoulder_pan_joint','rob2_shoulder_lift_joint','rob2_elbow_joint',
 				'rob2_wrist_1_joint','rob2_wrist_2_joint','rob2_wrist_3_joint']
 
-# UR5_LINK = ['base_link', 'shoulder_link', 'upper_arm_link', 'forearm_link', 
-# 				'wrist_1_link', 'wrist_2_link', 'wrist_3_link']
+UR5_LINK = ['rob1_base_link', 'rob1_shoulder_link', 'rob1_upper_arm_link', 'rob1_forearm_link', 
+				'rob1_wrist_1_link', 'rob1_wrist_2_link', 'rob1_wrist_3_link']
 
-# ROBOTIQ_LINK = ['robotiq_arg2f_base_link', 'left_outer_knuckle', 'left_outer_finger', 
-# 				'left_inner_finger', 'left_inner_finger_pad', 'left_inner_knuckle', 
-# 				'right_inner_knuckle', 'right_outer_knuckle', 'right_outer_finger', 
-# 				'right_inner_finger', 'right_inner_finger_pad']
+ROBOTIQ_LINK = ['robotiq_arg2f_base_link', 'left_outer_knuckle', 'left_outer_finger', 
+				'left_inner_finger', 'left_inner_finger_pad', 'left_inner_knuckle', 
+				'right_inner_knuckle', 'right_outer_knuckle', 'right_outer_finger', 
+				'right_inner_finger', 'right_inner_finger_pad']
 
-# LINKS_ENABLE = UR5_LINK + ROBOTIQ_LINK
-# LINKS_DISABLE = ['realsense2_link', 'part'] # 'part' doesn't work
+LINKS_ENABLE = UR5_LINK + ROBOTIQ_LINK
+LINKS_DISABLE = ['realsense2_link', 'part'] # 'part' doesn't work
 
 class ur5_inv_kin_wrapper(ur5):
 	def __init__(self):
@@ -107,11 +107,11 @@ class ur5_inv_kin_wrapper(ur5):
 		order_diff.sort(key=sortKey)
 
 
-		OD = []
+		diff_order= []
 		for i in range(8):
-			OD.append(order_diff[i]['index'])
+			diff_order.append(order_diff[i]['index'])
 		
-		return OD
+		return diff_order
 
 	def _solve(self, trans, rot):
 		pose_mat = self._tf_to_mat(trans, rot)
@@ -165,6 +165,7 @@ class ur5_inv_kin_wrapper(ur5):
 		rv = result.valid
 		rc = result.contacts
 		
+		print rc
 		# print("+"*70)
 		# print('state validity result')
 		# print('valid = {}'.format(rv))
@@ -192,7 +193,6 @@ class ur5_inv_kin_wrapper(ur5):
 			link_colors.append(color)
 
 		return link_colors
-
 
 	def solve_and_sort(self, trans, rot, cur_joint):
 		'''
@@ -244,7 +244,7 @@ class ur5_inv_kin_wrapper(ur5):
 			selected_inv_sol = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 			link_colors = self._set_link_colors(0, 0, 0, 0)
 		else:
-			selected_inv_sol = self.inv_sol[num]
+			selected_inv_sol = self.inv_sol[:,num]
 			valid = self._get_state_validity(selected_inv_sol)
 			if valid:
 				link_colors = self._set_link_colors(0, 20, 0, 0.7)
