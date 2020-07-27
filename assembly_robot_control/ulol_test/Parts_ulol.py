@@ -6,13 +6,12 @@ import geometry_msgs.msg
 
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
-part_path = "/home/hj/ur_ws/src/Assembly_UR5e_workspace/assembly_robot_description/stl/stefan_chair_part/"
-part1 = part_path + "chair_part1.SLDPRT.STL"
-part2 = part_path + "chair_part2.SLDPRT.STL"
-part3 = part_path + "chair_part3.SLDPRT.STL"
-part4 = part_path + "chair_part4.SLDPRT.STL"
-part5 = part_path + "chair_part5.SLDPRT.STL"
-part6 = part_path + "chair_part6.SLDPRT.STL"
+part1 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part1.SLDPRT.STL"
+part2 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part2.SLDPRT.STL"
+part3 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part3.SLDPRT.STL"
+part4 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part4.SLDPRT.STL"
+part5 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part5.SLDPRT.STL"
+part6 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part6.SLDPRT.STL"
 
 br = tf.TransformBroadcaster()
 

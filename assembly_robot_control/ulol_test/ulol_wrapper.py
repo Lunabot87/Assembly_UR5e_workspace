@@ -93,13 +93,13 @@ class ur5_inv_kin_wrapper(ur5):
 		return inv_sol_diff
 
 	def _order_diff(self, inv_sol, cur_joint):
-		diffs = []
+		# diffs = []
 		order_diff = []
 		for i in range(8):
 			diff = 0.0
 			for j in range(6): 
 				diff += self.w[j] * (inv_sol[j][i] - cur_joint[j])**2 
-			diffs.append(diff)
+			# diffs.append(diff)
 			order_diff.append({'index': i, 'diff': float(diff)})
 		def sortKey(e):
 			return e['diff']
@@ -164,8 +164,7 @@ class ur5_inv_kin_wrapper(ur5):
 		result = self.sv_srv.call(gsvr)
 		rv = result.valid
 		rc = result.contacts
-		
-		print rc
+
 		# print("+"*70)
 		# print('state validity result')
 		# print('valid = {}'.format(rv))
@@ -237,7 +236,7 @@ class ur5_inv_kin_wrapper(ur5):
 			2) if valid, publish green robot
 					else, publish red robot
 		'''
-		print("publish state")
+		# print("publish state")
 		
 		valid = False
 		if num == -1:
@@ -251,8 +250,8 @@ class ur5_inv_kin_wrapper(ur5):
 			else:
 				link_colors = self._set_link_colors(20, 0, 0, 0.7)
 
-		print('[{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}]'.format(selected_inv_sol[0],selected_inv_sol[1],selected_inv_sol[2],
-																selected_inv_sol[3],selected_inv_sol[4],selected_inv_sol[5]))
+		# print('[{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}]'.format(selected_inv_sol[0],selected_inv_sol[1],selected_inv_sol[2],
+		# 														selected_inv_sol[3],selected_inv_sol[4],selected_inv_sol[5]))
 
 		robot_state = moveit_msgs.msg.DisplayRobotState()
 		robot_state.state.joint_state.header.frame_id = FRAME_ID
