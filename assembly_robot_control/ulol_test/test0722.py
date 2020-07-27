@@ -18,12 +18,13 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 scene = moveit_commander.PlanningSceneInterface()
 
-part1 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part1.SLDPRT.STL"
-part2 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part2.SLDPRT.STL"
-part3 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part3.SLDPRT.STL"
-part4 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part4.SLDPRT.STL"
-part5 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part5.SLDPRT.STL"
-part6 = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_chair_stl/chair_part6.SLDPRT.STL"
+part_path = "/home/hj/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_description/stl/stefan_char_part/"
+part1 = part_path + "chair_part1.SLDPRT.STL"
+part2 = part_path + "chair_part2.SLDPRT.STL"
+part3 = part_path + "chair_part3.SLDPRT.STL"
+part4 = part_path + "chair_part4.SLDPRT.STL"
+part5 = part_path + "chair_part5.SLDPRT.STL"
+part6 = part_path + "chair_part6.SLDPRT.STL"
 
 def rearrange_solution(ik_solution):
     print ik_solution

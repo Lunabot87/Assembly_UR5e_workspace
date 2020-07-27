@@ -48,5 +48,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
 
 rospy.init_node('move_group_wrapper_test', anonymous=True)
-mg = MoveGroupCommanderWrapper('rob1_arm')
+mg_rob1 = MoveGroupCommanderWrapper('rob1_arm')
 # mg.move_to_pose_goal(None)
+
+stefan = Parts('chair_part1')
