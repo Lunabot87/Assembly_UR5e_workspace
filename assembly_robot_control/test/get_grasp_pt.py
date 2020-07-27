@@ -23,106 +23,119 @@ def main():
 	parts = np.array([part1, part2, part3, part4])
 	parts_color = ['r', 'g', 'b', 'k']
 
-	target_radius = 0.05
-	target_center = (marker5*2+marker4)/3 # [x, y]
+	target_radius = 0.2
+	target_center = marker5 # [x, y]
+	# target_center = marker1 # [x, y]
+	# target_center = (marker4*9+marker5)/10 # [x, y]
 
-	hold_points = []
+	total_hold_points = []
 	for i in range(len(parts)):
-		hold_point = calculate_hold_point_on_line(parts[i], target_center, target_radius)
-		if hold_point is not None:
-			hold_points.append(hold_point)
-	# hold_point, hold_point1 = calculate_hold_point(parts[1], target_center, target_radius)
+		is_online = check_online(parts[i], target_center)
+		if is_online:
+			hold_points_on = calculate_hold_point_on_line(parts[i], target_center, target_radius)
+			if hold_points_on is not None:
+				for j in range(len(hold_points_on)):
+					total_hold_points.append(hold_points_on[j])
+		else:
+			hold_points_off = calculate_hold_point_off_line(parts[i], target_center, target_radius)
+			if hold_points_off is not None:
+				for j in range(len(hold_points_off)):
+					total_hold_points.append(hold_points_off[j])
 
 	for i in range(len(parts)):
 		part = parts[i]
 		plt.plot([part[0][0], part[1][0]], [part[0][1], part[1][1]], parts_color[i]+'o-')
-	plt.plot(target_center[0], target_center[1], "*")
+	plt.plot(target_center[0], target_center[1], "c*", markersize=10)
 	
-	for j in range(len(hold_points)):
-		print hold_points[j][0], hold_points[j][1]
-		plt.plot(hold_points[j][0], hold_points[j][1], "r*")
-
+	for j in range(len(total_hold_points)):
+		dist_from_target_center = np.linalg.norm(total_hold_points[j] - target_center)
+		print "x={}, y={}, dist={}".format(total_hold_points[j][0], total_hold_points[j][1], dist_from_target_center)
+		plt.plot(total_hold_points[j][0], total_hold_points[j][1], "m*", markersize=10)
 	
-	# print hold_point1
-	# 	plt.plot(hold_point1[0], hold_point1[1], "k*")
-
 	plt.show()	
 
-def calculate_hold_point_on_line(X, R, r, on_line_thresh=0.0000001):
+def check_online(X, R, online_thresh=0.0000001):
 	(x1, y1) = (X[0][0], X[0][1])
 	(x2, y2) = (X[1][0], X[1][1])
-	(r1, r2) = (R[0], R[1])
+	(xr, yr) = (R[0], R[1])
 
 	# get linear equation from two points X1, X2
 	m = (y2 - y1)/(x2 - x1)
-	n = x1 - m*x1
+	n = y1 - m*x1
 
 	# check if point R is not on line X12
-	if (m*r1+n - r2) > on_line_thresh:
-		return None
+	if (m*xr+n - yr) < online_thresh:
+		return True
+	else:
+		return False
+
+def calculate_hold_point_on_line(X, R, r):
+	(x1, y1) = (X[0][0], X[0][1])
+	(x2, y2) = (X[1][0], X[1][1])
+	(xr, yr) = (R[0], R[1])
 	
-	# get vector of line
+	# get vector of line(x)
 	X12 = X[1]-X[0]
 	x = X12/np.linalg.norm(X12)
 
 	# get two points that are located at r distance from R
 	Q1 = R + r*x
 	Q2 = R - r*x
-	print "="*30
-	print X[0], X[1]
-	print "X12: " + str(X12)
-	print "x: " + str(x)
-	print "R: "+str(R)
-	print Q1, Q2
-
 
 	# check if two points are on line X12
-	miny = min(y1, y2)
-	maxy = max(y1, y2)
-	print miny, maxy
-	if (miny < (m*Q1[0]+n) < maxy):
-		return Q1
-	elif (miny < (m*Q2[0]+n) < maxy):
-		return Q2
+	CrossPts = []
+	minx = min(x1, x2)
+	maxx = max(x1, x2)
+	# print miny, maxy
+	if (minx <= Q1[0] <= maxx):
+		CrossPts.append(Q1)
+	if (minx <= Q2[0] <= maxx):
+		CrossPts.append(Q2) 
+	
+	if len(CrossPts) > 0:
+		return CrossPts
 	else:
 		return None
 
-
-
-
-
-def calculate_hold_point_off_line(X, R, r):
-	# get P
+def calculate_hold_point_off_line(X, R, r, on_line_thresh=0.0000001):
 	(x1, y1) = (X[0][0], X[0][1])
 	(x2, y2) = (X[1][0], X[1][1])
-	(r1, r2) = (R[0], R[1])
+	(xr, yr) = (R[0], R[1])
 
+	# get P
 	den = ((y2-y1)/(x2-x1) + (x2-x1)/(y2-y1))
-	num = ((y2-y1)/(x2-x1)*x1 +(x2-x1)/(y2-y1)*r1 +r2)
+	num = ((y2-y1)/(x2-x1)*x1 +(x2-x1)/(y2-y1)*xr + yr - y1)
 	xp = num/den
-	yp = -(x2-x1)/(y2-y1)*(xp-r1) + r2
+	yp = -(x2-x1)/(y2-y1)*(xp-xr) + yr
 	P = np.array([xp, yp])
 	
-	# get a_(vector)
-	X12 = X[1]-X[0]
-	a_ = X12/np.linalg.norm(X12)
-
 	# get d
 	RP = P - R
 	d = np.linalg.norm(RP)
-
-	print d
+	
+	# get vector of line(x)
+	X12 = X[1]-X[0]
+	x = X12/np.linalg.norm(X12)
+	minx = min(x1, x2)
+	maxx = max(x1, x2)
+	
+	# get Q
+	CrossPts = []
 	if d>0 and d<r:
 		l = m.sqrt(r*r - d*d)
-		Q = X[0] + (P-X[0]) + l*a_
-		return P, Q
+		Q1 = P + l*x
+		Q2 = P - l*x
+		if (minx <= Q1[0] <= maxx):
+			CrossPts.append(Q1)
+		if (minx <= Q2[0] <= maxx):
+			CrossPts.append(Q2)
+
+		if len(CrossPts) > 0:
+			return CrossPts
+		else:
+			return None
 	else:
-		return None, None
-	# return [[x1, y1], [x2, y2], ..]
-
-def test():
-	hold_pose = calculate_hold_pose(parts, hold_orients, hole, hold_boundary)
-
+		return None
 
 if __name__ == '__main__':
     main()
