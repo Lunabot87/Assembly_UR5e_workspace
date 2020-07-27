@@ -4,12 +4,12 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /MotionPlanning1
+        - /MotionPlanning1/Planning Request1
         - /MotionPlanning1/Planned Path1
-        - /TF1
         - /TF1/Frames1
+        - /RobotState1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 302
+    Tree Height: 377
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -334,38 +334,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          sensor_d435_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           sensor_d435_link:
             Alpha: 1
             Show Axes: false
@@ -403,7 +371,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: rob1_arm
-        Query Goal State: false
+        Query Goal State: true
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -683,38 +651,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          sensor_d435_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           sensor_d435_link:
             Alpha: 1
             Show Axes: false
@@ -747,24 +683,6 @@ Visualization Manager:
           Value: false
         bar4:
           Value: false
-        camera_aligned_depth_to_color_frame:
-          Value: true
-        camera_color_frame:
-          Value: true
-        camera_color_optical_frame:
-          Value: true
-        camera_depth_frame:
-          Value: true
-        camera_depth_optical_frame:
-          Value: true
-        camera_link:
-          Value: true
-        circle_1:
-          Value: true
-        circle_2:
-          Value: true
-        circle_3:
-          Value: true
         realsense_base_link:
           Value: false
         rob1_base:
@@ -804,8 +722,6 @@ Visualization Manager:
         rob1_shoulder_link:
           Value: false
         rob1_tool0:
-          Value: false
-        rob1_tool0_controller:
           Value: false
         rob1_upper_arm_link:
           Value: false
@@ -855,8 +771,6 @@ Visualization Manager:
           Value: false
         rob2_tool0:
           Value: false
-        rob2_tool0_controller:
-          Value: false
         rob2_upper_arm_link:
           Value: false
         rob2_world:
@@ -868,22 +782,6 @@ Visualization Manager:
         rob2_wrist_3_link:
           Value: false
         sensor_d435_bottom_screw_frame:
-          Value: false
-        sensor_d435_color_frame:
-          Value: false
-        sensor_d435_color_optical_frame:
-          Value: false
-        sensor_d435_depth_frame:
-          Value: false
-        sensor_d435_depth_optical_frame:
-          Value: true
-        sensor_d435_infra1_frame:
-          Value: false
-        sensor_d435_infra1_optical_frame:
-          Value: false
-        sensor_d435_infra2_frame:
-          Value: false
-        sensor_d435_infra2_optical_frame:
           Value: false
         sensor_d435_link:
           Value: false
@@ -911,8 +809,7 @@ Visualization Manager:
               rob1_real_base_link:
                 rob1_base_link:
                   rob1_base:
-                    rob1_tool0_controller:
-                      {}
+                    {}
                   rob1_shoulder_link:
                     rob1_upper_arm_link:
                       rob1_forearm_link:
@@ -924,23 +821,7 @@ Visualization Manager:
                                   realsense_base_link:
                                     sensor_d435_bottom_screw_frame:
                                       sensor_d435_link:
-                                        sensor_d435_color_frame:
-                                          sensor_d435_color_optical_frame:
-                                            {}
-                                        sensor_d435_depth_frame:
-                                          sensor_d435_depth_optical_frame:
-                                            circle_1:
-                                              {}
-                                            circle_2:
-                                              {}
-                                            circle_3:
-                                              {}
-                                        sensor_d435_infra1_frame:
-                                          sensor_d435_infra1_optical_frame:
-                                            {}
-                                        sensor_d435_infra2_frame:
-                                          sensor_d435_infra2_optical_frame:
-                                            {}
+                                        {}
                               rob1_tool0:
                                 rob1_robotiq_arg2f_base_link:
                                   rob1_left_inner_knuckle:
@@ -961,8 +842,7 @@ Visualization Manager:
               rob2_real_base_link:
                 rob2_base_link:
                   rob2_base:
-                    rob2_tool0_controller:
-                      {}
+                    {}
                   rob2_shoulder_link:
                     rob2_upper_arm_link:
                       rob2_forearm_link:
@@ -990,6 +870,296 @@ Visualization Manager:
                                           {}
       Update Interval: 0
       Value: true
+    - Attached Body Color: 150; 50; 150
+      Class: moveit_rviz_plugin/RobotState
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        bar1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        realsense_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        sensor_d435_bottom_screw_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        table:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Name: RobotState
+      Robot Alpha: 0.5
+      Robot Description: robot_description
+      Robot State Topic: /inv_kin_sol
+      Show All Links: true
+      Show Highlights: true
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -1006,7 +1176,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.996500015258789
+      Distance: 4.209866523742676
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1021,15 +1191,15 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2647969424724579
+      Pitch: 0.8747971057891846
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 5.894951343536377
+      Yaw: 0.12176802009344101
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1025
+  Height: 1052
   Help:
     collapsed: false
   Hide Left Dock: false
@@ -1038,9 +1208,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002a2000003a7fc0200000007fb000000100044006900730070006c006100790073010000003d000001bf000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720100000202000000410000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000002490000019b0000019b00ffffff00000489000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002a2000003c2fc0200000007fb000000100044006900730070006c006100790073010000003d0000020a000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000204000000430000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000024d000001b20000019b00ffffff000004d8000003c200000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1841
-  X: 79
-  Y: 27
+  Width: 1920
+  X: 1366
+  Y: 0
