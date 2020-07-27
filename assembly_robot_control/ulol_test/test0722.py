@@ -276,7 +276,7 @@ def main():
     print "----------------------------------------------------------"
     print ""
     ROB1 = UR5()
-    UR = IKW.ur5.ur5()
+    UR = IKW.ur5()
     print "[[[[[[[initialize DONE]]]]]]]]]]"
     while True:
         print "============ Press `Enter`  to get_current_pose"

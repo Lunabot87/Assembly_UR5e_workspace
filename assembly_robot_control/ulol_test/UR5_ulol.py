@@ -68,8 +68,8 @@ class UR5(object):
     current_joints = self.move_group.get_current_joint_values()
     return all_close(joint_goal, current_joints, 0.01)
 
-  def go_to_pose_goal(self,pose):
-    self.move_group.set_pose_target(pose)
+  def go_to_pose_goal(self,pose_goal):
+    self.move_group.set_pose_target(pose_goal)
     plan = self.move_group.go(wait=True)
     self.move_group.stop()
     self.move_group.clear_pose_targets()
@@ -103,6 +103,25 @@ class UR5(object):
     orientation.w = orientation_list[3]
 
     return orientation
+
+  def get_random_pose(self, x = random.uniform(-0.35,0.35), y = random.uniform(0,0.4) - 0.745
+                            , z = random.uniform(0.2,0.3), roll = random.uniform(-3.14,3.14)
+                            , pitch = random.uniform(-3.14,3.14), yaw = random.uniform(-3.14,3.14)):
+    
+    orientation_list = quaternion_from_euler(roll,pitch,yaw)
+
+    pose = self.move_group.get_current_pose().pose
+    pose = geometry_msgs.msg.PoseStamped().pose
+    pose.position.x = x
+    pose.position.y = y
+    pose.position.z = z
+    pose.orientation.x = orientation_list[0]
+    pose.orientation.y = orientation_list[1]
+    pose.orientation.z = orientation_list[2]
+    pose.orientation.w = orientation_list[3]
+
+    return pose
+
 
   def get_erected_pose(self, current_pose, target_size, offset, yaw = 0):
     pose = current_pose
