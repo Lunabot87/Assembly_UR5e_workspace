@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="122925.SLDPRT">
+  <link
+    name="122925.SLDPRT">
+    <inertial>
+      <origin
+        xyz="-6.3758E-19 -2.3764E-19 0.00578"
+        rpy="0 -1.5707963267949 0" />
+      <mass
+        value="0.00065266" />
+      <inertia
+        ixx="7.8857E-09"
+        ixy="1.1443E-19"
+        ixz="-1.1443E-19"
+        iyy="1.4006E-08"
+        iyz="-7.19799999999999E-14"
+        izz="1.4007E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 -1.5707963267949 0" />
+      <geometry>
+        <mesh
+          filename="package://object_description/chair_meshes/122925.SLDPRT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+        <texture
+          filename="package://object_description/textures/" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 -1.5707963267949 0" />
+      <geometry>
+        <mesh
+          filename="package://object_description/chair_meshes/122925.SLDPRT.STL" />
+      </geometry>
+    </collision>
+  </link>
+	<gazebo reference="122925.SLDPRT">
+    <material>Gazebo/Grey</material>
+    <kp>100000.0</kp>
+    <kd>1.0</kd>
+    <mu1>100000</mu1>
+    <mu2>100000</mu2>
+    <maxVel>0</maxVel>
+    <minDepth>0.000</minDepth>
+  </gazebo>
+</robot>

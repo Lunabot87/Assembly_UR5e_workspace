@@ -1,0 +1,30 @@
+<launch>
+<!--
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find gazebo_ros_link_attacher)/worlds/test_attacher.world"/>
+		<arg name="paused" value="true"/>
+	</include>
+	-->
+	
+	<param name="stefan_part1_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part1_post.urdf.xacro"/>
+
+	<param name="stefan_part2_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part2_post.urdf.xacro"/>
+
+	<param name="stefan_part3_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part3_post.urdf.xacro"/>
+
+	<param name="stefan_part4_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part4_post.urdf.xacro"/>
+
+	<param name="stefan_part5_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part5_post.urdf.xacro"/>
+
+	<param name="stefan_part6_1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/chair_part6_post.urdf.xacro"/>
+
+
+	<param name="stefan_101350_14_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/101350.urdf.xacro"/>
+
+	<param name="stefan_104322_6_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/104322.urdf.xacro"/>
+
+	<param name="stefan_122620_4_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/122620.urdf.xacro"/>
+
+	<param name="stefan_122925_4_description" command="$(find xacro)xacro $(find object_description)/chair_xacro_re/122925.urdf.xacro"/>
+
+</launch>

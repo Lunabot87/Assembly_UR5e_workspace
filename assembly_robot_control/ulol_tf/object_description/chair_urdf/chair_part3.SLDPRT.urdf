@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="chair part3.SLDPRT">
+  <link
+    name="chair part3.SLDPRT">
+    <inertial>
+      <origin
+        xyz="4.9977E-19 4.02510000000006E-05 0.01"
+        rpy="-1.5707963267949 0 0" />
+      <mass
+        value="0.26482" />
+      <inertia
+        ixx="6.4143E-05"
+        ixy="1.6399E-20"
+        ixz="2.6682E-20"
+        iyy="0.0016227"
+        iyz="-3.74120000000028E-08"
+        izz="0.0015765" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://object_description/chair_meshes/chair part3.SLDPRT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+        <texture
+          filename="package://object_description/textures/" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://object_description/chair_meshes/chair part3.SLDPRT.STL" />
+      </geometry>
+      <surface>
+      <contact>
+          <ode>
+            <kp>1.0E+15</kp>
+            <kd>1.0E+13</kd>
+          </ode>
+        </contact>
+      </surface>
+    </collision>
+  </link>
+  <gazebo reference="chair part3.SLDPRT">
+    <material>Gazebo/White</material>
+    <kp>100000.0</kp>
+    <kd>1.0</kd>
+    <mu1>100000</mu1>
+    <mu2>100000</mu2>
+    <maxVel>0</maxVel>
+    <minDepth>0.000</minDepth>
+  </gazebo>
+</robot>

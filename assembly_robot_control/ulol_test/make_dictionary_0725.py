@@ -43,8 +43,6 @@ def main():
 
 	print "ENTER"
 	raw_input()
-	pose = R1.move_group.get_current_pose().pose
-	print pose
 
 	(inv_sol,DIC) = make_dictionary(IKW,target_pose,cur_joint)
 	print_dic(DIC)
