@@ -16,3 +16,8 @@ part_file = [part1,part2,part3,part4,part5,part6]
 pin_file = [pin101350,pin104322,pin122620,pin122925]
 part_name = ["chair_part1","chair_part2","chair_part3","chair_part4","chair_part5","chair_part6"]
 pin_name = ["pin101350","pin104322","pin122620","pin122925"]
+
+pin_diameter = [0.008,0.006,0.01,0.006]
+pin_lenght = [0.01,0.02,0.01,0.005]
+pin_has_hole = [False,False,True,False]
+# pin_diameter[2] and pin_lenght[2] have to be corrected

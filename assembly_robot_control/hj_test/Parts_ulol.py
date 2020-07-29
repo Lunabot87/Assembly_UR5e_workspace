@@ -6,16 +6,15 @@ import geometry_msgs.msg
 
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
-part_address = "/home/kdh/assembly_chair_stl/"
-part1 = part_address+"chair_part1.SLDPRT.STL"
-part2 = part_address+"chair_part2.SLDPRT.STL"
-part3 = part_address+"chair_part3.SLDPRT.STL"
-part4 = part_address+"chair_part4.SLDPRT.STL"
-part5 = part_address+"chair_part5.SLDPRT.STL"
-part6 = part_address+"chair_part6.SLDPRT.STL"
+part_path = "/home/hj/ur_ws/src/Assembly_UR5e_workspace/assembly_robot_description/stl/stefan_chair_part/"
+part1 = part_path + "chair_part1.SLDPRT.STL"
+part2 = part_path + "chair_part2.SLDPRT.STL"
+part3 = part_path + "chair_part3.SLDPRT.STL"
+part4 = part_path + "chair_part4.SLDPRT.STL"
+part5 = part_path + "chair_part5.SLDPRT.STL"
+part6 = part_path + "chair_part6.SLDPRT.STL"
 
-
-
+br = tf.TransformBroadcaster()
 
 class Parts(object):
   def __init__(self, part_name):
@@ -23,7 +22,6 @@ class Parts(object):
     self.scene = moveit_commander.PlanningSceneInterface()
     self.part_name = part_name
     self.xyz_length = [0.34,0.05,0.019]
-    br = tf.TransformBroadcaster()
 
   def get_mesh_pose(self, mesh_name):
     mesh_pose = geometry_msgs.msg.PoseStamped()
@@ -46,7 +44,7 @@ class Parts(object):
     mesh_pose.pose.orientation.y = orientation_list[1]
     mesh_pose.pose.orientation.z = orientation_list[2]
     mesh_pose.pose.orientation.w = orientation_list[3]
-    # print mesh_pose.pose
+    print mesh_pose.pose
 
     self.scene.add_mesh(self.part_name, mesh_pose, file_name, size=(1, 1, 1))
     br.sendTransform(position_list, orientation_list, rospy.Time.now(), self.part_name, 'world')

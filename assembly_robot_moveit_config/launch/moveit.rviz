@@ -5,9 +5,11 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
-        - /MotionPlanning1/Scene Geometry1
+        - /MotionPlanning1/Scene Robot1
+        - /MotionPlanning1/Scene Robot1/Links1/rob1_real_ee_link1
+        - /MotionPlanning1/Scene Robot1/Links1/rob1_real_ee_link1/Position1
+        - /MotionPlanning1/Planning Request1
         - /TF1
-        - /TF1/Frames1
         - /RobotState1/Links1
       Splitter Ratio: 0.7425600290298462
     Tree Height: 377
@@ -380,8 +382,8 @@ Visualization Manager:
       Planning Scene Topic: move_group/monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
-        Scene Alpha: 0.5
-        Scene Color: 143; 89; 2
+        Scene Alpha: 0.800000011920929
+        Scene Color: 255; 255; 255
         Scene Display Time: 0.20000000298023224
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
@@ -666,7 +668,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Robot Alpha: 1
+        Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
@@ -786,11 +788,59 @@ Visualization Manager:
           Value: true
         pin101350:
           Value: true
+        pin101350-0:
+          Value: true
+        pin101350-1:
+          Value: true
+        pin101350-2:
+          Value: true
+        pin101350-3:
+          Value: true
         pin104322:
+          Value: true
+        pin104322-0:
+          Value: true
+        pin104322-1:
+          Value: true
+        pin104322-2:
+          Value: true
+        pin104322-3:
+          Value: true
+        pin104322-4:
+          Value: true
+        pin104322-5:
           Value: true
         pin122620:
           Value: true
+        pin122620-0:
+          Value: true
+        pin122620-0hole:
+          Value: true
+        pin122620-1:
+          Value: true
+        pin122620-1hole:
+          Value: true
+        pin122620-2:
+          Value: true
+        pin122620-2hole:
+          Value: true
+        pin122620-3:
+          Value: true
+        pin122620-3hole:
+          Value: true
+        pin122620-4:
+          Value: true
+        pin122620-4hole:
+          Value: true
+        pin122620-5:
+          Value: true
+        pin122620-5hole:
+          Value: true
         pin122925:
+          Value: true
+        pin122925-0:
+          Value: true
+        pin122925-1:
           Value: true
         realsense_base_link:
           Value: false
@@ -1007,11 +1057,59 @@ Visualization Manager:
             {}
           pin101350:
             {}
+          pin101350-0:
+            {}
+          pin101350-1:
+            {}
+          pin101350-2:
+            {}
+          pin101350-3:
+            {}
           pin104322:
+            {}
+          pin104322-0:
+            {}
+          pin104322-1:
+            {}
+          pin104322-2:
+            {}
+          pin104322-3:
+            {}
+          pin104322-4:
+            {}
+          pin104322-5:
             {}
           pin122620:
             {}
+          pin122620-0:
+            {}
+          pin122620-0hole:
+            {}
+          pin122620-1:
+            {}
+          pin122620-1hole:
+            {}
+          pin122620-2:
+            {}
+          pin122620-2hole:
+            {}
+          pin122620-3:
+            {}
+          pin122620-3hole:
+            {}
+          pin122620-4:
+            {}
+          pin122620-4hole:
+            {}
+          pin122620-5:
+            {}
+          pin122620-5hole:
+            {}
           pin122925:
+            {}
+          pin122925-0:
+            {}
+          pin122925-1:
             {}
           table:
             bar1:
@@ -1121,25 +1219,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 4.4985246658325195
+      Distance: 4.200013160705566
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.15336163341999054
-        Y: -0.6481870412826538
-        Z: -3.725284614120028e-7
+        X: 0.8190158605575562
+        Y: -0.30212339758872986
+        Z: 2.2351798634190345e-7
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5247982144355774
+      Pitch: 0.9447973966598511
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 2.7972867488861084
+      Yaw: 0.18221113085746765
     Saved: ~
 Window Geometry:
   Displays:
