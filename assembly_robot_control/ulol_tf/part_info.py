@@ -1,4 +1,4 @@
-part_address = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
+part_address = "/home/care/ur_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
 part1 = part_address+"chair part1.SLDPRT.STL"
 part2 = part_address+"chair part2.SLDPRT.STL"
 part3 = part_address+"chair part3.SLDPRT.STL"
@@ -20,4 +20,5 @@ pin_name = ["pin101350","pin104322","pin122620","pin122925"]
 pin_diameter = [0.008,0.006,0.01,0.006]
 pin_lenght = [0.01,0.02,0.01,0.005]
 pin_has_hole = [False,False,True,False]
+how_many_pins = [21,6,4,4]
 # pin_diameter[2] and pin_lenght[2] have to be corrected
