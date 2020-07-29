@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot name="part1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find object_description)/chair_urdf/chair_part1.SLDPRT.urdf"/>
+	<xacro:include filename="$(find object_description)/chair_xacro_re/for_assemble_macro.xacro"/>
+
+	<xacro:property name="x_offset" value="0.0"/>
+	<xacro:property name="y_offset" value="0.0"/>
+	<xacro:property name="z_offset" value="0.0"/>
+	<xacro:property name="id_space" value="chair1"/>
+
+
+					  
+
+	<xacro:surface_definition link_name="part1 surface part5-1 1"
+							  box_x="0.01" box_y="0.01" box_z="0.001"
+							  x="${-0.1525 + 0.037/2 + x_offset}" y="${0.17 + 0.015 + y_offset}" z="${0.005 + z_offset}"
+							  rx="0" ry="${-pi/2}" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+
+	<xacro:surface_definition link_name="part1 surface part5-2 2"
+							  box_x="0.1" box_y="0.1" box_z="0.001"
+							  x="${0 + x_offset}" y="${0 + y_offset}" z="${0 + z_offset}"
+							  rx="0" ry="${pi}" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+	
+	<xacro:surface_definition link_name="part1 surface part5-3 3"
+							  box_x="0.037" box_y="0.01" box_z="0.001"
+							  x="${-0.1525 + x_offset}" y="${0.17 + y_offset}" z="${0.005 + z_offset}"
+							  rx="${-pi/2}" ry="0" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+	
+
+
+
+
+	<xacro:surface_definition link_name="part1 surface part6-1 4"
+							  box_x="0.01" box_y="0.01" box_z="0.001"
+							  x="${0.1525 - 0.037/2 + x_offset}" y="${0.17 + 0.015 + y_offset}" z="${0.005 + z_offset}"
+							  rx="0" ry="${pi/2}" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+
+	<xacro:surface_definition link_name="part1 surface part6-2 5"
+							  box_x="0.1" box_y="0.1" box_z="0.001"
+							  x="${0 + x_offset}" y="${0 + y_offset}" z="${0 + z_offset}"
+							  rx="0" ry="${pi}" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+	
+	<xacro:surface_definition link_name="part1 surface part6-3 6"
+							  box_x="0.037" box_y="0.01" box_z="0.001"
+							  x="${0.1525 + x_offset}" y="${0.17 + y_offset}" z="${0.005 + z_offset}"
+							  rx="${-pi/2}" ry="0" rz="0"
+							  parent="chair part1.SLDPRT"/>	
+
+</robot>

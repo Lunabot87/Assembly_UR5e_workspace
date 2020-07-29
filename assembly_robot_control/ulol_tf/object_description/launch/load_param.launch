@@ -1,0 +1,28 @@
+<launch>
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find gazebo_ros_link_attacher)/worlds/test_attacher.world"/>
+		<arg name="paused" value="true"/>
+	</include>
+	
+	<param name="chair_part1_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part1_post.urdf.xacro"/>
+
+	<param name="chair_part2_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part2_post.urdf.xacro"/>
+
+	<param name="chair_part3_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part3_post.urdf.xacro"/>
+
+	<param name="chair_part4_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part4_post.urdf.xacro"/>
+
+	<param name="chair_part5_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part5_post.urdf.xacro"/>
+
+	<param name="chair_part6_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/chair_part6_post.urdf.xacro"/>
+
+
+	<param name="component_101350_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/101350.urdf.xacro"/>
+
+	<param name="component_104322_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/104322.urdf.xacro"/>
+
+	<param name="component_122620_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/122620.urdf.xacro"/>
+
+	<param name="component_122925_description" command="$(find xacro)xacro $(find object_description)/chair_xacro/122925.urdf.xacro"/>
+
+</launch>
