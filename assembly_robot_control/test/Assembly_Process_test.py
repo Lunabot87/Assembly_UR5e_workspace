@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import Assembly_Motion_test
+from Assembly_Motion_test import Assembly_motion
 from tf import *
 
 
@@ -9,31 +9,49 @@ _KHOLECHECKOFFSET = 0.28 # 애들이 정함
 #python 규칙 상수는 _대문자
 
 
-class Assembly_process(Assembly_Motion_test):
+class Assembly_process():
 
 	def __init__(self):
 		rospy.init_node('Assembly_Process', anonymous=True)
 		# self.params = get_param_from_grasp_yaml()
 		# self.motion = Assembly_motion()
+		self.am = Assembly_motion()
 		self.listener = TransformListener()
+		##########################msg타입 수정 필요##############################3
+		self.pub = rospy.Publisher('/camera_op', Float32, queue_size=10)
 		print "go!"
 
-	def fine_tune_insert_target():
+	def fine_tune_insert_target(self, part_name, robot):
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
 		# kHoleCheckOffset
 		# 7/22 적용
+		xyz, rpy = self.listener.lookupTransform('/world', part_name, rospy.Time(0))
+
+		xyz[2] = 1.1
+		xyz.append(-1.567)
+	    xyz.append(0)
+	    xyz.append(-3.1415)
+
+		self.am.move_to(xyz, robot)
+		self.pub.publish(1)
+
+		xyz, rpy = self.listener.lookupTransform('/world', part_name, rospy.Time(0))
+		
+		xyz.append(3.1415)
+	    xyz.append(0)
+	    xyz.append(0)
+	    self.am.move_to(xyz, robot)
+
 		return target_pose
 
-	def hand_over_pin_check(self, target_name, pin_name):
-		
-		pick_up_pin(pin_name)
+	def hand_over_pin_check(self, target_name):
 
-		rob1_xyz, rob1_rpy = listener.lookupTransform('/rob1_real_base_link', target_name, rospy.Time(0))
-		rob2_xyz, rob2_rpy = listener.lookupTransform('/rob2_real_base_link', target_name, rospy.Time(0))
+		rob1_xyz, rob1_rpy = self.listener.lookupTransform('/rob1_real_base_link', target_name, rospy.Time(0))
+		rob2_xyz, rob2_rpy = self.listener.lookupTransform('/rob2_real_base_link', target_name, rospy.Time(0))
 
 		dist = np.linalg.norm(np.array(rob1_xyz))-np.linalg.norm(np.array(rob2_xyz))
 		if dist > 0:
-			hand_over_pin()
+			self.am.hand_over_pin()
 			return True
 		else:
 			return False
@@ -58,10 +76,11 @@ class Assembly_process(Assembly_Motion_test):
 		return False
 
 
-	#이부분이 의미가 없어짐 
-	# def grab_pin(self, asm_child_msg, is_moved):
-	# 	grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
-	# 	self.motion.pick_up_pin(grasp)
+	def grab_pin(self, pin_name)#asm_child_msg, is_moved):
+		# grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
+		# self.motion.pick_up_pin(grasp)
+		self.am.pick_up_pin(pin_name)
+
 
 	def grab_part(self, asm_child_msg, is_moved):
 		if is_moved is True:
@@ -73,9 +92,10 @@ class Assembly_process(Assembly_Motion_test):
 	def insert_spiral_motion(self, real_insert_target_pose, num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복
 		# target pose와 grasp_config.yaml 의 데이터를 합쳐서 approach, retreat도 결정 
-		for i in range(num_of_trial):
-			if self.motion.sprial_motion(real_insert_target_pose):
-				break
+		# for i in range(num_of_trial):
+		# 	if self.am.sprial_motion():
+		# 		break
+		self.am.sprial_motion():
 
 	def insert_part_motion(sorted_insert_target_poses):
 		## ??? 
@@ -115,9 +135,9 @@ class Assembly_process(Assembly_Motion_test):
 		pass
 
 def main():
-	am = Assembly_process()
-	am.pick_up_pin("1")
-	am.hand_over_pin()
+	ap = Assembly_process()
+	ap.am.pick_up_pin("1")
+	ap.am.hand_over_pin()
 
 if __name__ == '__main__':
 	main()

@@ -9,7 +9,8 @@ class Assembly_mode():
 	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 
 		# real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
-		self.pr.grab_pin(asm_msg.child, False)
+		self.pr.grab_pin("pin_name")
+		self.pr.hand_over_pin_check("target_1")
 		# 학부 보조 연구원
 		self.pr.insert_spiral_motion(real_insert_target_pose)
 
