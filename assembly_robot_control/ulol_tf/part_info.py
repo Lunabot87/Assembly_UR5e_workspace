@@ -1,4 +1,4 @@
-part_address = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
+part_address = "/home/care/ur_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
 part1 = part_address+"chair part1.SLDPRT.STL"
 part2 = part_address+"chair part2.SLDPRT.STL"
 part3 = part_address+"chair part3.SLDPRT.STL"

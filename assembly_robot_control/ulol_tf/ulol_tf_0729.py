@@ -188,7 +188,7 @@ class TF_Node(object):
 		#point_num is grasping point number
 
 		part_org = self.TF_List[part_num]['origin']
-		print part_org.orientation
+		# print part_org.orientation
 		o_list_origin = copy.deepcopy(self.make_orientation_list(part_org.orientation))
 		
 		Rotation = quaternion_matrix(o_list_origin)
@@ -303,15 +303,17 @@ class TF_Node(object):
 
 
 def init():
+
+
+
 	TF = TF_Node()
 	TF.set_parts()
+	# TF.update_tf()
+	# print "Press ENTER"
+	# raw_input()
+	rospy.spin()
 
-	print "Press enter"
-	raw_input()
-	while True:
-		TF.update_tf()
-		print "Press ENTER"
-		raw_input()
+		
 
 
 

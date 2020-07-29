@@ -10,7 +10,7 @@ class UrxMotion():
 
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
-        self.robot = urx.URRobot(robot_ip, use_rt=True)
+        self.reset()
         self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
@@ -180,7 +180,7 @@ class UrxMotion():
         #     dist = np.linalg.norm(np.array(current)-np.array(start_pose))
         #     if dist < 0.001:
         #         break
-
+        self.reset()
         time.sleep(1)
 
         self.robot.send_program("zero_ftsensor()")
@@ -210,7 +210,7 @@ class UrxMotion():
             try:
                 # print "try"
                 force = self.robot.get_tcp_force()
-                # print force[2]
+                print force[2]
                 # print force[2]
                 if abs(force[2]) > 3:
                     print force[2]

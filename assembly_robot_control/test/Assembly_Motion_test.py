@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-import rospy
 import moveit_commander
 import moveit_msgs.msg
 from Assembly_Urx_test import UrxMotion
-from Assembly_Math import *
+from Assembly_Math_test import *
 
 class Assembly_motion():
     def __init__(self):
 
-        rospy.init_node('Assembly_Motion', anonymous=True)
+        # rospy.init_node('Assembly_Motion', anonymous=True)
 
         self.mg_rob1 = moveit_commander.MoveGroupCommander("rob1_arm")
         self.mg_rob2 = moveit_commander.MoveGroupCommander("rob2_arm")
+        # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
+        # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
     
@@ -20,6 +21,15 @@ class Assembly_motion():
         self.group1.go(grasp.pre_grasp)
         self.group1.go(grasp.grasp)
         self.group1.go(grasp.post_grasp)
+
+
+    def camera_pose(self, robot):
+        if robot is False:
+            camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
+            #self.mg_rob1.go(camera_pose_data)
+        else:
+            camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
+            self.mg_rob2.go(camera_pose_data)
 
 
     def pick_up_pin(self, pin_name):
@@ -46,8 +56,11 @@ class Assembly_motion():
             rob = self.mg_rob2
 
         pose = euler2Pose(target_pose)
+        print pose
         rob.set_pose_target(pose)
         plan = rob.plan()
+        print "go?"
+        raw_input()
         rob.execute(plan)
 
 
@@ -98,16 +111,16 @@ class Assembly_motion():
 
 
  
-    def sprial_pin(self, parent_name , robot = 1):
+    def sprial_pin(self, robot = False):
         # spiral motion을 진행하면서 pin을 insert 하는 작업
         # force값을 받아서 pin이 insert가 되었는지 아닌지 확인
         # insert가 되면 모션 중지하고 True를 반환
         # motion을 끝까지 진행하였는데도 insert가 안되었으면 False를 반환
         #####
-        if robot is 1:
-            self.rob1.sprial_motion()
+        if robot is False:
+            self.urx_rob1.spiral_motion()
         else:
-            self.rob2.spiral_motion()
+            self.urx_rob2.spiral_motion()
         # return is_inserted
 
 
@@ -126,5 +139,5 @@ def main():
 
   
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
