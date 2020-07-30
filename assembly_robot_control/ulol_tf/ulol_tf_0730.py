@@ -15,11 +15,15 @@ from geometry_msgs.msg import *
 from tf.transformations import *
 from tf import *
 
-import hole_offsets as HO 		# locations of holes of each part
-import grasping_point as GP
 from part_initial_pose import*	# set initial poses of parts and locations of all pins
 from part_info import*			# part_file_address, part_name
 from pin_base import*			# base position of pins
+
+import hole_offsets as HO 		# locations of holes of each part
+import grasping_point as GP
+import assemble_data as ASM_D
+import ulol_UR5 as UR5
+
 
 class TF_Node(object):
 
@@ -39,8 +43,8 @@ class TF_Node(object):
 		rospy.Timer(rospy.Duration(1), self.send_TF)
 
 	def init_Pin_List(self):
-		self.Pin_List = [{'name':[],'pose':[]},{'name':[],'pose':[]}
-								,{'name':[],'pose':[]},{'name':[],'pose':[]}]
+		self.Pin_List = [{'pose':[]},{'pose':[]}
+							,{'pose':[]},{'pose':[]}]
 	def init_TF_List(self):
 		self.TF_List = [{'origin' : [], 'holes' : []},{'origin' : [],'holes' : []},{'origin' : [],'holes' : []}
 						,{'origin' : [],'holes' : []},{'origin' : [],'holes' : []},{'origin' : [],'holes' : []}]
@@ -94,6 +98,7 @@ class TF_Node(object):
 			pin_pose = copy.deepcopy(pin_pose.pose)
 		self.Pin_List[pin_type]['pose'].append(pin_pose)
 
+
 	def change_part_org(self,part_num,new_pose):
 		self.mesh_added_flag == False
 
@@ -113,6 +118,18 @@ class TF_Node(object):
 		for gp in range(num_of_gp):
 			grasping_pose = self.get_grasping_pose(part_num,gp)
 			self.GP_List[part_num]['pose'].append(copy.deepcopy(grasping_pose))
+
+		self.mesh_added_flag == True
+
+	def change_pin_org(self,target_pin_name,new_pose):
+		self.mesh_added_flag == False
+
+		new_pose_stamped = self.Pose_to_PoseStamped(new_pose)
+		temp_pin_name = target_pin_name.split('-')[0]
+		temp_pin_num = pin_name.index(temp_pin_name)
+		target_pin_file = pin_file[temp_pin_num]
+		new_pose_stamped = self.Pose_to_PoseStamped(new_pose)
+		self.add_mesh(target_pin_name,target_pin_file,new_pose_stamped)
 
 		self.mesh_added_flag == True
 
@@ -156,6 +173,7 @@ class TF_Node(object):
 			self.GP_List[part_num]['pose'].append(copy.deepcopy(grasping_pose))
 
 		self.mesh_added_flag == True
+
 
 	def get_hole_pose(self,origin_pose,part_num,hole_num,hole_offset):
 		#origin pose : pose of origin of part : mesh_pose.pose
@@ -351,8 +369,6 @@ class TF_Node(object):
 			self.send_pin_TF()
 			self.send_GP_TF()	
 
-
-
 	def update_tf(self):
 		self.mesh_added_flag = False
 
@@ -371,36 +387,3 @@ class TF_Node(object):
 
 		self.mesh_added_flag = True
 
-
-
-def init():
-	TF = TF_Node()
-	TF.set_parts()
-	try:
-		print "Press ENTER to move change_part2 to y + 0.1"
-		raw_input()
-		TF.update_tf()
-		
-		TF.move_part_org(part_num =1,trans = [0,0.1,0],rot = [0,0,0])
-		print "Press ENTER to move change_part2 to z + 0.1"
-		raw_input()
-		TF.move_part_org(part_num =1,trans = [0,0,0.1],rot = [0,0,0])
-		print "Press ENTER to move change_part2 to rz + pi/2"
-		raw_input()
-		TF.move_part_org(part_num =1,trans = [0,0,0],rot = [0,0,1.57])
-		print "Press ENTER to move change_part2 initial origin"
-		raw_input()
-		TF.change_part_org(part_num =1,new_pose = part_pose[1])
-
-		print "Press ENTER to quit"
-		raw_input()
-
-	except rospy.ROSInterruptException:
-		return
-	except KeyboardInterrupt:
-		return
-
-
-
-if __name__ == '__main__':
-	init()
