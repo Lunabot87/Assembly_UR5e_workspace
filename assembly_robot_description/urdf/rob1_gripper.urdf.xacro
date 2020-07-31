@@ -19,8 +19,6 @@
   <xacro:property name="base_z_size" value="0.55" />
   <xacro:property name="prefix" value="rob1_" />
 
-
-
   <xacro:if value="$(arg ur_enabled)">
 
     <link name="${prefix}real_base_link" />
@@ -45,6 +43,22 @@
     </joint>
 
     <link name="${prefix}real_ee_link"/>
+
+    <!-- for grasp point -->
+    <link name="${prefix}tcp_gripper_open"/>
+    <link name="${prefix}tcp_gripper_closed"/>
+    
+    <joint name="${prefix}ur_tcp_fixed_joint" type="fixed">
+      <parent link="${prefix}real_ee_link"/>
+      <child link="${prefix}tcp_gripper_open"/>
+      <origin xyz="0 0 0.13" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="${prefix}ur_gripper_closed_fixed_joint" type="fixed">
+      <parent link="${prefix}real_ee_link"/>
+      <child link="${prefix}tcp_gripper_closed"/>
+      <origin xyz="0 0 0.14" rpy="0 0 0"/>
+    </joint>
 
     <xacro:ur5e_robot prefix="rob1_" joint_limited="true"/>
     <!-- <xacro:ur5_robot prefix="" joint_limited="false"/> -->
