@@ -18,22 +18,6 @@ def make_orientation_list(orientation):
   o_list = [orientation.x, orientation.y, orientation.z, orientation.w]
   return o_list
  
-def all_close(goal, actual, tolerance):
-  all_equal = True
-  if type(goal) is list:
-    for index in range(len(goal)):
-      if abs(actual[index] - goal[index]) > tolerance:
-        return False
-
-  elif type(goal) is geometry_msgs.msg.PoseStamped:
-    return all_close(goal.pose, actual.pose, tolerance)
-
-  elif type(goal) is geometry_msgs.msg.Pose:
-    return all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
-
-  return True
-
-
 class UR5(object):
   def __init__(self,G_name = 'rob1_arm'):
     super(UR5, self).__init__()
@@ -59,22 +43,15 @@ class UR5(object):
     self.move_group.go(joint_goal, wait=True)
     self.move_group.stop()
 
-    current_joints = self.move_group.get_current_joint_values()
-    return all_close(joint_goal, current_joints, 0.01)
-
   def go_to_joint_goal(self,joint_goal):
     self.move_group.go(joint_goal, wait=True)
     self.move_group.stop()
-    current_joints = self.move_group.get_current_joint_values()
-    return all_close(joint_goal, current_joints, 0.01)
 
   def go_to_pose_goal(self,pose_goal):
     self.move_group.set_pose_target(pose_goal)
     plan = self.move_group.go(wait=True)
     self.move_group.stop()
     self.move_group.clear_pose_targets()
-    current_pose = self.move_group.get_current_pose().pose
-    return all_close(pose_goal, current_pose, 0.01)
 
   def execute_plan(self, plan):
     self.move_group.execute(plan, wait=True)
@@ -155,8 +132,6 @@ class UR5(object):
       joint_goal[5] = pi/2
     move_group.go(joint_goal, wait=True)
     move_group.stop()
-    current_joints = move_group.get_current_joint_values()
-    return all_close(joint_goal, current_joints, 0.01) 
 
   def grab_part(self, target_name, target_file, target_pose, target_size, offset):
 

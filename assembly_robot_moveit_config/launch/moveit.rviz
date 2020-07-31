@@ -1,14 +1,24 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 84
+    Help Height: 70
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
+<<<<<<< HEAD
+=======
+        - /MotionPlanning1/Scene Robot1
+        - /MotionPlanning1/Planning Request1
+        - /TF1
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
         - /TF1/Frames1
-        - /RobotState1
+        - /RobotState1/Links1
       Splitter Ratio: 0.7425600290298462
+<<<<<<< HEAD
     Tree Height: 329
+=======
+    Tree Height: 70
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -394,9 +404,15 @@ Visualization Manager:
       Planning Scene Topic: move_group/monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
+<<<<<<< HEAD
         Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
+=======
+        Scene Alpha: 0.800000011920929
+        Scene Color: 255; 255; 255
+        Scene Display Time: 0.20000000298023224
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
@@ -703,7 +719,7 @@ Visualization Manager:
       Velocity_Scaling_Factor: 0.1
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 15
+      Frame Timeout: 3
       Frames:
         All Enabled: false
         bar1:
@@ -714,10 +730,191 @@ Visualization Manager:
           Value: false
         bar4:
           Value: false
+<<<<<<< HEAD
         part2_grasp:
           Value: false
         part2_pre_grasp:
           Value: false
+=======
+        chair_part2:
+          Value: true
+        chair_part2-GRASP-1:
+          Value: true
+        chair_part2-GRASP-2:
+          Value: true
+        chair_part3:
+          Value: true
+        chair_part3-GRASP-1:
+          Value: true
+        chair_part3-GRASP-2:
+          Value: true
+        chair_part4:
+          Value: true
+        chair_part6:
+          Value: true
+        chair_part6-GRASP-1:
+          Value: true
+        chair_part6-GRASP-2:
+          Value: true
+        chair_part6-GRASP-3:
+          Value: true
+        chair_part6-GRASP-4:
+          Value: true
+        hole2-1:
+          Value: true
+        hole2-2:
+          Value: true
+        hole2-3:
+          Value: true
+        hole2-4:
+          Value: true
+        hole2-5:
+          Value: true
+        hole2-6:
+          Value: true
+        hole2-7:
+          Value: true
+        hole2-8:
+          Value: true
+        hole3-1:
+          Value: true
+        hole3-2:
+          Value: true
+        hole3-3:
+          Value: true
+        hole3-4:
+          Value: true
+        hole3-5:
+          Value: true
+        hole3-6:
+          Value: true
+        hole3-7:
+          Value: true
+        hole3-8:
+          Value: true
+        hole4-1:
+          Value: true
+        hole4-2:
+          Value: true
+        hole4-3:
+          Value: true
+        hole4-4:
+          Value: true
+        hole4-5:
+          Value: true
+        hole4-6:
+          Value: true
+        hole4-7:
+          Value: true
+        hole4-8:
+          Value: true
+        hole6-1:
+          Value: true
+        hole6-10:
+          Value: true
+        hole6-2:
+          Value: true
+        hole6-3:
+          Value: true
+        hole6-4:
+          Value: true
+        hole6-5:
+          Value: true
+        hole6-6:
+          Value: true
+        hole6-7:
+          Value: true
+        hole6-8:
+          Value: true
+        hole6-9:
+          Value: true
+        pin101350-0:
+          Value: true
+        pin101350-1:
+          Value: true
+        pin101350-10:
+          Value: true
+        pin101350-11:
+          Value: true
+        pin101350-12:
+          Value: true
+        pin101350-13:
+          Value: true
+        pin101350-14:
+          Value: true
+        pin101350-15:
+          Value: true
+        pin101350-16:
+          Value: true
+        pin101350-17:
+          Value: true
+        pin101350-18:
+          Value: true
+        pin101350-19:
+          Value: true
+        pin101350-2:
+          Value: true
+        pin101350-20:
+          Value: true
+        pin101350-21:
+          Value: true
+        pin101350-3:
+          Value: true
+        pin101350-4:
+          Value: true
+        pin101350-5:
+          Value: true
+        pin101350-6:
+          Value: true
+        pin101350-7:
+          Value: true
+        pin101350-8:
+          Value: true
+        pin101350-9:
+          Value: true
+        pin104322-0:
+          Value: true
+        pin104322-1:
+          Value: true
+        pin104322-2:
+          Value: true
+        pin104322-3:
+          Value: true
+        pin104322-4:
+          Value: true
+        pin104322-5:
+          Value: true
+        pin104322-6:
+          Value: true
+        pin122620-0:
+          Value: true
+        pin122620-0hole:
+          Value: true
+        pin122620-1:
+          Value: true
+        pin122620-1hole:
+          Value: true
+        pin122620-2:
+          Value: true
+        pin122620-2hole:
+          Value: true
+        pin122620-3:
+          Value: true
+        pin122620-3hole:
+          Value: true
+        pin122620-4:
+          Value: true
+        pin122925-0:
+          Value: true
+        pin122925-1:
+          Value: true
+        pin122925-2:
+          Value: true
+        pin122925-3:
+          Value: true
+        pin122925-4:
+          Value: true
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
         realsense_base_link:
           Value: false
         rob1_base:
@@ -832,16 +1029,200 @@ Visualization Manager:
           Value: false
         world:
           Value: false
+<<<<<<< HEAD
       Marker Scale: 0.5
+=======
+      Marker Scale: 0.20000000298023224
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
       Name: TF
       Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
         world:
+<<<<<<< HEAD
           part2_grasp:
             {}
           part2_pre_grasp:
+=======
+          chair_part2:
+            {}
+          chair_part2-GRASP-1:
+            {}
+          chair_part2-GRASP-2:
+            {}
+          chair_part3:
+            {}
+          chair_part3-GRASP-1:
+            {}
+          chair_part3-GRASP-2:
+            {}
+          chair_part4:
+            {}
+          chair_part6:
+            {}
+          chair_part6-GRASP-1:
+            {}
+          chair_part6-GRASP-2:
+            {}
+          chair_part6-GRASP-3:
+            {}
+          chair_part6-GRASP-4:
+            {}
+          hole2-1:
+            {}
+          hole2-2:
+            {}
+          hole2-3:
+            {}
+          hole2-4:
+            {}
+          hole2-5:
+            {}
+          hole2-6:
+            {}
+          hole2-7:
+            {}
+          hole2-8:
+            {}
+          hole3-1:
+            {}
+          hole3-2:
+            {}
+          hole3-3:
+            {}
+          hole3-4:
+            {}
+          hole3-5:
+            {}
+          hole3-6:
+            {}
+          hole3-7:
+            {}
+          hole3-8:
+            {}
+          hole4-1:
+            {}
+          hole4-2:
+            {}
+          hole4-3:
+            {}
+          hole4-4:
+            {}
+          hole4-5:
+            {}
+          hole4-6:
+            {}
+          hole4-7:
+            {}
+          hole4-8:
+            {}
+          hole6-1:
+            {}
+          hole6-10:
+            {}
+          hole6-2:
+            {}
+          hole6-3:
+            {}
+          hole6-4:
+            {}
+          hole6-5:
+            {}
+          hole6-6:
+            {}
+          hole6-7:
+            {}
+          hole6-8:
+            {}
+          hole6-9:
+            {}
+          pin101350-0:
+            {}
+          pin101350-1:
+            {}
+          pin101350-10:
+            {}
+          pin101350-11:
+            {}
+          pin101350-12:
+            {}
+          pin101350-13:
+            {}
+          pin101350-14:
+            {}
+          pin101350-15:
+            {}
+          pin101350-16:
+            {}
+          pin101350-17:
+            {}
+          pin101350-18:
+            {}
+          pin101350-19:
+            {}
+          pin101350-2:
+            {}
+          pin101350-20:
+            {}
+          pin101350-21:
+            {}
+          pin101350-3:
+            {}
+          pin101350-4:
+            {}
+          pin101350-5:
+            {}
+          pin101350-6:
+            {}
+          pin101350-7:
+            {}
+          pin101350-8:
+            {}
+          pin101350-9:
+            {}
+          pin104322-0:
+            {}
+          pin104322-1:
+            {}
+          pin104322-2:
+            {}
+          pin104322-3:
+            {}
+          pin104322-4:
+            {}
+          pin104322-5:
+            {}
+          pin104322-6:
+            {}
+          pin122620-0:
+            {}
+          pin122620-0hole:
+            {}
+          pin122620-1:
+            {}
+          pin122620-1hole:
+            {}
+          pin122620-2:
+            {}
+          pin122620-2hole:
+            {}
+          pin122620-3:
+            {}
+          pin122620-3hole:
+            {}
+          pin122620-4:
+            {}
+          pin122925-0:
+            {}
+          pin122925-1:
+            {}
+          pin122925-2:
+            {}
+          pin122925-3:
+            {}
+          pin122925-4:
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
             {}
           table:
             bar1:
@@ -927,11 +1308,12 @@ Visualization Manager:
     - Attached Body Color: 150; 50; 150
       Class: moveit_rviz_plugin/RobotState
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
-        All Links Enabled: true
-        Expand Joint Details: false
+        All Links Enabled: false
+        Expand Joint Details: true
         Expand Link Details: false
+<<<<<<< HEAD
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
         bar1:
@@ -1222,13 +1604,17 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+=======
+        Expand Tree: true
+        Link Tree Style: true
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
       Name: RobotState
       Robot Alpha: 1
       Robot Description: robot_description
       Robot State Topic: /inv_kin_sol
       Show All Links: true
       Show Highlights: true
-      Value: true
+      Value: false
       Visual Enabled: true
     - Class: rviz/Axes
       Enabled: true
@@ -1260,21 +1646,32 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
+<<<<<<< HEAD
       Distance: 3.2460973262786865
+=======
+      Distance: 2.230663537979126
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
+<<<<<<< HEAD
         X: -1.298748254776001
         Y: 0.42462095618247986
         Z: 2.2351798634190345e-7
+=======
+        X: -0.1266549825668335
+        Y: 0.05461958050727844
+        Z: 7.003551445450285e-7
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
+<<<<<<< HEAD
       Pitch: 0.28479644656181335
       Target Frame: world
       Value: XYOrbit (rviz)
@@ -1340,21 +1737,37 @@ Visualization Manager:
         Target Frame: world
         Value: XYOrbit (rviz)
         Yaw: 4.939959526062012
+=======
+      Pitch: 0.9747974872589111
+      Target Frame: world
+      Value: XYOrbit (rviz)
+      Yaw: 6.180389881134033
+    Saved: ~
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272
 Window Geometry:
   Displays:
-    collapsed: false
-  Height: 1052
+    collapsed: true
+  Height: 713
   Help:
     collapsed: false
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: false
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
+<<<<<<< HEAD
   QMainWindow State: 000000ff00000000fd000000020000000000000295000003c2fc0200000008fb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb000000100044006900730070006c006100790073010000003d000001da000000c900fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c0069006400650072010000021d000000410000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000002640000019b0000019b00fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c0069006400650072010000003d000000410000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000245000001ba00000000000000000000000100000158000003c2fc0200000001fb0000000a00560069006500770073010000003d000003c2000000a400ffffff00000387000003c200000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1920
   X: 1920
   Y: 0
+=======
+  QMainWindow State: 000000ff00000000fd0000000100000000000002950000026ffc0200000007fb000000100044006900730070006c006100790073000000003d000000c9000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000204000000430000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000010c000001a00000019b00ffffff000005290000026f00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Views:
+    collapsed: false
+  Width: 1321
+  X: 45
+  Y: 27
+>>>>>>> 9c8e0d0de8c0b9a7a9234269edba3a869f1c3272

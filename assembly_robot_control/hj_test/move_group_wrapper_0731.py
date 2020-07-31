@@ -225,9 +225,9 @@ def main():
   print "ENTER"
   raw_input()
 
-  # mg_rob1.go_to_initial_pose()
-  # print "ENTER"
-  # raw_input()
+  mg_rob1.go_to_initial_pose()
+  print "ENTER"
+  raw_input()
   
   assembly_scene.add_mesh(PART2_PATH)
   print "ENTER"

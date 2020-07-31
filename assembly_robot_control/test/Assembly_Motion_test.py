@@ -4,6 +4,7 @@ import rospy
 import moveit_commander
 import moveit_msgs.msg
 from Assembly_Urx_test import UrxMotion
+from Assembly_Math import *
 
 class Assembly_motion():
     def __init__(self):
@@ -38,9 +39,17 @@ class Assembly_motion():
         self.urx_rob1.gripper_move_and_wait(255)
         self.mg_rob1.go(rob1_pin1_pre_grasp)
 
-    def move_to(self, target_pose):
-        print "move_to"
-        #수정전 임시 출력 
+    def move_to(self, target_pose, robot):
+        if robot is False:
+            rob = self.mg_rob1
+        else:
+            rob = self.mg_rob2
+
+        pose = euler2Pose(target_pose)
+        rob.set_pose_target(pose)
+        plan = rob.plan()
+        rob.execute(plan)
+
 
 
     def hand_over_pin(self):
@@ -72,10 +81,10 @@ class Assembly_motion():
         
 
     def hold_assistant(self, part_name, robot):
-        if robot is 1:
-            rob = self.rob1
+        if robot is False:
+            rob = self.mg_rob1
         else:
-            rob = self.rob2
+            rob = self.mg_rob2
 
         pre_hold_part = rob.get_named_target_values("rob"+str(robot)+"_pre_hold_"+part_name)
         hold_part = rob.get_named_target_values("rob"+str(robot)+"_hold_"+part_name)
