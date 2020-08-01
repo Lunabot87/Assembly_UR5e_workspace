@@ -8,13 +8,11 @@ import moveit_msgs.msg
 from moveit_msgs.srv import GetStateValidityRequest, GetStateValidity
 
 from ur5e_inv_kin import UR5eInvKin
-from const import *
-
-LINKS_ENABLE = ROB1_LINK
-LINKS_DISABLE = []
+from utils.const import *
+from utils.conversions import *
 
 class UR5eInvKinForTF():
-  def __init__(self, eef_offset):
+  def __init__(self, group_name, eef_offset):
     # ur5e kinematics
     self.ur5e_ik = UR5eInvKin(eef_offset)
 
@@ -30,18 +28,12 @@ class UR5eInvKinForTF():
     print "service is available"
     
     # variables
+    self.group_name = group_name
     self.w = [1.0, 1.0, 1.0, 0.5, 0.5, 0.2]
     self.aco = None
 
   ##############################################################################
   ##############################################################################
-  def _tf_to_mat(self, trans, rot):
-    # pose_mat : [4x4] array
-    trans_mat = tf.transformations.translation_matrix(trans)
-    rot_mat = tf.transformations.quaternion_matrix(rot)
-    pose_mat = tf.transformations.concatenate_matrices(trans_mat, rot_mat)
-    return pose_mat
-
   def _get_diff_idx(self, inv_sol, cur_joint):
     # diffs = []
     order_diff = []
@@ -95,7 +87,10 @@ class UR5eInvKinForTF():
   def _get_state_validity(self, joint):
     # print(joint)
     robot_state = moveit_msgs.msg.RobotState()
-    robot_state.joint_state.name = ROB1_JOINTS
+    if self.group_name == 'rob1_arm':
+      robot_state.joint_state.name = ROB1_JOINTS
+    elif self.group_name == 'rob2_arm':
+      robot_state.joint_state.name = ROB2_JOINTS
     robot_state.joint_state.position = joint
     
     if self.aco is not None:
@@ -117,6 +112,14 @@ class UR5eInvKinForTF():
     return rv
 
   def _set_link_colors(self, r, g, b, a):
+    if self.group_name == 'rob1_arm':
+      LINKS_ENABLE = ROB1_ARM_LINK + ROB1_GRIPPER_LINK
+      LINKS_DISABLE = ROB2_ARM_LINK + ROB2_GRIPPER_LINK
+    elif self.group_name == 'rob2_arm':
+      LINKS_ENABLE = ROB2_ARM_LINK + ROB2_GRIPPER_LINK
+      LINKS_DISABLE = ROB1_ARM_LINK + ROB1_GRIPPER_LINK
+    
+
     link_colors = []
 
     for i in range(len(LINKS_ENABLE)):
@@ -158,7 +161,10 @@ class UR5eInvKinForTF():
 
     robot_state = moveit_msgs.msg.DisplayRobotState()
     robot_state.state.joint_state.header.frame_id = "world"
-    robot_state.state.joint_state.name = ROB1_JOINTS
+    if self.group_name == 'rob1_arm':
+      robot_state.state.joint_state.name = ROB1_JOINTS
+    elif self.group_name == 'rob2_arm':
+      robot_state.state.joint_state.name = ROB2_JOINTS
     robot_state.state.joint_state.position = selected_inv_sol
     robot_state.state.multi_dof_joint_state.header.frame_id = "world"
     if self.aco is not None:
@@ -171,7 +177,7 @@ class UR5eInvKinForTF():
     return valid, selected_inv_sol
 
   def inv_kin(self, trans, rot):
-    pose_mat = self._tf_to_mat(trans, rot)
+    pose_mat = tf_to_mat(trans, rot)
     inv_sol = self.ur5e_ik.inv_kin(pose_mat)
 
     return inv_sol
@@ -191,8 +197,11 @@ class UR5eInvKinForTF():
     # sorted_idx, sorted_diff = self._get_diff_idx(inv_sol, cur_joint)
 
     inv_sol_full = []
+    wrist_down = [0, 1, 6, 7]
     for i in range(8):
       diff = 0.0
+      if i in wrist_down:
+        diff += (m.pi)**2
       for j in range(6): 
         diff += self.w[j] * (inv_sol[j][i] - cur_joint[j])**2 
       sol = inv_sol[:, i]

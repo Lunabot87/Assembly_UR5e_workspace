@@ -44,7 +44,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     
     # setup for ur5e invkin
     eef_offset = TCP_OFFSET[eef_link]
-    self.ur5e = UR5eInvKinForTF(eef_offset)
+    self.ur5e = UR5eInvKinForTF(name, eef_offset)
     print"eef_link: {}, eef_offset: {}".format(eef_link, eef_offset)
 
   def get_name(self):
@@ -68,30 +68,18 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     eef_offset = TCP_OFFSET[eef_link]
     self.ur5e.set_eef_offset(eef_offset)
 
-  def _yield_best_ik_plan(self, trans, rot):
-    cur_joint = self.get_current_joint_values()
-    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
-    
-    print "="*100
-    print "current q: ", cur_joint
-
-    for i in range(8):
-      if inv_sol[i]['valid']:
-        selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
-
-        self.ur5e.publish_state(selected_q, True)
-        (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
-        
-        if success:
-          print "plan success: {}".format(b)
-          raw_input("--> press [ENTER]")  
-          yield inv_sol[i]['idx'], traj
-        else:
-          continue        
-
   def _get_best_ik_plan(self, trans, rot):
+    '''
+    [output]
+    val1: if best solution with no collision and successful plan exists,
+            return idx of best solution
+          else,
+            return -1
+    val2: if value1 >-1,
+            return successful trajectory
+          else,
+            return -1
+    '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
     self.ur5e.print_inv_sol(inv_sol)
@@ -109,7 +97,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         
         if success:
           print "plan success: {}".format(b)
-          user_choice = raw_input("--> press [y/n]")  
+          user_choice = raw_input("--> press [y/n(wrong ik)]")  
           if user_choice == 'y':
             return inv_sol[i]['idx'], traj
           else:
@@ -120,6 +108,17 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     return -1, -1
 
   def _get_selected_ik_plan(self, trans, rot, idx):
+    '''
+    [output]
+    val1: if selected idx has no collision and successful plan,
+            return selected idx
+          else,
+            return -1
+    val2: if value1 >-1,
+            return successful trajectory
+          else,
+            return -1
+    '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint)
     self.ur5e.print_inv_sol(inv_sol)
@@ -138,36 +137,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         print "plan success: {}".format(b)
         return inv_sol[idx]['idx'], traj
       else:
-        print "plan error:", b, err
+        print "plan error: {}, {}".format(b, err)
     
-    return -1, -1
-
-  def _get_best_ik(self, trans, rot):
-    cur_joint = self.get_current_joint_values()
-    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
-    
-    print "="*100
-    print "current q: ", cur_joint
-
-    for i in range(8):
-      if inv_sol[i]['valid']:
-        selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
-
-        self.ur5e.publish_state(selected_q, True)
-        (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
-        
-        if success:
-          print "plan success: {}".format(b)
-          user_choice = raw_input("--> press [y/n]")  
-          if user_choice == 'y':
-            return inv_sol[i]['idx'], traj
-          else:
-            continue        
-        else:
-          print "plan error:", b, err
-
     return -1, -1
 
   def go_to_initial_pose(self):
@@ -177,6 +148,13 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     self.stop()
 
   def go_to_pose_goal(self, trans, rot, idx=None):
+    '''
+    [output]
+    if go_to_pose_goal succeeded,
+      return used ik idx
+    else,
+      return -1
+    '''
     if idx is None:
       (s_idx, traj) = self._get_best_ik_plan(trans, rot)
     else:
@@ -189,6 +167,13 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     return s_idx
 
   def go_linear_to_pose_goal(self, trans, rot, idx):
+    '''
+    [output]
+    if go_linear_to_pose_goal succeeded,
+      return used ik idx
+    else,
+      return -1
+    '''
     cp = self.get_current_pose()
     ce = self.get_end_effector_link()
 
@@ -205,8 +190,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     
     self.set_path_constraints(consts)
     s_idx = self.go_to_pose_goal(trans, rot, idx)
-
-    print "is_cleaned?", self.clear_path_constraints()
+    self.clear_path_constraints()
 
     return s_idx
 
@@ -218,52 +202,43 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
-  def move_to_grasp_part(self, g_trans, g_rot, g_offset):
+  def move_to_grab_part(self, g_trans, g_rot, g_offset):
     '''
-    offset : z dir wrt grasp pose
+    [output]
+    if plan0 and plan1 and plan2 and plan3 succeeded,
+      return True
+    else,
+      return False
     '''
-    (pg_trans, pg_rot) \
-      = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
+    (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
 
     print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
             + list_str(pg_rot, ['x','y','z','w'])
     print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
             + list_str(g_rot, ['x','y','z','w'])
 
-    plan0_generator = self._yield_best_ik_plan(g_trans, g_rot) ## ?
-    while True:
-      try:
-        (result0, _) = next(plan0_generator)
-        print "******plan0 = {}\n\n".format(result0)
-        result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
-        print "******plan1 = {}\n\n".format(result1)
-        result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
-        print "******plan2 = {}\n\n".format(result2)
-        result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
-        print "******plan3 = {}\n\n".format(result3)
-        if result3 > -1:
-          break
-      except StopIteration as e:
-        print e
-        break
-    
-    if result3 > -1:
-      return True
-    else:
-      return False
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot)
+    print "******plan0 = {}\n".format(result0)
+    if result0 < 0: return False
 
-    # (result, plan) = self._get_best_ik_plan(g_trans, g_rot)
-    # print "******plan0=", result
-    # result = self.go_to_pose_goal(pg_trans, pg_rot, result)
-    # print "******plan1=", result
-    # result = self.go_linear_to_pose_goal(g_trans, g_rot, result)
-    # print "******plan2=", result
-    # result = self.go_linear_to_pose_goal(pg_trans, pg_rot, result)
-    # print "******plan3=", result
+    result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+    print "******plan1 = {}\n".format(result1)
+    if result1 < 0: return False
+    
+    result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
+    print "******plan2 = {}\n".format(result2)
+    if result2 < 0: return False
+    
+    result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
+    print "******plan3 = {}\n".format(result3)
+    if result3 < 0: return False
+    
+    return True
 
 def main():
   rospy.init_node('move_group_wrapper_test', anonymous=True)
   mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
+  mg_rob2 = MoveGroupCommanderWrapper('rob2_arm')
   assembly_scene = Parts('part2') ###############
   listener = tf.TransformListener()
 
@@ -279,6 +254,10 @@ def main():
   print "ENTER"
   raw_input()
   
+  mg_rob2.go_to_initial_pose()
+  print "ENTER"
+  raw_input()
+
   assembly_scene.add_mesh(PART2_PATH)
   print "ENTER"
   raw_input()
@@ -295,11 +274,24 @@ def main():
 
     grasp_offset = 0.2
 
-    (grasp_trans, grasp_rot) \
-      = listener.lookupTransform('rob1_real_base_link', 'part2_grasp', rospy.Time(0))
+    (grasp_trans1, grasp_rot1) \
+     = listener.lookupTransform('rob1_real_base_link', 'part2_grasp', rospy.Time(0))
+    grab_result = mg_rob1.move_to_grab_part(grasp_trans1, grasp_rot1, grasp_offset)
+    print "move_to_grab_part :", grab_result
+        
+    print "ENTER"
+    raw_input()
 
-    mg_rob1.move_to_grasp_part(grasp_trans, grasp_rot, grasp_offset)
-    
+    mg_rob1.go_to_initial_pose()
+    print "ENTER"
+    raw_input()
+
+
+    (grasp_trans2, grasp_rot2) \
+      = listener.lookupTransform('rob2_real_base_link', 'part2_grasp', rospy.Time(0))
+
+    grab_result = mg_rob2.move_to_grab_part(grasp_trans2, grasp_rot2, grasp_offset)
+    print "move_to_grab_part :", grab_result
 
   except Exception as e:
     print e

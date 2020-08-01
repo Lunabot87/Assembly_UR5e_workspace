@@ -7,6 +7,8 @@ import moveit_commander
 import geometry_msgs.msg
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
+from utils.conversions import *
+
 br = tf.TransformBroadcaster()
 
 class Parts():
@@ -31,23 +33,10 @@ class Parts():
     go_list = quaternion_from_euler(r+m.pi,p,y+m.pi/2)
     gp_list = [pp.x, pp.y, pp.z]
 
-    def _tf_to_mat(trans, rot):
-      # pose_mat : [4x4] array
-      trans_mat = tf.transformations.translation_matrix(trans)
-      rot_mat = tf.transformations.quaternion_matrix(rot)
-      pose_mat = tf.transformations.concatenate_matrices(trans_mat, rot_mat)
-      return pose_mat
-    
-    def _mat_to_tf(pose_mat):
-      # pose_mat : [4x4] array
-      trans = tf.transformations.translation_from_matrix(pose_mat)
-      rot = tf.transformations.quaternion_from_matrix(pose_mat)
-      return trans, rot
-
-    g_mat = _tf_to_mat(gp_list, go_list)
-    gp_mat = _tf_to_mat([0, 0, -offset], [0, 0, 0, 1])
+    g_mat = tf_to_mat(gp_list, go_list)
+    gp_mat = tf_to_mat([0, 0, -offset], [0, 0, 0, 1])
     p_mat = tf.transformations.concatenate_matrices(g_mat, gp_mat)
-    (pp_list, po_list) = _mat_to_tf(p_mat)
+    (pp_list, po_list) = mat_to_tf(p_mat)
 
     br.sendTransform(pp_list, po_list, rospy.Time.now(), part_name+'_pre_grasp', pf)
     br.sendTransform(gp_list, go_list, rospy.Time.now(), part_name+'_grasp', pf)
@@ -71,8 +60,9 @@ class Parts():
 
     temp_r = random.uniform(-3.14,3.14)
     orientation_list = quaternion_from_euler(0,0,temp_r)
-    mesh_pose.pose.position.x = random.uniform(-0.4, 0.3)
-    mesh_pose.pose.position.y = random.uniform(0, 0.4)
+    mesh_pose.pose.position.x = random.uniform(-0.2, 0.2)
+    # mesh_pose.pose.position.y = random.uniform(0, 0.4)
+    mesh_pose.pose.position.y = random.uniform(-0.05, 0.05)
     mesh_pose.pose.position.z = 0.03
     position_list = [mesh_pose.pose.position.x, mesh_pose.pose.position.y, mesh_pose.pose.position.z]
     mesh_pose.pose.orientation.x = orientation_list[0]
