@@ -6,13 +6,11 @@ from part_info import*			# part_file_address, part_name
 class Assemble_Data(object):
 	def __init__(self):
 		super(Assemble_Data, self).__init__()
-		self.a_list = {'part':[],'pin':[]}
 		self.init_ASM_list()
 
 	def init_ASM_list(self):
 		self.ASM_List = [{'part':[],'pin':[]},{'part':[],'pin':[]},{'part':[],'pin':[]},
 							{'part':[],'pin':[]},{'part':[],'pin':[]},{'part':[],'pin':[]}]
-
 	def print_ASM_list(self, ASMLIST):
 		for i in range(6):
 			print "\n+++++++++++++"
@@ -44,6 +42,7 @@ class Assemble_Data(object):
 		self.ASM_List[target_part_num]['pin'].append(deepcopy(assembling_pin_name))
 		self.ASM_List[target_part_num]['pin'].sort()
 
+
 	def get_attach_list(self,target_part_name):
 		attach_list = {'part':[],'pin':[]}
 		attached_stack = []
@@ -65,10 +64,8 @@ class Assemble_Data(object):
 			for target_pin_name in linked_pin_list:
 				if not target_pin_name in attach_list['pin']:
 					attach_list['pin'].append(deepcopy(target_pin_name))
-		self.a_list = attach_list
+
 		return attach_list
-
-
 
 # def main():
 # 	try:
@@ -94,6 +91,7 @@ class Assemble_Data(object):
 # 	except KeyboardInterrupt:
 # 		return
 
+
+
 # if __name__ == '__main__':
 # 	main()
-# 	

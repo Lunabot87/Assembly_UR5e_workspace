@@ -59,24 +59,13 @@ class UR5(object):
         (plan, fraction) = self.move_group.compute_cartesian_path(waypoint,0.01,0.0)
         self.move_group.execute(plan,wait = True)
 
-    def add_cartesian_pose(self, trans):
-        pose = self.move_group.get_current_pose().pose
-        pose.position.x += trans[0]
-        pose.position.y += trans[1]
-        pose.position.z += trans[2]
-        waypoint = []
-        waypoint.append(copy.deepcopy(pose))
-        (plan, fraction) = self.move_group.compute_cartesian_path(waypoint,0.01,0.0)
-        self.move_group.execute(plan,wait = True)
-
-
     def get_target_orientation(self,orientation): # have to be modified in rotation
         
         orientation_list = make_orientation_list(orientation)
         Rotation = quaternion_matrix(orientation_list)
         rol_add = 3.14 #rx
         pit_add = 0 #ry
-        yaw_add = 0 #rz
+        yaw_add = 1.57 #rz
 
         Rotation_add = euler_matrix(rol_add,pit_add,yaw_add)
         Rotation_new = Rotation.dot(Rotation_add)
@@ -110,6 +99,28 @@ class UR5(object):
         return pose
 
 
+    # def get_erected_pose(self, current_pose, target_size, offset, yaw = 0):
+    #     pose = current_pose
+    #     pose.position.x = 0
+    #     pose.position.y = 0.2
+
+    #     if target_size[0] >= target_size[1]:
+    #         pose.position.z += offset + target_size[0]/2
+    #         (r,p) = (pi/2,pi)
+    #     else:
+    #         pose.position.z += offset + target_size[1]/2
+    #         (r,p) = (pi/2,pi/2)
+    #     y = yaw
+
+    #     orientation_list = quaternion_from_euler(r, p, y)
+    #     pose.orientation.x = orientation_list[0]
+    #     pose.orientation.y = orientation_list[1]
+    #     pose.orientation.z = orientation_list[2]
+    #     pose.orientation.w = orientation_list[3]
+
+    #     return pose
+
+    # def rotate_wrist(self,xyz_length):
         move_group = self.move_group
         joint_goal = move_group.get_current_joint_values()
         joint_goal[4] -= pi
@@ -121,7 +132,7 @@ class UR5(object):
         move_group.go(joint_goal, wait=True)
         move_group.stop()
 
-    def grab_part(self, pose, z_offset):
+    def grab_part(self, attach_list, pose, z_offset):
         target_pose = copy.deepcopy(pose)
         target_pose.orientation = self.get_target_orientation(target_pose.orientation)
 
@@ -141,37 +152,41 @@ class UR5(object):
         target_pose.position.y += z_offset * z_axis[1]
         target_pose.position.z += z_offset * z_axis[2]
         self.move_cartesian_path(target_pose)
-        # print "[INFO] Ready to attach"    
+        print "[INFO] Ready to attach"    
 
-        # print "PRESS ENTER TO ATTACH"
-        # raw_input()        
-        # self.attach_part(attach_list)
-        # print "[INFO] Object attached"
-
-        # print "PRESS ENTER TO MOVE-UP"
-        # raw_input()
-        # target_pose.position.z += 0.3
-        # target_pose.position.x += 0.1
-        # self.move_cartesian_path(target_pose)
-
-        # print "PRESS ENTER TO MOVE_DOWN"
-        # raw_input()
-        # target_pose.position.z -= z_offset
-        # self.move_cartesian_path(target_pose)
-        # print "[INFO] Ready to detach"
-
-
-        # print "PRESS ENTER TO DETACH"
-        # raw_input()
-        # self.detach_part(attach_list)
-
-        
-    def attach_part(self, attach_list):
+        print "PRESS ENTER TO ATTACH"
+        raw_input()
         if self.group_name == 'rob1_arm':
             grasping_group = 'rob1_hand'
         elif self.group_name == 'rob2_arm':
             grasping_group = 'rob2_hand'
+        self.attach_part(attach_list, grasping_group)
+        print "[INFO] Object attached"
 
+        print "PRESS ENTER TO MOVE-UP"
+        raw_input()
+        target_pose.position.z += 0.3
+        target_pose.position.x += 0.1
+        self.move_cartesian_path(target_pose)
+
+        # print "PRESS ENTER TO ERECT THE PART"
+        # raw_input()
+        # target_pose = self.get_erected_pose(target_pose,target_size,offset,yaw = 0)
+
+        # self.rotate_wrist(target_size)
+
+        print "PRESS ENTER TO MOVE_DOWN"
+        raw_input()
+        target_pose.position.z -= z_offset
+        self.move_cartesian_path(target_pose)
+        print "[INFO] Ready to detach"
+
+        print "PRESS ENTER TO DETACH"
+        raw_input()
+        self.detach_part(attach_list)
+
+        
+    def attach_part(self, attach_list, grasping_group = 'rob1_hand'):
         touch_links = self.robot.get_link_names(group=grasping_group)
         
         for attaching_part_name in attach_list['part']:
@@ -191,6 +206,3 @@ class UR5(object):
         for attaced_pin_name in attach_list['pin']:
             self.scene.remove_attached_object(self.eef_link, attaced_pin_name)
 
-    # def attached_part(self,name=[]):
-    #     A = self.scene.get_attached_objects(name)
-    #     print A
