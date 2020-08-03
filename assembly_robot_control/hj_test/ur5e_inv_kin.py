@@ -6,9 +6,9 @@ from numpy import linalg as la
 from time import time
 
 class UR5eInvKin:
-    def __init__(self):
+    def __init__(self, eef_offset=0):
         self.a = [0, -0.425, -0.39225, 0, 0, 0]
-        self.d = [0.1625, 0, 0, 0.1333, 0.0997, 0.0996]
+        self.d = [0.1625, 0, 0, 0.1333, 0.0997, 0.0996+eef_offset]
         self.alpha = [m.pi / 2, 0, 0, m.pi / 2, -m.pi / 2, 0]
 
     def DH(self, a, alpha, d, theta):
@@ -95,7 +95,7 @@ class UR5eInvKin:
             theta[2, c] = t3p
             theta[2, c + 1] = -t3p
 
-            # theta2 theta4
+        # theta2 theta4
         for c in range(8):
             T10 = inv(self.DH(self.a[0], self.alpha[0], self.d[0], theta[0, c]))
             T65 = inv(self.DH(self.a[5], self.alpha[5], self.d[5], theta[5, c]))
