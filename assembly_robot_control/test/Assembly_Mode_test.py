@@ -1,17 +1,26 @@
+#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import Assembly_Process
+import rospy
+from Assembly_Process_test import Assembly_process
+
+
 
 class Assembly_mode():
+
 	def __init__(self):
-		self.pr = Assembly_process()
+		rospy.init_node('Assembly_Mode', anonymous=True)
+		self.pr = Assembly_process(rospy)
 
 	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 
 		# real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
-		self.pr.grab_pin(asm_msg.child, False)
+		self.pr.grab_pin("pin_name") #asm_msg.child.pin
+		robot = self.pr.hand_over_pin_check("hole6-1") #asm_msg.parent.target.name
+		# self.pr.am.hold_assistant("part_name", robot)
+		self.pr.fine_tune_insert_target("hole6-1", robot)
 		# 학부 보조 연구원
-		self.pr.insert_spiral_motion(real_insert_target_pose)
+		self.pr.insert_spiral_motion(robot)
 
 	def insert_part(self, asm_msg):
 		# rob1, rob2 작업, rob1이 작업 중심
@@ -20,3 +29,13 @@ class Assembly_mode():
 		is_moved = self.pr.hand_over_part(sorted_insert_target_poses, asm_msg)
 		self.pr.grab_part(asm_msg.child, is_moved)
 		self.pr.insert_part_motion(sorted_insert_target_poses[0])
+
+
+def main():
+	a = Assembly_mode()
+	a.insert_pin("aaa")
+
+
+
+if __name__ == '__main__':
+    main()

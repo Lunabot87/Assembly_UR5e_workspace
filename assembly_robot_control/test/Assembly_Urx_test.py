@@ -10,7 +10,7 @@ class UrxMotion():
 
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
-        self.robot = urx.URRobot(robot_ip, use_rt=True)
+        self.reset()
         self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
@@ -180,7 +180,7 @@ class UrxMotion():
         #     dist = np.linalg.norm(np.array(current)-np.array(start_pose))
         #     if dist < 0.001:
         #         break
-
+        self.reset()
         time.sleep(1)
 
         self.robot.send_program("zero_ftsensor()")
@@ -190,13 +190,13 @@ class UrxMotion():
         # go down
         print "="*20 +"go_down"+"="*20
         force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,1,0,0,0] 
+        force_toq = [0,0,-1,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
         # cmd_str += "\tforce_mode_set_damping(0)\n"
         cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
@@ -210,7 +210,7 @@ class UrxMotion():
             try:
                 # print "try"
                 force = self.robot.get_tcp_force()
-                # print force[2]
+                print force[2]
                 # print force[2]
                 if abs(force[2]) > 3:
                     print force[2]
@@ -245,11 +245,11 @@ class UrxMotion():
         # real insert
         print "="*20 +"real_insert"+"="*20
         force_mod = [1,1,1,0,0,0]
-        force_toq = [0,0,50,0,0,0]
+        force_toq = [0,0,-50,0,0,0]
         cmd_str  = "def real_insert():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
         cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
@@ -295,9 +295,9 @@ def main():
 
     #start_pose = [0.07926447587050217, -0.5351783236056872, 0.5511638848859853, 3.1363137055133308, -0.000665493946621783, -0.001176621750041618]
 
-    start_pose = [-0.02697849875540569, -0.46200054319238953, 0.33038970569878207, -3.141160888357369, -7.144981375453567e-05, -4.9131992091015026e-05]
+    #start_pose = [-0.02697849875540569, -0.46200054319238953, 0.33038970569878207, -3.141160888357369, -7.144981375453567e-05, -4.9131992091015026e-05]
 
-    rob1.spiral_motion(start_pose)
+    rob1.spiral_motion()
 
 if __name__ == '__main__':
     main()

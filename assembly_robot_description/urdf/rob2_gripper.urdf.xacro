@@ -9,7 +9,8 @@
   <xacro:property name="M_PI" value="3.14159"/>
 
   <!--components-->
-  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
+  <xacro:include filename="$(find assembly_robot_description)/urdf/ur5e.urdf.xacro" /> <!-- for joint limit -->
+  <!-- <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" /> -->
 <!--   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" /> -->
   <xacro:include filename="$(find robotiq_2f_85_gripper_visualization)/urdf/robotiq_arg2f_85_model_macro.xacro" />  
   <xacro:property name="base_x_size" value="0.76" />
@@ -44,7 +45,23 @@
 
     <link name="${prefix}real_ee_link"/>
 
-    <xacro:ur5e_robot prefix="rob2_" joint_limited="false"/>
+    <!-- for grasp point -->
+    <link name="${prefix}tcp_gripper_open"/>
+    <link name="${prefix}tcp_gripper_closed"/>
+    
+    <joint name="${prefix}ur_tcp_fixed_joint" type="fixed">
+      <parent link="${prefix}real_ee_link"/>
+      <child link="${prefix}tcp_gripper_open"/>
+      <origin xyz="0 0 0.13" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="${prefix}ur_gripper_closed_fixed_joint" type="fixed">
+      <parent link="${prefix}real_ee_link"/>
+      <child link="${prefix}tcp_gripper_closed"/>
+      <origin xyz="0 0 0.14" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:ur5e_robot prefix="rob2_" joint_limited="true"/>
     <!-- <xacro:ur5_robot prefix="" joint_limited="false"/> -->
     <!-- gripper -->
     <xacro:if value="$(arg gripper_enabled)">  
