@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot name="122620" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find object_description)/chair_urdf/122620.SLDPRT.urdf"/>
+	<xacro:include filename="$(find object_description)/chair_xacro_re/for_assemble_macro.xacro"/>
+
+	<xacro:property name="x_offset" value="0.0"/>
+	<xacro:property name="y_offset" value="0.0"/>
+	<xacro:property name="z_offset" value="0.0"/>
+
+	<xacro:shaft_definition link_name="122620 shaft simplex part2-5-6/part3-5-6 1" 
+							length="0.01" 
+							radius="0.003"
+							x="${0.0 + x_offset}" y="${-0.015 + y_offset}" z="${0.01 + z_offset}"
+							rx="${pi/2}" ry="0" rz="0"
+							parent="122620.SLDPRT"/>
+
+
+	<xacro:hole_definition link_name="122620 hole 122925-1 1" 
+							length="0.0015" 
+							radius="0.0035"
+							x="${0.0 + x_offset}" y="${0.0 + y_offset}" z="${0.00075 + z_offset}"
+							rx="0" ry="${pi}" rz="0"
+							parent="122620.SLDPRT"/>
+
+
+</robot>

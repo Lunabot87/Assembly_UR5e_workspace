@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot name="122925" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find object_description)/chair_urdf/122925.SLDPRT.urdf"/>
+	<xacro:include filename="$(find object_description)/chair_xacro/for_assemble_macro.xacro"/>
+
+	<xacro:property name="x_offset" value="0.0"/>
+	<xacro:property name="y_offset" value="0.0"/>
+	<xacro:property name="z_offset" value="0.0"/>
+
+	<xacro:shaft_definition link_name="shaft_1" 
+							length="0.005" 
+							radius="0.003"
+							x="${0.0 + x_offset}" y="${0.0 + y_offset}" z="${0.0096 + z_offset}"
+							rx="0" ry="0" rz="0"
+							parent="122925.SLDPRT"/>
+
+
+</robot>
