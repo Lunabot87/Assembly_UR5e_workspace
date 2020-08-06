@@ -150,51 +150,7 @@ class UR5(object):
         for attaced_pin_name in attach_list['pin']:
             self.scene.remove_attached_object(self.eef_link, attaced_pin_name)
 
-    # def rotate_ee_by_base(self,rot,br):
-    #     base_rot = self.move_group.get_current_rpy(self.real_base_name)
-    #     base_rot_matrix = euler_matrix(base_rot[0],base_rot[1],base_rot[2])[:3,:3]
-    #     base_quaternion = quaternion_from_euler(base_rot[0],base_rot[1],base_rot[2])
-    #     br.sendTransform([5,0,0], base_quaternion, rospy.Time.now(), 'base', 'world')
-    #     if not rot == [0,0,0]:
-    #         rotating_matrix = euler_matrix(rot[0],rot[1],rot[2])[:3,:3]
-    #         new_rotation_matrix = base_rot_matrix.dot(rotating_matrix)
-
-    #         ee_rot = self.move_group.get_current_rpy(self.eef_link)
-    #         ee_rot_matrix = euler_matrix(ee_rot[0],ee_rot[1],ee_rot[2])[:3,:3]
-    #         ee_quaternion = quaternion_from_euler(ee_rot[0],ee_rot[1],ee_rot[2])
-    #         br.sendTransform([5,0,2], ee_quaternion, rospy.Time.now(), 'ee', 'world')
-
-    #         Rot_ee_from_base = ee_rot_matrix.dot(Inv(base_rot_matrix))
-    #         efbr = euler_from_matrix(Rot_ee_from_base)
-    #         efbrq = quaternion_from_euler(efbr[0],efbr[1],efbr[2])
-    #         br.sendTransform([5,0,4], efbrq, rospy.Time.now(), 'efbr', 'world')
-
-    #         new_ee_matrix = (new_rotation_matrix).dot(Rot_ee_from_base)
-    #         new_rot = euler_from_matrix(new_ee_matrix)
-
-    #         new_pose = pose_from_transrot(rot = new_rot)
-    #     else:
-    #         new_pose = self.move_group.get_current_pose().pose
-
-    #     return new_pose, base_rot_matrix
-
-    # def move_ee_by_base(self,trans,rot = [0,0,0],br):#trans = [x,y,z], rot = [r,p,y]
-
-    #     base_rot = self.move_group.get_current_rpy(self.real_base_name)
-    #     base_rot_matrix = euler_matrix(base_rot[0],base_rot[1],base_rot[2])[:3,:3]
-    #     new_trans = base_rot_matrix.dot(trans)
-
-    #     (pose, base_matrix) = self.rotate_ee_by_base(rot,br)
-    #     pose.position = self.move_group.get_current_pose().pose.position
-    #     for i in range(3):
-    #         pose.position.x += trans[0]*base_matrix[0,i]
-    #         pose.position.y += trans[1]*base_matrix[1,i]
-    #         pose.position.z += trans[2]*base_matrix[2,i]
-
-    #     return pose
-
-
-    def get_toolpose_from_base_1(self,input_axis,tool_rpy,base_rpy):
+    def get_toolpose_from_base(self,input_axis,tool_rpy,base_rpy):
     # print relative vector of axis of tool by rob_real_base
         print "INPUT = ",input_axis
         axis = ['x','y','z']
@@ -230,13 +186,12 @@ def example_for_test():
         print "==========R2==========="
         print "Enter to Move",
         raw_input()
-        joint_goal = [-pi/2,-pi/2-pi/4,-pi/2,
-        pi/4,pi/2,pi]
+        joint_goal = [-pi/2,-pi/2-pi/4,-pi/2,pi/4,pi/2,pi]
         R2.go_to_joint_goal(joint_goal)
 
         tool_rpy = R2.move_group.get_current_rpy(R2.eef_link)
         base_rpy = R2.move_group.get_current_rpy(R2.real_base_name)
-        R2.get_toolpose_from_base_1(['x','y'],tool_rpy,base_rpy)
+        R2.get_toolpose_from_base(['x','y'],tool_rpy,base_rpy)
 
     except rospy.ROSInterruptException:
         return
