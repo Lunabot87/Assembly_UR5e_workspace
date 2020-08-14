@@ -1086,6 +1086,13 @@ Visualization Manager:
     Saved: ~
 Window Geometry:
   Displays:
+    collapsed: true
+  Height: 1050
+  Hide Left Dock: true
+  Hide Right Dock: true
+  MotionPlanning:
+    collapsed: true
+  MotionPlanning - Trajectory Slider:
     collapsed: false
   Height: 1025
   Hide Left Dock: false
