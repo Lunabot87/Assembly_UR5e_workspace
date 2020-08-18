@@ -25,7 +25,7 @@ def transrpy2pose(origin,trans,rpy):
 def init():
 	
 	try:
-		# ASM = ASM_D.Assemble_Data()
+		rospy.init_node('assembly_Test', anonymous=True)
 		TF = UTF.TF_Node()
 		R1 = UR5.UR5()
 		R2 = UR5.UR5('rob2_arm')
