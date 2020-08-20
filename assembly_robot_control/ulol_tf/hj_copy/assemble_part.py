@@ -3,9 +3,9 @@ from copy import deepcopy
 
 from part_info import*			# part_file_address, part_name
 
-class Assemble_Data(object):
+class Assemble_Part(object):
 	def __init__(self):
-		super(Assemble_Data, self).__init__()
+		super(Assemble_Part, self).__init__()
 		self.a_list = {'part':[],'pin':[]}
 		self.init_ASM_list()
 

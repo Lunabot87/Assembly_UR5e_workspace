@@ -2,10 +2,16 @@ import rospy
 import tf
 import numpy
 import random
-import Part_ulol
+
 from math import pi
 from copy import deepcopy
+
 import move_group_wrapper_0801 as MGW
+import Part_ulol	# PART CLASS
+from Part_Pin import assembly_data
+
+
+
 
 def add_mesh_at_random_pose(CLASS_SET,mesh_name):
 	PART_SCENE = CLASS_SET['tf']
@@ -28,23 +34,28 @@ def add_mesh_at_random_pose(CLASS_SET,mesh_name):
 		mesh_file = Part_ulol.part_file[mesh_num]
 		PART_SCENE.add_mesh(mesh_name,mesh_file,pose)	
 def pose_compare(target_pose,cur_pose):
+
 	target_pose_quat = Part_ulol.make_orientation_list(target_pose.orientation)
-	target_pose_rpy = list(Part_ulol.euler_from_quaternion(target_pose_quat))
+	target_pose_mat = Part_ulol.quaternion_matrix(target_pose_quat)
 	target_pose_trans = Part_ulol.make_position_list(target_pose.position)
-	target_pose_elements = target_pose_trans + target_pose_rpy
+	target_pose_mat[0:3,3] = target_pose_trans
 
 	cur_pose_quat = Part_ulol.make_orientation_list(cur_pose.orientation)
-	cur_pose_rpy = list(Part_ulol.euler_from_quaternion(cur_pose_quat))
+	cur_pose_mat = Part_ulol.quaternion_matrix(cur_pose_quat)
 	cur_pose_trans = Part_ulol.make_position_list(cur_pose.position)
-	cur_pose_elements = cur_pose_trans + cur_pose_rpy
+	cur_pose_mat[0:3,3] = cur_pose_trans
 
-	target_pose_round = [round(x,2) for x in target_pose_elements]
-	cur_pose_round = [round(x,2) for x in cur_pose_elements]
+	target_pose_round = numpy.around(target_pose_mat,3)
+	cur_pose_round = numpy.around(cur_pose_mat,3)
 
-	if target_pose_round == cur_pose_round:
-		return True
-	else:
-		return False
+	is_equal = target_pose_round == cur_pose_round
+
+	for i in range(4):
+		for j in range(4):
+			if is_equal[i,j] == False:
+				return False
+	return True
+
 def Is_part_on_proper_pose(part_tf_list, target_part_name, proper_pose = Part_ulol.part_init_pose):
 	part_num = Part_ulol.part_name.index(target_part_name)
 	cur_pose = part_tf_list[part_num]['origin']
@@ -112,31 +123,7 @@ def detach(CLASS_SET,rob_name,attach_list):
 
 	for attaced_pin_name in attach_list['pin']:
 		PART_SCENE.scene.remove_attached_object(eef_link, attaced_pin_name)
-
-def hold_part(CLASS_SET, target_part_name, hold_point_num):
-	print "\n[HOLD PART]=========================================================="
-	ROB = CLASS_SET['rob2']
-	PART_SCENE = CLASS_SET['tf']
-	rob_base = 'rob2_real_base_link'
-
-	if not target_part_name in Part_ulol.part_name:
-		print "hold_part : [WRONG_PART_NAME']"
-		return
-	else:
-		hold_point = target_part_name+'-GRASP-'+str(hold_point_num+1)
-		# print hold_point
-		offset = 0.2
-
-		(g_trans, g_rot) = CLASS_SET['listener'].lookupTransform(rob_base, hold_point, rospy.Time(0))
-
-		(pg_trans, pg_rot) = ROB._grasp_to_pregrasp(g_trans, g_rot, offset)
-
-		(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
-		ROB.go_to_pose_goal(pg_trans, pg_rot, result0)
-		ROB.go_linear_to_pose_goal(g_trans, g_rot, result0)
-		print "==========================================================[HOLD PART]\n"
-
-def pick_the_mesh_up(CLASS_SET, rob_name, target_mesh_name, tag_offset):
+def pick_the_mesh_up(CLASS_SET, rob_name, target_mesh_name, tag_offset = None):
 	print "\n[PICK THE MESH UP]==================================================="
 	ROB = CLASS_SET[rob_name]
 	if rob_name == 'rob1':
@@ -171,14 +158,15 @@ def pick_the_mesh_up(CLASS_SET, rob_name, target_mesh_name, tag_offset):
 	attach(CLASS_SET,rob_name,attach_list)
 	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	print "===================================================[PICK THE MESH UP]\n"
-
-def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose):
+def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose, offset = 0.2):
 	print "\n[PUT THE PART DOWN]=================================================="
 	ROB = CLASS_SET[rob_name]
 	if rob_name == 'rob1':
 		rob_base = 'rob1_real_base_link'
+		sub_rob = 'rob2'
 	elif rob_name == 'rob2':
 		rob_base = 'rob2_real_base_link'
+		sub_rob = 'rob1'
 	PART_SCENE = CLASS_SET['tf']
 
 	goal_pose_name = 'GOAL_POSE'
@@ -190,7 +178,6 @@ def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose):
 		pass
 	(g_trans, g_rot) \
 	= CLASS_SET['listener'].lookupTransform(rob_base, goal_pose_name, rospy.Time(0))
-	offset = 0.2
 	
 	(pg_trans, pg_rot) = ROB._grasp_to_pregrasp(g_trans, g_rot, offset)
 	(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
@@ -201,8 +188,33 @@ def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose):
 	PART_SCENE.init_attach_list()
 	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	ROB.go_to_initial_pose()
+	ROB = CLASS_SET[sub_rob]
+	ROB.go_to_initial_pose()
 	print "==================================================[PUT THE PART DOWN]\n"
 
+
+def hold_part(CLASS_SET,target_part_name, hold_point_num, rob_name = 'rob2'):
+	print "\n[HOLD PART]=========================================================="
+	ROB = CLASS_SET[rob_name]
+	if rob_name == 'rob1':
+		rob_base = 'rob1_real_base_link'
+	elif rob_name == 'rob2':
+		rob_base = 'rob2_real_base_link'
+	PART_SCENE = CLASS_SET['tf']
+
+	if not target_part_name in Part_ulol.part_name:
+		print "hold_part : [WRONG_PART_NAME']"
+		return
+	else:
+		hold_point = target_part_name+'-GRASP-'+str(hold_point_num+1)
+		print hold_point
+		offset = 0.2
+		(h_trans, h_rot) = CLASS_SET['listener'].lookupTransform(rob_base, hold_point, rospy.Time(0))
+
+		(result0, _) = ROB._get_best_ik_plan(h_trans, h_rot)
+
+		ROB.go_to_pose_goal(h_trans, h_rot, result0)
+		print "==========================================================[HOLD PART]\n"
 def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol.part_init_pose,recurrent = True):
 	print "\n[MOVE PART TO PLACE POSE]============================================"
 	PART_SCENE = CLASS_SET['tf']
@@ -211,19 +223,13 @@ def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol
 		print "Already good pose"
 	else:
 		if proper_pose == Part_ulol.part_init_pose:
-			print "->[INIT_POSE]"
+			print "===>[INIT_POSE]"
 		elif proper_pose == Part_ulol.part_ready_pose:
-			print "->[READY_POSE]"
+			print "===>[READY_POSE]"
 		elif proper_pose == Part_ulol.part_spare_pose:
-			print "->[SPARE_POSE]"
-		
-		part_num = Part_ulol.part_name.index(target_part_name)
-		if part_num == 5:
-			for part in Part_ulol.part_name[:4]:
-				if PART_SCENE.scene.get_objects([part]):
-					print part,"(O)"
-					move_part_to_place_pose(CLASS_SET, part, Part_ulol.part_ready_pose)
+			print "===>[SPARE_POSE]"
 
+		part_num = Part_ulol.part_name.index(target_part_name)
 		num_of_gp = Part_ulol.grasp_in_part[part_num]
 		gp_list = PART_SCENE.GP_List[part_num]['pose']
 		dist_to_table_org=[]
@@ -270,16 +276,14 @@ def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol
 			put_the_part_down(CLASS_SET, rob_near_to_cur, target_part_name, temp_gp_pose)
 			move_part_to_place_pose(CLASS_SET,target_part_name,proper_pose,recurrent = False)
 	print "[MOVE PART TO PLACE POSE]============================================\n"
-
 def grab_pin(CLASS_SET, pin_name,pin_tag):
 	print "\n[GRAB PIN]==========================================================="
 	pick_the_mesh_up(CLASS_SET,'rob1',pin_name,pin_tag)
 	print "===========================================================[GRAB PIN]\n"
-def insert_spiral_motion(CLASS_SET, target_pin, pin_tag, target_part, hole_num):
-# pin_name : ex)pin101340-2
+def insert_pin(CLASS_SET, target_pin, pin_tag, target_part, hole_num):# target_pin : ex)pin101340-2
 	print "\n[INSERT_PIN]========================================================="
 	if not target_part in Part_ulol.part_name:
-		print "[insert_spiral_motion] : WRONG_TARGET_PART"
+		print "[insert_pin] : WRONG_TARGET_PART"
 		return
 	else:
 		target_pin_name = target_pin+'-'+str(pin_tag+1)
@@ -290,7 +294,7 @@ def insert_spiral_motion(CLASS_SET, target_pin, pin_tag, target_part, hole_num):
 		print "INSERT_PIN : part_num =",part_num
 
 		if not hole_num in range(Part_ulol.holes_in_part[part_num]):
-			print "[insert_spiral_motion] : WRONG_HOLE_NUMBER"
+			print "[insert_pin] : WRONG_HOLE_NUMBER"
 		else:
 			if part_num in [1,2]:
 				if hole_num is 6:
@@ -356,41 +360,48 @@ def insert_spiral_motion(CLASS_SET, target_pin, pin_tag, target_part, hole_num):
 			PART_SCENE.assemble_pin(target_part,target_pin_name)
 			print "ASM_List : ",PART_SCENE.ASM_List
 	print "=========================================================[INSERT_PIN]\n"
+def assemble_part(CLASS_SET, assmebling_part_name):
+	print "\n[ASSEMBLE_PART]======================================================"
+
+	PART_SCENE = CLASS_SET['tf']
+
+	target_part = 'chair_part6'
+	part_num = Part_ulol.part_name.index(assmebling_part_name)
+	if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
+		print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
+		move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
+	gp_num = 0
+	if assmebling_part_name == 'chair_part2':
+		chair_part6_org = PART_SCENE.TF_List[5]['origin']
+		assemble_pose_offset = assembly_data.chair_part2_assemble_offset
+		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
+		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
+		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
+		offset_vector = [0,-0.15,0]
+
+	elif assmebling_part_name == 'chair_part3':
+		
+		chair_part6_org = PART_SCENE.TF_List[5]['origin']
+		assemble_pose_offset = assembly_data.chair_part3_assemble_offset
+		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
+		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
+		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
+		offset_vector = [0,-0.15,0]
 
 
-def pick_and_put_test():
-	print "pick_and_put_part_test"
-	try:
-		rospy.init_node('pick_and_place_test', anonymous=True)
-		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
-		MG_ROB2 = MGW.MoveGroupCommanderWrapper('rob2_arm')
-		PART = Part_ulol.TF_Node()
-		listener = tf.TransformListener()
-		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
-		target_q = MG_ROB1.get_named_target_values('rob1_pin1_camera_check')
-		MG_ROB1.go(target_q)
-		MG_ROB2.go_to_initial_pose()
-		PART.set_parts([],[0])
-		print "ENTER",
-		raw_input()
-		add_mesh_at_random_pose('chair_part3')
-		print "ENTER",
-		raw_input()
-		pick_the_mesh_up(CLASS_SET,'rob2','chair_part3',1)
+	elif assmebling_part_name == 'chair_part4':
+		print "(assemble_part):Not Yet"
+		return
+	else:
+		print "(assemble_part):WRONG_PART_NUM"
+		return
+	hold_num = 0
+	hold_part(CLASS_SET,target_part,hold_num,'rob1')
+	pick_the_mesh_up(CLASS_SET,'rob2',assmebling_part_name,gp_num)
+	put_the_part_down(CLASS_SET,'rob2',assmebling_part_name,assemble_pose,offset_vector)
+	PART_SCENE.assemble_part(target_part,assmebling_part_name)
+	print "======================================================[ASSEMBLE_PART]\n"
 
-		print "ENTER",
-		raw_input()		
-		goal_pose = Part_ulol.PoseStamped().pose
-		goal_pose.orientation.x = 0.707
-		goal_pose.orientation.y = 0.707
-		goal_pose.position.z = 0.83
-		put_the_part_down(CLASS_SET,'rob2','chair_part3',goal_pose)
-
-	except Exception as e:
-		print e
-
-	print "ENTER"
-	raw_input()
 def move_part_to_place_pose_test():
 	try:
 		rospy.init_node('pick_and_place_test', anonymous=True)
@@ -443,7 +454,7 @@ def grab_pin_test():
 
 	except Exception as e:
 		print e
-def insert_spiral_motion_test():
+def attaching_test():
 	try:
 		rospy.init_node('pick_and_place_test', anonymous=True)
 		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
@@ -454,17 +465,16 @@ def insert_spiral_motion_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([5],[0])
-
-		target_pin = Part_ulol.pin_name[0]
-		target_part = Part_ulol.part_name[5]
-		insert_spiral_motion(CLASS_SET,target_pin,0,target_part,1)
+		PART.set_parts([1,2,5],[])
+		print "ENTER",
+		raw_input()
+		assemble_part(CLASS_SET,'chair_part3')
+		assemble_part(CLASS_SET,'chair_part2')
 	
 
 	except Exception as e:
 		print e
-
-def main():
+def insert_pin_test():
 	try:
 		rospy.init_node('pick_and_place_test', anonymous=True)
 		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
@@ -475,7 +485,7 @@ def main():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([1,2,5],[0,2])
+		PART.set_parts([1,2,3,4,5],[0,2])
 
 		print "ENTER",
 		raw_input()
@@ -484,7 +494,7 @@ def main():
 		target_part = Part_ulol.part_name[5]
 		for i in range(10):
 			if not i in [1,4,9]:
-				insert_spiral_motion(CLASS_SET,target_pin,i,target_part,i)
+				insert_pin(CLASS_SET,target_pin,i,target_part,i)
 
 		move_part_to_place_pose(CLASS_SET,'chair_part6')
 		move_part_to_place_pose(CLASS_SET,'chair_part3')
@@ -496,11 +506,11 @@ def main():
 		print target_part
 
 		for i in [0,1]:
-			insert_spiral_motion(CLASS_SET,target_pin,i,target_part,i+6)
+			insert_pin(CLASS_SET,target_pin,i,target_part,i+6)
 
 		target_part = Part_ulol.part_name[2]
 		for i in [0,1]:
-			insert_spiral_motion(CLASS_SET,target_pin,i+2,target_part,i+6)
+			insert_pin(CLASS_SET,target_pin,i+2,target_part,i+6)
 
 	
 	
@@ -512,4 +522,4 @@ def main():
 	
 
 if __name__ == '__main__':
-  main()
+  insert_pin_test()
