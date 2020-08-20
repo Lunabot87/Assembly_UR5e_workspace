@@ -52,37 +52,38 @@ class Assemble_Data(object):
 
 	def get_attach_list(self,target_mesh_name):
 		attach_list = {'part':[],'pin':[]}
-		attached_stack = []
-		attaching_queue = []
+		attached_stack = []		# have been appended
+		attaching_queue = []	# have to be appended
 		attaching_queue.append(deepcopy(target_mesh_name))
 
-		while not attaching_queue == []:
-			temp_pin_name = attaching_queue[0].split('-')[0]
-			if attaching_queue[0] in part_name:
-				target_mesh_num = part_name.index(attaching_queue[0])
-				linked_part_list = self.ASM_List[target_mesh_num]['part']
+		if target_mesh_name.split('-')[0] in pin_name:
+			attach_list['pin'].append(deepcopy(target_mesh_name))
+
+		elif target_mesh_name in part_name:
+
+			while not attaching_queue == []:				
+				target_part_num = part_name.index(attaching_queue[0])
+
+				linked_part_list = self.ASM_List[target_part_num]['part']
 
 				for linked_part_name in linked_part_list:
 					if not linked_part_name in attached_stack:
 						attaching_queue.append(deepcopy(linked_part_name))
+
 				attach_list['part'].append(deepcopy(attaching_queue[0]))
 				attached_stack.append(deepcopy(attaching_queue[0]))
 				del attaching_queue[0]
 
-			elif temp_pin_name in pin_name:
-				target_mesh_num = pin_name.index(temp_pin_name)
-				linked_pin_list = self.ASM_List[target_mesh_num]['pin']
+				linked_pin_list = self.ASM_List[target_part_num]['pin']
 
 				for target_pin_name in linked_pin_list:
 					if not target_pin_name in attach_list['pin']:
 						attach_list['pin'].append(deepcopy(target_pin_name))
-				attach_list['pin'].append(deepcopy(attaching_queue[0]))		
-				del attaching_queue[0]
-
-			else:
-				print "get_attach_list : [WRONG_ATTACH_LIST]"
-
-		self.a_list = attach_list
+			self.a_list = attach_list
+			
+		else:
+			print "(get_attach_list) : WRONG_MESH_NAME"
+			
 		return attach_list
 
 

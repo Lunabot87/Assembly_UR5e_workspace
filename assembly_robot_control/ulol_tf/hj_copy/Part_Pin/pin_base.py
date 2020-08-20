@@ -48,7 +48,7 @@ pin_base29.pose.orientation.y = deepcopy(olist[1])
 pin_base29.pose.orientation.z = deepcopy(olist[2])
 pin_base29.pose.orientation.w = deepcopy(olist[3])
 
-olist = quaternion_from_euler(pi/2,0,0)
+olist = quaternion_from_euler(pi/2,0,pi/4)
 
 pin_base26.pose.orientation.x =	deepcopy(olist[0]) 
 pin_base26.pose.orientation.y = deepcopy(olist[1])

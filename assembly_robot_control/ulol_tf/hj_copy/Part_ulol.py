@@ -16,9 +16,12 @@ from geometry_msgs.msg import *
 from tf.transformations import *
 from tf import *
 
-from Part_Pin.part_initial_pose import*	# part_pose, pin_arrayment
+from Part_Pin.part_initial_pose import *# part_init_pose, pin_arrayment
+from Part_Pin.part_ready_pose import *	# part_ready_pose
+from Part_Pin.part_spare_pose import *
 from Part_Pin.part_info import*			# part_file_address, part_name
 from Part_Pin.pin_base import pin_TF_pose
+
 
 import Part_Pin.hole_offsets as HO 		# locations of holes of each part
 import Part_Pin.grasping_point as GP
@@ -48,6 +51,10 @@ def transrot_from_pose(pose):
 	o_list = make_orientation_list(pose.orientation)
 	rot = euler_from_quaternion(o_list)
 	return (trans,rot)
+def transquat_from_pose(pose):
+	trans = [pose.position.x,pose.position.y,pose.position.z]
+	o_list = make_orientation_list(pose.orientation)
+	return (trans,o_list)
 def mat_from_pose(pose):
 	quat = make_orientation_list(pose.orientation)
 	trans = make_position_list(pose.position)
@@ -75,7 +82,7 @@ class TF_Node(ASM_D.Assemble_Data):
 		self.AList = {'part':[],'pin':[]}
 		self.part_add_flag = False
 		
-		rospy.Timer(rospy.Duration(1), self.send_TF)
+		rospy.Timer(rospy.Duration(0.5), self.send_TF)
 		
 	def __del__(self):
 		self.part_add_flag = False
@@ -272,7 +279,7 @@ class TF_Node(ASM_D.Assemble_Data):
 
 	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3]):
 		for p_num in part_list:
-			self.add_mesh(part_name[p_num],part_file[p_num],part_pose[p_num])
+			self.add_mesh(part_name[p_num],part_file[p_num],part_ready_pose[p_num])
 			self.set_part_TF(part_name[p_num])
 		
 		for pin_type in pin_list:
@@ -284,7 +291,6 @@ class TF_Node(ASM_D.Assemble_Data):
 		part_num = part_name.index(mesh_name)
 		if self.scene.get_objects([mesh_name]):
 			if mesh_name in self.a_list['part']:
-				print mash_name, "in attadch list"
 				self.TF_List[part_num]['origin']  = []
 			else:
 				mesh_pose = self.scene.get_objects([mesh_name])[mesh_name].mesh_poses[0]
@@ -435,9 +441,9 @@ class TF_Node(ASM_D.Assemble_Data):
 def main():	
 	rospy.init_node('TF_test', anonymous=True)
 	TF = TF_Node()
+	TF.set_parts()
 	while True:
 		try:
-			TF.set_parts([0,1,2,3,4,5],[])
 			print "PRES ENTER"
 			raw_input()
 		except rospy.ROSInterruptException:

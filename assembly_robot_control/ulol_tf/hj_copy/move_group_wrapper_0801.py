@@ -83,18 +83,18 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    # print "="*100
+    # print "current q: ", cur_joint
 
     for i in range(8):
       if inv_sol[i]['valid']:
         selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
+        # print "selected q: ", selected_q
 
         self.ur5e.publish_state(selected_q, True)
-        traj= self.plan(self._list_to_js(selected_q))
+        traj = self.plan(self._list_to_js(selected_q))
         
 
         # user_choice = raw_input("--> press [y/n(wrong ik)]") 
@@ -121,14 +121,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    # print "="*100
+    # print "current q: ", cur_joint
     
     if inv_sol[idx]['valid']:
       selected_q = (inv_sol[idx]['inv_sol'])
-      print "selected q: ", selected_q
+      # print "selected q: ", selected_q
       
       self.ur5e.publish_state(selected_q, True)
       traj = self.plan(self._list_to_js(selected_q))
