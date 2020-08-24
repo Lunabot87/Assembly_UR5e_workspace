@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-import moveit_commander
-import moveit_msgs.msg
+# import moveit_commander
+# import moveit_msgs.msg
 from Assembly_Urx_test import UrxMotion
 from Assembly_Math_test import *
+from move_group_wrapper_test import MoveGroupCommanderWrapper
 
 class Assembly_motion():
     def __init__(self):
 
         # rospy.init_node('Assembly_Motion', anonymous=True)
 
-        self.mg_rob1 = moveit_commander.MoveGroupCommander("rob1_arm")
-        self.mg_rob2 = moveit_commander.MoveGroupCommander("rob2_arm")
+        self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
+        self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
         # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         self.urx_rob1 = UrxMotion("192.168.13.101")

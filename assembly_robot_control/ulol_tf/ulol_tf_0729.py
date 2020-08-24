@@ -374,12 +374,8 @@ class TF_Node(object):
 
 
 def init():
-
-
-
 	TF = TF_Node()
 	TF.set_parts()
-
 	try:
 		print "Press ENTER to move change_part2 to y + 0.1"
 		raw_input()

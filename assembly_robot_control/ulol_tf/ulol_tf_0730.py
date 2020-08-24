@@ -31,7 +31,7 @@ class TF_Node(ASM_D.Assemble_Data):
 		super(TF_Node, self).__init__()
 
 		moveit_commander.roscpp_initialize(sys.argv)
-		rospy.init_node('ulol_tf_0727', anonymous=True)
+		# rospy.init_node('ulol_tf_0727', anonymous=True)
 		self.scene = moveit_commander.PlanningSceneInterface()
 		self.br = TransformBroadcaster()
 
@@ -63,6 +63,11 @@ class TF_Node(ASM_D.Assemble_Data):
 		for i in range(6):
 			for j in range(grasp_in_part[i]):
 				self.GP_List[i]['pose'].append([])
+
+	def return_part_org(self,part_num):
+		return self.TF_List[part_num]['origin']
+	def return_part_hole(self,part_num,hole_num):
+		return self.TF_List[part_num]['holes'][hole_num]
 
 
 	def make_orientation_list(self,orientation):
