@@ -7,11 +7,11 @@ import moveit_msgs.msg
 rospy.init_node('test', anonymous=True)
 mg1 = moveit_commander.MoveGroupCommander('rob1_arm')
 
-def get_best_ik(a, b):
-	c = a + b
-	q = [1, 2, 3, 4, 5]
-	for i in range(5):
-		yield q[i], i
+# def get_best_ik(a, b):
+# 	c = a + b
+# 	q = [1, 2, 3, 4, 5]
+# 	for i in range(5):
+# 		yield q[i], i
 
 # cp = mg1.get_current_pose()
 # ce = mg1.get_end_effector_link()

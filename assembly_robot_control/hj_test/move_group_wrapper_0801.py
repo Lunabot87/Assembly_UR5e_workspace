@@ -132,12 +132,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
       
       self.ur5e.publish_state(selected_q, True)
       (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
-      
+
       if success:
         print "plan success: {}".format(b)
         return inv_sol[idx]['idx'], traj
       else:
         print "plan error: {}, {}".format(b, err)
+    else:
+      print "selected solution is invalid"
     
     return -1, -1
 
@@ -286,10 +288,8 @@ def main():
     print "ENTER"
     raw_input()
 
-
     (grasp_trans2, grasp_rot2) \
       = listener.lookupTransform('rob2_real_base_link', 'part2_grasp', rospy.Time(0))
-
     grab_result = mg_rob2.move_to_grab_part(grasp_trans2, grasp_rot2, grasp_offset)
     print "move_to_grab_part :", grab_result
 

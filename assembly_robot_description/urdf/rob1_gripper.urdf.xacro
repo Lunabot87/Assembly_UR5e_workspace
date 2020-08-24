@@ -10,8 +10,9 @@
   <xacro:property name="M_PI" value="3.14159"/>
 
   <!--components-->
-  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
-<!--   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" /> -->
+  <xacro:include filename="$(find assembly_robot_description)/urdf/ur5e.urdf.xacro" />
+  <!-- <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" /> -->  
+  <!-- <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" /> -->
   <xacro:include filename="$(find robotiq_2f_85_gripper_visualization)/urdf/robotiq_arg2f_85_model_macro.xacro" />  
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
   <xacro:property name="base_x_size" value="0.76" />

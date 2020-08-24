@@ -61,7 +61,7 @@ class Parts():
     temp_r = random.uniform(-3.14,3.14)
     orientation_list = quaternion_from_euler(0,0,temp_r)
     mesh_pose.pose.position.x = random.uniform(-0.2, 0.2)
-    # mesh_pose.pose.position.y = random.uniform(0, 0.4)
+    # mesh_pose.pose.position.y = random.uniform(0.0, 0.4)
     mesh_pose.pose.position.y = random.uniform(-0.05, 0.05)
     mesh_pose.pose.position.z = 0.03
     position_list = [mesh_pose.pose.position.x, mesh_pose.pose.position.y, mesh_pose.pose.position.z]
