@@ -16,11 +16,13 @@ part_file = [part1,part2,part3,part4,part5,part6]
 pin_file = [pin11,pin14,pin26,pin29]
 part_name = ["chair_part1","chair_part2","chair_part3","chair_part4","chair_part5","chair_part6"]
 holes_in_part = [0,8,8,8,10,10]
-grasp_in_part = [0,2,2,0,4,4]
+grasp_in_part = [0,2,4,0,4,4]
 
 pin_name = ["pin101350","pin104322","pin122620","pin122925"]
-pin_diameter = [0.008,0.006,0.01,0.006]
-pin_lenght = [0.01,0.02,0.01,0.005]
 pin_has_hole = [False,False,True,False]
 how_many_pins = [21,6,4,4]
+pin_length = [0.015,0.03,0.0075,0.005]
+
+
+# pin_diameter = [0.008,0.006,0.01,0.006]
 # pin_diameter[2] and pin_lenght[2] have to be corrected

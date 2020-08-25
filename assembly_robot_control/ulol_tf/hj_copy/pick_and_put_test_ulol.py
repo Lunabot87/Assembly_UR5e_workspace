@@ -485,7 +485,7 @@ def insert_pin_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([1,2,3,4,5],[0,2])
+		PART.set_parts()
 
 		print "ENTER",
 		raw_input()

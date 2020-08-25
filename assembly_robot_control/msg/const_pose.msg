@@ -1,0 +1,3 @@
+string const_name
+geometry_msgs/PoseStamped end_posestamped
+geometry_msgs/PoseStamped entry_posestamped
