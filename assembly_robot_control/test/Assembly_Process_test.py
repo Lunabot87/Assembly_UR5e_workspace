@@ -5,6 +5,8 @@ from std_msgs.msg import *
 from Assembly_Motion_test import Assembly_motion
 from tf import *
 import numpy as np
+import rospy
+from assembly_robot_msgs.srv import *
 
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
@@ -23,6 +25,18 @@ class Assembly_process():
 		##########################msg타입 수정 필요##############################3
 		self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
 		print "go!"
+
+
+	def basler_camera_client(self, name):
+		self.rospy.wait_for_service('basler_server')
+		try:
+			basler_client = self.rospy.ServiceProxy('basler_server', cam_Srv)
+			basler_data = basler_client(name)
+			print basler_client
+			return basler_data
+		except rospy.ServiceException as e:
+			print("Service call failed: %s"%e)
+
 
 	def fine_tune_insert_target(self, part_name, robot):
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
@@ -149,10 +163,10 @@ class Assembly_process():
 	def make_insert_msg(part_name, child_frame_pose):
 		pass
 
-# def main():
-# 	ap = Assembly_process()
-# 	ap.am.pick_up_pin("1")
-# 	ap.am.hand_over_pin()
+def main():
+	rospy.init_node('Assembly_Process', anonymous=True)
+	ap = Assembly_process(rospy)
+	ap.basler_camera_client("hole1")
 
-# if __name__ == '__main__':
-# 	main()
+if __name__ == '__main__':
+	main()
