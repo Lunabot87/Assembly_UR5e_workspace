@@ -5,6 +5,7 @@ import random
 
 from math import pi
 from copy import deepcopy
+from moveit_commander.conversions import list_to_pose,pose_to_list
 
 import move_group_wrapper_0801 as MGW
 import Part_ulol	# PART CLASS
@@ -182,7 +183,15 @@ def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose, offset =
 	(pg_trans, pg_rot) = ROB._grasp_to_pregrasp(g_trans, g_rot, offset)
 	(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
 	ROB.go_to_pose_goal(pg_trans, pg_rot, result0)
+
+	# g_pose = list_to_pose(g_trans+g_rot)
+	# waypoint = []
+	# waypoint.append(deepcopy(g_pose))
+	# (plan, fraction) = self.move_group.compute_cartesian_path(waypoint,0.01,0.0)
+	# self.move_group.execute(plan,wait = True)
+
 	ROB.go_linear_to_pose_goal(g_trans, g_rot, result0)
+
 	attach_list = PART_SCENE.get_attach_list(target_part_name)
 	detach(CLASS_SET,rob_name,attach_list)
 	PART_SCENE.init_attach_list()
@@ -350,7 +359,7 @@ def insert_pin(CLASS_SET, target_pin, pin_tag, target_part, hole_num):# target_p
 
 			grab_pin(CLASS_SET,target_pin,pin_tag)
 			pin_num = Part_ulol.pin_name.index(target_pin)
-			pin_length_offset = Part_ulol.pin_length[pin_num] + 0.02
+			pin_length_offset = Part_ulol.pin_length[pin_num]+0.02
 			goal_pose = deepcopy(PART_SCENE.TF_List[part_num]['holes'][hole_num])
 			g_mat  = Part_ulol.mat_from_pose(goal_pose)
 			gp_mat = numpy.dot(g_mat,MGW.tf_to_mat([0, 0, -pin_length_offset], [0, 0, 0]))
@@ -485,7 +494,7 @@ def insert_pin_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts()
+		PART.set_parts([5],[0])
 
 		print "ENTER",
 		raw_input()
@@ -508,9 +517,9 @@ def insert_pin_test():
 		for i in [0,1]:
 			insert_pin(CLASS_SET,target_pin,i,target_part,i+6)
 
-		target_part = Part_ulol.part_name[2]
-		for i in [0,1]:
-			insert_pin(CLASS_SET,target_pin,i+2,target_part,i+6)
+		# target_part = Part_ulol.part_name[2]
+		# for i in [0,1]:
+		# 	insert_pin(CLASS_SET,target_pin,i+2,target_part,i+6)
 
 	
 	

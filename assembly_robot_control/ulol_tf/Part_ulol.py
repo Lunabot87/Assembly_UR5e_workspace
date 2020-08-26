@@ -20,7 +20,6 @@ from Part_Pin.part_initial_pose import *# part_init_pose, pin_arrayment
 from Part_Pin.part_info import*			# part_file_address, part_name
 from Part_Pin.pin_base import pin_TF_pose
 
-
 import Part_Pin.hole_offsets as HO 		# locations of holes of each part
 import Part_Pin.grasping_point as GP
 
