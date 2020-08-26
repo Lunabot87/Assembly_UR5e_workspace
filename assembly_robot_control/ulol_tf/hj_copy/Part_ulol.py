@@ -6,6 +6,7 @@ import moveit_commander
 import moveit_msgs.msg
 import time
 import copy
+import numpy
 
 from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
@@ -47,7 +48,17 @@ def transrot_from_pose(pose):
 	o_list = make_orientation_list(pose.orientation)
 	rot = euler_from_quaternion(o_list)
 	return (trans,rot)
-
+def mat_from_pose(pose):
+	quat = make_orientation_list(pose.orientation)
+	trans = make_position_list(pose.position)
+	mat = quaternion_matrix(quat)
+	mat[0:3,3] = trans
+	return mat
+def pose_from_mat(mat):
+	rpy = euler_from_matrix(mat)
+	trans = mat[0:3,3]
+	pose = pose_from_transrot(trans,rpy)
+	return pose
 
 class TF_Node(ASM_D.Assemble_Data):
 
@@ -64,8 +75,11 @@ class TF_Node(ASM_D.Assemble_Data):
 		self.AList = {'part':[],'pin':[]}
 		self.part_add_flag = False
 		
-		rospy.Timer(rospy.Duration(0.5), self.send_TF)
-
+		rospy.Timer(rospy.Duration(1), self.send_TF)
+		
+	def __del__(self):
+		self.part_add_flag = False
+		
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}
 							,{'pose':[]},{'pose':[]}]
@@ -268,55 +282,55 @@ class TF_Node(ASM_D.Assemble_Data):
 
 	def set_part_TF(self,mesh_name): # fill TF_list and GP_list
 		part_num = part_name.index(mesh_name)
-		if not self.TF_List[part_num]['origin'] == []: #part exist
-
-			mesh_pose = geometry_msgs.msg.PoseStamped().pose
+		if self.scene.get_objects([mesh_name]):
 			if mesh_name in self.a_list['part']:
+				print mash_name, "in attadch list"
 				self.TF_List[part_num]['origin']  = []
 			else:
 				mesh_pose = self.scene.get_objects([mesh_name])[mesh_name].mesh_poses[0]
 				self.TF_List[part_num]['origin']  = copy.deepcopy(mesh_pose)
 
-			num_of_holes = len(HO.hole_offset[part_num])
-			for hole_num in range(num_of_holes):
-				if mesh_pose == []:
-					self.TF_List[part_num]['holes'][hole_num] = []
-				else:
-					hole_data = HO.hole_offset[part_num][hole_num]
-					hole_pose = self.get_TF_pose(mesh_pose,hole_data)
-					self.TF_List[part_num]['holes'][hole_num] = copy.deepcopy(hole_pose)
+			
+		num_of_holes = len(HO.hole_offset[part_num])
+		for hole_num in range(num_of_holes):
+			if self.TF_List[part_num]['origin'] == []:
+				self.TF_List[part_num]['holes'][hole_num] = []
+			else:
+				hole_data = HO.hole_offset[part_num][hole_num]
+				hole_pose = self.get_TF_pose(self.TF_List[part_num]['origin'],hole_data)
+				self.TF_List[part_num]['holes'][hole_num] = copy.deepcopy(hole_pose)
 
 
-			num_of_gp = len(GP.grasping_pose[part_num])
-			for gp in range(num_of_gp):
-				if mesh_pose == []:
-					grasping_pose = []
-				else:
-					part_origin = self.TF_List[part_num]['origin']
-					tf_data = GP.grasping_pose[part_num][gp]
-					grasping_pose = self.get_TF_pose(part_origin,tf_data)
-				self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
+		num_of_gp = len(GP.grasping_pose[part_num])
+		for gp in range(num_of_gp):
+			if self.TF_List[part_num]['origin'] == []:
+				grasping_pose = []
+			else:
+				part_origin = self.TF_List[part_num]['origin']
+				tf_data = GP.grasping_pose[part_num][gp]
+				grasping_pose = self.get_TF_pose(part_origin,tf_data)
+			self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
 
 	def set_pin_TF(self,pin_type,pin_tag): # fill Pin_lsit #Pin_name = pin_name[pin_number]+"-"+str(pin_exist+1)
 	
 		target_pin_name = pin_name[pin_type]+"-"+str(pin_tag+1)
-		# if target_pin_name in self.a_list['pin']:
-		if not self.scene.get_objects([target_pin_name]):
-			self.Pin_List[pin_type]['pose'][pin_tag] = []		
-		else:
-			target_pin_origin = self.scene.get_objects([target_pin_name])[target_pin_name].mesh_poses[0]
-			TF_data = pin_TF_pose[pin_type]
-			target_pin_TF = self.get_TF_pose(target_pin_origin,TF_data)
-
-			if pin_has_hole[pin_type]:
-				pin_origin_pose = copy.deepcopy(target_pin_TF)
-				pin_hole_offset = HO.pin_hole_offset[pin_type]
-				pin_hole_pose = self.get_TF_pose(pin_origin_pose,pin_hole_offset)
-				pin_pose = copy.deepcopy({'pin':pin_origin_pose,'hole':pin_hole_pose})
-
+		if self.scene.get_objects([target_pin_name]):
+			if target_pin_name in self.a_list['pin']:
+				self.Pin_List[pin_type]['pose'][pin_tag] = []		
 			else:
-				pin_pose = copy.deepcopy(target_pin_TF)
-			self.Pin_List[pin_type]['pose'][pin_tag] = pin_pose
+				target_pin_origin = self.scene.get_objects([target_pin_name])[target_pin_name].mesh_poses[0]
+				TF_data = pin_TF_pose[pin_type]
+				target_pin_TF = self.get_TF_pose(target_pin_origin,TF_data)
+
+				if pin_has_hole[pin_type]:
+					pin_origin_pose = copy.deepcopy(target_pin_TF)
+					pin_hole_offset = HO.pin_hole_offset[pin_type]
+					pin_hole_pose = self.get_TF_pose(pin_origin_pose,pin_hole_offset)
+					pin_pose = copy.deepcopy({'pin':pin_origin_pose,'hole':pin_hole_pose})
+
+				else:
+					pin_pose = copy.deepcopy(target_pin_TF)
+				self.Pin_List[pin_type]['pose'][pin_tag] = pin_pose
 
 	def send_part_TF(self):
 		for p_num in range(6):
@@ -376,13 +390,17 @@ class TF_Node(ASM_D.Assemble_Data):
 					position_list = self.make_position_list(selected_part['pose'][g].position)
 					orientation_list = self.make_orientation_list(selected_part['pose'][g].orientation)
 					self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), gp_name, 'world')
-
 	def send_TF(self,dumb_Data):
 		if self.part_add_flag == True:
 			# print"[INFO] send_TF CALLED"
 			self.send_part_TF()
 			self.send_pin_TF()
 			self.send_GP_TF()
+
+	def send_temporary_TF(self,pose_from_world,tf_name = "TEMP_POSE"):
+		position_list = make_position_list(pose_from_world.position)
+		orientation_list = make_orientation_list(pose_from_world.orientation)
+		self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), tf_name, 'world')
 
 	def detach_part(self):
 		# self.part_add_flag = False
@@ -419,7 +437,7 @@ def main():
 	TF = TF_Node()
 	while True:
 		try:
-			TF.set_parts([4,5],[])
+			TF.set_parts([0,1,2,3,4,5],[])
 			print "PRES ENTER"
 			raw_input()
 		except rospy.ROSInterruptException:

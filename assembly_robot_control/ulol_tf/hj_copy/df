@@ -1,0 +1,8 @@
+Help on built-in function min in module __builtin__:
+
+mmiinn(...)
+    min(iterable[, key=func]) -> value
+    min(a, b, c, ...[, key=func]) -> value
+    
+    With a single iterable argument, return its smallest item.
+    With two or more arguments, return the smallest argument.

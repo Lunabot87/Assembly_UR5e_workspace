@@ -67,7 +67,8 @@ class Assemble_Data(object):
 					attach_list['pin'].append(deepcopy(target_pin_name))
 		self.a_list = attach_list
 		return attach_list
-
+	def clear_attach_list(self):
+		self.init_ASM_list()
 
 
 # def main():
