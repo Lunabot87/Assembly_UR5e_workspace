@@ -24,13 +24,13 @@ class Assembly_motion():
         self.group1.go(grasp.post_grasp)
 
 
-    def camera_pose(self, robot):
-        if robot is False:
-            camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
-            #self.mg_rob1.go(camera_pose_data)
-        else:
-            camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
-            self.mg_rob2.go(camera_pose_data)
+    # def camera_pose(self, robot):
+    #     if robot is False:
+    #         camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
+    #         #self.mg_rob1.go(camera_pose_data)
+    #     else:
+    #         camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
+    #         self.mg_rob2.go(camera_pose_data)
 
 
     def pick_up_pin(self, pin_name):
