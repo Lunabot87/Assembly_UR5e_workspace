@@ -140,7 +140,7 @@ class TF_Node(object):
 		if pin_has_hole[pin_type]:
 			pin_origin_pose = copy.deepcopy(pin_pose.pose)
 
-			pin_hole_offset = HO.pin_hole_offset[pin_type]
+			pin_hole_offa = HO.pin_hole_offset[pin_type]
 			pin_hole_pose = self.get_TF_pose(pin_origin_pose,pin_hole_offset)
 
 			pin_pose = copy.deepcopy({'pin':pin_origin_pose,'hole':pin_hole_pose})
@@ -186,6 +186,8 @@ class TF_Node(object):
 				tf_data = GP.grasping_pose[part_num][gp]
 				grasping_pose = self.get_TF_pose(part_origin,tf_data)
 			self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
+
+
 	def set_pin_TF(self,pin_type,pin_tag): # fill Pin_lsit #Pin_name = pin_name[pin_number]+"-"+str(pin_exist+1)
 	
 		target_pin_name = pin_name[pin_type]+"-"+str(pin_tag+1)

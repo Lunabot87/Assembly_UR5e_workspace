@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot name="part1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find object_description)/chair_urdf/chair_part1.SLDPRT.urdf"/>
+	<xacro:include filename="$(find object_description)/xacro/for_assemble_macro.xacro"/>
+
+	<xacro:property name="x_offset" value="0.0"/>
+	<xacro:property name="y_offset" value="0.0"/>
+	<xacro:property name="z_offset" value="0.0"/>
+	<xacro:property name="id_space" value="chair1"/>
+
+
+</robot>

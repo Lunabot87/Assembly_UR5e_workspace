@@ -3,30 +3,30 @@
      Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="chair part4.SLDPRT">
+  name="chair part3.SLDPRT">
   <link
-    name="chair part4.SLDPRT">
+    name="chair part3.SLDPRT">
     <inertial>
       <origin
-        xyz="-2.8401E-17 0.16597 0.011087"
+        xyz="4.9977E-19 4.02510000000006E-05 0.01"
         rpy="-1.5707963267949 0 0" />
       <mass
-        value="0.58715" />
+        value="0.26482" />
       <inertia
-        ixx="0.009627"
-        ixy="2.9722E-16"
-        ixz="1.86640000000002E-18"
-        iyy="0.012399"
-        iyz="3.19519999999941E-06"
-        izz="0.0028006" />
+        ixx="6.4143E-05"
+        ixy="1.6399E-20"
+        ixz="2.6682E-20"
+        iyy="0.0016227"
+        iyz="-3.74120000000028E-08"
+        izz="0.0015765" />
     </inertial>
     <visual>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://object_description/chair_meshes/chair part4.SLDPRT.STL" />
+          filename="package://object_description/chair_meshes/chair part3.SLDPRT.STL" />
       </geometry>
       <material
         name="">
@@ -38,11 +38,11 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://object_description/chair_meshes/chair part4.SLDPRT.STL" />
+          filename="package://object_description/chair_meshes/chair part3.SLDPRT.STL" />
       </geometry>
       <surface>
       <contact>
@@ -54,7 +54,7 @@
       </surface>
     </collision>
   </link>
-  <gazebo reference="chair part4.SLDPRT">
+  <gazebo reference="chair part3.SLDPRT">
     <material>Gazebo/White</material>
     <kp>100000.0</kp>
     <kd>1.0</kd>

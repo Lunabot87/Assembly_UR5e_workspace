@@ -26,12 +26,12 @@ def add_2transrpy(cur_transrpy,transrpy_offset):
 assembly_data_list = []
 
 chair_part1_offset = {'trans':[],'rot':[]}
-chair_part2_offset = {'trans':[-0.005,0.016,-0.175],'rot':[0,pi/2,0]}	# hole6-3
-chair_part3_offset = {'trans':[0.005,0.016,-0.142],'rot':[0,pi/2,pi]}			# hole6-6
+chair_part2_offset = {'trans':[0.005,0.016,-0.17],'rot':[0,pi/2,0]}	# hole6-3
+chair_part3_offset = {'trans':[0.005,0.016,-0.1315],'rot':[0,pi/2,pi]}			# hole6-6
 chair_part4_offset = {'trans':[0.005,0.016,-0.142],'rot':[0,pi/2,0]}			# hole6-8
 chair_part5_offset = {'trans':[],'rot':[]}
 
-chair_part2_assemble_offset = add_2transrpy(HO.P6hole3,chair_part2_offset)
-chair_part3_assemble_offset = add_2transrpy(HO.P6hole6,chair_part3_offset)
-chair_part4_assemble_offset = add_2transrpy(HO.P6hole8,chair_part4_offset)
+chair_part2_assemble_offset = add_2transrpy(HO.P6hole2,chair_part2_offset)
+chair_part3_assemble_offset = add_2transrpy(HO.P6hole4,chair_part3_offset)
+chair_part4_assemble_offset = add_2transrpy(HO.P6hole6,chair_part4_offset)
 

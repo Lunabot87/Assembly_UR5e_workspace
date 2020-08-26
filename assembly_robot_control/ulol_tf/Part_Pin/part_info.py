@@ -1,5 +1,4 @@
-# part_address = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
-part_address = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/new_chair_meshes/"
+part_address = "/home/kdh/assembly_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
 
 part1 = part_address+"chair part1.SLDPRT.STL"
 part2 = part_address+"chair part2.SLDPRT.STL"
@@ -18,7 +17,7 @@ part_file = [part1,part2,part3,part4,part5,part6]
 pin_file = [pin11,pin14,pin26,pin29]
 part_name = ["chair_part1","chair_part2","chair_part3","chair_part4","chair_part5","chair_part6"]
 holes_in_part = [0,8,8,8,10,10]
-grasp_in_part = [0,2,4,0,4,4]
+grasp_in_part = [0,2,4,4,4,4]
 
 pin_name = ["pin101350","pin104322","pin122620","pin122925"]
 pin_has_hole = [False,False,True,False]

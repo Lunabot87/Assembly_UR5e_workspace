@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot name="part5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find object_description)/chair_urdf_for_real/chair_part5.SLDPRT.urdf"/>
+	<xacro:include filename="$(find object_description)/xacro_for_real/for_assemble_macro.xacro"/>
+
+
+	<xacro:property name="x_offset" value="0.0"/>
+	<xacro:property name="y_offset" value="0.0"/>
+	<xacro:property name="z_offset" value="0.0"/>
+
+
+	<xacro:hole_definition link_name="part5 hole blocked 1" 
+						   length="0.01" radius="0.004"
+						   x="${0.002166 + x_offset}" y="${0.42666 + y_offset}" z="${0.01 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole blocked 2" 
+						   length="0.01" radius="0.004"
+						   x="${0.000492 + x_offset}" y="${0.394704 + y_offset}" z="${0.01 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>						   
+
+	<xacro:hole_definition link_name="part5 hole blocked 3" 
+						   length="0.01" radius="0.004"
+						   x="${0.369042 + x_offset}" y="${0.407433 + y_offset}" z="${0.045 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole blocked 4" 
+						   length="0.01" radius="0.004"
+						   x="${0.367368 + x_offset}" y="${0.375477 + y_offset}" z="${0.045 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole blocked 5" 
+						   length="0.015" radius="0.004"
+						   x="${0.393244 + x_offset}" y="${0.567391 + y_offset}" z="${0.0425 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole blocked 6" 
+						   length="0.015" radius="0.004"
+						   x="${0.427122 + x_offset}" y="${0.844371 + y_offset}" z="${0.0425 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole blocked 7" 
+						   length="0.015" radius="0.004"
+						   x="${0.431575 + x_offset}" y="${0.87606 + y_offset}" z="${0.0425 + z_offset}"
+						   rx="0" ry="${-pi}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+
+
+
+	<xacro:hole_definition link_name="part5 hole opened 8" 
+						   length="0.03" radius="0.00275"
+						   x="${0.001329 + x_offset}" y="${0.410682 + y_offset}" z="${0.00 + z_offset}"
+						   rx="0" ry="${0}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole opened 9"  
+						   length="0.03" radius="0.00275"
+						   x="${0.368205 + x_offset}" y="${0.391455 + y_offset}" z="${0.035 + z_offset}"
+						   rx="0" ry="${0}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+	<xacro:hole_definition link_name="part5 hole opened 10" 
+						   length="0.03" radius="0.00275"
+						   x="${0.429349 + x_offset}" y="${0.860216 + y_offset}" z="${0.035 + z_offset}"
+						   rx="0" ry="${0}" rz="0"
+						   parent="chair part5.SLDPRT"/>
+
+</robot>

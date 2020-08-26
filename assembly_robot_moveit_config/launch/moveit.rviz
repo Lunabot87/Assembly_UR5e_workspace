@@ -9,9 +9,10 @@ Panels:
         - /MotionPlanning1
         - /MotionPlanning1/Scene Geometry1
         - /TF1
+        - /TF1/Frames1
         - /TF1/Tree1
       Splitter Ratio: 0.5
-    Tree Height: 313
+    Tree Height: 760
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -718,9 +719,11 @@ Visualization Manager:
       Velocity_Scaling_Factor: 0.1
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 100000
+      Frame Timeout: 10
       Frames:
         All Enabled: false
+        GOAL_POSE:
+          Value: true
         bar1:
           Value: false
         bar2:
@@ -729,89 +732,83 @@ Visualization Manager:
           Value: false
         bar4:
           Value: false
-        part5_1:
+        chair_part2:
           Value: true
-        part5_1-hole_10end:
+        chair_part2-GRASP-1:
           Value: true
-        part5_1-hole_10entry:
+        chair_part2-GRASP-2:
           Value: true
-        part5_1-hole_1end:
+        chair_part4:
           Value: true
-        part5_1-hole_1entry:
+        chair_part4-GRASP-1:
           Value: true
-        part5_1-hole_2end:
+        chair_part4-GRASP-2:
           Value: true
-        part5_1-hole_2entry:
+        chair_part4-GRASP-3:
           Value: true
-        part5_1-hole_3end:
+        chair_part4-GRASP-4:
           Value: true
-        part5_1-hole_3entry:
+        chair_part6:
           Value: true
-        part5_1-hole_4end:
+        chair_part6-GRASP-1:
           Value: true
-        part5_1-hole_4entry:
+        chair_part6-GRASP-2:
           Value: true
-        part5_1-hole_5end:
+        chair_part6-GRASP-3:
           Value: true
-        part5_1-hole_5entry:
+        chair_part6-GRASP-4:
           Value: true
-        part5_1-hole_6end:
+        hole2-1:
           Value: true
-        part5_1-hole_6entry:
+        hole2-2:
           Value: true
-        part5_1-hole_7end:
+        hole2-3:
           Value: true
-        part5_1-hole_7entry:
+        hole2-4:
           Value: true
-        part5_1-hole_8end:
+        hole2-5:
           Value: true
-        part5_1-hole_8entry:
+        hole2-6:
           Value: true
-        part5_1-hole_9end:
+        hole2-7:
           Value: true
-        part5_1-hole_9entry:
+        hole2-8:
           Value: true
-        part6_1:
+        hole4-1:
           Value: true
-        part6_1-hole_10end:
+        hole4-2:
           Value: true
-        part6_1-hole_10entry:
+        hole4-3:
           Value: true
-        part6_1-hole_1end:
+        hole4-4:
           Value: true
-        part6_1-hole_1entry:
+        hole4-5:
           Value: true
-        part6_1-hole_2end:
+        hole4-6:
           Value: true
-        part6_1-hole_2entry:
+        hole4-7:
           Value: true
-        part6_1-hole_3end:
+        hole4-8:
           Value: true
-        part6_1-hole_3entry:
+        hole6-1:
           Value: true
-        part6_1-hole_4end:
+        hole6-10:
           Value: true
-        part6_1-hole_4entry:
+        hole6-2:
           Value: true
-        part6_1-hole_5end:
+        hole6-3:
           Value: true
-        part6_1-hole_5entry:
+        hole6-4:
           Value: true
-        part6_1-hole_6end:
+        hole6-5:
           Value: true
-        part6_1-hole_6entry:
+        hole6-6:
           Value: true
-        part6_1-hole_7end:
+        hole6-7:
           Value: true
-        part6_1-hole_7entry:
+        hole6-8:
           Value: true
-        part6_1-hole_8end:
-          Value: true
-        part6_1-hole_8entry:
-          Value: true
-        part6_1-hole_9end:
-          Value: true
-        part6_1-hole_9entry:
+        hole6-9:
           Value: true
         realsense_base_link:
           Value: false
@@ -927,95 +924,93 @@ Visualization Manager:
           Value: false
         world:
           Value: false
-      Marker Scale: 0.07999999821186066
+      Marker Scale: 0.10000000149011612
       Name: TF
       Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
         world:
-          part5_1:
-            part5_1-hole_10end:
-              {}
-            part5_1-hole_10entry:
-              {}
-            part5_1-hole_1end:
-              {}
-            part5_1-hole_1entry:
-              {}
-            part5_1-hole_2end:
-              {}
-            part5_1-hole_2entry:
-              {}
-            part5_1-hole_3end:
-              {}
-            part5_1-hole_3entry:
-              {}
-            part5_1-hole_4end:
-              {}
-            part5_1-hole_4entry:
-              {}
-            part5_1-hole_5end:
-              {}
-            part5_1-hole_5entry:
-              {}
-            part5_1-hole_6end:
-              {}
-            part5_1-hole_6entry:
-              {}
-            part5_1-hole_7end:
-              {}
-            part5_1-hole_7entry:
-              {}
-            part5_1-hole_8end:
-              {}
-            part5_1-hole_8entry:
-              {}
-            part5_1-hole_9end:
-              {}
-            part5_1-hole_9entry:
-              {}
-          part6_1:
-            part6_1-hole_10end:
-              {}
-            part6_1-hole_10entry:
-              {}
-            part6_1-hole_1end:
-              {}
-            part6_1-hole_1entry:
-              {}
-            part6_1-hole_2end:
-              {}
-            part6_1-hole_2entry:
-              {}
-            part6_1-hole_3end:
-              {}
-            part6_1-hole_3entry:
-              {}
-            part6_1-hole_4end:
-              {}
-            part6_1-hole_4entry:
-              {}
-            part6_1-hole_5end:
-              {}
-            part6_1-hole_5entry:
-              {}
-            part6_1-hole_6end:
-              {}
-            part6_1-hole_6entry:
-              {}
-            part6_1-hole_7end:
-              {}
-            part6_1-hole_7entry:
-              {}
-            part6_1-hole_8end:
-              {}
-            part6_1-hole_8entry:
-              {}
-            part6_1-hole_9end:
-              {}
-            part6_1-hole_9entry:
-              {}
+          GOAL_POSE:
+            {}
+          chair_part2:
+            {}
+          chair_part2-GRASP-1:
+            {}
+          chair_part2-GRASP-2:
+            {}
+          chair_part4:
+            {}
+          chair_part4-GRASP-1:
+            {}
+          chair_part4-GRASP-2:
+            {}
+          chair_part4-GRASP-3:
+            {}
+          chair_part4-GRASP-4:
+            {}
+          chair_part6:
+            {}
+          chair_part6-GRASP-1:
+            {}
+          chair_part6-GRASP-2:
+            {}
+          chair_part6-GRASP-3:
+            {}
+          chair_part6-GRASP-4:
+            {}
+          hole2-1:
+            {}
+          hole2-2:
+            {}
+          hole2-3:
+            {}
+          hole2-4:
+            {}
+          hole2-5:
+            {}
+          hole2-6:
+            {}
+          hole2-7:
+            {}
+          hole2-8:
+            {}
+          hole4-1:
+            {}
+          hole4-2:
+            {}
+          hole4-3:
+            {}
+          hole4-4:
+            {}
+          hole4-5:
+            {}
+          hole4-6:
+            {}
+          hole4-7:
+            {}
+          hole4-8:
+            {}
+          hole6-1:
+            {}
+          hole6-10:
+            {}
+          hole6-2:
+            {}
+          hole6-3:
+            {}
+          hole6-4:
+            {}
+          hole6-5:
+            {}
+          hole6-6:
+            {}
+          hole6-7:
+            {}
+          hole6-8:
+            {}
+          hole6-9:
+            {}
           table:
             bar1:
               {}
@@ -1143,37 +1138,37 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.755103349685669
+      Distance: 1.95119047164917
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 2.3415932655334473
-        Y: 0.6539135575294495
-        Z: 0.1928379386663437
+        X: -0.07459242641925812
+        Y: -0.23264770209789276
+        Z: 0.3430265188217163
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2897973358631134
+      Pitch: 1.0947962999343872
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.059818267822266
+      Yaw: 1.0316524505615234
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: true
+    collapsed: false
   Height: 1052
-  Hide Left Dock: true
+  Hide Left Dock: false
   Hide Right Dock: true
   MotionPlanning:
-    collapsed: true
+    collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000029b0000037efc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d000001c4000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000207000001b40000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100ffffff000000010000010f00000363fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000363000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000007800000037e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000029b00000383fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000383000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000010c0000019b0000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100ffffff000000010000010f00000363fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000363000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000039fc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004df0000038300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

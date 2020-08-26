@@ -8,7 +8,7 @@
     name="chair part4.SLDPRT">
     <inertial>
       <origin
-        xyz="-2.8401E-17 0.16597 0.011087"
+        xyz="-2.8401E-17 -0.12903 0.005"
         rpy="-1.5707963267949 0 0" />
       <mass
         value="0.58715" />
@@ -22,7 +22,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -38,7 +38,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh

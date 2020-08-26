@@ -29,25 +29,17 @@ def make_orientation_list(orientation):
 def make_position_list(position):
     p_list = [position.x,position.y,position.z]
     return p_list
-def pose_from_transrot(trans = [0,0,0],rot = [0,0,0]):
-    pose = geometry_msgs.msg.PoseStamped().pose
-    pose.position.x = trans[0]
-    pose.position.y = trans[1]
-    pose.position.z = trans[2]
-
-    o_list = quaternion_from_euler(rot[0],rot[1],rot[2])
-    pose.orientation.x = o_list[0]
-    pose.orientation.y = o_list[1]
-    pose.orientation.z = o_list[2]
-    pose.orientation.w = o_list[3]
-
+def pose_from_mat(mat):
+    rpy = list(euler_from_matrix(mat))
+    trans = [mat[0,3],mat[1,3],mat[2,3]]
+    pose = moveit_commander.conversions.list_to_pose(trans+rpy)
     return pose
-def transrot_from_pose(pose):
-	trans = [pose.position.x,pose.position.y,pose.position.z]
-	o_list = make_orientation_list(pose.orientation)
-	rot = euler_from_quaternion(o_list)
-	return (trans,rot)
-
+def mat_from_pose(pose):
+	lt = moveit_commander.conversions.pose_to_list(pose)
+	quat = lt[3:]
+	mat = quaternion_matrix(quat)
+	mat[:3,3] = lt[:3]
+	return mat
 
 class TF_Node(ASM_D.Assemble_Data):
 
@@ -419,8 +411,17 @@ def main():
 	TF = TF_Node()
 	while True:
 		try:
-			TF.set_parts()
-			print "PRES ENTER"
+			TF.set_parts([5],[0])
+			print "PRESS ENTER"
+			raw_input()
+			hole_pose = TF.TF_List[5]['holes'][0]
+			mat1 = mat_from_pose(hole_pose)
+			mat2 = translation_matrix((0,0,-0.020))
+			# mat3 = euler_matrix(0,-1.57,0)
+			mat = mat1.dot(mat2)
+			goal = pose_from_mat(mat)
+			TF.change_pin_org('pin101350-1',goal)
+			print "PRESS ENTER"
 			raw_input()
 		except rospy.ROSInterruptException:
 			return

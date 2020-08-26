@@ -3,30 +3,30 @@
      Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="chair part4.SLDPRT">
+  name="chair part6.SLDPRT">
   <link
-    name="chair part4.SLDPRT">
+    name="chair part6.SLDPRT">
     <inertial>
       <origin
-        xyz="-2.8401E-17 0.16597 0.011087"
-        rpy="-1.5707963267949 0 0" />
+        xyz="0.25265 0.35064 -0.022466"
+        rpy="1.5707963267949 0 0" />
       <mass
-        value="0.58715" />
+        value="1.8822" />
       <inertia
-        ixx="0.009627"
-        ixy="2.9722E-16"
-        ixz="1.86640000000002E-18"
-        iyy="0.012399"
-        iyz="3.19519999999941E-06"
-        izz="0.0028006" />
+        ixx="0.092184"
+        ixy="-0.0046305"
+        ixz="-0.028222"
+        iyy="0.14409"
+        iyz="0.00238449999999999"
+        izz="0.052969" />
     </inertial>
     <visual>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://object_description/chair_meshes/chair part4.SLDPRT.STL" />
+          filename="package://object_description/chair_meshes/chair part6.SLDPRT.STL" />
       </geometry>
       <material
         name="">
@@ -38,11 +38,11 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0.295 0.006087"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://object_description/chair_meshes/chair part4.SLDPRT.STL" />
+          filename="package://object_description/chair_meshes/chair part6.SLDPRT.STL" />
       </geometry>
       <surface>
       <contact>
@@ -54,13 +54,13 @@
       </surface>
     </collision>
   </link>
-  <gazebo reference="chair part4.SLDPRT">
+  <gazebo reference="chair part6.SLDPRT">
     <material>Gazebo/White</material>
     <kp>100000.0</kp>
     <kd>1.0</kd>
     <mu1>100000</mu1>
     <mu2>100000</mu2>
     <maxVel>0</maxVel>
-    <minDepth>0.000</minDepth>
+    <minDepth>0.00</minDepth>
   </gazebo>
 </robot>

@@ -12,8 +12,6 @@ import Part_ulol	# PART CLASS
 from Part_Pin import assembly_data
 
 
-
-
 def add_mesh_at_random_pose(CLASS_SET,mesh_name):
 	PART_SCENE = CLASS_SET['tf']
 
@@ -395,7 +393,7 @@ def assemble_part(CLASS_SET, assmebling_part_name):
 		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
 		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
 		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
-		offset_vector = [0,-0.15,0]
+		offset_vector = [0,-0.15,0]	
 
 
 	elif assmebling_part_name == 'chair_part4':
@@ -474,10 +472,10 @@ def attaching_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([1,2,5],[])
+		PART.set_parts([1,3,5],[])
 		print "ENTER",
 		raw_input()
-		assemble_part(CLASS_SET,'chair_part3')
+		# assemble_part(CLASS_SET,'chair_part3')
 		assemble_part(CLASS_SET,'chair_part2')
 	
 
@@ -531,4 +529,4 @@ def insert_pin_test():
 	
 
 if __name__ == '__main__':
-  insert_pin_test()
+  attaching_test()

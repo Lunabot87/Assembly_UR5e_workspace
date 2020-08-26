@@ -1,0 +1,16 @@
+Number of literals: 8
+Constructing lookup tables:
+Post filtering unreachable actions: 
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+66% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 8.000
+b (7.000 | 60.000)b (6.000 | 60.000)b (4.000 | 60.001)b (2.000 | 60.001)b (1.000 | 120.002);;;; Solution Found
+; States evaluated: 11
+; Cost: 120.002
+; Time 0.00
+0.000: (prepare_part chair_braket_1)  [60.000]
+0.000: (prepare_part chair_part2)  [60.000]
+0.001: (set_part chair_braket_1)  [60.000]
+0.001: (set_part chair_part2)  [60.000]
+60.002: (assembly_part chair_part2 chair_braket_1 result p2h1 b_1_p1)  [60.000]
+60.002: (assembly_part chair_part2 chair_braket_2 result p2h2 b_2_p1)  [60.000]
