@@ -472,7 +472,7 @@ def attaching_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([1,3,5],[])
+		PART.set_parts([])
 		print "ENTER",
 		raw_input()
 		# assemble_part(CLASS_SET,'chair_part3')
@@ -492,7 +492,7 @@ def insert_pin_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([5],[0])
+		PART.set_parts([5])
 
 		print "ENTER",
 		raw_input()

@@ -139,10 +139,8 @@ class TF_Node(object):
 		self.add_mesh(Pin_name,pin_file[pin_type],pin_pose)
 		if pin_has_hole[pin_type]:
 			pin_origin_pose = copy.deepcopy(pin_pose.pose)
-
-			pin_hole_offa = HO.pin_hole_offset[pin_type]
+			pin_hole_offset = HO.pin_hole_offset[pin_type]
 			pin_hole_pose = self.get_TF_pose(pin_origin_pose,pin_hole_offset)
-
 			pin_pose = copy.deepcopy({'pin':pin_origin_pose,'hole':pin_hole_pose})
 		else:
 			pin_pose = copy.deepcopy(pin_pose.pose)
@@ -150,7 +148,7 @@ class TF_Node(object):
 
 	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3]):
 		for p_num in part_list:
-			self.add_mesh(part_name[p_num],part_file[p_num],part_ready_pose[p_num])
+			self.add_mesh(part_name[p_num],part_file[p_num],part_init_pose[p_num])
 			self.set_part_TF(part_name[p_num])
 		
 		for pin_type in pin_list:
@@ -186,7 +184,6 @@ class TF_Node(object):
 				tf_data = GP.grasping_pose[part_num][gp]
 				grasping_pose = self.get_TF_pose(part_origin,tf_data)
 			self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
-
 
 	def set_pin_TF(self,pin_type,pin_tag): # fill Pin_lsit #Pin_name = pin_name[pin_number]+"-"+str(pin_exist+1)
 	
@@ -366,17 +363,17 @@ class TF_Node(object):
 		self.a_list = attach_list
 		return attach_list
 
-# def main():	
-# 	rospy.init_node('TF_test', anonymous=True)
-# 	TF = TF_Node()
-# 	TF.set_parts()
-# 	while True:
-# 		try:
-# 			print "PRES ENTER"
-# 			raw_input()
-# 		except rospy.ROSInterruptException:
-# 			return
-# 		except KeyboardInterrupt:
-# 			return
-# if __name__ == '__main__':
-# 	main()
+def main():	
+	rospy.init_node('TF_test', anonymous=True)
+	TF = TF_Node()
+	TF.set_parts()
+	while True:
+		try:
+			print "PRES ENTER"
+			raw_input()
+		except rospy.ROSInterruptException:
+			return
+		except KeyboardInterrupt:
+			return
+if __name__ == '__main__':
+	main()
