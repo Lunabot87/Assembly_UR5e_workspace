@@ -7,6 +7,8 @@ Panels:
         - /Global Options1
         - /Status1
         - /MotionPlanning1
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 299
   - Class: rviz/Selection
@@ -785,6 +787,258 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        bar1:
+          Value: false
+        bar2:
+          Value: false
+        bar3:
+          Value: false
+        bar4:
+          Value: false
+        basler_camera:
+          Value: true
+        realsense_base_link:
+          Value: false
+        rob1_base:
+          Value: false
+        rob1_base_link:
+          Value: false
+        rob1_ee_link:
+          Value: false
+        rob1_forearm_link:
+          Value: false
+        rob1_left_inner_finger:
+          Value: false
+        rob1_left_inner_finger_pad:
+          Value: false
+        rob1_left_inner_knuckle:
+          Value: false
+        rob1_left_outer_finger:
+          Value: false
+        rob1_left_outer_knuckle:
+          Value: false
+        rob1_real_base_link:
+          Value: false
+        rob1_real_ee_link:
+          Value: false
+        rob1_right_inner_finger:
+          Value: false
+        rob1_right_inner_finger_pad:
+          Value: false
+        rob1_right_inner_knuckle:
+          Value: false
+        rob1_right_outer_finger:
+          Value: false
+        rob1_right_outer_knuckle:
+          Value: false
+        rob1_robotiq_arg2f_base_link:
+          Value: false
+        rob1_shoulder_link:
+          Value: false
+        rob1_tcp_gripper_closed:
+          Value: false
+        rob1_tcp_gripper_open:
+          Value: false
+        rob1_tool0:
+          Value: false
+        rob1_tool0_controller:
+          Value: false
+        rob1_upper_arm_link:
+          Value: false
+        rob1_world:
+          Value: false
+        rob1_wrist_1_link:
+          Value: false
+        rob1_wrist_2_link:
+          Value: false
+        rob1_wrist_3_link:
+          Value: false
+        rob2_base:
+          Value: false
+        rob2_base_link:
+          Value: false
+        rob2_ee_link:
+          Value: false
+        rob2_forearm_link:
+          Value: false
+        rob2_left_inner_finger:
+          Value: false
+        rob2_left_inner_finger_pad:
+          Value: false
+        rob2_left_inner_knuckle:
+          Value: false
+        rob2_left_outer_finger:
+          Value: false
+        rob2_left_outer_knuckle:
+          Value: false
+        rob2_real_base_link:
+          Value: false
+        rob2_real_ee_link:
+          Value: false
+        rob2_right_inner_finger:
+          Value: false
+        rob2_right_inner_finger_pad:
+          Value: false
+        rob2_right_inner_knuckle:
+          Value: false
+        rob2_right_outer_finger:
+          Value: false
+        rob2_right_outer_knuckle:
+          Value: false
+        rob2_robotiq_arg2f_base_link:
+          Value: false
+        rob2_shoulder_link:
+          Value: false
+        rob2_tcp_gripper_closed:
+          Value: false
+        rob2_tcp_gripper_open:
+          Value: false
+        rob2_tool0:
+          Value: false
+        rob2_tool0_controller:
+          Value: false
+        rob2_upper_arm_link:
+          Value: false
+        rob2_world:
+          Value: false
+        rob2_wrist_1_link:
+          Value: false
+        rob2_wrist_2_link:
+          Value: false
+        rob2_wrist_3_link:
+          Value: false
+        sensor_d435_bottom_screw_frame:
+          Value: false
+        sensor_d435_color_frame:
+          Value: false
+        sensor_d435_color_optical_frame:
+          Value: false
+        sensor_d435_depth_frame:
+          Value: false
+        sensor_d435_depth_optical_frame:
+          Value: false
+        sensor_d435_infra1_frame:
+          Value: false
+        sensor_d435_infra1_optical_frame:
+          Value: false
+        sensor_d435_infra2_frame:
+          Value: false
+        sensor_d435_infra2_optical_frame:
+          Value: false
+        sensor_d435_link:
+          Value: false
+        table:
+          Value: false
+        world:
+          Value: false
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          table:
+            bar1:
+              {}
+            bar2:
+              {}
+            bar3:
+              {}
+            bar4:
+              {}
+            rob1_world:
+              rob1_real_base_link:
+                rob1_base_link:
+                  rob1_base:
+                    rob1_tool0_controller:
+                      {}
+                  rob1_shoulder_link:
+                    rob1_upper_arm_link:
+                      rob1_forearm_link:
+                        rob1_wrist_1_link:
+                          rob1_wrist_2_link:
+                            rob1_wrist_3_link:
+                              rob1_ee_link:
+                                rob1_real_ee_link:
+                                  basler_camera:
+                                    {}
+                                  realsense_base_link:
+                                    sensor_d435_bottom_screw_frame:
+                                      sensor_d435_link:
+                                        sensor_d435_color_frame:
+                                          sensor_d435_color_optical_frame:
+                                            {}
+                                        sensor_d435_depth_frame:
+                                          sensor_d435_depth_optical_frame:
+                                            {}
+                                        sensor_d435_infra1_frame:
+                                          sensor_d435_infra1_optical_frame:
+                                            {}
+                                        sensor_d435_infra2_frame:
+                                          sensor_d435_infra2_optical_frame:
+                                            {}
+                                  rob1_tcp_gripper_closed:
+                                    {}
+                                  rob1_tcp_gripper_open:
+                                    {}
+                              rob1_tool0:
+                                rob1_robotiq_arg2f_base_link:
+                                  rob1_left_inner_knuckle:
+                                    {}
+                                  rob1_left_outer_knuckle:
+                                    rob1_left_outer_finger:
+                                      rob1_left_inner_finger:
+                                        rob1_left_inner_finger_pad:
+                                          {}
+                                  rob1_right_inner_knuckle:
+                                    {}
+                                  rob1_right_outer_knuckle:
+                                    rob1_right_outer_finger:
+                                      rob1_right_inner_finger:
+                                        rob1_right_inner_finger_pad:
+                                          {}
+            rob2_world:
+              rob2_real_base_link:
+                rob2_base_link:
+                  rob2_base:
+                    rob2_tool0_controller:
+                      {}
+                  rob2_shoulder_link:
+                    rob2_upper_arm_link:
+                      rob2_forearm_link:
+                        rob2_wrist_1_link:
+                          rob2_wrist_2_link:
+                            rob2_wrist_3_link:
+                              rob2_ee_link:
+                                rob2_real_ee_link:
+                                  rob2_tcp_gripper_closed:
+                                    {}
+                                  rob2_tcp_gripper_open:
+                                    {}
+                              rob2_tool0:
+                                rob2_robotiq_arg2f_base_link:
+                                  rob2_left_inner_knuckle:
+                                    {}
+                                  rob2_left_outer_knuckle:
+                                    rob2_left_outer_finger:
+                                      rob2_left_inner_finger:
+                                        rob2_left_inner_finger_pad:
+                                          {}
+                                  rob2_right_inner_knuckle:
+                                    {}
+                                  rob2_right_outer_knuckle:
+                                    rob2_right_outer_finger:
+                                      rob2_right_inner_finger:
+                                        rob2_right_inner_finger_pad:
+                                          {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -843,7 +1097,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000029500000363fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000001b6000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001f9000001a70000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016000000010000010f00000363fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000363000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007310000003efc0100000002fb0000000800540069006d0065010000000000000731000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004960000036300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000029500000363fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000001b6000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001f9000001a70000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100ffffff000000010000010f00000363fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000363000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007310000003efc0100000002fb0000000800540069006d0065010000000000000731000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004960000036300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

@@ -1,0 +1,9 @@
+<launch>
+
+    <param name="robot_description" command="$(find xacro)/xacro.py $(find assembly_robot_description)/urdf/ELP_cam.urdf.xacro " />
+
+    <!-- Setting gui parameter to true for display joint slider -->
+    <param name="use_gui" value="true"/>
+    <!-- Launch visualization in rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" required="True" />
+</launch>
