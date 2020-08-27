@@ -83,8 +83,8 @@ class TF_Node(object):
 		self.init_attach_list()
 
 		self.part_add_flag = False
-		
-		rospy.Timer(rospy.Duration(0.5), self.send_TF)
+		self.listener = TransformListener()
+		rospy.Timer(rospy.Duration(0.1), self.send_TF)
 		
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}
@@ -146,9 +146,9 @@ class TF_Node(object):
 			pin_pose = copy.deepcopy(pin_pose.pose)
 		self.Pin_List[pin_type]['pose'][pin_tag] = pin_pose
 
-	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3]):
+	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3],pose_mode = part_init_pose):
 		for p_num in part_list:
-			self.add_mesh(part_name[p_num],part_file[p_num],part_init_pose[p_num])
+			self.add_mesh(part_name[p_num],part_file[p_num],pose_mode[p_num])
 			self.set_part_TF(part_name[p_num])
 		
 		for pin_type in pin_list:
@@ -270,7 +270,10 @@ class TF_Node(object):
 			self.send_part_TF()
 			self.send_pin_TF()
 			self.send_GP_TF()
-
+			# if self.listener.frameExists("re_target"):
+			# 	print '[RE_TARGET!!]'
+			# else:
+			# 	print '[NO TARGET!!]'
 	def get_TF_pose(self,origin_pose,TF_offset):
 		#origin pose : pose of origin of part : mesh_pose.pose
 		if origin_pose == []:
@@ -364,9 +367,9 @@ class TF_Node(object):
 		return attach_list
 
 def main():	
-	rospy.init_node('TF_test', anonymous=True)
+	rospy.init_node('ULOL_TF_test', anonymous=True)
 	TF = TF_Node()
-	TF.set_parts()
+	TF.set_parts([1,2,3,4,5])
 	while True:
 		try:
 			print "PRES ENTER"

@@ -182,18 +182,14 @@ def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose, offset =
 	(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
 	ROB.go_to_pose_goal(pg_trans, pg_rot, result0)
 
-	# g_pose = list_to_pose(g_trans+g_rot)
-	# waypoint = []
-	# waypoint.append(deepcopy(g_pose))
-	# (plan, fraction) = self.move_group.compute_cartesian_path(waypoint,0.01,0.0)
-	# self.move_group.execute(plan,wait = True)
-
+	
+	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	ROB.go_linear_to_pose_goal(g_trans, g_rot, result0)
 
 	attach_list = PART_SCENE.get_attach_list(target_part_name)
 	detach(CLASS_SET,rob_name,attach_list)
 	PART_SCENE.init_attach_list()
-	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
+	# ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	ROB.go_to_initial_pose()
 	ROB = CLASS_SET[sub_rob]
 	ROB.go_to_initial_pose()
@@ -222,7 +218,7 @@ def hold_part(CLASS_SET,target_part_name, hold_point_num, rob_name = 'rob2'):
 
 		ROB.go_to_pose_goal(h_trans, h_rot, result0)
 		print "==========================================================[HOLD PART]\n"
-def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol.part_init_pose,recurrent = True):
+def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol.part_init_pose):
 	print "\n[MOVE PART TO PLACE POSE]============================================"
 	PART_SCENE = CLASS_SET['tf']
 	print target_part_name,
@@ -281,7 +277,7 @@ def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol
 				temp_gp_pose.position.y = 0.1
 			ROB = CLASS_SET[rob_near_to_cur]
 			put_the_part_down(CLASS_SET, rob_near_to_cur, target_part_name, temp_gp_pose)
-			move_part_to_place_pose(CLASS_SET,target_part_name,proper_pose,recurrent = False)
+			move_part_to_place_pose(CLASS_SET,target_part_name,proper_pose)
 	print "[MOVE PART TO PLACE POSE]============================================\n"
 def grab_pin(CLASS_SET, pin_name,pin_tag):
 	print "\n[GRAB PIN]==========================================================="
@@ -374,35 +370,53 @@ def assemble_part(CLASS_SET, assmebling_part_name):
 
 	target_part = 'chair_part6'
 	part_num = Part_ulol.part_name.index(assmebling_part_name)
-	if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
-		print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
-		move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
-	gp_num = 0
+	
+	
 	if assmebling_part_name == 'chair_part2':
+		gp_num = 0
+		if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
+			print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
+			move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
 		chair_part6_org = PART_SCENE.TF_List[5]['origin']
 		assemble_pose_offset = assembly_data.chair_part2_assemble_offset
 		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
 		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
 		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
-		offset_vector = [0,-0.15,0]
+		offset_vector = [0,-0.01,0]
+		hold_num = 2
+		
 
 	elif assmebling_part_name == 'chair_part3':
-		
+		gp_num = 0
+		if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
+			print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
+			move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
 		chair_part6_org = PART_SCENE.TF_List[5]['origin']
 		assemble_pose_offset = assembly_data.chair_part3_assemble_offset
 		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
 		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
 		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
-		offset_vector = [0,-0.15,0]	
-
+		offset_vector = [0,-0.01,0]
+		hold_num = 0
+		
 
 	elif assmebling_part_name == 'chair_part4':
-		print "(assemble_part):Not Yet"
-		return
+		gp_num = 1
+		if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
+			print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
+			move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
+		chair_part6_org = PART_SCENE.TF_List[5]['origin']
+		assemble_pose_offset = assembly_data.chair_part4_assemble_offset
+		assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
+		tf_offset = Part_ulol.GP.grasping_pose[part_num][gp_num]
+		assemble_pose = PART_SCENE.get_TF_pose(assemble_org,tf_offset)
+		offset_vector = [0,0.02,0]
+		hold_num = 0
+		
 	else:
 		print "(assemble_part):WRONG_PART_NUM"
 		return
-	hold_num = 0
+
 	hold_part(CLASS_SET,target_part,hold_num,'rob1')
 	pick_the_mesh_up(CLASS_SET,'rob2',assmebling_part_name,gp_num)
 	put_the_part_down(CLASS_SET,'rob2',assmebling_part_name,assemble_pose,offset_vector)
@@ -415,7 +429,7 @@ def move_part_to_place_pose_test():
 		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
 		MG_ROB2 = MGW.MoveGroupCommanderWrapper('rob2_arm')
 		PART = Part_ulol.TF_Node()
-		listener = tf.TransformListener()
+		a = tf.TransformListener()
 		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
 		target_q = MG_ROB1.get_named_target_values('rob1_pin1_camera_check')
 		MG_ROB1.go(target_q)
@@ -472,11 +486,16 @@ def attaching_test():
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
 
-		PART.set_parts([])
+		PART.set_parts([3,5],[],Part_ulol.part12_assembling_pose)
 		print "ENTER",
 		raw_input()
+		
+		# move_part_to_place_pose(CLASS_SET,'chair_part3', Part_ulol.part_ready_pose)
+		# move_part_to_place_pose(CLASS_SET,'chair_part2', Part_ulol.part_ready_pose)
 		# assemble_part(CLASS_SET,'chair_part3')
-		assemble_part(CLASS_SET,'chair_part2')
+		# assemble_part(CLASS_SET,'chair_part2')
+		assemble_part(CLASS_SET,'chair_part4')
+		
 	
 
 	except Exception as e:

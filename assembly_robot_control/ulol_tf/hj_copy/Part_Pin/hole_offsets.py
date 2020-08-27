@@ -1,5 +1,6 @@
-from math import pi
-
+from math import pi, acos
+from numpy import dot, array
+from numpy.linalg import norm
 P1hole_offset =[]
 
 P2hole1={'trans':[0.17,0.016,0.01],'rot':[0,-pi/2,0]}
@@ -18,10 +19,10 @@ P3hole1={'trans':[ 0.125+0.0065, 0.0160, 0.01],'rot':[0,-pi/2,0]}
 P3hole2={'trans':[ 0.125+0.0065,-0.0160, 0.01],'rot':[0,-pi/2,0]}
 P3hole3={'trans':[-0.125-0.0065, 0.0160, 0.01],'rot':[0,pi/2,0]}
 P3hole4={'trans':[-0.125-0.0065,-0.0160, 0.01],'rot':[0,pi/2,0]}
-P3hole5={'trans':[ 0.080+0.0065,-0.0145, 0.0135],'rot':[pi,0,pi]}
-P3hole6={'trans':[-0.080-0.0065,-0.0145, 0.0135],'rot':[pi,0,pi]}
-P3hole7={'trans':[-0.115-0.02,-0.0000, 0.01],'rot':[0,pi/2,0]}
-P3hole8={'trans':[ 0.115+0.02,-0.0000, 0.01],'rot':[0,-pi/2,0]}
+P3hole5={'trans':[ 0.080	   ,-0.0145, 0.02],'rot':[pi,0,pi]}
+P3hole6={'trans':[-0.080	   ,-0.0145, 0.02],'rot':[pi,0,pi]}
+P3hole7={'trans':[-0.115-0.02  ,-0.0000, 0.01],'rot':[0,pi/2,0]}
+P3hole8={'trans':[ 0.115+0.02  ,-0.0000, 0.01],'rot':[0,-pi/2,0]}
 
 P3hole_offset=[P3hole1,P3hole2,P3hole3,P3hole4,
 				P3hole5,P3hole6,P3hole7,P3hole8]
@@ -62,6 +63,12 @@ P6hole7={'trans':[0.431575, 0.876060,-0.050],'rot':[0,0,0]}
 P6hole8={'trans':[0.001329, 0.410682,-0.015],'rot':[0,pi,0]}
 P6hole9={'trans':[0.369205, 0.391455,-0.050],'rot':[0,pi,0]}
 P6hole10={'trans':[0.429349, 0.860216,-0.050],'rot':[0,pi,0]}
+theta = acos( dot(array(P6hole7['trans'])-array(P6hole6['trans']),[0,1,0]) / norm(array(P6hole7['trans'])-array(P6hole6['trans'])))
+P6hole5['rot'][2] = -theta
+P6hole6['rot'][2] = -theta
+P6hole7['rot'][2] = -theta
+P6hole10['rot'][2] = -theta
+
 
 P6hole_offset=[P6hole1,P6hole2,P6hole3,P6hole4,P6hole5,
 				P6hole6,P6hole7,P6hole8,P6hole9,P6hole10]
