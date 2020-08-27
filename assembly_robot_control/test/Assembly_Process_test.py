@@ -5,6 +5,8 @@ from std_msgs.msg import *
 from Assembly_Motion_test import Assembly_motion
 from tf import *
 import numpy as np
+import rospy
+from assembly_robot_msgs.srv import *
 
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
@@ -21,18 +23,34 @@ class Assembly_process():
 		self.am = Assembly_motion()
 		self.listener = TransformListener()
 		##########################msg타입 수정 필요##############################3
-		self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
-		print "go!"
+		# self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
+		# print "go!"
 
-	def fine_tune_insert_target(self, part_name, robot):
+
+	def elp_camera_client(self, name):
+		for count in range(3):
+			self.rospy.wait_for_service('camera_server')
+			try:
+				basler_client = self.rospy.ServiceProxy('camera_server', cam_Srv)
+				basler_data = basler_client(name)
+				# print basler_client
+				return basler_data
+				break
+			except rospy.ServiceException as e:
+				print("Service call failed: %s"%e)
+
+		return False
+
+
+	def fine_tune_insert_target(self, hole_name, robot):
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
 		# kHoleCheckOffset
 		# 7/22 적용
 		# xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
 
-		self.am.camera_pose(robot)
+		# self.am.camera_pose(robot)
 
-		xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
+		xyz, rpy = self.listener.lookupTransform('/world', hole_name, self.rospy.Time(0))
 
 		xyz[2] += 0.2
 		if robot is False:
@@ -45,19 +63,26 @@ class Assembly_process():
 			xyz.append(-3.1415)
 
 		self.am.move_to(xyz, robot)
-		self.pub.publish(1)
+		result = self.elp_camera_client(hole_name)
+		if result is False:
+			pass
+		else:
+			if result.result is False:
+				
 
-		xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
+		# xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
 		
 
-		xyz[2] += 0.4
+		# xyz[2] += 0.4
 
-		xyz.append(3.1415)
-		xyz.append(0)
-		xyz.append(0)
-		self.am.move_to(xyz, robot)
+		# xyz.append(3.1415)
+		# xyz.append(0)
+		# xyz.append(0)
+		# self.am.move_to(xyz, robot)
 
 		#return target_pose
+
+
 
 	def hand_over_pin_check(self, target_name):
 
@@ -149,10 +174,10 @@ class Assembly_process():
 	def make_insert_msg(part_name, child_frame_pose):
 		pass
 
-# def main():
-# 	ap = Assembly_process()
-# 	ap.am.pick_up_pin("1")
-# 	ap.am.hand_over_pin()
+def main():
+	rospy.init_node('Assembly_Process', anonymous=True)
+	ap = Assembly_process(rospy)
+	ap.basler_camera_client("hole1")
 
-# if __name__ == '__main__':
-# 	main()
+if __name__ == '__main__':
+	main()

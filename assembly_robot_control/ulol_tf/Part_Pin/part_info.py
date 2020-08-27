@@ -22,8 +22,5 @@ grasp_in_part = [0,2,4,4,4,4]
 pin_name = ["pin101350","pin104322","pin122620","pin122925"]
 pin_has_hole = [False,False,True,False]
 how_many_pins = [21,6,4,4]
-pin_length = [0.015,0.03,0.0075,0.005]
 
-
-# pin_diameter = [0.008,0.006,0.01,0.006]
 # pin_diameter[2] and pin_lenght[2] have to be corrected

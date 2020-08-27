@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        self.robot.send_program(self._set_gripper())
+        # self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -36,7 +36,7 @@ class UrxMotion():
         radius = 0.0005
 
         force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,7,0,0,0] 
+        force_toq = [0,0,-7,0,0,0] 
 
         # spiral motion
         R = 0.006 #0.003
@@ -69,7 +69,7 @@ class UrxMotion():
         cmd_str += "\tforce_mode_set_damping(0.0)\n"
         cmd_str += "\tthread Thread_1():\n"
         cmd_str += "\t\twhile (True):\n"
-        cmd_str += "\t\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\t\tsync()\n"
         cmd_str += "\t\tend\n"
         cmd_str += "\tend\n"

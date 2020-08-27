@@ -1,6 +1,6 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
@@ -10,9 +10,8 @@ Panels:
         - /MotionPlanning1/Scene Geometry1
         - /TF1
         - /TF1/Frames1
-        - /TF1/Tree1
       Splitter Ratio: 0.5
-    Tree Height: 760
+    Tree Height: 244
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -32,6 +31,27 @@ Panels:
     Name: Time
     SyncMode: 0
     SyncSource: ""
+  - Class: moveit_task_constructor/Motion Planning Tasks
+    Global Settings:
+      Task View Settings:
+        Task Expansion: All Expanded
+    Name: Motion Planning Tasks
+    Tasks View:
+      property_splitter:
+        - 812
+        - 0
+      solution_sorting:
+        column: 0
+        order: 1
+      solutions_splitter:
+        - 197
+        - 70
+      solutions_view_columns: ~
+      tasks_view_columns:
+        - 57
+        - 57
+        - 57
+        - 57
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -57,7 +77,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 0.1
+    - Acceleration_Scaling_Factor: 1
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -111,6 +131,10 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          camera_center:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           realsense_base_link:
             Alpha: 1
             Show Axes: false
@@ -410,9 +434,9 @@ Visualization Manager:
       Planning Scene Topic: move_group/monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
-        Scene Alpha: 0.20000000298023224
+        Scene Alpha: 0.5
         Scene Color: 233; 185; 110
-        Scene Display Time: 0.009999999776482582
+        Scene Display Time: 0.20000000298023224
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
@@ -444,6 +468,10 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          camera_center:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           realsense_base_link:
             Alpha: 1
             Show Axes: false
@@ -716,7 +744,16 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
-      Velocity_Scaling_Factor: 0.1
+      Velocity_Scaling_Factor: 1
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /basic_controls/update
+      Value: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 10
@@ -732,11 +769,23 @@ Visualization Manager:
           Value: false
         bar4:
           Value: false
+        camera_center:
+          Value: false
         chair_part2:
           Value: true
         chair_part2-GRASP-1:
           Value: true
         chair_part2-GRASP-2:
+          Value: true
+        chair_part3:
+          Value: true
+        chair_part3-GRASP-1:
+          Value: true
+        chair_part3-GRASP-2:
+          Value: true
+        chair_part3-GRASP-3:
+          Value: true
+        chair_part3-GRASP-4:
           Value: true
         chair_part4:
           Value: true
@@ -758,6 +807,8 @@ Visualization Manager:
           Value: true
         chair_part6-GRASP-4:
           Value: true
+        chair_part6-GRASP-5:
+          Value: true
         hole2-1:
           Value: true
         hole2-2:
@@ -773,6 +824,22 @@ Visualization Manager:
         hole2-7:
           Value: true
         hole2-8:
+          Value: true
+        hole3-1:
+          Value: true
+        hole3-2:
+          Value: true
+        hole3-3:
+          Value: true
+        hole3-4:
+          Value: true
+        hole3-5:
+          Value: true
+        hole3-6:
+          Value: true
+        hole3-7:
+          Value: true
+        hole3-8:
           Value: true
         hole4-1:
           Value: true
@@ -924,7 +991,7 @@ Visualization Manager:
           Value: false
         world:
           Value: false
-      Marker Scale: 0.10000000149011612
+      Marker Scale: 0.05000000074505806
       Name: TF
       Show Arrows: false
       Show Axes: true
@@ -938,6 +1005,16 @@ Visualization Manager:
           chair_part2-GRASP-1:
             {}
           chair_part2-GRASP-2:
+            {}
+          chair_part3:
+            {}
+          chair_part3-GRASP-1:
+            {}
+          chair_part3-GRASP-2:
+            {}
+          chair_part3-GRASP-3:
+            {}
+          chair_part3-GRASP-4:
             {}
           chair_part4:
             {}
@@ -959,6 +1036,8 @@ Visualization Manager:
             {}
           chair_part6-GRASP-4:
             {}
+          chair_part6-GRASP-5:
+            {}
           hole2-1:
             {}
           hole2-2:
@@ -974,6 +1053,22 @@ Visualization Manager:
           hole2-7:
             {}
           hole2-8:
+            {}
+          hole3-1:
+            {}
+          hole3-2:
+            {}
+          hole3-3:
+            {}
+          hole3-4:
+            {}
+          hole3-5:
+            {}
+          hole3-6:
+            {}
+          hole3-7:
+            {}
+          hole3-8:
             {}
           hole4-1:
             {}
@@ -1033,6 +1128,8 @@ Visualization Manager:
                             rob1_wrist_3_link:
                               rob1_ee_link:
                                 rob1_real_ee_link:
+                                  camera_center:
+                                    {}
                                   realsense_base_link:
                                     sensor_d435_bottom_screw_frame:
                                       sensor_d435_link:
@@ -1138,37 +1235,39 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.95119047164917
+      Distance: 1.6518421173095703
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.07459242641925812
-        Y: -0.23264770209789276
-        Z: 0.3430265188217163
+        X: 0.30912601947784424
+        Y: -0.3846181631088257
+        Z: 0.9629184603691101
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0947962999343872
+      Pitch: 0.4047984480857849
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.0316524505615234
+      Yaw: 3.692225694656372
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
+    collapsed: true
   Height: 1052
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: true
+  Motion Planning Tasks:
+    collapsed: true
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000029b00000383fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000383000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000010c0000019b0000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100ffffff000000010000010f00000363fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000363000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000039fc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004df0000038300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000029b0000037efc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d00000131000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000174000002470000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f0000037efc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073000000003d0000037e0000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000007800000037e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -1176,7 +1275,7 @@ Window Geometry:
   Tool Properties:
     collapsed: false
   Views:
-    collapsed: true
+    collapsed: false
   Width: 1920
   X: 1366
   Y: 0
