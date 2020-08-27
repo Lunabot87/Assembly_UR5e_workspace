@@ -414,15 +414,6 @@ def main():
 			TF.set_parts()
 			print "PRESS ENTER"
 			raw_input()
-			hole_pose = TF.TF_List[5]['holes'][0]
-			mat1 = mat_from_pose(hole_pose)
-			mat2 = translation_matrix((0,0,-0.020))
-			# mat3 = euler_matrix(0,-1.57,0)
-			mat = mat1.dot(mat2)
-			goal = pose_from_mat(mat)
-			TF.change_pin_org('pin101350-1',goal)
-			print "PRESS ENTER"
-			raw_input()
 		except rospy.ROSInterruptException:
 			return
 		except KeyboardInterrupt:
