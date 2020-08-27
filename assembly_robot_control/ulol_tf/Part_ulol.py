@@ -360,17 +360,19 @@ class TF_Node(object):
 		self.a_list = attach_list
 		return attach_list
 
-# def main():	
-# 	rospy.init_node('TF_test', anonymous=True)
-# 	TF = TF_Node()
-# 	TF.set_parts()
-# 	while True:
-# 		try:
-# 			print "PRES ENTER"
-# 			raw_input()
-# 		except rospy.ROSInterruptException:
-# 			return
-# 		except KeyboardInterrupt:
-# 			return
-# if __name__ == '__main__':
-# 	main()
+def main():	
+	rospy.init_node('TF_test', anonymous=True)
+	TF = TF_Node()
+	TF.set_parts()
+	while True:
+		try:
+			print "PRES ENTER"
+			raw_input()
+			TF.set_parts()
+
+		except rospy.ROSInterruptException:
+			return
+		except KeyboardInterrupt:
+			return
+if __name__ == '__main__':
+	main()
