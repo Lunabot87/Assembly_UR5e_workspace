@@ -15,10 +15,10 @@ class Assembly_mode():
 	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 
 		# real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
-		self.pr.grab_pin("pin_name") #asm_msg.child.pin
-		robot = self.pr.hand_over_pin_check("hole6-1") #asm_msg.parent.target.name
+		self.pr.grab_pin("pin1") #asm_msg.child.pin
+		robot = self.pr.hand_over_pin_check("hole6-2") #asm_msg.parent.target.name
 		# self.pr.am.hold_assistant("part_name", robot)
-		self.pr.fine_tune_insert_target("hole6-1", robot)
+		self.pr.fine_tune_insert_target("hole6-2", robot)
 		# 학부 보조 연구원
 		self.pr.insert_spiral_motion(robot)
 
@@ -33,6 +33,10 @@ class Assembly_mode():
 
 def main():
 	a = Assembly_mode()
+
+	print 'start?'
+	raw_input()
+	
 	a.insert_pin("aaa")
 
 

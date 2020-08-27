@@ -5,8 +5,9 @@ from std_msgs.msg import *
 from Assembly_Motion_test import Assembly_motion
 from tf import *
 import numpy as np
-import rospy
+#import rospy
 from assembly_robot_msgs.srv import *
+import time
 
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
@@ -28,7 +29,7 @@ class Assembly_process():
 
 
 	def elp_camera_client(self, name):
-		for count in range(3):
+		for count in range(10):
 			self.rospy.wait_for_service('camera_server')
 			try:
 				basler_client = self.rospy.ServiceProxy('camera_server', cam_Srv)
@@ -52,7 +53,12 @@ class Assembly_process():
 
 		xyz, rpy = self.listener.lookupTransform('/world', hole_name, self.rospy.Time(0))
 
-		xyz[2] += 0.2
+		of_xyz, of_rpy = self.listener.lookupTransform('/rob1_real_ee_link', '/camera_center', self.rospy.Time(0))
+
+		xyz[0] += of_xyz[0]
+		xyz[1] += of_xyz[1]
+
+		xyz[2] += 0.25
 		if robot is False:
 			xyz.append(-1.5707)
 			xyz.append(0)
@@ -62,23 +68,35 @@ class Assembly_process():
 			xyz.append(3.1415)
 			xyz.append(-3.1415)
 
+		self.am.camera_pose(robot)
+
 		self.am.move_to(xyz, robot)
-		result = self.elp_camera_client(hole_name)
-		if result is False:
-			pass
-		else:
-			if result.result is False:
-				
+			
+		for count in range(10):
 
-		# xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
+			result = self.elp_camera_client(hole_name)
+			if result is False:
+				print "not found"
+				break
+			else:
+				if result.result is False:
+					self.am.move_current_to(result.x, result.y, result.z, robot)
+
+				else:
+					# xyz, rpy = self.listener.lookupTransform('/world', '/target', self.rospy.Time(0))
+					# while not self.listener.frameExists('/re_target'):
+					# 	print "nonono"
+					time.sleep(2)
+					break
 		
+		xyz, rpy = self.listener.lookupTransform('/world', '/re_target', self.rospy.Time(0))
+		
+		xyz[2] += 0.4
 
-		# xyz[2] += 0.4
-
-		# xyz.append(3.1415)
-		# xyz.append(0)
-		# xyz.append(0)
-		# self.am.move_to(xyz, robot)
+		xyz.append(3.1415)
+		xyz.append(0)
+		xyz.append(0)
+		self.am.move_to(xyz, robot)
 
 		#return target_pose
 
@@ -177,7 +195,9 @@ class Assembly_process():
 def main():
 	rospy.init_node('Assembly_Process', anonymous=True)
 	ap = Assembly_process(rospy)
-	ap.basler_camera_client("hole1")
+	print 'start?'
+	raw_input()
+	ap.fine_tune_insert_target("hole6-2", False)
 
 if __name__ == '__main__':
 	main()

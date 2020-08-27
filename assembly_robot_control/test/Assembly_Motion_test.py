@@ -6,6 +6,8 @@ from Assembly_Urx_test import UrxMotion
 from Assembly_Math_test import *
 from move_group_wrapper_test import MoveGroupCommanderWrapper
 
+import copy
+
 class Assembly_motion():
     def __init__(self):
 
@@ -24,19 +26,25 @@ class Assembly_motion():
         self.group1.go(grasp.post_grasp)
 
 
-    # def camera_pose(self, robot):
-    #     if robot is False:
-    #         camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
-    #         #self.mg_rob1.go(camera_pose_data)
-    #     else:
-    #         camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
-    #         self.mg_rob2.go(camera_pose_data)
-
+    def camera_pose(self, robot):
+        if robot is False:
+            camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
+            #self.mg_rob1.go(camera_pose_data)
+            plan = self.mg_rob1.plan(camera_pose_data)
+            print "move_camera?"
+            raw_input()
+            self.mg_rob2.execute(plan)
+        else:
+            camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
+            plan = self.mg_rob2.plan(camera_pose_data)
+            print "move_camera?"
+            raw_input()
+            self.mg_rob2.execute(plan)
 
     def pick_up_pin(self, pin_name):
 
-        rob1_pin1_pre_grasp = self.mg_rob1.get_named_target_values("rob1_pin1_pre_grasp")
-        rob1_pin1_grasp = self.mg_rob1.get_named_target_values("rob1_pin1_grasp")
+        rob1_pin1_pre_grasp = self.mg_rob1.get_named_target_values("rob1_" + pin_name + "_pre_grasp")
+        rob1_pin1_grasp = self.mg_rob1.get_named_target_values("rob1_" + pin_name + "_grasp")
 
         #################################################################################
         # 핀 고유의 이름에 맞춘 위치 지점으로 가도록 함
@@ -60,10 +68,28 @@ class Assembly_motion():
         print pose
         rob.set_pose_target(pose)
         plan = rob.plan()
-        print "go?"
+        print "move_to_go?"
         raw_input()
         rob.execute(plan)
 
+
+    def move_current_to(self,x,y,z,robot):
+        if robot is False:
+            rob = self.mg_rob1
+        else:
+            rob = self.mg_rob2
+
+        c_pose = copy.deepcopy(rob.get_current_pose().pose)
+        c_pose.position.x += x
+        c_pose.position.y += y
+
+        print c_pose
+
+        rob.set_pose_target(c_pose)
+        plan = rob.plan()
+        print "go?"
+        raw_input()
+        rob.execute(plan)
 
 
     def hand_over_pin(self):

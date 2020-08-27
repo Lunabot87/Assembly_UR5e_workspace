@@ -258,7 +258,7 @@ class TF_Node(ASM_D.Assemble_Data):
 
 	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3]):
 		for p_num in part_list:
-			self.add_mesh(part_name[p_num],part_file[p_num],part_pose[p_num])
+			self.add_mesh(part_name[p_num],part_file[p_num],part_init_pose[p_num])
 			self.set_part_TF(part_name[p_num])
 		
 		for pin_type in pin_list:
@@ -411,7 +411,6 @@ class TF_Node(ASM_D.Assemble_Data):
 			else:
 				pin_pose = copy.deepcopy(target_pin_TF)
 			self.Pin_List[pin_type]['pose'][pin_type] = pin_pose
-		self.a_list['pin'] = []
 		# self.part_add_flag = True
 
 def main():	
