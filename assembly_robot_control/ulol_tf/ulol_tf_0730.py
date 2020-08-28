@@ -423,6 +423,12 @@ def main():
 			TF.change_pin_org('pin101350-1',goal)
 			print "PRESS ENTER"
 			raw_input()
+			for i in range(7)
+				TF.remove_pin(0,i)
+			print "PRESS ENTER"
+			raw_input()
+
+
 		except rospy.ROSInterruptException:
 			return
 		except KeyboardInterrupt:

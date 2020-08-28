@@ -33,39 +33,21 @@ def make_orientation_list(orientation):
 def make_position_list(position):
     p_list = [position.x,position.y,position.z]
     return p_list
-def pose_from_transrot(trans = [0,0,0],rot = [0,0,0]):
-    pose = geometry_msgs.msg.PoseStamped().pose
-    pose.position.x = trans[0]
-    pose.position.y = trans[1]
-    pose.position.z = trans[2]
-
-    o_list = quaternion_from_euler(rot[0],rot[1],rot[2])
-    pose.orientation.x = o_list[0]
-    pose.orientation.y = o_list[1]
-    pose.orientation.z = o_list[2]
-    pose.orientation.w = o_list[3]
-
-    return pose
-def transrot_from_pose(pose):
-	trans = [pose.position.x,pose.position.y,pose.position.z]
-	o_list = make_orientation_list(pose.orientation)
-	rot = euler_from_quaternion(o_list)
-	return (trans,rot)
-def transquat_from_pose(pose):
-	trans = [pose.position.x,pose.position.y,pose.position.z]
-	o_list = make_orientation_list(pose.orientation)
-	return (trans,o_list)
-def mat_from_pose(pose):
-	quat = make_orientation_list(pose.orientation)
-	trans = make_position_list(pose.position)
-	mat = quaternion_matrix(quat)
-	mat[0:3,3] = trans
-	return mat
+def Pose_to_PoseStamped(pose):
+		pose_stamped = PoseStamped()
+		pose_stamped.pose = copy.deepcopy(pose)
+		return pose_stamped
 def pose_from_mat(mat):
-	rpy = euler_from_matrix(mat)
-	trans = mat[0:3,3]
-	pose = pose_from_transrot(trans,rpy)
-	return pose
+    rpy = list(euler_from_matrix(mat))
+    trans = [mat[0,3],mat[1,3],mat[2,3]]
+    pose = moveit_commander.conversions.list_to_pose(trans+rpy)
+    return pose
+def mat_from_pose(pose):
+	lt = moveit_commander.conversions.pose_to_list(pose)
+	quat = lt[3:]
+	mat = quaternion_matrix(quat)
+	mat[:3,3] = lt[:3]
+	return mat
 
 class TF_Node(object):
 
@@ -84,7 +66,7 @@ class TF_Node(object):
 
 		self.part_add_flag = False
 		self.listener = TransformListener()
-		rospy.Timer(rospy.Duration(0.1), self.send_TF)
+		rospy.Timer(rospy.Duration(0.2), self.send_TF)
 		
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}
@@ -133,7 +115,6 @@ class TF_Node(object):
 		#pin add at initial pose
 
 		pin_pose = pin_arrayment[pin_type][pin_tag]
-
 		Pin_name = pin_name[pin_type]+"-"+str(pin_tag+1)
 
 		self.add_mesh(Pin_name,pin_file[pin_type],pin_pose)
@@ -145,6 +126,14 @@ class TF_Node(object):
 		else:
 			pin_pose = copy.deepcopy(pin_pose.pose)
 		self.Pin_List[pin_type]['pose'][pin_tag] = pin_pose
+	def remove_pin(self,pin_type,pin_tag):
+		pin = pin_name[pin_type]
+		pin_full_name = pin + "-" + str(pin_tag+1)
+		self.scene.remove_world_object(pin_full_name)
+		self.Pin_List[pin_type]['pose'][pin_tag] = []
+		for i in range(6):
+			if pin_full_name in self.ASM_List[i]['pin']:
+				self.ASM_List[i]['pin'].remove(pin_full_name)
 
 	def set_parts(self,part_list =[0,1,2,3,4,5],pin_list = [0,1,2,3],pose_mode = part_init_pose):
 		for p_num in part_list:
@@ -184,7 +173,6 @@ class TF_Node(object):
 				tf_data = GP.grasping_pose[part_num][gp]
 				grasping_pose = self.get_TF_pose(part_origin,tf_data)
 			self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
-
 	def set_pin_TF(self,pin_type,pin_tag): # fill Pin_lsit #Pin_name = pin_name[pin_number]+"-"+str(pin_exist+1)
 	
 		target_pin_name = pin_name[pin_type]+"-"+str(pin_tag+1)
@@ -270,6 +258,7 @@ class TF_Node(object):
 			self.send_part_TF()
 			self.send_pin_TF()
 			self.send_GP_TF()
+			# print self.a_list
 			# if self.listener.frameExists("re_target"):
 			# 	print '[RE_TARGET!!]'
 			# else:
@@ -277,6 +266,7 @@ class TF_Node(object):
 	def get_TF_pose(self,origin_pose,TF_offset):
 		#origin pose : pose of origin of part : mesh_pose.pose
 		if origin_pose == []:
+			print "(get_TF_pose) : origin pose : []"
 			hole_pose = []
 		else:
 			o_list_origin = copy.deepcopy(make_orientation_list(origin_pose.orientation))
@@ -316,6 +306,33 @@ class TF_Node(object):
 		position_list = make_position_list(pose_from_world.position)
 		orientation_list = make_orientation_list(pose_from_world.orientation)
 		self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), tf_name, 'world')
+
+	def change_part_org(self,part_num,new_pose):
+		new_pose_stamped = Pose_to_PoseStamped(new_pose)
+		self.add_mesh(part_name[part_num],part_file[part_num],new_pose_stamped)
+
+		self.TF_List[part_num]['origin'] = copy.deepcopy(new_pose_stamped.pose)
+		num_of_holes = len(HO.hole_offset[part_num])
+		for hole_num in range(num_of_holes):
+			hole_data = HO.hole_offset[part_num][hole_num]
+			hole_pose = self.get_TF_pose(new_pose_stamped.pose,hole_data)
+			self.TF_List[part_num]['holes'][hole_num] = copy.deepcopy(hole_pose)
+
+		num_of_gp = len(GP.grasping_pose[part_num])
+		for gp in range(num_of_gp):
+			part_origin = self.TF_List[part_num]['origin']
+			tf_data = GP.grasping_pose[part_num][gp]
+			grasping_pose = self.get_TF_pose(part_origin,tf_data)
+			self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
+	def change_pin_org(self,target_pin_name,new_pose):
+		new_pose_stamped = Pose_to_PoseStamped(new_pose)
+		temp_pin_name = target_pin_name.split('-')[0]
+		temp_pin_num = pin_name.index(temp_pin_name)
+		temp_pin_tag = int(target_pin_name.split('-')[1])-1
+		self.Pin_List[temp_pin_num]['pose'][temp_pin_tag] = copy.deepcopy(new_pose)
+		target_pin_file = pin_file[temp_pin_num]
+		new_pose_stamped = Pose_to_PoseStamped(new_pose)
+		self.add_mesh(target_pin_name,target_pin_file,new_pose_stamped)
 
 	def assemble_part(self,target_part_name,assembling_part_name): # both names have to be string type
 		if target_part_name in part_name and assembling_part_name in part_name:
@@ -369,7 +386,7 @@ class TF_Node(object):
 def main():	
 	rospy.init_node('ULOL_TF_test', anonymous=True)
 	TF = TF_Node()
-	TF.set_parts([1,2,3,4,5])
+	TF.set_parts()
 	while True:
 		try:
 			print "PRES ENTER"
