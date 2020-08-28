@@ -252,6 +252,7 @@ class TF_Node(object):
 					position_list = make_position_list(selected_part['pose'][g].position)
 					orientation_list = make_orientation_list(selected_part['pose'][g].orientation)
 					self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), gp_name, 'world')
+					
 	def send_TF(self,dumb_Data):
 		if self.part_add_flag == True:
 			# print"[INFO] send_TF CALLED"
