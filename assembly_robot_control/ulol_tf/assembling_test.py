@@ -510,7 +510,7 @@ def main():
 		listener = tf.TransformListener()
 		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
 		
-		PART.set_parts([0,1,2,3,4,5],[0,2])
+		PART.set_parts([1,2,3,4,5],[0,2])
 
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
