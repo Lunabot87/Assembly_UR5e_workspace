@@ -11,7 +11,6 @@ from sensor_msgs.msg import JointState
 from moveit_commander import MoveGroupCommander, PlanningSceneInterface
 
 from ur5e_inv_kin_wrapper import UR5eInvKinForTF
-from Parts_hj import Parts
 from utils.const import *
 from utils.conversions import *
 
@@ -239,68 +238,3 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     if result3 < 0: return False
     
     return True
-
-def main():
-  rospy.init_node('move_group_wrapper_test', anonymous=True)
-  mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
-  mg_rob2 = MoveGroupCommanderWrapper('rob2_arm')
-  assembly_scene = Parts('part2') ###############
-  listener = tf.TransformListener()
-
-  print "ENTER"
-  raw_input()
-
-  mg_rob1.go_to_initial_pose()
-  print "ENTER"
-  raw_input()
-
-  target_q = mg_rob1.get_named_target_values('rob1_pin1_camera_check')
-  mg_rob1.go(target_q)
-  print "ENTER"
-  raw_input()
-  
-  mg_rob2.go_to_initial_pose()
-  print "ENTER"
-  raw_input()
-
-  assembly_scene.add_mesh(PART2_PATH)
-  print "ENTER"
-  raw_input()
-
-  assembly_scene.send_full_grasp_pose('part2')
-  print "ENTER"
-  raw_input()
-
-  try:
-    mg_rob1.set_end_effector_link('rob1_tcp_gripper_closed')
-        
-    print "ENTER"
-    raw_input()
-
-    grasp_offset = 0.2
-
-    (grasp_trans1, grasp_rot1) \
-     = listener.lookupTransform('rob1_real_base_link', 'part2_grasp', rospy.Time(0))
-    grab_result = mg_rob1.move_to_grab_part(grasp_trans1, grasp_rot1, grasp_offset)
-    print "move_to_grab_part :", grab_result
-        
-    print "ENTER"
-    raw_input()
-
-    mg_rob1.go_to_initial_pose()
-    print "ENTER"
-    raw_input()
-
-    (grasp_trans2, grasp_rot2) \
-      = listener.lookupTransform('rob2_real_base_link', 'part2_grasp', rospy.Time(0))
-    grab_result = mg_rob2.move_to_grab_part(grasp_trans2, grasp_rot2, grasp_offset)
-    print "move_to_grab_part :", grab_result
-
-  except Exception as e:
-    print e
-  
-  print "ENTER"
-  raw_input()
-
-if __name__ == '__main__':
-  main()

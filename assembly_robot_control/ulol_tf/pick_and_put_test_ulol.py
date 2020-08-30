@@ -14,28 +14,7 @@ import Part_ulol	# PART CLASS
 from Part_Pin import assembly_data
 
 
-def add_mesh_at_random_pose(CLASS_SET,mesh_name):
-	PART_SCENE = CLASS_SET['tf']
-
-	if not mesh_name in Part_ulol.part_name:
-		print '[WRONG PART NAME]'
-	else:
-		pose = Part_ulol.PoseStamped()
-		trans = [random.uniform(-0.4,0.4),random.uniform(-0.5,0.5),0.83]
-		if mesh_name == 'chair_part5':
-			rot = [0,0.09,random.uniform(-pi,pi)]
-		elif mesh_name == 'chair_part6':
-			rot = [3.14,0.09,random.uniform(-pi,pi)]
-			trans[2] = 0.825
-		else:
-			rot = [0,0,random.uniform(-pi,pi)]
-		pose.pose = Part_ulol.pose_from_transrot(trans,rot)
-
-		mesh_num = Part_ulol.part_name.index(mesh_name)
-		mesh_file = Part_ulol.part_file[mesh_num]
-		PART_SCENE.add_mesh(mesh_name,mesh_file,pose)	
 def pose_compare(target_pose,cur_pose):
-
 	target_pose_quat = Part_ulol.make_orientation_list(target_pose.orientation)
 	target_pose_mat = Part_ulol.quaternion_matrix(target_pose_quat)
 	target_pose_trans = Part_ulol.make_position_list(target_pose.position)
@@ -46,21 +25,16 @@ def pose_compare(target_pose,cur_pose):
 	cur_pose_trans = Part_ulol.make_position_list(cur_pose.position)
 	cur_pose_mat[0:3,3] = cur_pose_trans
 
-	target_pose_round = numpy.around(target_pose_trans,2)
-	cur_pose_round = numpy.around(cur_pose_trans,2)
+	target_pose_round = numpy.around(target_pose_mat,2)
+	cur_pose_round = numpy.around(cur_pose_mat,2)
 
 	is_equal = target_pose_round == cur_pose_round
-	# for i in range(4):
-	# 	for j in range(4):
-	# 		if is_equal[i,j] == False:
-	# 			print '\n',is_equal
-	# 			return False
-	for i in range(3):
-		if is_equal[i] == False:
-			print '\n', target_pose_round,'\n',cur_pose_round
-			return False
+	for i in range(4):
+		for j in range(4):
+			if is_equal[i,j] == False:
+				print '\n',target_pose_round,'\n',cur_pose_round
+				return False
 	return True
-
 def Is_part_on_proper_pose(part_tf_list, target_part_name, proper_pose = Part_ulol.part_init_pose):
 	part_num = Part_ulol.part_name.index(target_part_name)
 	cur_pose = part_tf_list[part_num]['origin']
@@ -158,7 +132,7 @@ def pick_the_mesh_up(CLASS_SET, rob_name, target_mesh_name,tag_offset = None, ho
 
 	(g_trans, g_rot) = CLASS_SET['listener'].lookupTransform(rob_base, grasp_point, rospy.Time(0))
 
-	offset = 0.2
+	offset = 0.1
 
 	(pg_trans, pg_rot) = ROB._grasp_to_pregrasp(g_trans, g_rot, offset)
 	(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
@@ -188,12 +162,11 @@ def put_the_part_down(CLASS_SET, rob_name, target_part_name, goal_pose, offset =
 	(result0, _) = ROB._get_best_ik_plan(g_trans, g_rot)
 	ROB.go_to_pose_goal(pg_trans, pg_rot, result0)
 
-	
-	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	ROB.go_linear_to_pose_goal(g_trans, g_rot, result0)
-
+	# ROB.go_to_pose_goal(pg_trans, pg_rot, result0)
 	attach_list = PART_SCENE.get_attach_list(target_part_name)
 	detach(CLASS_SET,rob_name,attach_list)
+	ROB.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
 	PART_SCENE.init_attach_list()
 	ROB.go_to_initial_pose()
 	print "==================================================[PUT THE PART DOWN]\n"
@@ -225,7 +198,7 @@ def hold_part(CLASS_SET,target_part_name, hold_point_num, rob_name = 'rob2'):
 			ROB.go_linear_to_pose_goal(h_trans, h_rot, result0)
 
 		print "==========================================================[HOLD PART]\n"
-def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol.part_init_pose):
+def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol.part_init_pose, gp = None, rob = None, holding = True):
 	print "\n[MOVE PART TO PLACE POSE]============================================"
 	PART_SCENE = CLASS_SET['tf']
 	print target_part_name,
@@ -245,13 +218,16 @@ def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol
 		dist_to_table_org=[]
 		
 		# the nearist GP select
-		for i in range(num_of_gp):
-			gp_position = gp_list[i].position
-			gp_point = numpy.array([gp_position.x,gp_position.y-0.05,0])
-			dist = numpy.linalg.norm(gp_point)
-			dist_to_table_org.append(deepcopy(dist))
+		if gp == None:
+			for i in range(num_of_gp):
+				gp_position = gp_list[i].position
+				gp_point = numpy.array([gp_position.x,gp_position.y-0.05,0])
+				dist = numpy.linalg.norm(gp_point)
+				dist_to_table_org.append(deepcopy(dist))
 
-		cur_gp_num = dist_to_table_org.index(min(dist_to_table_org))
+			cur_gp_num = dist_to_table_org.index(min(dist_to_table_org))
+		else:
+			cur_gp_num = gp
 		print "GRASP_POINT-",cur_gp_num+1
 		cur_gp_pose = gp_list[cur_gp_num]
 
@@ -262,14 +238,17 @@ def move_part_to_place_pose(CLASS_SET, target_part_name, proper_pose = Part_ulol
 
 		rob_near_to_cur = which_rob_is_near_to(cur_gp_pose, target_part_name,'rob2')
 		rob_near_to_prop = which_rob_is_near_to(proper_gp_pose, target_part_name, rob_near_to_cur)
-
-		if not rob_near_to_cur == which_rob_is_near_to(cur_gp_pose):
-				if rob_near_to_cur == 'rob1':
-					rob_near_to_cur = 'rob2'
-				elif rob_near_to_cur == 'rob2':
-					rob_near_to_cur = 'rob1'
-
-		pick_the_mesh_up(CLASS_SET, rob_near_to_cur, target_part_name, cur_gp_num)
+		if rob == None:
+			if not rob_near_to_cur == which_rob_is_near_to(cur_gp_pose):
+					if rob_near_to_cur == 'rob1':
+						rob_near_to_cur = 'rob2'
+					elif rob_near_to_cur == 'rob2':
+						rob_near_to_cur = 'rob1'
+		else:
+			rob_near_to_cur = rob
+			rob_near_to_prop = rob
+		print "SELECTED ROBOT =",rob_near_to_cur
+		pick_the_mesh_up(CLASS_SET, rob_near_to_cur, target_part_name, cur_gp_num, holding)
 
 		if rob_near_to_prop == rob_near_to_cur:
 			print "SAME ROB"
@@ -311,13 +290,13 @@ def insert_pin(CLASS_SET, target_pin, pin_tag, target_part, hole_num):# target_p
 		else:
 			if part_num in [1,2]:
 				if hole_num is 4:
-					hold_point_offset = 3
+					hold_point_offset = 3	
 					if part_num == 2:
 						if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part_spare_pose):
 							print "before_hold_part : [WRONG_PART_POSE(part2or3) ==> CHANGE TO SPARE_POSE]"
 							move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part_spare_pose)
 					else:
-						hold_point_offset = 1
+						hold_point_offset = 1				
 						
 				elif hole_num is 5:
 					if part_num == 2:
@@ -329,8 +308,11 @@ def insert_pin(CLASS_SET, target_pin, pin_tag, target_part, hole_num):# target_p
 						hold_point_offset = 0
 						
 				else:
-					print "NOT YET"
-					return
+					hold_point_offset = None
+
+			elif part_num == 3:
+				hold_point_offset = None
+				# move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part_init_pose,0)
 
 			elif part_num in [4,5]:
 				if hole_num in [0,1]:
@@ -373,9 +355,13 @@ def insert_pin(CLASS_SET, target_pin, pin_tag, target_part, hole_num):# target_p
 			PART_SCENE.assemble_pin(target_part,target_pin_name)
 			print "ASM_List : ",PART_SCENE.ASM_List
 			mat1 = Part_ulol.mat_from_pose(hole_pose)
-			mat2 = Part_ulol.translation_matrix((0,0,-(Part_ulol.pin_length[pin_num])))
-			rpy = Part_ulol.pin_TF_pose[pin_num]['rot']
+
+			trans = numpy.array(Part_ulol.pin_TF_pose[pin_num]['trans'])+numpy.array([0,0,-(Part_ulol.pin_length[pin_num])])
+			mat2 = Part_ulol.translation_matrix(trans)
+			
+			rpy  = Part_ulol.pin_TF_pose[pin_num]['rot']
 			mat3 = Part_ulol.euler_matrix(-rpy[0],rpy[1],rpy[2])
+			
 			mat  = (mat1.dot(mat2)).dot(mat3)
 			goal = Part_ulol.pose_from_mat(mat)
 			PART_SCENE.change_pin_org(target_pin_name,goal)
@@ -387,41 +373,44 @@ def assemble_part(CLASS_SET, assmebling_part_name):
 	PART_SCENE = CLASS_SET['tf']
 	target_part = 'chair_part6'
 	part_num = Part_ulol.part_name.index(assmebling_part_name)
-	if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
-		print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
-		move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
-	chair_part6_org = PART_SCENE.TF_List[5]['origin']
-	if assmebling_part_name == 'chair_part2':
-		gp_num = 0
-		hold_num = 2
-		offset_vector = [0,-0.1,0]
-		assemble_pose_offset = assembly_data.chair_part2_assemble_offset
 
-	elif assmebling_part_name == 'chair_part3':
-		gp_num = 0
-		hold_num = 0
-		offset_vector = [0,-0.1,0]
-		assemble_pose_offset = assembly_data.chair_part3_assemble_offset
-
-	elif assmebling_part_name == 'chair_part4':
-		gp_num = 1
-		hold_num = 0
-		offset_vector = [0,0.1,0]
-		assemble_pose_offset = assembly_data.chair_part4_assemble_offset
-		
-	elif assmebling_part_name == 'chair_part5':
+	if assmebling_part_name == 'chair_part5':
 		gp_num = 3
 		hold_num = None
 		offset_vector = 0.1
 		assemble_pose_offset = assembly_data.chair_part5_assemble_offset
 		CLASS_SET['rob1'].go([0,0,-1.57,0,0,0], wait=True)
 	else:
-		print "(assemble_part):WRONG_PART_NUM"
-		return
+		if not Is_part_on_proper_pose(PART_SCENE.TF_List,target_part,Part_ulol.part12_assembling_pose):
+			print "before_hold_part : [WRONG_PART_POSE ==> CHANGE TO assembling_POSE]"
+			move_part_to_place_pose(CLASS_SET,target_part,Part_ulol.part12_assembling_pose)
+	
+		if assmebling_part_name == 'chair_part2':
+			gp_num = 1
+			hold_num = 2
+			offset_vector = [0, 0.1,0]
+			assemble_pose_offset = assembly_data.chair_part2_assemble_offset
 
+		elif assmebling_part_name == 'chair_part3':
+			gp_num = 0
+			hold_num = 0
+			offset_vector = [0,-0.1,0]
+			assemble_pose_offset = assembly_data.chair_part3_assemble_offset
+
+		elif assmebling_part_name == 'chair_part4':
+			gp_num = 1
+			hold_num = 0
+			offset_vector = [0,0.1,0]
+			assemble_pose_offset = assembly_data.chair_part4_assemble_offset
+			
+		else:
+			print "(assemble_part):WRONG_PART_NUM"
+			return
+
+	chair_part6_org = PART_SCENE.TF_List[5]['origin']
 	complete_assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
 
-	assemble_pose_offset['trans'][2] -= 0.025
+	assemble_pose_offset['trans'][2] -= 0.020
 
 	assemble_org = PART_SCENE.get_TF_pose(chair_part6_org,assemble_pose_offset)
 
@@ -441,58 +430,6 @@ def assemble_part(CLASS_SET, assmebling_part_name):
 	PART_SCENE.change_part_org(part_num,complete_assemble_org)
 	print "======================================================[ASSEMBLE_PART]\n"
 
-def move_part_to_place_pose_test():
-	try:
-		rospy.init_node('pick_and_place_test', anonymous=True)
-		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
-		MG_ROB2 = MGW.MoveGroupCommanderWrapper('rob2_arm')
-		PART = Part_ulol.TF_Node()
-		a = tf.TransformListener()
-		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
-		target_q = MG_ROB1.get_named_target_values('rob1_pin1_camera_check')
-		MG_ROB1.go(target_q)
-		MG_ROB2.go_to_initial_pose()
-
-		PART.set_parts([1,2,5],[0])
-
-		print "ENTER",
-		raw_input()
-		add_mesh_at_random_pose(CLASS_SET,'chair_part2')
-		print "ENTER",
-		raw_input()
-		add_mesh_at_random_pose(CLASS_SET,'chair_part3')
-		print "ENTER",
-		raw_input()
-		add_mesh_at_random_pose(CLASS_SET,'chair_part6')
-		print "ENTER",
-		raw_input()
-		move_part_to_place_pose(CLASS_SET,'chair_part6',Part_ulol.part_ready_pose)
-		move_part_to_place_pose(CLASS_SET,'chair_part3')
-		move_part_to_place_pose(CLASS_SET,'chair_part2')
-	
-
-	except Exception as e:
-		print e
-def grab_pin_test():
-	try:
-		rospy.init_node('pick_and_place_test', anonymous=True)
-		MG_ROB1 = MGW.MoveGroupCommanderWrapper('rob1_arm')
-		MG_ROB2 = MGW.MoveGroupCommanderWrapper('rob2_arm')
-		PART = Part_ulol.TF_Node()
-		listener = tf.TransformListener()
-		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
-		target_q = MG_ROB1.get_named_target_values('rob1_pin1_camera_check')
-		MG_ROB1.go(target_q)
-		MG_ROB2.go_to_initial_pose()
-
-		PART.set_parts([])
-
-		target_pin = Part_ulol.pin_name[0]
-		grab_pin(CLASS_SET,target_pin,0)
-	
-
-	except Exception as e:
-		print e
 def attaching_test():
 	try:
 		rospy.init_node('pick_and_place_test', anonymous=True)
@@ -503,20 +440,23 @@ def attaching_test():
 		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
 		
 
-		PART.set_parts([4,5],[],Part_ulol.part12_assembling_pose)
+		PART.set_parts([1,5],[],Part_ulol.part12_assembling_pose)
 
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
-		print "ENTER"
-		raw_input()
-		
-		move_part_to_place_pose(CLASS_SET,'chair_part3', Part_ulol.part_ready_pose)
 		move_part_to_place_pose(CLASS_SET,'chair_part2', Part_ulol.part_ready_pose)
+		move_part_to_place_pose(CLASS_SET,'chair_part3', Part_ulol.part_ready_pose)
 
 		assemble_part(CLASS_SET,'chair_part3')
 		assemble_part(CLASS_SET,'chair_part2')
 		assemble_part(CLASS_SET,'chair_part4')
+		print "ENTER"
+		raw_input()
+		move_part_to_place_pose(CLASS_SET,P6,Part_ulol.part_spare_pose,0,'rob1')
+		print "ENTER"
+		raw_input()
 		assemble_part(CLASS_SET,'chair_part5')
+
 		
 	
 
@@ -559,7 +499,6 @@ def insert_pin_test():
 	except Exception as e:
 		print e
 
-
 def main():
 	try:
 		rospy.init_node('pick_and_place_test', anonymous=True)
@@ -569,7 +508,7 @@ def main():
 		listener = tf.TransformListener()
 		CLASS_SET = {'rob1':MG_ROB1,'rob2':MG_ROB2,'tf':PART,'listener':listener}
 		
-		PART.set_parts([1,2,3,4,5],[0,2])
+		PART.set_parts([0,1,2,3,4,5],[0,2])
 
 		MG_ROB1.go_to_initial_pose()
 		MG_ROB2.go_to_initial_pose()
@@ -581,9 +520,8 @@ def main():
 		P6 = Part_ulol.part_name[5]
 
 		p1 = Part_ulol.pin_name[0]
-		p2 = Part_ulol.pin_name[1]
 		p3 = Part_ulol.pin_name[2]
-		p4 = Part_ulol.pin_name[3]
+
 
 		for i in [0,1,2,3]:
 			print i
@@ -595,29 +533,35 @@ def main():
 		move_part_to_place_pose(CLASS_SET,P2,Part_ulol.part_ready_pose)
 		move_part_to_place_pose(CLASS_SET,P3,Part_ulol.part_ready_pose)
 
+		pin = 0
+
 		for i in range(7):
-			insert_pin(CLASS_SET,p1,i,P6,i)
+			insert_pin(CLASS_SET,p1,pin,P6,i)
+			pin += 1
 
 		assemble_part(CLASS_SET,'chair_part3')
 		assemble_part(CLASS_SET,'chair_part2')
 		assemble_part(CLASS_SET,'chair_part4')
-		assemble_part(CLASS_SET,'chair_part5')
-		
-		print "ENTER",
-		raw_input()
 
-		# for i in range(7):
-		# 	pin = i + 7
-		# 	if i in [0,1]:
-		# 		hole = i
-		# 		insert_pin(CLASS_SET,p1,pin,P3,hole)
-		# 	elif i in [2,3]:
-		# 		hole = i
-		# 		insert_pin(CLASS_SET,p1,pin,P2,hole)
-		# 	else:
-		# 		hole = i-2
-				# insert_pin(CLASS_SET,p1,pin,P4,hole)
+		for hole in [2,3]:
+			insert_pin(CLASS_SET,p1,pin,P2,hole)
+			pin += 1
+
+		MG_ROB2.go([0,0,-1.57,0,0,0], wait=True)
+		move_part_to_place_pose(CLASS_SET,P6,Part_ulol.part_spare_pose,gp = 0,rob = 'rob1',holding = True)
+
+		for hole in [0,1]:
+			insert_pin(CLASS_SET,p1,pin,P3,hole)
+			pin += 1
 		
+		for hole in [2,3,4]:		
+			insert_pin(CLASS_SET,p1,pin,P4,hole)
+			pin += 1
+
+		assemble_part(CLASS_SET,'chair_part5')
+		MG_ROB2.go([0,0,-1.57,0,0,0], wait=True)
+		MG_ROB1.go([0,0,-1.57,0,0,0], wait=True)
+
 	except Exception as e:
 		print e
 
