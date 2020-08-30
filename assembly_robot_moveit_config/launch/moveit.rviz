@@ -11,7 +11,7 @@ Panels:
         - /TF1
         - /Axes1
       Splitter Ratio: 0.5
-    Tree Height: 227
+    Tree Height: 140
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -435,7 +435,7 @@ Visualization Manager:
       Robot Description: robot_description
       Scene Geometry:
         Scene Alpha: 1
-        Scene Color: 233; 185; 110
+        Scene Color: 238; 238; 236
         Scene Display Time: 0.20000000298023224
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
@@ -756,7 +756,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 10
+      Frame Timeout: 15
       Frames:
         All Enabled: false
         GOAL_POSE:
@@ -771,6 +771,8 @@ Visualization Manager:
           Value: false
         camera_center:
           Value: false
+        chair_part1:
+          Value: true
         chair_part2:
           Value: true
         chair_part2-GRASP-1:
@@ -796,6 +798,18 @@ Visualization Manager:
         chair_part4-GRASP-3:
           Value: true
         chair_part4-GRASP-4:
+          Value: true
+        chair_part5:
+          Value: true
+        chair_part5-GRASP-1:
+          Value: true
+        chair_part5-GRASP-2:
+          Value: true
+        chair_part5-GRASP-3:
+          Value: true
+        chair_part5-GRASP-4:
+          Value: true
+        chair_part5-GRASP-5:
           Value: true
         chair_part6:
           Value: true
@@ -857,6 +871,26 @@ Visualization Manager:
           Value: true
         hole4-8:
           Value: true
+        hole5-1:
+          Value: true
+        hole5-10:
+          Value: true
+        hole5-2:
+          Value: true
+        hole5-3:
+          Value: true
+        hole5-4:
+          Value: true
+        hole5-5:
+          Value: true
+        hole5-6:
+          Value: true
+        hole5-7:
+          Value: true
+        hole5-8:
+          Value: true
+        hole5-9:
+          Value: true
         hole6-1:
           Value: true
         hole6-10:
@@ -876,6 +910,84 @@ Visualization Manager:
         hole6-8:
           Value: true
         hole6-9:
+          Value: true
+        pin101350-1:
+          Value: true
+        pin101350-10:
+          Value: true
+        pin101350-11:
+          Value: true
+        pin101350-12:
+          Value: true
+        pin101350-13:
+          Value: true
+        pin101350-14:
+          Value: true
+        pin101350-15:
+          Value: true
+        pin101350-16:
+          Value: true
+        pin101350-17:
+          Value: true
+        pin101350-18:
+          Value: true
+        pin101350-19:
+          Value: true
+        pin101350-2:
+          Value: true
+        pin101350-20:
+          Value: true
+        pin101350-21:
+          Value: true
+        pin101350-3:
+          Value: true
+        pin101350-4:
+          Value: true
+        pin101350-5:
+          Value: true
+        pin101350-6:
+          Value: true
+        pin101350-7:
+          Value: true
+        pin101350-8:
+          Value: true
+        pin101350-9:
+          Value: true
+        pin104322-1:
+          Value: true
+        pin104322-2:
+          Value: true
+        pin104322-3:
+          Value: true
+        pin104322-4:
+          Value: true
+        pin104322-5:
+          Value: true
+        pin104322-6:
+          Value: true
+        pin122620-1:
+          Value: true
+        pin122620-1hole:
+          Value: true
+        pin122620-2:
+          Value: true
+        pin122620-2hole:
+          Value: true
+        pin122620-3:
+          Value: true
+        pin122620-3hole:
+          Value: true
+        pin122620-4:
+          Value: true
+        pin122620-4hole:
+          Value: true
+        pin122925-1:
+          Value: true
+        pin122925-2:
+          Value: true
+        pin122925-3:
+          Value: true
+        pin122925-4:
           Value: true
         realsense_base_link:
           Value: false
@@ -1000,6 +1112,8 @@ Visualization Manager:
         world:
           GOAL_POSE:
             {}
+          chair_part1:
+            {}
           chair_part2:
             {}
           chair_part2-GRASP-1:
@@ -1025,6 +1139,18 @@ Visualization Manager:
           chair_part4-GRASP-3:
             {}
           chair_part4-GRASP-4:
+            {}
+          chair_part5:
+            {}
+          chair_part5-GRASP-1:
+            {}
+          chair_part5-GRASP-2:
+            {}
+          chair_part5-GRASP-3:
+            {}
+          chair_part5-GRASP-4:
+            {}
+          chair_part5-GRASP-5:
             {}
           chair_part6:
             {}
@@ -1086,6 +1212,26 @@ Visualization Manager:
             {}
           hole4-8:
             {}
+          hole5-1:
+            {}
+          hole5-10:
+            {}
+          hole5-2:
+            {}
+          hole5-3:
+            {}
+          hole5-4:
+            {}
+          hole5-5:
+            {}
+          hole5-6:
+            {}
+          hole5-7:
+            {}
+          hole5-8:
+            {}
+          hole5-9:
+            {}
           hole6-1:
             {}
           hole6-10:
@@ -1105,6 +1251,84 @@ Visualization Manager:
           hole6-8:
             {}
           hole6-9:
+            {}
+          pin101350-1:
+            {}
+          pin101350-10:
+            {}
+          pin101350-11:
+            {}
+          pin101350-12:
+            {}
+          pin101350-13:
+            {}
+          pin101350-14:
+            {}
+          pin101350-15:
+            {}
+          pin101350-16:
+            {}
+          pin101350-17:
+            {}
+          pin101350-18:
+            {}
+          pin101350-19:
+            {}
+          pin101350-2:
+            {}
+          pin101350-20:
+            {}
+          pin101350-21:
+            {}
+          pin101350-3:
+            {}
+          pin101350-4:
+            {}
+          pin101350-5:
+            {}
+          pin101350-6:
+            {}
+          pin101350-7:
+            {}
+          pin101350-8:
+            {}
+          pin101350-9:
+            {}
+          pin104322-1:
+            {}
+          pin104322-2:
+            {}
+          pin104322-3:
+            {}
+          pin104322-4:
+            {}
+          pin104322-5:
+            {}
+          pin104322-6:
+            {}
+          pin122620-1:
+            {}
+          pin122620-1hole:
+            {}
+          pin122620-2:
+            {}
+          pin122620-2hole:
+            {}
+          pin122620-3:
+            {}
+          pin122620-3hole:
+            {}
+          pin122620-4:
+            {}
+          pin122620-4hole:
+            {}
+          pin122925-1:
+            {}
+          pin122925-2:
+            {}
+          pin122925-3:
+            {}
+          pin122925-4:
             {}
           table:
             bar1:
@@ -1242,39 +1466,39 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.6457507610321045
+      Distance: 2.973477363586426
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.21772421896457672
-        Y: 0.014204687438905239
-        Z: 0.7688585519790649
+        X: -0.13618169724941254
+        Y: -0.012172195129096508
+        Z: 1.1169843673706055
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.519798755645752
+      Pitch: 0.559796929359436
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.30363392829895
+      Yaw: 1.7236326932907104
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
-  Height: 1052
-  Hide Left Dock: false
+    collapsed: true
+  Height: 713
+  Hide Left Dock: true
   Hide Right Dock: true
   Motion Planning Tasks:
     collapsed: true
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002a300000383fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000120000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001630000025d0000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f0000037efc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073000000003d0000037e0000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000039fc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004d70000038300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000029b0000026ffc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d000000c9000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000010c000001a00000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f0000037efc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073000000003d0000037e0000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000052900000039fc0100000002fb0000000800540069006d0065000000000000000529000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000005290000026f00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -1283,6 +1507,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1920
-  X: 1366
-  Y: 0
+  Width: 1321
+  X: 45
+  Y: 27
