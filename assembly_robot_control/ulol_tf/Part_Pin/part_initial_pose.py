@@ -18,10 +18,10 @@ for i in range(6):
 	part_init_pose[i].pose.position.z = 0.83
 
 part1_pose.pose.position.x = 0
-part1_pose.pose.position.y = 0.45
+part1_pose.pose.position.y = 1.05
 
 part2_pose.pose.position.x = -0.2
-part2_pose.pose.position.y = 0.1
+part2_pose.pose.position.y = 0.6
 orientation_list = quaternion_from_euler(0,0,3.14)
 part2_pose.pose.orientation.x = orientation_list[0]
 part2_pose.pose.orientation.y = orientation_list[1]
@@ -29,7 +29,7 @@ part2_pose.pose.orientation.z = orientation_list[2]
 part2_pose.pose.orientation.w = orientation_list[3]
 
 part3_pose.pose.position.x = -0.18
-part3_pose.pose.position.y = -0.1
+part3_pose.pose.position.y = 0.4
 part3_pose.pose.orientation.x = orientation_list[0]
 part3_pose.pose.orientation.y = orientation_list[1]
 part3_pose.pose.orientation.z = orientation_list[2]
@@ -43,16 +43,16 @@ part4_pose.pose.orientation.y = orientation_list[1]
 part4_pose.pose.orientation.z = orientation_list[2]
 part4_pose.pose.orientation.w = orientation_list[3]
 
-part5_pose.pose.position.x = 0.15
-part5_pose.pose.position.y = -0.9
-orientation_list = quaternion_from_euler(0,0.09,0)
+part5_pose.pose.position.x = 0.5
+part5_pose.pose.position.y = -1.0
+orientation_list = quaternion_from_euler(3.14,-0.09,-1.57)
 part5_pose.pose.orientation.x = orientation_list[0]
 part5_pose.pose.orientation.y = orientation_list[1]
 part5_pose.pose.orientation.z = orientation_list[2]
 part5_pose.pose.orientation.w = orientation_list[3]
 
 part6_pose.pose.position.x = 0.45
-part6_pose.pose.position.y = 0.15
+part6_pose.pose.position.y = 0.20
 orientation_list = quaternion_from_euler(3.14,0.09,-1.57)
 part6_pose.pose.orientation.x = orientation_list[0]
 part6_pose.pose.orientation.y = orientation_list[1]

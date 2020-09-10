@@ -405,20 +405,3 @@ class TF_Node(ASM_D.Assemble_Data):
 			self.Pin_List[pin_type]['pose'][pin_type] = pin_pose
 		# self.part_add_flag = True
 
-def main():	
-	rospy.init_node('TF_test', anonymous=True)
-	TF = TF_Node()
-	while True:
-		try:
-			TF.set_parts()
-			print "PRESS ENTER"
-			raw_input()
-		except rospy.ROSInterruptException:
-			return
-		except KeyboardInterrupt:
-			return
-
-
-
-if __name__ == '__main__':
-	main()
