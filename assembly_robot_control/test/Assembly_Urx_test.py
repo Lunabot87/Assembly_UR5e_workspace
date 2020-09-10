@@ -210,10 +210,10 @@ class UrxMotion():
             try:
                 # print "try"
                 force = self.robot.get_tcp_force()
-                print force[2]
+                # print force[2]
                 # print force[2]
                 if abs(force[2]) > 3:
-                    print force[2]
+                    # print force[2]
                     self.robot.send_program("end_force_mode()")
                     break
             except KeyboardInterrupt:
@@ -234,7 +234,7 @@ class UrxMotion():
                 force = self.robot.get_tcp_force()
                 # print force[0], force[1]
                 if abs(force[0]) > 10 or abs(force[1]) > 10:
-                    print force[0], force[1]
+                    # print force[0], force[1]
                     self.robot.send_program("end_force_mode()")
                     break
             except KeyboardInterrupt:
@@ -263,7 +263,7 @@ class UrxMotion():
                 force = self.robot.get_tcp_force()
                 # print force[2]
                 if force[2] > 50:
-                    print force[2]
+                    # print force[2]
                     time.sleep(1)
                     self.robot.send_program("end_force_mode()")
                     break

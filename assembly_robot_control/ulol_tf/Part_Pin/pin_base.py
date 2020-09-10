@@ -14,9 +14,9 @@ pin_base14 = deepcopy(pose)
 pin_base26 = deepcopy(pose)
 pin_base29 = deepcopy(pose)
 
-pin_base11.pose.position.x = 0.55
-pin_base11.pose.position.y = 0.44
-pin_base11.pose.position.z += 0.04
+pin_base11.pose.position.x = 0.49
+pin_base11.pose.position.y = 0.45
+pin_base11.pose.position.z += 0.02
 
 pin_base14.pose.position.x = 0.55
 pin_base14.pose.position.y = 0.56

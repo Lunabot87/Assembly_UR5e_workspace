@@ -102,6 +102,7 @@ class UR5eInvKinForTF():
     result = self.sv_srv.call(gsvr)
     rv = result.valid
     rc = result.contacts
+    # print joint, rv, rc
 
     # print("+"*70)
     # print('state validity result')
@@ -201,7 +202,7 @@ class UR5eInvKinForTF():
     for i in range(8):
       diff = 0.0
       if i in wrist_down:
-        diff += (m.pi)**2
+        diff += 100 #(m.pi)**2
       for j in range(6): 
         diff += self.w[j] * (inv_sol[j][i] - cur_joint[j])**2 
       sol = inv_sol[:, i]

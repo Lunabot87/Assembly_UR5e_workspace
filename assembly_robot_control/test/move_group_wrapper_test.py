@@ -32,8 +32,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     # setup for move group
     self.set_planning_time(3)
     self.set_num_planning_attempts(5)
-    self.set_max_velocity_scaling_factor(1)
-    self.set_max_acceleration_scaling_factor(1)
+    self.set_max_velocity_scaling_factor(0.5)
+    self.set_max_acceleration_scaling_factor(0.25)
 
     if _eef_link is None:
       eef_link = 'tcp_gripper_closed'
@@ -93,17 +93,29 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         print "selected q: ", selected_q
 
         self.ur5e.publish_state(selected_q, True)
-        (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
-        
-        if success:
-          print "plan success: {}".format(b)
-          user_choice = raw_input("--> press [y/n(wrong ik)]")  
-          if user_choice == 'y':
-            return inv_sol[i]['idx'], traj
-          else:
-            continue        
+        # ------------------updated version
+        # (success, traj, b, err) = self.plan(self._list_to_js(selected_q))        
+        # if success:
+        #   print "plan success: {}".format(b)
+        #   user_choice = raw_input("--> press [y/n(wrong ik)]")  
+        #   if user_choice == 'y':
+        #     return inv_sol[i]['idx'], traj
+        #   else:
+        #     continue        
+        # else:
+        #   print "plan error:", b, err
+        # ------------------updated version
+
+        traj = self.plan(self._list_to_js(selected_q))
+
+        user_choice = raw_input("--> press [y/n(wrong ik)]") 
+        # user_choice = 'y'
+        if user_choice == 'y':
+          return inv_sol[i]['idx'], traj
         else:
-          print "plan error:", b, err
+          continue 
+
+
 
     return -1, -1
 
@@ -131,13 +143,20 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
       print "selected q: ", selected_q
       
       self.ur5e.publish_state(selected_q, True)
-      (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
-      
-      if success:
-        print "plan success: {}".format(b)
-        return inv_sol[idx]['idx'], traj
-      else:
-        print "plan error: {}, {}".format(b, err)
+      # ------------------updated version
+      # (success, traj, b, err) = self.plan(self._list_to_js(selected_q))
+      # if success:
+      #   print "plan success: {}".format(b)
+      #   return inv_sol[idx]['idx'], traj
+      # else:
+      #   print "plan error: {}, {}".format(b, err)
+      # ------------------updated version
+      traj = self.plan(self._list_to_js(selected_q))
+      return inv_sol[idx]['idx'], traj
+    
+    else:
+      print "selected solution is invalid"
+
     
     return -1, -1
 
@@ -145,7 +164,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     joint_goal = [-m.pi/2, -m.pi/2,-m.pi/2,-m.pi/2, m.pi/2, m.pi]
     
     self.go(joint_goal, wait=True)
-    self.stop()
+    # self.stop()
 
   def go_to_pose_goal(self, trans, rot, idx=None):
     '''
@@ -189,7 +208,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     consts.orientation_constraints = [oc]
     
     self.set_path_constraints(consts)
-    s_idx = self.go_to_pose_goal(trans, rot, idx)
+    s_idx = self.go_to_pose_goal(trans, rot,idx)
     self.clear_path_constraints()
 
     return s_idx
@@ -225,13 +244,13 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     print "******plan1 = {}\n".format(result1)
     if result1 < 0: return False
     
-    result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
-    print "******plan2 = {}\n".format(result2)
-    if result2 < 0: return False
+    # result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
+    # print "******plan2 = {}\n".format(result2)
+    # if result2 < 0: return False
     
-    result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
-    print "******plan3 = {}\n".format(result3)
-    if result3 < 0: return False
+    # result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
+    # print "******plan3 = {}\n".format(result3)
+    # if result3 < 0: return False
     
     return True
 

@@ -8,8 +8,10 @@ Panels:
         - /Status1
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
+        - /TF1
+        - /RobotState1
       Splitter Ratio: 0.5
-    Tree Height: 234
+    Tree Height: 210
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -75,7 +77,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 1
+    - Acceleration_Scaling_Factor: 0.25
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -129,7 +131,11 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          camera_center:
+          camera_center_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          camera_center_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -498,7 +504,11 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          camera_center:
+          camera_center_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          camera_center_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -806,7 +816,7 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
-      Velocity_Scaling_Factor: 1
+      Velocity_Scaling_Factor: 0.5
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
       Enabled: true
@@ -1083,6 +1093,1044 @@ Visualization Manager:
       Tasks: ~
       Trail Step Size: 1
       Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        bar1:
+          Value: false
+        bar2:
+          Value: false
+        bar3:
+          Value: false
+        bar4:
+          Value: false
+        camera_center_1:
+          Value: false
+        camera_center_2:
+          Value: false
+        chair_part1:
+          Value: false
+        chair_part2:
+          Value: false
+        chair_part2-GRASP-1:
+          Value: true
+        chair_part2-GRASP-2:
+          Value: true
+        chair_part3:
+          Value: false
+        chair_part3-GRASP-1:
+          Value: true
+        chair_part3-GRASP-2:
+          Value: true
+        chair_part3-GRASP-3:
+          Value: true
+        chair_part3-GRASP-4:
+          Value: true
+        chair_part4:
+          Value: false
+        chair_part4-GRASP-1:
+          Value: true
+        chair_part4-GRASP-2:
+          Value: true
+        chair_part4-GRASP-3:
+          Value: true
+        chair_part4-GRASP-4:
+          Value: true
+        chair_part5:
+          Value: false
+        chair_part5-GRASP-1:
+          Value: true
+        chair_part5-GRASP-2:
+          Value: true
+        chair_part5-GRASP-3:
+          Value: true
+        chair_part5-GRASP-4:
+          Value: true
+        chair_part5-GRASP-5:
+          Value: true
+        chair_part6:
+          Value: false
+        chair_part6-GRASP-1:
+          Value: true
+        chair_part6-GRASP-2:
+          Value: true
+        chair_part6-GRASP-3:
+          Value: true
+        chair_part6-GRASP-4:
+          Value: true
+        chair_part6-GRASP-5:
+          Value: true
+        hole2-1:
+          Value: false
+        hole2-2:
+          Value: false
+        hole2-3:
+          Value: false
+        hole2-4:
+          Value: false
+        hole2-5:
+          Value: false
+        hole2-6:
+          Value: false
+        hole2-7:
+          Value: false
+        hole2-8:
+          Value: false
+        hole3-1:
+          Value: false
+        hole3-2:
+          Value: false
+        hole3-3:
+          Value: false
+        hole3-4:
+          Value: false
+        hole3-5:
+          Value: false
+        hole3-6:
+          Value: false
+        hole3-7:
+          Value: false
+        hole3-8:
+          Value: false
+        hole4-1:
+          Value: false
+        hole4-2:
+          Value: false
+        hole4-3:
+          Value: false
+        hole4-4:
+          Value: false
+        hole4-5:
+          Value: false
+        hole4-6:
+          Value: false
+        hole4-7:
+          Value: false
+        hole4-8:
+          Value: false
+        hole5-1:
+          Value: false
+        hole5-10:
+          Value: false
+        hole5-2:
+          Value: false
+        hole5-3:
+          Value: false
+        hole5-4:
+          Value: false
+        hole5-5:
+          Value: false
+        hole5-6:
+          Value: false
+        hole5-7:
+          Value: false
+        hole5-8:
+          Value: false
+        hole5-9:
+          Value: false
+        hole6-1:
+          Value: false
+        hole6-10:
+          Value: false
+        hole6-2:
+          Value: false
+        hole6-3:
+          Value: false
+        hole6-4:
+          Value: false
+        hole6-5:
+          Value: false
+        hole6-6:
+          Value: false
+        hole6-7:
+          Value: false
+        hole6-8:
+          Value: false
+        hole6-9:
+          Value: false
+        pin101350-1:
+          Value: false
+        pin101350-10:
+          Value: false
+        pin101350-11:
+          Value: false
+        pin101350-12:
+          Value: false
+        pin101350-13:
+          Value: false
+        pin101350-14:
+          Value: false
+        pin101350-15:
+          Value: false
+        pin101350-16:
+          Value: false
+        pin101350-17:
+          Value: false
+        pin101350-18:
+          Value: false
+        pin101350-19:
+          Value: false
+        pin101350-2:
+          Value: false
+        pin101350-20:
+          Value: false
+        pin101350-21:
+          Value: false
+        pin101350-3:
+          Value: false
+        pin101350-4:
+          Value: false
+        pin101350-5:
+          Value: false
+        pin101350-6:
+          Value: false
+        pin101350-7:
+          Value: false
+        pin101350-8:
+          Value: false
+        pin101350-9:
+          Value: false
+        pin104322-1:
+          Value: false
+        pin104322-2:
+          Value: false
+        pin104322-3:
+          Value: false
+        pin104322-4:
+          Value: true
+        pin104322-5:
+          Value: true
+        pin104322-6:
+          Value: true
+        pin122620-1:
+          Value: true
+        pin122620-1hole:
+          Value: true
+        pin122620-2:
+          Value: true
+        pin122620-2hole:
+          Value: true
+        pin122620-3:
+          Value: true
+        pin122620-3hole:
+          Value: true
+        pin122620-4:
+          Value: true
+        pin122620-4hole:
+          Value: true
+        pin122925-1:
+          Value: true
+        pin122925-2:
+          Value: true
+        pin122925-3:
+          Value: true
+        pin122925-4:
+          Value: true
+        realsense_base_link:
+          Value: false
+        rob1_base:
+          Value: false
+        rob1_base_link:
+          Value: false
+        rob1_ee_link:
+          Value: false
+        rob1_forearm_link:
+          Value: false
+        rob1_left_inner_finger:
+          Value: false
+        rob1_left_inner_finger_pad:
+          Value: false
+        rob1_left_inner_knuckle:
+          Value: false
+        rob1_left_outer_finger:
+          Value: false
+        rob1_left_outer_knuckle:
+          Value: false
+        rob1_real_base_link:
+          Value: false
+        rob1_real_ee_link:
+          Value: false
+        rob1_right_inner_finger:
+          Value: false
+        rob1_right_inner_finger_pad:
+          Value: false
+        rob1_right_inner_knuckle:
+          Value: false
+        rob1_right_outer_finger:
+          Value: false
+        rob1_right_outer_knuckle:
+          Value: false
+        rob1_robotiq_arg2f_base_link:
+          Value: false
+        rob1_shoulder_link:
+          Value: false
+        rob1_tcp_gripper_closed:
+          Value: false
+        rob1_tcp_gripper_open:
+          Value: false
+        rob1_tool0:
+          Value: false
+        rob1_tool0_controller:
+          Value: false
+        rob1_upper_arm_link:
+          Value: false
+        rob1_world:
+          Value: false
+        rob1_wrist_1_link:
+          Value: false
+        rob1_wrist_2_link:
+          Value: false
+        rob1_wrist_3_link:
+          Value: false
+        rob2_base:
+          Value: false
+        rob2_base_link:
+          Value: false
+        rob2_ee_link:
+          Value: false
+        rob2_forearm_link:
+          Value: false
+        rob2_left_inner_finger:
+          Value: false
+        rob2_left_inner_finger_pad:
+          Value: false
+        rob2_left_inner_knuckle:
+          Value: false
+        rob2_left_outer_finger:
+          Value: false
+        rob2_left_outer_knuckle:
+          Value: false
+        rob2_real_base_link:
+          Value: false
+        rob2_real_ee_link:
+          Value: false
+        rob2_right_inner_finger:
+          Value: false
+        rob2_right_inner_finger_pad:
+          Value: false
+        rob2_right_inner_knuckle:
+          Value: false
+        rob2_right_outer_finger:
+          Value: false
+        rob2_right_outer_knuckle:
+          Value: false
+        rob2_robotiq_arg2f_base_link:
+          Value: false
+        rob2_shoulder_link:
+          Value: false
+        rob2_tcp_gripper_closed:
+          Value: false
+        rob2_tcp_gripper_open:
+          Value: false
+        rob2_tool0:
+          Value: false
+        rob2_tool0_controller:
+          Value: false
+        rob2_upper_arm_link:
+          Value: false
+        rob2_world:
+          Value: false
+        rob2_wrist_1_link:
+          Value: false
+        rob2_wrist_2_link:
+          Value: false
+        rob2_wrist_3_link:
+          Value: false
+        sensor_d435_bottom_screw_frame:
+          Value: false
+        sensor_d435_color_frame:
+          Value: false
+        sensor_d435_color_optical_frame:
+          Value: false
+        sensor_d435_depth_frame:
+          Value: false
+        sensor_d435_depth_optical_frame:
+          Value: false
+        sensor_d435_infra1_frame:
+          Value: false
+        sensor_d435_infra1_optical_frame:
+          Value: false
+        sensor_d435_infra2_frame:
+          Value: false
+        sensor_d435_infra2_optical_frame:
+          Value: false
+        sensor_d435_link:
+          Value: false
+        table:
+          Value: false
+        world:
+          Value: false
+      Marker Scale: 0.05000000074505806
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          chair_part1:
+            {}
+          chair_part2:
+            {}
+          chair_part2-GRASP-1:
+            {}
+          chair_part2-GRASP-2:
+            {}
+          chair_part3:
+            {}
+          chair_part3-GRASP-1:
+            {}
+          chair_part3-GRASP-2:
+            {}
+          chair_part3-GRASP-3:
+            {}
+          chair_part3-GRASP-4:
+            {}
+          chair_part4:
+            {}
+          chair_part4-GRASP-1:
+            {}
+          chair_part4-GRASP-2:
+            {}
+          chair_part4-GRASP-3:
+            {}
+          chair_part4-GRASP-4:
+            {}
+          chair_part5:
+            {}
+          chair_part5-GRASP-1:
+            {}
+          chair_part5-GRASP-2:
+            {}
+          chair_part5-GRASP-3:
+            {}
+          chair_part5-GRASP-4:
+            {}
+          chair_part5-GRASP-5:
+            {}
+          chair_part6:
+            {}
+          chair_part6-GRASP-1:
+            {}
+          chair_part6-GRASP-2:
+            {}
+          chair_part6-GRASP-3:
+            {}
+          chair_part6-GRASP-4:
+            {}
+          chair_part6-GRASP-5:
+            {}
+          hole2-1:
+            {}
+          hole2-2:
+            {}
+          hole2-3:
+            {}
+          hole2-4:
+            {}
+          hole2-5:
+            {}
+          hole2-6:
+            {}
+          hole2-7:
+            {}
+          hole2-8:
+            {}
+          hole3-1:
+            {}
+          hole3-2:
+            {}
+          hole3-3:
+            {}
+          hole3-4:
+            {}
+          hole3-5:
+            {}
+          hole3-6:
+            {}
+          hole3-7:
+            {}
+          hole3-8:
+            {}
+          hole4-1:
+            {}
+          hole4-2:
+            {}
+          hole4-3:
+            {}
+          hole4-4:
+            {}
+          hole4-5:
+            {}
+          hole4-6:
+            {}
+          hole4-7:
+            {}
+          hole4-8:
+            {}
+          hole5-1:
+            {}
+          hole5-10:
+            {}
+          hole5-2:
+            {}
+          hole5-3:
+            {}
+          hole5-4:
+            {}
+          hole5-5:
+            {}
+          hole5-6:
+            {}
+          hole5-7:
+            {}
+          hole5-8:
+            {}
+          hole5-9:
+            {}
+          hole6-1:
+            {}
+          hole6-10:
+            {}
+          hole6-2:
+            {}
+          hole6-3:
+            {}
+          hole6-4:
+            {}
+          hole6-5:
+            {}
+          hole6-6:
+            {}
+          hole6-7:
+            {}
+          hole6-8:
+            {}
+          hole6-9:
+            {}
+          pin101350-1:
+            {}
+          pin101350-10:
+            {}
+          pin101350-11:
+            {}
+          pin101350-12:
+            {}
+          pin101350-13:
+            {}
+          pin101350-14:
+            {}
+          pin101350-15:
+            {}
+          pin101350-16:
+            {}
+          pin101350-17:
+            {}
+          pin101350-18:
+            {}
+          pin101350-19:
+            {}
+          pin101350-2:
+            {}
+          pin101350-20:
+            {}
+          pin101350-21:
+            {}
+          pin101350-3:
+            {}
+          pin101350-4:
+            {}
+          pin101350-5:
+            {}
+          pin101350-6:
+            {}
+          pin101350-7:
+            {}
+          pin101350-8:
+            {}
+          pin101350-9:
+            {}
+          pin104322-1:
+            {}
+          pin104322-2:
+            {}
+          pin104322-3:
+            {}
+          pin104322-4:
+            {}
+          pin104322-5:
+            {}
+          pin104322-6:
+            {}
+          pin122620-1:
+            {}
+          pin122620-1hole:
+            {}
+          pin122620-2:
+            {}
+          pin122620-2hole:
+            {}
+          pin122620-3:
+            {}
+          pin122620-3hole:
+            {}
+          pin122620-4:
+            {}
+          pin122620-4hole:
+            {}
+          pin122925-1:
+            {}
+          pin122925-2:
+            {}
+          pin122925-3:
+            {}
+          pin122925-4:
+            {}
+          table:
+            bar1:
+              {}
+            bar2:
+              {}
+            bar3:
+              {}
+            bar4:
+              {}
+            rob1_world:
+              rob1_real_base_link:
+                rob1_base_link:
+                  rob1_base:
+                    rob1_tool0_controller:
+                      {}
+                  rob1_shoulder_link:
+                    rob1_upper_arm_link:
+                      rob1_forearm_link:
+                        rob1_wrist_1_link:
+                          rob1_wrist_2_link:
+                            rob1_wrist_3_link:
+                              rob1_ee_link:
+                                rob1_real_ee_link:
+                                  camera_center_1:
+                                    {}
+                                  realsense_base_link:
+                                    sensor_d435_bottom_screw_frame:
+                                      sensor_d435_link:
+                                        sensor_d435_color_frame:
+                                          sensor_d435_color_optical_frame:
+                                            {}
+                                        sensor_d435_depth_frame:
+                                          sensor_d435_depth_optical_frame:
+                                            {}
+                                        sensor_d435_infra1_frame:
+                                          sensor_d435_infra1_optical_frame:
+                                            {}
+                                        sensor_d435_infra2_frame:
+                                          sensor_d435_infra2_optical_frame:
+                                            {}
+                                  rob1_tcp_gripper_closed:
+                                    {}
+                                  rob1_tcp_gripper_open:
+                                    {}
+                              rob1_tool0:
+                                rob1_robotiq_arg2f_base_link:
+                                  rob1_left_inner_knuckle:
+                                    {}
+                                  rob1_left_outer_knuckle:
+                                    rob1_left_outer_finger:
+                                      rob1_left_inner_finger:
+                                        rob1_left_inner_finger_pad:
+                                          {}
+                                  rob1_right_inner_knuckle:
+                                    {}
+                                  rob1_right_outer_knuckle:
+                                    rob1_right_outer_finger:
+                                      rob1_right_inner_finger:
+                                        rob1_right_inner_finger_pad:
+                                          {}
+            rob2_world:
+              rob2_real_base_link:
+                rob2_base_link:
+                  rob2_base:
+                    rob2_tool0_controller:
+                      {}
+                  rob2_shoulder_link:
+                    rob2_upper_arm_link:
+                      rob2_forearm_link:
+                        rob2_wrist_1_link:
+                          rob2_wrist_2_link:
+                            rob2_wrist_3_link:
+                              rob2_ee_link:
+                                rob2_real_ee_link:
+                                  camera_center_2:
+                                    {}
+                                  rob2_tcp_gripper_closed:
+                                    {}
+                                  rob2_tcp_gripper_open:
+                                    {}
+                              rob2_tool0:
+                                rob2_robotiq_arg2f_base_link:
+                                  rob2_left_inner_knuckle:
+                                    {}
+                                  rob2_left_outer_knuckle:
+                                    rob2_left_outer_finger:
+                                      rob2_left_inner_finger:
+                                        rob2_left_inner_finger_pad:
+                                          {}
+                                  rob2_right_inner_knuckle:
+                                    {}
+                                  rob2_right_outer_knuckle:
+                                    rob2_right_outer_finger:
+                                      rob2_right_inner_finger:
+                                        rob2_right_inner_finger_pad:
+                                          {}
+      Update Interval: 0
+      Value: true
+    - Attached Body Color: 150; 50; 150
+      Class: moveit_rviz_plugin/RobotState
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        bar1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_center_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        camera_center_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        realsense_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_tcp_gripper_closed:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_tcp_gripper_open:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_tcp_gripper_closed:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_tcp_gripper_open:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        sensor_d435_bottom_screw_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_color_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_color_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_depth_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_depth_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_infra1_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_infra1_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_infra2_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_infra2_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        sensor_d435_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        table:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Name: RobotState
+      Robot Alpha: 1
+      Robot Description: robot_description
+      Robot State Topic: /inv_kin_sol
+      Show All Links: true
+      Show Highlights: true
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -1111,30 +2159,30 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.139223098754883
+      Distance: 3.2377853393554688
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.5336579084396362
-        Y: -0.11546710133552551
-        Z: 1.029916763305664
+        X: 0.2728506326675415
+        Y: 0.47915130853652954
+        Z: 0.6617652773857117
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3753964304924011
+      Pitch: 0.9153961539268494
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.10220368951559067
+      Yaw: 0.19718661904335022
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1023
+  Height: 1025
   Hide Left Dock: false
   Hide Right Dock: false
   Motion Planning Tasks:
@@ -1143,7 +2191,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000029500000361fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000127000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000016a000002340000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f00000361fc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073010000003d000003610000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007310000003efc0100000002fb0000000800540069006d0065010000000000000731000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000003810000036100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000037800000363fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000010f000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720100000152000000430000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000019b000002050000018900fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f00000363fc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073000000003d000003630000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007310000003efc0100000002fb0000000800540069006d0065010000000000000731000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000003b30000036300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

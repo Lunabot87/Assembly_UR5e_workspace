@@ -27,11 +27,19 @@
         <origin xyz = "0 -0.685 0.01" rpy = "0 0 ${M_PI}"/>
     </joint>
 
-    <link name="camera_center"/>
+    <link name="camera_center_1"/>
 
     <joint name="basler_joint" type="fixed">
         <parent link="rob1_real_ee_link" />
-        <child link="camera_center" />
+        <child link="camera_center_1" />
+        <origin xyz="0 0.05785 0.0721" rpy="1.5707 0 0" />
+    </joint>
+
+    <link name="camera_center_2"/>
+
+    <joint name="basler_joint_2" type="fixed">
+        <parent link="rob2_real_ee_link" />
+        <child link="camera_center_2" />
         <origin xyz="0 0.05785 0.0721" rpy="1.5707 0 0" />
     </joint>
 </robot>

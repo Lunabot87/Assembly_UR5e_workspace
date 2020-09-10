@@ -14,7 +14,7 @@ class Assembly_motion():
         # rospy.init_node('Assembly_Motion', anonymous=True)
 
         self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
-        self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
+        self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm')
         # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         self.urx_rob1 = UrxMotion("192.168.13.101")
@@ -71,6 +71,14 @@ class Assembly_motion():
         print "move_to_go?"
         raw_input()
         rob.execute(plan)
+
+    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot):
+        if robot is False:
+            rob = self.mg_rob1
+        else:
+            rob = self.mg_rob2
+
+        rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset)
 
 
     def move_current_to(self,x,y,z,robot):

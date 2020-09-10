@@ -23,21 +23,28 @@ class Assembly_process():
 		self.rospy = ros
 		self.am = Assembly_motion()
 		self.listener = TransformListener()
+		time.sleep(2)
 		##########################msg타입 수정 필요##############################3
 		# self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
 		# print "go!"
 
 
-	def elp_camera_client(self, name):
+	def elp_camera_client(self, name, robot):
+		rob_cam = ''
+		if robot is False:
+			rob_cam = 'camera_server_1'
+		else:
+			rob_cam = 'camera_server_2'
+
 		for count in range(10):
-			self.rospy.wait_for_service('camera_server')
+			self.rospy.wait_for_service(rob_cam)
 			try:
-				basler_client = self.rospy.ServiceProxy('camera_server', cam_Srv)
-				basler_data = basler_client(name)
+				rob_client = self.rospy.ServiceProxy(rob_cam, cam_Srv)
+				basler_data = rob_client(name)
 				# print basler_client
 				return basler_data
 				break
-			except rospy.ServiceException as e:
+			except self.rospy.ServiceException as e:
 				print("Service call failed: %s"%e)
 
 		return False
@@ -51,9 +58,15 @@ class Assembly_process():
 
 		# self.am.camera_pose(robot)
 
+		rob_frame = ''
+		if robot is False:
+			rob_frame = 'camera_center_1'
+		else:
+			rob_frame = 'camera_center_2'
+
 		xyz, rpy = self.listener.lookupTransform('/world', hole_name, self.rospy.Time(0))
 
-		of_xyz, of_rpy = self.listener.lookupTransform('/rob1_real_ee_link', '/camera_center', self.rospy.Time(0))
+		of_xyz, of_rpy = self.listener.lookupTransform('/rob1_real_ee_link', rob_frame, self.rospy.Time(0))
 
 		xyz[0] += of_xyz[0]
 		xyz[1] += of_xyz[1]
@@ -72,31 +85,35 @@ class Assembly_process():
 
 		self.am.move_to(xyz, robot)
 			
-		for count in range(10):
 
-			result = self.elp_camera_client(hole_name)
-			if result is False:
-				print "not found"
-				break
-			else:
-				if result.result is False:
-					self.am.move_current_to(result.x, result.y, result.z, robot)
+		#########error 수정필요########
+		# for count in range(10):
 
-				else:
-					# xyz, rpy = self.listener.lookupTransform('/world', '/target', self.rospy.Time(0))
-					# while not self.listener.frameExists('/re_target'):
-					# 	print "nonono"
-					time.sleep(2)
-					break
+		# 	result = self.elp_camera_client(hole_name, robot)
+		# 	if result is False:
+		# 		print "not found"
+		# 		break
+		# 	else:
+		# 		if result.result is False:
+		# 			self.am.move_current_to(result.x, result.y, result.z, robot)
+
+		# 		else:
+		# 			# xyz, rpy = self.listener.lookupTransform('/world', '/target', self.rospy.Time(0))
+		# 			# while not self.listener.frameExists('/re_target'):
+		# 			# 	print "nonono"
+		# 			time.sleep(2)
+		# 			break
 		
-		xyz, rpy = self.listener.lookupTransform('/world', '/re_target', self.rospy.Time(0))
+		xyz, rot = self.listener.lookupTransform('/rob1_real_base_link', hole_name, self.rospy.Time(0))
 		
-		xyz[2] += 0.4
+		xyz[2] += 0.2
 
-		xyz.append(3.1415)
-		xyz.append(0)
-		xyz.append(0)
-		self.am.move_to(xyz, robot)
+		# xyz.append(3.1415)
+		# xyz.append(0)
+		# xyz.append(0)
+		# self.am.move_to(xyz, robot)
+
+		self.am.move_motion(xyz, rot, 0.1, robot)
 
 		#return target_pose
 
