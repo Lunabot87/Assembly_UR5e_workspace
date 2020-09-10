@@ -83,18 +83,18 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    # print "="*100
+    # print "current q: ", cur_joint
 
     for i in range(8):
       if inv_sol[i]['valid']:
         selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
+        # print "selected q: ", selected_q
 
         self.ur5e.publish_state(selected_q, True)
-        traj= self.plan(self._list_to_js(selected_q))
+        traj = self.plan(self._list_to_js(selected_q))
         
 
         # user_choice = raw_input("--> press [y/n(wrong ik)]") 
@@ -121,14 +121,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     cur_joint = self.get_current_joint_values()
     inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint)
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    # print "="*100
+    # print "current q: ", cur_joint
     
     if inv_sol[idx]['valid']:
       selected_q = (inv_sol[idx]['inv_sol'])
-      print "selected q: ", selected_q
+      # print "selected q: ", selected_q
       
       self.ur5e.publish_state(selected_q, True)
       traj = self.plan(self._list_to_js(selected_q))
@@ -193,7 +193,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
   def _grasp_to_pregrasp(self, g_trans, g_rot, g_offset):
     g_mat = tf_to_mat(g_trans, g_rot)
-    gp_mat = tf_to_mat([0, 0, -g_offset], [0, 0, 0])
+    if type(g_offset) == list:
+      if len(g_offset) == 3:
+        gp_mat = tf_to_mat(g_offset, [0, 0, 0])
+      else:
+        print "(_grasp_to_pregrasp):wrong g_offset"
+        return
+    else: 
+      gp_mat = tf_to_mat([0, 0, -g_offset], [0, 0, 0])
     # p_mat = tf.transformations.concatenate_matrices(g_mat, gp_mat)
     p_mat = np.dot(g_mat,gp_mat)
     (p_trans, p_rot) = mat_to_tf(p_mat)

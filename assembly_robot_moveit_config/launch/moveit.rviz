@@ -7,11 +7,11 @@ Panels:
         - /Global Options1
         - /Status1
         - /MotionPlanning1
-        - /MotionPlanning1/Planning Request1
+        - /MotionPlanning1/Scene Geometry1
         - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 210
+    Tree Height: 244
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -389,38 +389,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          sensor_d435_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           sensor_d435_link:
             Alpha: 1
             Show Axes: false
@@ -458,7 +426,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: rob1_arm
-        Query Goal State: true
+        Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -466,14 +434,14 @@ Visualization Manager:
       Planning Scene Topic: move_group/monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
-        Scene Alpha: 0.8999999761581421
-        Scene Color: 50; 230; 50
+        Scene Alpha: 0.5
+        Scene Color: 233; 185; 110
         Scene Display Time: 0.20000000298023224
         Show Scene Geometry: true
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
-        Attached Body Color: 150; 50; 150
+        Attached Body Color: 143; 89; 2
         Links:
           All Links Enabled: true
           Expand Joint Details: false
@@ -758,38 +726,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          sensor_d435_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra1_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          sensor_d435_infra2_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           sensor_d435_link:
             Alpha: 1
             Show Axes: false
@@ -820,9 +756,11 @@ Visualization Manager:
       Value: true
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 10000
+      Frame Timeout: 10
       Frames:
         All Enabled: false
+        GOAL_POSE:
+          Value: true
         bar1:
           Value: false
         bar2:
@@ -834,97 +772,89 @@ Visualization Manager:
         camera_center:
           Value: false
         chair_part2:
-          Value: false
+          Value: true
         chair_part2-GRASP-1:
-          Value: false
+          Value: true
         chair_part2-GRASP-2:
-          Value: false
+          Value: true
         chair_part3:
-          Value: false
+          Value: true
         chair_part3-GRASP-1:
-          Value: false
+          Value: true
         chair_part3-GRASP-2:
-          Value: false
+          Value: true
         chair_part3-GRASP-3:
-          Value: false
+          Value: true
         chair_part3-GRASP-4:
-          Value: false
+          Value: true
         chair_part4:
-          Value: false
+          Value: true
         chair_part4-GRASP-1:
-          Value: false
+          Value: true
         chair_part4-GRASP-2:
-          Value: false
+          Value: true
         chair_part4-GRASP-3:
-          Value: false
+          Value: true
         chair_part4-GRASP-4:
-          Value: false
-        chair_part5:
-          Value: false
-        chair_part5-GRASP-1:
-          Value: false
-        chair_part5-GRASP-2:
-          Value: false
-        chair_part5-GRASP-3:
-          Value: false
-        chair_part5-GRASP-4:
-          Value: false
+          Value: true
         chair_part6:
-          Value: false
+          Value: true
         chair_part6-GRASP-1:
-          Value: false
+          Value: true
         chair_part6-GRASP-2:
-          Value: false
+          Value: true
         chair_part6-GRASP-3:
-          Value: false
+          Value: true
         chair_part6-GRASP-4:
-          Value: false
+          Value: true
+        chair_part6-GRASP-5:
+          Value: true
         hole2-1:
-          Value: false
+          Value: true
         hole2-2:
-          Value: false
+          Value: true
         hole2-3:
-          Value: false
+          Value: true
         hole2-4:
-          Value: false
+          Value: true
         hole2-5:
-          Value: false
+          Value: true
         hole2-6:
-          Value: false
+          Value: true
         hole2-7:
-          Value: false
+          Value: true
         hole2-8:
-          Value: false
+          Value: true
         hole3-1:
-          Value: false
+          Value: true
         hole3-2:
-          Value: false
+          Value: true
         hole3-3:
-          Value: false
+          Value: true
         hole3-4:
-          Value: false
+          Value: true
         hole3-5:
-          Value: false
+          Value: true
         hole3-6:
-          Value: false
+          Value: true
         hole3-7:
-          Value: false
+          Value: true
         hole3-8:
-          Value: false
+          Value: true
         hole4-1:
-          Value: false
+          Value: true
         hole4-2:
-          Value: false
+          Value: true
         hole4-3:
-          Value: false
+          Value: true
         hole4-4:
-          Value: false
+          Value: true
         hole4-5:
-          Value: false
+          Value: true
         hole4-6:
-          Value: false
+          Value: true
         hole4-7:
-          Value: false
+          Value: true
         hole4-8:
           Value: false
         hole5-1:
@@ -950,21 +880,21 @@ Visualization Manager:
         hole6-1:
           Value: false
         hole6-10:
-          Value: false
+          Value: true
         hole6-2:
           Value: false
         hole6-3:
           Value: false
         hole6-4:
-          Value: false
+          Value: true
         hole6-5:
-          Value: false
+          Value: true
         hole6-6:
-          Value: false
+          Value: true
         hole6-7:
-          Value: false
+          Value: true
         hole6-8:
-          Value: false
+          Value: true
         hole6-9:
           Value: false
         pin101350-1:
@@ -1089,8 +1019,6 @@ Visualization Manager:
           Value: false
         rob1_tool0:
           Value: false
-        rob1_tool0_controller:
-          Value: false
         rob1_upper_arm_link:
           Value: false
         rob1_world:
@@ -1143,8 +1071,6 @@ Visualization Manager:
           Value: false
         rob2_tool0:
           Value: false
-        rob2_tool0_controller:
-          Value: false
         rob2_upper_arm_link:
           Value: false
         rob2_world:
@@ -1157,35 +1083,21 @@ Visualization Manager:
           Value: false
         sensor_d435_bottom_screw_frame:
           Value: false
-        sensor_d435_color_frame:
-          Value: false
-        sensor_d435_color_optical_frame:
-          Value: false
-        sensor_d435_depth_frame:
-          Value: false
-        sensor_d435_depth_optical_frame:
-          Value: false
-        sensor_d435_infra1_frame:
-          Value: false
-        sensor_d435_infra1_optical_frame:
-          Value: false
-        sensor_d435_infra2_frame:
-          Value: false
-        sensor_d435_infra2_optical_frame:
-          Value: false
         sensor_d435_link:
           Value: false
         table:
           Value: false
         world:
           Value: false
-      Marker Scale: 1
+      Marker Scale: 0.05000000074505806
       Name: TF
-      Show Arrows: true
+      Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
         world:
+          GOAL_POSE:
+            {}
           chair_part2:
             {}
           chair_part2-GRASP-1:
@@ -1212,16 +1124,6 @@ Visualization Manager:
             {}
           chair_part4-GRASP-4:
             {}
-          chair_part5:
-            {}
-          chair_part5-GRASP-1:
-            {}
-          chair_part5-GRASP-2:
-            {}
-          chair_part5-GRASP-3:
-            {}
-          chair_part5-GRASP-4:
-            {}
           chair_part6:
             {}
           chair_part6-GRASP-1:
@@ -1231,6 +1133,8 @@ Visualization Manager:
           chair_part6-GRASP-3:
             {}
           chair_part6-GRASP-4:
+            {}
+          chair_part6-GRASP-5:
             {}
           hole2-1:
             {}
@@ -1320,84 +1224,6 @@ Visualization Manager:
             {}
           hole6-9:
             {}
-          pin101350-1:
-            {}
-          pin101350-10:
-            {}
-          pin101350-11:
-            {}
-          pin101350-12:
-            {}
-          pin101350-13:
-            {}
-          pin101350-14:
-            {}
-          pin101350-15:
-            {}
-          pin101350-16:
-            {}
-          pin101350-17:
-            {}
-          pin101350-18:
-            {}
-          pin101350-19:
-            {}
-          pin101350-2:
-            {}
-          pin101350-20:
-            {}
-          pin101350-21:
-            {}
-          pin101350-3:
-            {}
-          pin101350-4:
-            {}
-          pin101350-5:
-            {}
-          pin101350-6:
-            {}
-          pin101350-7:
-            {}
-          pin101350-8:
-            {}
-          pin101350-9:
-            {}
-          pin104322-1:
-            {}
-          pin104322-2:
-            {}
-          pin104322-3:
-            {}
-          pin104322-4:
-            {}
-          pin104322-5:
-            {}
-          pin104322-6:
-            {}
-          pin122620-1:
-            {}
-          pin122620-1hole:
-            {}
-          pin122620-2:
-            {}
-          pin122620-2hole:
-            {}
-          pin122620-3:
-            {}
-          pin122620-3hole:
-            {}
-          pin122620-4:
-            {}
-          pin122620-4hole:
-            {}
-          pin122925-1:
-            {}
-          pin122925-2:
-            {}
-          pin122925-3:
-            {}
-          pin122925-4:
-            {}
           table:
             bar1:
               {}
@@ -1411,8 +1237,7 @@ Visualization Manager:
               rob1_real_base_link:
                 rob1_base_link:
                   rob1_base:
-                    rob1_tool0_controller:
-                      {}
+                    {}
                   rob1_shoulder_link:
                     rob1_upper_arm_link:
                       rob1_forearm_link:
@@ -1426,18 +1251,7 @@ Visualization Manager:
                                   realsense_base_link:
                                     sensor_d435_bottom_screw_frame:
                                       sensor_d435_link:
-                                        sensor_d435_color_frame:
-                                          sensor_d435_color_optical_frame:
-                                            {}
-                                        sensor_d435_depth_frame:
-                                          sensor_d435_depth_optical_frame:
-                                            {}
-                                        sensor_d435_infra1_frame:
-                                          sensor_d435_infra1_optical_frame:
-                                            {}
-                                        sensor_d435_infra2_frame:
-                                          sensor_d435_infra2_optical_frame:
-                                            {}
+                                        {}
                                   rob1_tcp_gripper_closed:
                                     {}
                                   rob1_tcp_gripper_open:
@@ -1462,8 +1276,7 @@ Visualization Manager:
               rob2_real_base_link:
                 rob2_base_link:
                   rob2_base:
-                    rob2_tool0_controller:
-                      {}
+                    {}
                   rob2_shoulder_link:
                     rob2_upper_arm_link:
                       rob2_forearm_link:
@@ -1494,6 +1307,24 @@ Visualization Manager:
                                           {}
       Update Interval: 0
       Value: true
+    - Attached Body Color: 150; 50; 150
+      Class: moveit_rviz_plugin/RobotState
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: RobotState
+      Robot Alpha: 1
+      Robot Description: robot_description
+      Robot State Topic: display_robot_state
+      Show All Links: true
+      Show Highlights: true
+      Value: false
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -1522,39 +1353,39 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.580352783203125
+      Distance: 1.6518421173095703
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.5336579084396362
-        Y: -0.11546710133552551
-        Z: 1.029916763305664
+        X: 0.30912601947784424
+        Y: -0.3846181631088257
+        Z: 0.9629184603691101
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.11039620637893677
+      Pitch: 0.4047984480857849
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.02220642939209938
+      Yaw: 3.692225694656372
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
-  Height: 1025
-  Hide Left Dock: false
-  Hide Right Dock: false
+    collapsed: true
+  Height: 1052
+  Hide Left Dock: true
+  Hide Right Dock: true
   Motion Planning Tasks:
-    collapsed: false
+    collapsed: true
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000029500000363fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000010f000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720100000152000000430000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000019b000002050000019b00fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f00000363fc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073010000003d000003630000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007310000003efc0100000002fb0000000800540069006d0065010000000000000731000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000003810000036300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000029b0000037efc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d00000131000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000174000002470000019b00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f0000037efc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b0073000000003d0000037e0000006e00fffffffb0000000a00560069006500770073000000012a00000276000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d0065010000000000000780000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000007800000037e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -1563,6 +1394,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1841
-  X: 79
-  Y: 27
+  Width: 1920
+  X: 1366
+  Y: 0

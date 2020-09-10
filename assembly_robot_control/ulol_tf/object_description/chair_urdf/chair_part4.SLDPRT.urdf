@@ -8,7 +8,7 @@
     name="chair part4.SLDPRT">
     <inertial>
       <origin
-        xyz="-2.8401E-17 0.16597 0.011087 "
+        xyz="-2.8401E-17 0.16597 0.011087"
         rpy="-1.5707963267949 0 0" />
       <mass
         value="0.58715" />

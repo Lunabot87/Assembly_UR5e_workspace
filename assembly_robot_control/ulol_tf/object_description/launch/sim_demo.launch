@@ -1,0 +1,15 @@
+<launch>
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<!--<arg name="world_name" default="$(find env_setting)/worlds/factory_world.world"/>-->
+		<arg name="world_name" value="$(find gazebo_ros_link_attacher)/worlds/test_attacher.world"/>
+		<arg name="paused" default="false"/>
+		<arg name="gui" default="true"/>
+	</include>
+
+    <param name="object_description" command="$(find xacro)xacro $(find object_description)/xacro_for_real/104322.urdf.xacro"/>
+
+    <node name="spawn_object" pkg="gazebo_ros" type="spawn_model" args="-urdf -param object_description -urdf 
+    -model object -x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0 " respawn="false" output="screen"/>
+
+</launch>
+
