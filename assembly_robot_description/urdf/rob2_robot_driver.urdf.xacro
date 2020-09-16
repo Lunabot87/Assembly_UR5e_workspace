@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="rob2" >
+
+  <xacro:arg name="ur_enabled" default="true"/>
+  <xacro:arg name="gripper_enabled" default="true"/>
+  <xacro:arg name="realsense_enabled" default="false"/>
+
+  <xacro:property name="M_PI" value="3.14159"/>
+  <xacro:property name="base_x_size" value="0.76" />
+  <xacro:property name="base_y_size" value="0.46" />
+  <xacro:property name="base_z_size" value="0.55" />
+  <xacro:property name="prefix" value="rob2_" />
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_e_description)/urdf/common.gazebo.xacro" />
+
+  <!-- ur5e -->
+  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
+
+  <!-- robotiq 2f-85 -->
+  <xacro:include filename="$(find robotiq_2f_85_gripper_visualization)/urdf/robotiq_arg2f_85_model_macro.xacro" />  
+
+  <!-- realsense d435 -->
+<!--   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" /> -->
+
+  <!-- arm -->
+  <xacro:arg name="kinematics_config" default="$(find assembly_robot_description)/config/ur5e_default.yaml"/>
+
+
+  <xacro:ur5e_robot prefix="rob2_" joint_limited="false"
+    kinematics_file="${load_yaml('$(arg kinematics_config)')}"
+    />
+
+  <xacro:robotiq_arg2f_85 prefix="rob2_"/>
+
+
+  <xacro:if value="$(arg ur_enabled)">
+
+      <link name="${prefix}real_base_link" />
+
+      <joint name="${prefix}real_base_joint" type="fixed">
+        <parent link="${prefix}real_base_link" />
+        <child link="${prefix}base_link" />
+        <origin xyz="0 0.0 0.0" rpy="0.0 0.0 ${M_PI}" />
+      </joint>
+
+      <link name="${prefix}world"/>
+      <joint name="${prefix}world_base_joint" type="fixed">
+        <parent link="${prefix}world" />
+        <child link="${prefix}real_base_link" />
+        <origin xyz="0 0.0 0.0" rpy="0.0 0.0 0" />
+      </joint>
+
+      <joint name="${prefix}ur_real_ee_fixed_joint" type="fixed">
+        <parent link="${prefix}ee_link" />
+        <child link="${prefix}real_ee_link" />
+        <origin xyz="0.0 0.0 0.0" rpy="-${M_PI/2} 0.0 -${M_PI/2}" />
+      </joint>
+
+      <link name="${prefix}real_ee_link"/>
+
+      <!-- for grasp point -->
+      <link name="${prefix}tcp_gripper_open"/>
+      <link name="${prefix}tcp_gripper_closed"/>
+      
+      <joint name="${prefix}ur_tcp_fixed_joint" type="fixed">
+        <parent link="${prefix}real_ee_link"/>
+        <child link="${prefix}tcp_gripper_open"/>
+        <origin xyz="0 0 0.13" rpy="0 0 0"/>
+      </joint>
+
+      <joint name="${prefix}ur_gripper_closed_fixed_joint" type="fixed">
+        <parent link="${prefix}real_ee_link"/>
+        <child link="${prefix}tcp_gripper_closed"/>
+        <origin xyz="0 0 0.14" rpy="0 0 0"/>
+      </joint>
+
+      <!-- gripper -->
+      <xacro:if value="$(arg gripper_enabled)">  
+
+        <joint name="${prefix}ur_gripper_fixed_joint" type="fixed">
+          <parent link="${prefix}tool0"/>
+          <child link="${prefix}robotiq_arg2f_base_link"/>
+          <origin xyz="0 0 0.008" rpy="0 0 -${M_PI/2}"/>
+        </joint>
+
+        
+      </xacro:if>
+    </xacro:if>
+
+<!--     <xacro:if value="$(arg realsense_enabled)">
+
+       <link name="${prefix}realsense_base_link" />
+
+       <joint name="${prefix}realsense_mount_fixed_joint" type="fixed">
+          <parent link="${prefix}real_ee_link"/>
+          <child link="${prefix}realsense_base_link"/>
+          <origin xyz="0 0.045 0.040" rpy="0 0 ${M_PI/2}"/>
+       </joint>
+
+        <xacro:sensor_d435 parent="${prefix}realsense_base_link" name="${prefix}sensor_d435" >
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:sensor_d435>
+    </xacro:if> -->
+
+</robot>

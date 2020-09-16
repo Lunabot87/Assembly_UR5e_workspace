@@ -5,12 +5,13 @@
   <!--config-->
   <xacro:arg name="ur_enabled" default="true"/>
   <xacro:arg name="gripper_enabled" default="true"/>
-
+  <!-- <xacro:arg name="kinematics_config" default="$(find ur_e_description)/config/ur5e_default.yaml"/> -->
   <xacro:property name="M_PI" value="3.14159"/>
 
   <!--components-->
-  <xacro:include filename="$(find assembly_robot_description)/urdf/ur5e.urdf.xacro" />
-  <!-- <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" /> -->  
+  <!-- <xacro:include filename="$(find assembly_robot_description)/urdf/ur5e.urdf.xacro" /> -->
+  <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
+<!--     <arg name="kinematics_file" value="$(find assembly_robot_moveit_config)/config/my_robot_calibration.yaml"/> -->
   <!-- <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" /> -->
   <xacro:include filename="$(find robotiq_2f_85_gripper_visualization)/urdf/robotiq_arg2f_85_model_macro.xacro" />  
   <xacro:property name="base_x_size" value="0.76" />
@@ -18,9 +19,14 @@
   <xacro:property name="base_z_size" value="0.55" />
   <xacro:property name="prefix" value="rob2_" />
 
+  <xacro:ur5e_robot prefix="rob2_" joint_limited="false" kinematics_file="${load_yaml('$(arg kinematics_config)')}"/>
+ 
+
+
 
 
   <xacro:if value="$(arg ur_enabled)">
+    
 
     <link name="${prefix}real_base_link" />
 

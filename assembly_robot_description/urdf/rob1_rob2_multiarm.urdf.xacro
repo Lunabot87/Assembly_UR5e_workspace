@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot 
     xmlns:xacro="http://ros.org/wiki/xacro" name="dual_robot">
-    <xacro:include filename="$(find assembly_robot_description)/urdf/rob1_gripper.urdf.xacro" />
-    <xacro:include filename="$(find assembly_robot_description)/urdf/rob2_gripper.urdf.xacro" />
+    <xacro:include filename="$(find assembly_robot_description)/urdf/rob1_robot_driver.urdf.xacro" />
+    <xacro:include filename="$(find assembly_robot_description)/urdf/rob2_robot_driver.urdf.xacro" />
     <xacro:include filename="$(find assembly_robot_description)/urdf/table.urdf.xacro" />
 
     <link name="world"/>

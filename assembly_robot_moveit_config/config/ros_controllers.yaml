@@ -33,7 +33,7 @@
 #   []
 controller_list:
   - name: "rob1"
-    action_ns: /follow_joint_trajectory
+    action_ns: scaled_pos_joint_traj_controller/follow_joint_trajectory
     type: FollowJointTrajectory
     joints:
       - rob1_shoulder_pan_joint
@@ -45,7 +45,7 @@ controller_list:
       - rob1_finger_joint
       
   - name: "rob2"
-    action_ns: /follow_joint_trajectory
+    action_ns: scaled_pos_joint_traj_controller/follow_joint_trajectory
     type: FollowJointTrajectory
     joints:
       - rob2_shoulder_pan_joint

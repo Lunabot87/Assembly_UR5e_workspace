@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rviz" value="true"/>
+
+  <group ns="">
+    <!-- <include file="$(find ur_robot_driver)/launch/ur5e_bringup.launch"> -->
+      <include file="$(find assembly_robot_driver)/launch/robot_control_driver.launch">
+      <arg name="robot_ip" value="192.168.13.101"/>
+      <arg name="tf_prefix" value=""/>
+      <arg name="reverse_port" value="50001"/>
+      <arg name="script_sender_port" value="50002"/>
+    </include>
+  </group>
+
+  <!-- <group ns="rob2">
+    <include file="$(find assembly_robot_driver)/launch/robot_control_driver.launch">
+      <arg name="robot_ip" value="192.168.13.100"/>
+      <arg name="prefix" value="rob2_"/>
+      <arg name="reverse_port" value="50003"/>
+      <arg name="script_sender_port" value="50004"/>
+    </include>
+  </group> -->
+
+<!--   <include file="$(find tuto_bringup)/launch/tutobot_gripper_bringup.launch"/> -->
+
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
+  
+<!--   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <rosparam param="source_list">["/rob1/joint_states", "/rob2/joint_states"]</rosparam>
+  </node> -->
+
+<!--   <include file="$(find assembly_robot_moveit_config)/launch/assembly_robot_moveit_planning_execution.launch">
+  </include> -->
+
+<!--   <node if="$(arg rviz)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false"
+  args="-d $(find assembly_robot_moveit_config)/launch/moveit.rviz" output="screen">
+    <rosparam command="load" file="$(find assembly_robot_moveit_config)/config/my_robot_calibration.yaml"/>
+  </node>
+ -->
+</launch>
