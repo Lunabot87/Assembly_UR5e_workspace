@@ -5,20 +5,50 @@
 from Assembly_Urx_test import UrxMotion
 from Assembly_Math_test import *
 from move_group_wrapper_test import MoveGroupCommanderWrapper
+from std_srvs.srv import *
+from ur_dashboard_msgs.srv import *
+import time
 
 import copy
 
 class Assembly_motion():
-    def __init__(self):
+    def __init__(self, ros):
 
         # rospy.init_node('Assembly_Motion', anonymous=True)
 
         self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
-        self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm')
+        self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
         # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
+
+        self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
+        self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
+        self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        self.program_running()
+
+
+    def program_running(self):
+        rob1_connect = self.rob1_check()
+        rob2_connect = self.rob2_check()
+        while rob1_connect.program_running is not True:
+            self.rob1_client()
+            time.sleep(0.5)
+            rob1_connect = self.rob1_check()
+            if rob1_connect.program_running is True:
+                break
+
+        while rob2_connect.program_running is not True:
+            self.rob2_client()
+            time.sleep(0.5)
+            rob2_connect = self.rob2_check()
+            if rob2_connect.program_running is True:
+                break
+
+        time.sleep(2)
+
     
     def pick_up(self, grasp):
         self.group1.go(grasp.pre_grasp)
@@ -31,14 +61,14 @@ class Assembly_motion():
             camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
             #self.mg_rob1.go(camera_pose_data)
             plan = self.mg_rob1.plan(camera_pose_data)
-            print "move_camera?"
-            raw_input()
+            # print "move_camera?"
+            # raw_input()
             self.mg_rob2.execute(plan)
         else:
             camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
             plan = self.mg_rob2.plan(camera_pose_data)
-            print "move_camera?"
-            raw_input()
+            # print "move_camera?"
+            # raw_input()
             self.mg_rob2.execute(plan)
 
     def pick_up_pin(self, pin_name):
@@ -53,9 +83,14 @@ class Assembly_motion():
         #################################################################################
 
         self.mg_rob1.go(rob1_pin1_pre_grasp)
-        self.urx_rob1.gripper_move_and_wait(0)
+        self.urx_rob1.gripper_move_and_wait(150)
+        self.program_running()
+
+        
         self.mg_rob1.go(rob1_pin1_grasp)
         self.urx_rob1.gripper_move_and_wait(255)
+        self.program_running()
+
         self.mg_rob1.go(rob1_pin1_pre_grasp)
 
     def move_to(self, target_pose, robot):
@@ -66,11 +101,11 @@ class Assembly_motion():
 
         pose = euler2Pose(target_pose)
         print pose
-        rob.set_pose_target(pose)
-        plan = rob.plan()
+        traj = rob.set_pose_target(pose)
+        plan = rob.plan(traj)
         print "move_to_go?"
         raw_input()
-        rob.execute(plan)
+        rob.execute(plan, wait=True)
 
     def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot):
         if robot is False:
@@ -93,11 +128,11 @@ class Assembly_motion():
 
         print c_pose
 
-        rob.set_pose_target(c_pose)
-        plan = rob.plan()
+        traj = rob.set_pose_target(c_pose)
+        plan = rob.plan(traj)
         print "go?"
         raw_input()
-        rob.execute(plan)
+        rob.execute(plan, wait=True)
 
 
     def hand_over_pin(self):
@@ -121,6 +156,8 @@ class Assembly_motion():
         # rob1 open gripper
         self.urx_rob1.gripper_move_and_wait(0)
 
+        self.program_running()
+
          # move rob1 and rob2 to pre_hand_over_pin poses
         self.mg_rob1.go(rob1_pre_hand_over_pin)
         self.mg_rob2.go(rob2_pre_hand_over_pin)
@@ -128,20 +165,32 @@ class Assembly_motion():
         # NotImplementedError
         
 
-    def hold_assistant(self, part_name, robot):
+    def hold_assistant(self, grasp_trans, grasp_rot, grasp_offset, robot):
         if robot is False:
             rob = self.mg_rob1
+            urx = self.urx_rob1
         else:
             rob = self.mg_rob2
+            urx = self.urx_rob2
 
-        pre_hold_part = rob.get_named_target_values("rob"+str(robot)+"_pre_hold_"+part_name)
-        hold_part = rob.get_named_target_values("rob"+str(robot)+"_hold_"+part_name)
+        urx.gripper_move_and_wait(0)
+        self.program_running()
 
-        self.urx_rob1.gripper_move_and_wait(0)
-        rob.go(pre_hold_part)
-        rob.go(hold_part)
-        self.urx_rob2.gripper_move_and_wait(255)
+        rob.move_to_hold_part(grasp_trans, grasp_rot, grasp_offset)
 
+
+        urx.gripper_move_and_wait(255)
+        self.program_running()
+        
+    def gripper_control(self, robot, target):
+        if robot is True:
+            rob = self.mg_rob1
+            urx = self.urx_rob1
+        else:
+            rob = self.mg_rob2
+            urx = self.urx_rob2
+        urx.gripper_move_and_wait(target)
+        self.program_running()
 
 
 
@@ -156,6 +205,8 @@ class Assembly_motion():
             self.urx_rob1.spiral_motion()
         else:
             self.urx_rob2.spiral_motion()
+
+        self.program_running()
         # return is_inserted
 
 

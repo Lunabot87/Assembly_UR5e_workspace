@@ -1,17 +1,23 @@
 #-*- coding:utf-8 -*-
 import time
 import urx
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
 import math as m
 import numpy as np
 import copy
 import random
+from std_msgs.msg import * 
 
 class UrxMotion():
 
-    def __init__(self, robot_ip):
+    def __init__(self, robot_ip, ros, robot_name):
         self.robot_ip = robot_ip
+        self.rospy = ros
+        self.send_program = self.rospy.Publisher('/' + robot_name + '/ur_hardware_interface/script_command', String, queue_size=10)
         self.reset()
-        self.robot.send_program(self._set_gripper())
+        self.send_program.publish(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -70,7 +76,7 @@ class UrxMotion():
         cmd_str += "\tthread Thread_1():\n"
         cmd_str += "\t\twhile (True):\n"
         cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
-        cmd_str += "\t\t\tsync()\n"
+        #cmd_str += "\t\t\tsync()\n"
         cmd_str += "\t\tend\n"
         cmd_str += "\tend\n"
         cmd_str += "\tglobal thrd = run Thread_1()\n"    
@@ -105,18 +111,18 @@ class UrxMotion():
             #set payload, speed and force
             msg += "\tset_payload(1.1)\n"
             msg += "\tsocket_set_var(\"SPE\",%d,\"gripper_socket\")\n"%(speed)
-            msg += "\tsync()\n"
+            #msg += "\tsync()\n"
             msg += "\tsocket_set_var(\"FOR\",%d,\"gripper_socket\")\n"%(force)
-            msg += "\tsync()\n"
+            #msg += "\tsync()\n"
             #initialize the gripper
             msg += "\tsocket_set_var(\"ACT\", 1, \"gripper_socket\")\n"
-            msg += "\tsync()\n"
+            #msg += "\tsync()\n"
             msg += "\tsocket_set_var(\"GTO\", 1, \"gripper_socket\")\n"
-            msg += "\tsync()\n"
+            #msg += "\tsync()\n"
             msg += "\tsocket_set_var(\"POS\", 0, \"gripper_socket\")\n"
-            msg += "\tsync()\n"
-            msg += "\tsleep(0.5)\n"
-            msg += "\ttextmsg(\"gripper setting complete\")\n"
+            #msg += "\tsync()\n"
+            #msg += "\tsleep(0.5)\n"
+            #msg += "\ttextmsg(\"gripper setting complete\")\n"
             msg += "end\n"
 
             print("gripper_set")
@@ -130,7 +136,7 @@ class UrxMotion():
         msg += "\tsocket_set_var(\"POS\", %s, \"gripper_socket\")\n"%(str(pos)) #catched chair!
         msg += "\trq_pos_1 = socket_get_var(\"POS\",\"gripper_socket\")\n"
         msg += "\twhile True:\n"
-        msg += "\t\tsleep(0.01)\n"
+        # msg += "\t\tsleep(0.01)\n"
         msg += "\t\trq_pos = socket_get_var(\"POS\",\"gripper_socket\")\n"
         #msg += "\t\ttextmsg(\"rq_pos:\", rq_pos)\n"
         msg += "\t\tif norm(rq_pos_1 - rq_pos) < 0.5:\n"
@@ -146,17 +152,16 @@ class UrxMotion():
 
 
     def gripper_move_and_wait(self ,pos):
-        robot = self.robot
-
-        robot.send_program(self._gripper_move(pos))
+        self.send_program.publish(self._gripper_move(pos))
 
         while True:
             if self.robot.get_digital_out(1) != 0:
-                self.robot.send_program("set_digital_out(1, False)")
+                self.send_program.publish("set_digital_out(1, False)")
                 print "gripper_move_and_wait complete"
                 break
             else:
                 continue
+
 
 
     def spiral_motion(self):
@@ -183,9 +188,12 @@ class UrxMotion():
         self.reset()
         time.sleep(1)
 
-        self.robot.send_program("zero_ftsensor()")
+
+        self.send_program.publish("zero_ftsensor()")
         time.sleep(0.2)
         # print self.robot.get_tcp_force()
+
+        start_pose = robot.getl()
 
         # go down
         print "="*20 +"go_down"+"="*20
@@ -197,11 +205,11 @@ class UrxMotion():
         # cmd_str += "\tforce_mode_set_damping(0)\n"
         cmd_str += "\twhile (True):\n"
         cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
-        cmd_str += "\t\tsync()\n"
+        #cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
         time.sleep(0.1)
-        self.robot.send_program(cmd_str)
+        self.send_program.publish(cmd_str)
         time.sleep(0.2)
 
         # print self.robot.get_tcp_force()
@@ -214,10 +222,10 @@ class UrxMotion():
                 # print force[2]
                 if abs(force[2]) > 3:
                     # print force[2]
-                    self.robot.send_program("end_force_mode()")
+                    self.send_program.publish("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                self.robot.send_program("end_force_mode()")
+                self.send_program.publish("end_force_mode()")
                 break
 
 
@@ -227,7 +235,7 @@ class UrxMotion():
         print "="*20 +"spiral"+"="*20
         initial = self.robot.getl()
         spiral_cmd = self._get_spiral_cmd(initial)
-        self.robot.send_program(spiral_cmd)
+        self.send_program.publish(spiral_cmd)
 
         while(True):
             try:
@@ -235,10 +243,10 @@ class UrxMotion():
                 # print force[0], force[1]
                 if abs(force[0]) > 10 or abs(force[1]) > 10:
                     # print force[0], force[1]
-                    self.robot.send_program("end_force_mode()")
+                    self.send_program.publish("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                self.robot.send_program("end_force_mode()")
+                self.send_program.publish("end_force_mode()")
                 break
         time.sleep(0.1)
 
@@ -250,10 +258,10 @@ class UrxMotion():
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
         cmd_str += "\twhile (True):\n"
         cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
-        cmd_str += "\t\tsync()\n"
+        #cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
-        self.robot.send_program(cmd_str)
+        self.send_program.publish(cmd_str)
 
 
         ##############################수정 필요할수 있음###########################
@@ -265,26 +273,26 @@ class UrxMotion():
                 if force[2] > 50:
                     # print force[2]
                     time.sleep(1)
-                    self.robot.send_program("end_force_mode()")
+                    self.send_program.publish("end_force_mode()")
                     break
             except KeyboardInterrupt:
-                self.robot.send_program("end_force_mode()")
+                self.send_program.publish("end_force_mode()")
                 break
 
         ########################################################################
 
         self.gripper_move_and_wait(0)
 
-        post_pose = self.robot.getl()
-        post_pose[2] += 0.3
-        self.robot.movel(post_pose)
+        # post_pose = self.robot.getl()
+        # post_pose[2] += 0.3
+        # self.robot.movel(post_pose)
 
-        while(True):
-            current = self.robot.getl()
-            dist = np.linalg.norm(np.array(current)-np.array(post_pose))
-            if dist < 0.001:
-                break
-
+        # while(True):
+        #     current = self.robot.getl()
+        #     dist = np.linalg.norm(np.array(current)-np.array(post_pose))
+        #     if dist < 0.001:
+        #         break
+        robot.movel(start_pose, wait=True)
 
 def main():
     rob1 = UrxMotion("192.168.13.101")

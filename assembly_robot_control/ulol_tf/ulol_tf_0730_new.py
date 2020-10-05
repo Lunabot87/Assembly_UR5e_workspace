@@ -13,9 +13,7 @@ from math import pi
 
 from geometry_msgs.msg import *
 from tf.transformations import *
-from tf import *
-
-import tf2_ros
+from tf2_ros import *
 
 from Part_Pin.part_initial_pose import*	# part_pose, pin_arrayment
 from Part_Pin.part_info import*			# part_file_address, part_name
@@ -50,22 +48,22 @@ class TF_Node(ASM_D.Assemble_Data):
 
 		moveit_commander.roscpp_initialize(sys.argv)
 		self.scene = moveit_commander.PlanningSceneInterface()
-		self.br = tf2_ros.TransformBroadcaster()
+		self.br = TransformBroadcaster()
 
 		self.init_TF_List()
-		# self.init_Pin_List()
+		self.init_Pin_List()
 		self.init_GP_List()
 		self.AList = {'part':[],'pin':[]}
 		self.part_add_flag = False
 		
-		rospy.Timer(rospy.Duration(0.5), self.send_TF)
+		rospy.Timer(rospy.Duration(1), self.send_TF)
 
-	# def init_Pin_List(self):
-	# 	self.Pin_List = [{'pose':[]},{'pose':[]}
-	# 						,{'pose':[]},{'pose':[]}]
-	# 	for i in range(4):
-	# 		for j in range(how_many_pins[i]):
-	# 			self.Pin_List[i]['pose'].append([])
+	def init_Pin_List(self):
+		self.Pin_List = [{'pose':[]},{'pose':[]}
+							,{'pose':[]},{'pose':[]}]
+		for i in range(4):
+			for j in range(how_many_pins[i]):
+				self.Pin_List[i]['pose'].append([])
 	def init_TF_List(self):
 		self.TF_List = [{'origin' : [], 'holes' : []},{'origin' : [],'holes' : []},{'origin' : [],'holes' : []}
 						,{'origin' : [],'holes' : []},{'origin' : [],'holes' : []},{'origin' : [],'holes' : []}]
@@ -255,10 +253,9 @@ class TF_Node(ASM_D.Assemble_Data):
 			self.add_mesh(part_name[p_num],part_file[p_num],part_init_pose[p_num])
 			self.set_part_TF(part_name[p_num])
 		
-		for pin_type in pin_list:
-			for pin_tag in range(how_many_pins[pin_type]):
-				pass
-				# self.add_pin(pin_type,pin_tag)
+		# for pin_type in pin_list:
+		# 	for pin_tag in range(how_many_pins[pin_type]):
+		# 		self.add_pin(pin_type,pin_tag)
 		self.part_add_flag = True
 
 	def set_part_TF(self,mesh_name): # fill TF_list and GP_list
@@ -319,22 +316,11 @@ class TF_Node(ASM_D.Assemble_Data):
 			if not self.TF_List[p_num]['origin'] == []: 
 					selected_part = self.TF_List[p_num]
 					position_list = self.make_position_list(selected_part['origin'].position)
-					orientation_list = self.make_orientation_list(selected_part['origin'].orientation)
+					# orientation_list = self.make_orientation_list(selected_part['origin'].orientation)
+					orientation_list = selected_part['origin'].orientation
 
-					t = geometry_msgs.msg.TransformStamped()
-					t.header.stamp = rospy.Time.now()
-					t.header.frame_id = "/world"
-					t.child_frame_id = part_name[p_num]
-					t.transform.translation.x = position_list[0]
-					t.transform.translation.y = position_list[1]
-					t.transform.translation.z = position_list[2]
-				    # q = tf_conversions.transformations.quaternion_from_euler(0, 0, msg.theta)
-					t.transform.rotation.x = orientation_list[0]
-					t.transform.rotation.y = orientation_list[1]
-					t.transform.rotation.z = orientation_list[2]
-					t.transform.rotation.w = orientation_list[3]
 
-					self.br.sendTransform(t)
+					self.br.sendTransform(self.Transform_data('world', part_name[p_num], position_list, orientation_list))
 
 					num_of_holes = len(HO.hole_offset[p_num])
 
@@ -342,22 +328,11 @@ class TF_Node(ASM_D.Assemble_Data):
 						hole_name = "hole" + str(p_num+1) + "-" + str(h_num+1)
 
 						position_list = self.make_position_list(selected_part['holes'][h_num].position)
-						orientation_list = self.make_orientation_list(selected_part['holes'][h_num].orientation)
+						# orientation_list = self.make_orientation_list(selected_part['holes'][h_num].orientation)
 
-						t = geometry_msgs.msg.TransformStamped()
-						t.header.stamp = rospy.Time.now()
-						t.header.frame_id = "/world"
-						t.child_frame_id = hole_name
-						t.transform.translation.x = position_list[0]
-						t.transform.translation.y = position_list[1]
-						t.transform.translation.z = position_list[2]
-					    # q = tf_conversions.transformations.quaternion_from_euler(0, 0, msg.theta)
-						t.transform.rotation.x = orientation_list[0]
-						t.transform.rotation.y = orientation_list[1]
-						t.transform.rotation.z = orientation_list[2]
-						t.transform.rotation.w = orientation_list[3]
+						orientation_list = selected_part['holes'][h_num].orientation
 
-						self.br.sendTransform(t)
+						self.br.sendTransform(self.Transform_data('world', hole_name, position_list, orientation_list) )
 	def send_pin_TF(self):
 		for pin_type in range(4):
 			selected_pin = self.Pin_List[pin_type]
@@ -376,17 +351,26 @@ class TF_Node(ASM_D.Assemble_Data):
 							Hole_name = Pin_name+"hole"
 							#firstly pin
 							position_list = self.make_position_list(selected_pin['pose'][pins]['pin'].position)
-							orientation_list = self.make_orientation_list(selected_pin['pose'][pins]['pin'].orientation)
-							self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), Pin_name, 'world')
+							#orientation_list = self.make_orientation_list(selected_pin['pose'][pins]['pin'].orientation)
+							
+							orientation_list = selected_pin['pose'][pins]['pin'].orientation
+
+							self.br.sendTransform(self.Transform_data('world', Pin_name, position_list, orientation_list ))
 
 							#secondary hole
 							position_list = self.make_position_list(selected_pin['pose'][pins]['hole'].position)
-							orientation_list = self.make_orientation_list(selected_pin['pose'][pins]['hole'].orientation)
-							self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), Hole_name, 'world')
+							#orientation_list = self.make_orientation_list(selected_pin['pose'][pins]['hole'].orientation)
+							
+							orientation_list = selected_pin['pose'][pins]['hole'].orientation
+
+							self.br.sendTransform(self.Transform_data('world',Hole_name,  position_list, orientation_list))
 						else:
 							position_list = self.make_position_list(selected_pin['pose'][pins].position)
-							orientation_list = self.make_orientation_list(selected_pin['pose'][pins].orientation)
-							self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), Pin_name, 'world')
+							# orientation_list = self.make_orientation_list(selected_pin['pose'][pins].orientation)
+
+							orientation_list = selected_pin['pose'][pins].orientation
+
+							self.br.sendTransform(self.Transform_data('world', Pin_name, position_list, orientation_list))
 	def send_GP_TF(self):
 		for part_type in range(6):
 			if not self.TF_List[part_type]['origin'] == []:
@@ -395,24 +379,11 @@ class TF_Node(ASM_D.Assemble_Data):
 				for g in range(num_of_gp):
 					gp_name = part_name[part_type]+"-GRASP-"+str(g+1)
 					position_list = self.make_position_list(selected_part['pose'][g].position)
-					orientation_list = self.make_orientation_list(selected_part['pose'][g].orientation)
+					# orientation_list = self.make_orientation_list(selected_part['pose'][g].orientation)
 
-					t = geometry_msgs.msg.TransformStamped()
-					t.header.stamp = rospy.Time.now()
-					t.header.frame_id = "/world"
-					t.child_frame_id = gp_name
-					t.transform.translation.x = position_list[0]
-					t.transform.translation.y = position_list[1]
-					t.transform.translation.z = position_list[2]
-				    # q = tf_conversions.transformations.quaternion_from_euler(0, 0, msg.theta)
-					t.transform.rotation.x = orientation_list[0]
-					t.transform.rotation.y = orientation_list[1]
-					t.transform.rotation.z = orientation_list[2]
-					t.transform.rotation.w = orientation_list[3]
+					orientation_list = selected_part['pose'][g].orientation
 
-					self.br.sendTransform(t)
-
-					# self.br.sendTransform(position_list, orientation_list, rospy.Time.now(), gp_name, 'world')
+					self.br.sendTransform(self.Transform_data('world', gp_name, position_list, orientation_list))
 
 	def send_TF(self,dumb_Data):
 		if self.part_add_flag == True:
@@ -450,6 +421,22 @@ class TF_Node(ASM_D.Assemble_Data):
 			self.Pin_List[pin_type]['pose'][pin_type] = pin_pose
 		# self.part_add_flag = True
 
+
+
+	def Transform_data(self, header , frame_id, translation, rotation):
+		t = geometry_msgs.msg.TransformStamped()
+
+		t.header.stamp = rospy.Time.now()
+		t.header.frame_id = header
+		t.child_frame_id = frame_id
+		t.transform.translation.x = translation[0]
+		t.transform.translation.y = translation[1]
+		t.transform.translation.z = translation[2]
+		t.transform.rotation = rotation
+
+		return t
+
+		
 def main():	
 	rospy.init_node('TF_test', anonymous=True)
 	TF = TF_Node()

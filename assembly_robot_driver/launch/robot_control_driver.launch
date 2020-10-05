@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="debug" default="false" doc="Debug flag that will get passed on to ur_control.launch"/>
-  <arg name="use_tool_communication" default="true" doc="On e-Series robots tool communication can be enabled with this argument"/>
+  <arg name="use_tool_communication" default="false" doc="On e-Series robots tool communication can be enabled with this argument"/>
   <arg name="rob1_controller_config_file" default="$(find assembly_robot_driver)/config/rob1_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
   <arg name="rob2_controller_config_file" default="$(find assembly_robot_driver)/config/rob2_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
   <arg name="robot_ip" default="192.168.13.101" doc="IP address by which the robot can be reached."/>
   <arg name="reverse_port" default="50001" doc="Port that will be opened by the driver to allow direct communication between the driver and the robot controller."/>
   <arg name="script_sender_port" default="50002" doc="The driver will offer an interface to receive the program's URScript on this port. If the robot cannot connect to this port, `External Control` will stop immediately."/>
-  <arg name="kinematics_config" default="$(find ur_e_description)/config/ur5e_default.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+
+  <arg name="kinematics_config" default="$(find assembly_robot_driver)/config/rob1_coalibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+
   <arg name="tf_prefix" default="rob1_" doc="tf_prefix used for the robot."/>
   <arg name="controllers" default="joint_state_controller scaled_pos_joint_traj_controller speed_scaling_state_controller force_torque_sensor_controller robot_status_controller" doc="Controllers that are activated by default."/>
   <arg name="stopped_controllers" default="pos_joint_traj_controller joint_group_vel_controller" doc="Controllers that are initally loaded, but not started."/>
@@ -40,7 +42,7 @@
       <arg name="robot_ip" value="192.168.13.101"/>
       <arg name="reverse_port" value="$(arg reverse_port)"/>
       <arg name="script_sender_port" value="$(arg script_sender_port)"/>
-      <arg name="kinematics_config" value="$(arg kinematics_config)"/>
+      <arg name="kinematics_config" value="$(find assembly_robot_driver)/config/rob1_coalibration.yaml"/>
       <arg name="tf_prefix" value="rob1_"/>
       <arg name="controllers" value="$(arg controllers)"/>
       <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
@@ -52,7 +54,7 @@
       <arg name="tool_rx_idle_chars" value="$(arg tool_rx_idle_chars)"/>
       <arg name="tool_tx_idle_chars" value="$(arg tool_tx_idle_chars)"/>
       <arg name="tool_device_name" value="$(arg tool_device_name)"/>
-      <arg name="tool_tcp_port" value="$(arg tool_tcp_port)"/>
+      <arg name="tool_tcp_port" value="/tmp/ttyUR1"/>
     </include>
   </group>
 
@@ -63,9 +65,9 @@
       <arg name="use_tool_communication" value="$(arg use_tool_communication)"/>
       <arg name="controller_config_file" value="$(arg rob2_controller_config_file)"/>
       <arg name="robot_ip" value="192.168.13.100"/>
-      <arg name="reverse_port" value="50001"/>
-      <arg name="script_sender_port" value="50002"/>
-      <arg name="kinematics_config" value="$(arg kinematics_config)"/>
+      <arg name="reverse_port" value="50003"/>
+      <arg name="script_sender_port" value="50004"/>
+      <arg name="kinematics_config" value="$(find assembly_robot_driver)/config/rob2_coalibration.yaml"/>
       <arg name="tf_prefix" value="rob2_"/>
       <arg name="controllers" value="$(arg controllers)"/>
       <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
@@ -77,7 +79,7 @@
       <arg name="tool_rx_idle_chars" value="$(arg tool_rx_idle_chars)"/>
       <arg name="tool_tx_idle_chars" value="$(arg tool_tx_idle_chars)"/>
       <arg name="tool_device_name" value="$(arg tool_device_name)"/>
-      <arg name="tool_tcp_port" value="$(arg tool_tcp_port)"/>
+      <arg name="tool_tcp_port" value="/tmp/ttyUR2"/>
     </include>
   </group>
 

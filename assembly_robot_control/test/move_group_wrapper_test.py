@@ -185,6 +185,27 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     
     return s_idx
 
+  def go_to_part_goal(self, trans, rot, idx=None):
+    '''
+    [output]
+    if go_to_pose_goal succeeded,
+      return used ik idx
+    else,
+      return -1
+    '''
+    if idx is None:
+      (s_idx, traj) = self._get_best_ik_plan(trans, rot)
+    else:
+      (s_idx, traj) = self._get_selected_ik_plan(trans, rot, idx)
+
+    if s_idx >= 0:
+      self.execute(traj, wait=True)
+      self.stop()
+    else:
+      return -1
+    
+    return s_idx
+
   def go_linear_to_pose_goal(self, trans, rot, idx):
     '''
     [output]
@@ -247,6 +268,39 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     # result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
     # print "******plan2 = {}\n".format(result2)
     # if result2 < 0: return False
+    
+    # result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
+    # print "******plan3 = {}\n".format(result3)
+    # if result3 < 0: return False
+    
+    return True
+
+  def move_to_hold_part(self, g_trans, g_rot, g_offset):
+    '''
+    [output]
+    if plan0 and plan1 and plan2 and plan3 succeeded,
+      return True
+    else,
+      return False
+    '''
+    (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
+
+    print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
+            + list_str(pg_rot, ['x','y','z','w'])
+    print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
+            + list_str(g_rot, ['x','y','z','w'])
+
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot)
+    print "******plan0 = {}\n".format(result0)
+    if result0 < 0: return False
+
+    result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+    print "******plan1 = {}\n".format(result1)
+    if result1 < 0: return False
+    
+    result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
+    print "******plan2 = {}\n".format(result2)
+    if result2 < 0: return False
     
     # result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
     # print "******plan3 = {}\n".format(result3)

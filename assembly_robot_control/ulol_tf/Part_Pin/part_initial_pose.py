@@ -20,8 +20,8 @@ for i in range(6):
 part1_pose.pose.position.x = 0
 part1_pose.pose.position.y = 1.05
 
-part2_pose.pose.position.x = -0.24
-part2_pose.pose.position.y = 0.18
+part2_pose.pose.position.x = -0.26
+part2_pose.pose.position.y = 0.13
 orientation_list = quaternion_from_euler(0,0,3.14)
 part2_pose.pose.orientation.x = orientation_list[0]
 part2_pose.pose.orientation.y = orientation_list[1]
