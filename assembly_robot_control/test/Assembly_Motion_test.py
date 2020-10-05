@@ -20,7 +20,7 @@ class Assembly_motion():
         self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
         # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
-        self.urx_rob1 = UrxMotion("192.168.13.101")
+        # self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
 
         self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
@@ -54,6 +54,11 @@ class Assembly_motion():
         self.group1.go(grasp.pre_grasp)
         self.group1.go(grasp.grasp)
         self.group1.go(grasp.post_grasp)
+
+    #remove
+    def trans_check(self, g_trans, t_trans):
+        trans, rot = self.mg_rob1._check_to_goal(g_trans, t_trans)
+        return trans, rot
 
 
     def camera_pose(self, robot):

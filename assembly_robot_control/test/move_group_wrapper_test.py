@@ -242,6 +242,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
+  def _check_to_goal(self, g_trans, g_target):
+    g_mat = tf_to_mat(g_trans[:3], g_trans[3:])
+    gp_mat = tf_to_mat(g_target[:3], g_target[3:])
+    p_mat = tf.transformations.concatenate_matrices(g_mat, gp_mat)
+    (p_trans, p_rot) = mat_to_tf(p_mat)
+
+    return p_trans, p_rot
+
   def move_to_grab_part(self, g_trans, g_rot, g_offset):
     '''
     [output]

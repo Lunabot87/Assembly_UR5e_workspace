@@ -51,6 +51,8 @@ class Assembly_mode():
 	def insert_part_test(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 		# rob1, rob2 작업, rob1이 작업 중심
 		self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #중심으로 tf 재 설정
+
+		robot = self.pr.hand_over_part_check(ch_name)
 		# self.pr.grab_part(ch_name)
 
 		# sorted_insert_target_poses = self.pr.sort_insert_target(asm_msg.parents)

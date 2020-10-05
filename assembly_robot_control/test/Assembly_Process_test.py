@@ -27,7 +27,7 @@ class Assembly_process():
 		self.am = Assembly_motion(ros)
 		self.tfBuffer = Buffer()
 		self.listener = TransformListener(self.tfBuffer)
-		self.br = TransformBroadcaster()
+		self.br = StaticTransformBroadcaster()
 		time.sleep(2)
 		##########################msg타입 수정 필요##############################3
 		# self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
@@ -125,7 +125,7 @@ class Assembly_process():
 
 		hole_trans_l = self.list_from_trans(hole_trans)
 		
-		hole_trans_l[2] += 0.2 #why use?
+		hole_trans_l[2] += 0.16 #why use?
 
 		# xyz.append(3.1415)
 		# xyz.append(0)
@@ -192,21 +192,93 @@ class Assembly_process():
 		return t
 
 
-	def hand_over_part(self, insert_target_pose, asm_msg):
-		# 1. 낄 수 있는지 2. 들 수 있는지 확인
-		# child part를 낄 수 있는지 확인해서 못끼면, 로봇을 변경
-		# 바뀐 로봇이 child part를 들 수 있는지 확인해서 못들면, child part를 옮긴다.
-		# 끼는 target 위치는 insert 할 위치
-		# 드는 target 위치는 child part의 위치
-		# 작업하는 로봇이 바뀐 경우 True 반환, 그대로인 경우 False 반환
-		rob = rob1
-		# rob1이 낄 수 있거나 rob2가 낄수 있거나, 둘다 안되는 경우는 발생 x 가정
-		if not check_reachability(insert_target_pose, rob):
-			rob = rob2 
-		if not check_reachability(asm_msg.child.pose, rob):
-			pass_part_to_other_rob(asm_msg.child.pose, COMMON_AREA_TARGET_POSE, rob)
-			return True
+	def tran_from_list(self, l, header, frame_id):
+		t = geometry_msgs.msg.TransformStamped()
+		t.header.stamp = rospy.Time.now()
+		t.header.frame_id = header
+		t.child_frame_id = frame_id
+		t.transform.translation.x = l[0]
+		t.transform.translation.y = l[1]
+		t.transform.translation.z = l[2]
+		t.transform.rotation.x = l[3]
+		t.transform.rotation.y = l[4]
+		t.transform.rotation.z = l[5]
+		t.transform.rotation.w = l[6]
 
+		return t
+
+
+	def qut_from_trans(self, t):
+		list_trans = []
+		
+		list_trans.append(t.transform.translation.x)
+		list_trans.append(t.transform.translation.y)
+		list_trans.append(t.transform.translation.z)
+		list_trans.append(t.transform.rotation.x)
+		list_trans.append(t.transform.rotation.y)
+		list_trans.append(t.transform.rotation.z)
+		list_trans.append(t.transform.rotation.w)
+
+		return list_trans
+
+
+	def hand_over_part_check(self, ch_name):
+
+		trans = self.tfBuffer.lookup_transform('rob1_real_base_link', ch_name+'-GRASP-1', self.rospy.Time(0))
+
+		trans_l = self.qut_from_trans(trans)
+
+		trans_l[2] = 0.16
+
+		self.am.move_motion(trans_l[:3], trans_l[3:], 0.1, False)
+
+		self.am.move_motion(trans_l[:3], trans_l[3:], 0, False)
+
+		time.sleep(1)
+
+		trans_t = self.tfBuffer.lookup_transform('target', 'rob1_real_ee_link', self.rospy.Time(0))
+
+		trans_g = self.tfBuffer.lookup_transform('chair_part6', 'goal', self.rospy.Time(0))
+
+
+		temp_t, temp_r = self.am.trans_check(self.qut_from_trans(trans_g), [0,0,-0.15,0.9999997, 0, 0, 0.0007963])
+
+		temp_t = temp_t.tolist()
+		temp_r = temp_r.tolist()
+
+		trans_f, rot_f = self.am.trans_check(temp_t + temp_r, self.qut_from_trans(trans_t))
+
+		trans_f = trans_f.tolist()
+		rot_f = rot_f.tolist()
+
+		trans = trans_f + rot_f
+
+		# trans = temp_t + temp_r
+
+		self.br.sendTransform(self.tran_from_list(trans, 'chair_part6', "real_goal"))
+
+		time.sleep(1)
+
+		trans = self.tfBuffer.lookup_transform('rob1_real_base_link', 'real_goal', self.rospy.Time(0))
+
+		trans = self.qut_from_trans(trans)
+
+		# trans[2] = 0.16
+
+		self.am.move_motion(trans[:3], trans[3:], 0, False)
+
+		print "fin"
+
+		# rob2 = self.tfBuffer.lookup_transform('rob2_real_base_link', 'target', self.rospy.Time(0))
+
+		# rob = rob1
+		# # rob1이 낄 수 있거나 rob2가 낄수 있거나, 둘다 안되는 경우는 발생 x 가정
+		# if not check_reachability(insert_target_pose, rob):
+		# 	rob = rob2 
+		# if not check_reachability(asm_msg.child.pose, rob):
+		# 	pass_part_to_other_rob(asm_msg.child.pose, COMMON_AREA_TARGET_POSE, rob)
+		# 	return True
+		#######################################
 		# check_reachability, pass_part_to_other_rob 생성 필요
 		return False
 
@@ -250,6 +322,7 @@ class Assembly_process():
 		self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal"))
 		self.br.sendTransform(self.trans_from_list(target, ch_name, "target"))
 
+		time.sleep(1)
 
 
 	def grab_part(self, asm_child_msg, is_moved):
