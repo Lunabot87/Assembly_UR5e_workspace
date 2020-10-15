@@ -59,6 +59,29 @@
         <joint name="rob1_wrist_3_joint" value="1.5754528045654297" />
     </group_state>
 
+
+<!--init pose-->
+
+    <group_state name="rob1_init_pose" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="1.5708565712" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.35618843655" />
+        <joint name="rob1_elbow_joint" value="1.57078963915" />        
+        <joint name="rob1_wrist_1_joint" value="-2.35618176083" />
+        <joint name="rob1_wrist_2_joint" value="-1.57084209124" />
+        <joint name="rob1_wrist_3_joint" value="3.14155721664" />
+    </group_state>
+
+    <group_state name="rob2_init_pose" group="rob2_arm">
+        <joint name="rob2_shoulder_pan_joint" value="1.5708565712" />
+        <joint name="rob2_shoulder_lift_joint" value="-2.35618843655" />
+        <joint name="rob2_elbow_joint" value="1.57078963915" />        
+        <joint name="rob2_wrist_1_joint" value="-2.35618176083" />
+        <joint name="rob2_wrist_2_joint" value="-1.57084209124" />
+        <joint name="rob2_wrist_3_joint" value="3.14155721664" />
+    </group_state>
+
+
+
 <!--pre grasp-->
 
     <group_state name="rob1_c101350_1_pre_grasp" group="rob1_arm">
@@ -890,4 +913,32 @@
     <disable_collisions link1="rob2_wrist_1_link" link2="rob2_wrist_2_link" reason="Adjacent" />
     <disable_collisions link1="rob2_wrist_1_link" link2="rob2_wrist_3_link" reason="Never" />
     <disable_collisions link1="rob2_wrist_2_link" link2="rob2_wrist_3_link" reason="Adjacent" />
+
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_left_inner_finger_pad" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_left_inner_knuckle" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_left_outer_finger" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_left_outer_knuckle" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_right_inner_finger" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_right_inner_finger_pad" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_right_inner_knuckle" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_right_outer_finger" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_right_outer_knuckle" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_robotiq_arg2f_base_link" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_wrist_1_link" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_wrist_2_link" reason="Never" />
+    <disable_collisions link1="rob1_ELP_CAM" link2="rob1_wrist_3_link" reason="Never" />
+
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_left_inner_finger_pad" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_left_inner_knuckle" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_left_outer_finger" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_left_outer_knuckle" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_right_inner_finger" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_right_inner_finger_pad" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_right_inner_knuckle" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_right_outer_finger" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_right_outer_knuckle" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_robotiq_arg2f_base_link" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_wrist_1_link" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_wrist_2_link" reason="Never" />
+    <disable_collisions link1="rob2_ELP_CAM" link2="rob2_wrist_3_link" reason="Never" />
 </robot>

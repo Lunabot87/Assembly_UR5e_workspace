@@ -27,14 +27,14 @@ P3hole8={'trans':[ 0.115+0.02  ,-0.0000, 0.01],'rot':[0,-pi/2,0]}
 P3hole_offset=[P3hole1,P3hole2,P3hole3,P3hole4,
 				P3hole5,P3hole6,P3hole7,P3hole8]
 
-P4hole1={'trans':[ 0.1275+0.0065, 0.016, 0.01],'rot':[0,-pi/2,0]}
+P4hole1={'trans':[ 0.1275+0.0065, 0.016, 0.01],'rot':[-pi/2,pi/2,pi/2]}
 P4hole2={'trans':[ 0.1275+0.0065,-0.016, 0.01],'rot':[0,-pi/2,0]}
 P4hole3={'trans':[-0.1275-0.0065, 0.016, 0.01],'rot':[0,pi/2,0]}
 P4hole4={'trans':[-0.1275-0.0065,-0.016, 0.01],'rot':[0,pi/2,0]}
 P4hole5={'trans':[-0.1275-0.0065,-0.295, 0.01],'rot':[0,pi/2,0]}
-P4hole6={'trans':[ 0.1275+0.0065,-0.295, 0.01],'rot':[0,-pi/2,0]}
+P4hole6={'trans':[ 0.1275+0.0065,-0.295, 0.01],'rot':[-pi/2,pi/2,pi/2]}
 P4hole7={'trans':[-0.1150-0.0200, 0.000, 0.005],'rot':[0,pi/2,0]}
-P4hole8={'trans':[ 0.1150+0.0200, 0.000, 0.005],'rot':[0,-pi/2,0]}
+P4hole8={'trans':[ 0.1150+0.0200, 0.000, 0.005],'rot':[-pi/2,pi/2,pi/2]}
 
 P4hole_offset=[P4hole1,P4hole2,P4hole3,P4hole4,
 				P4hole5,P4hole6,P4hole7,P4hole8]

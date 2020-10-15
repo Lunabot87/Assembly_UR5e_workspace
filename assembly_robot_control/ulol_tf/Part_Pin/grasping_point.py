@@ -4,18 +4,20 @@ P1grasp={}
 
 P2grasp1={'trans':[0.1293,0,0.01],'rot':[0,pi,pi/2]}
 P2grasp2={'trans':[-0.1293,0,0.01],'rot':[0,pi,pi/2]}
-P2grasp = [P2grasp1,P2grasp2]
+P2grasp3={'trans':[0,0,0.01],'rot':[0,pi,pi/2]}
+P2grasp = [P2grasp1,P2grasp2,P2grasp3]
 
 P3grasp1={'trans':[0.1117,0,0.01],'rot':[0,pi,pi/2]}
 P3grasp2={'trans':[-0.1117,0,0.01],'rot':[0,pi,pi/2]}
-P3grasp3={'trans':[0.12,0,0.01],'rot':[0,pi,pi/2]}
-P3grasp4={'trans':[-0.12,0,0.01],'rot':[0,pi,pi/2]}
-P3grasp = [P3grasp1,P3grasp2,P3grasp3,P3grasp4]
+P3grasp3={'trans':[0,0,0.01],'rot':[0,pi,pi/2]}
+# P3grasp3={'trans':[0.12,0,0.01],'rot':[0,pi,pi/2]}
+# P3grasp4={'trans':[-0.12,0,0.01],'rot':[0,pi,pi/2]}
+P3grasp = [P3grasp1,P3grasp2,P3grasp3]
 
-P4grasp1={'trans':[ 0.028, 0.000, 0.005],'rot':[pi, 0, pi/2]}
-P4grasp2={'trans':[-0.028, 0.000, 0.005],'rot':[pi, 0,-pi/2]}
-P4grasp3={'trans':[ 0.028,-0.295, 0.005],'rot':[pi, 0, pi/2]}
-P4grasp4={'trans':[-0.028,-0.295, 0.005],'rot':[pi, 0,-pi/2]}
+P4grasp1={'trans':[ 0.094, 0.000, 0.005],'rot':[0, 0, pi/2]}
+P4grasp2={'trans':[ 0.028,-0.295, 0.005],'rot':[0, 0, pi/2]}
+P4grasp3={'trans':[-0.094, 0.000, 0.005],'rot':[0, 0,-pi/2]}
+P4grasp4={'trans':[-0.028,-0.295, 0.005],'rot':[0, 0,-pi/2]}
 P4grasp = [P4grasp1,P4grasp2,P4grasp3,P4grasp4]
 
 P5grasp1={'trans':[0.383863,0.26097,0.04],'rot':[0,0,0.11+pi]}

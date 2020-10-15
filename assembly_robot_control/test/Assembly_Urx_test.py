@@ -39,8 +39,8 @@ class UrxMotion():
         force_toq = [0,0,-7,0,0,0] 
 
         # spiral motion
-        R = 0.006 #0.003
-        revolution = 8 #4
+        R = 0.008  #0.006 #0.003
+        revolution = 10 #8 #4
         dth = m.pi/10
         th_len_1 = int(revolution*2*m.pi/dth) # len(th_array)-1
         dr = R/th_len_1 # R*0.005
@@ -159,7 +159,7 @@ class UrxMotion():
                 continue
 
 
-    def spiral_motion(self):
+    def spiral_motion(self, pitch = 0):
 
         #############################error test################################
         # move to initial pose
@@ -189,7 +189,7 @@ class UrxMotion():
 
         # go down
         print "="*20 +"go_down"+"="*20
-        force_mod = [0,0,1,0,0,0]
+        force_mod = [0,0,1,0,pitch,0]
         force_toq = [0,0,-1,0,0,0] 
 
         cmd_str  = "def go_down():"
@@ -275,15 +275,15 @@ class UrxMotion():
 
         self.gripper_move_and_wait(0)
 
-        post_pose = self.robot.getl()
-        post_pose[2] += 0.3
-        self.robot.movel(post_pose)
+        # post_pose = self.robot.getl()
+        # post_pose[2] += 0.3
+        # self.robot.movel(post_pose)
 
-        while(True):
-            current = self.robot.getl()
-            dist = np.linalg.norm(np.array(current)-np.array(post_pose))
-            if dist < 0.001:
-                break
+        # while(True):
+        #     current = self.robot.getl()
+        #     dist = np.linalg.norm(np.array(current)-np.array(post_pose))
+        #     if dist < 0.001:
+        #         break
 
 
 def main():

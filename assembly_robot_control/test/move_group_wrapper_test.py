@@ -7,7 +7,7 @@ import copy
 import geometry_msgs.msg
 import moveit_msgs.msg
 from sensor_msgs.msg import JointState
-from moveit_commander import MoveGroupCommander, PlanningSceneInterface
+from moveit_commander import MoveGroupCommander, PlanningSceneInterface, RobotCommander
 
 from ur5e_inv_kin_wrapper import UR5eInvKinForTF
 # from Parts_hj import Parts
@@ -32,20 +32,25 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     # setup for move group
     self.set_planning_time(3)
     self.set_num_planning_attempts(5)
-    self.set_max_velocity_scaling_factor(0.5)
-    self.set_max_acceleration_scaling_factor(0.25)
+    self.set_max_velocity_scaling_factor(1)
+    self.set_max_acceleration_scaling_factor(1)
 
     if _eef_link is None:
-      eef_link = 'tcp_gripper_closed'
-      _eef_link = name[:5] + eef_link
+      self.eef_link = 'tcp_gripper_closed'
+      _eef_link = name[:5] + self.eef_link
     else:
-      eef_link = _eef_link[5:]    
+      self.eef_link = _eef_link[5:]    
     MoveGroupCommander.set_end_effector_link(self, _eef_link)
     
     # setup for ur5e invkin
-    eef_offset = TCP_OFFSET[eef_link]
+    eef_offset = TCP_OFFSET[self.eef_link]
     self.ur5e = UR5eInvKinForTF(name, eef_offset)
-    print"eef_link: {}, eef_offset: {}".format(eef_link, eef_offset)
+    print"eef_link: {}, eef_offset: {}".format(self.eef_link, eef_offset)
+
+
+    # setup for scene
+    self.scene = PlanningSceneInterface()
+    self.robot = RobotCommander()
 
   def get_name(self):
     '''
@@ -54,6 +59,16 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     print "My name is {}".format(self.__class__.__name__)
     # return super(MoveGroupCommanderWrapper, self).get_name()
     return MoveGroupCommander.get_name(self)
+
+  #####
+  def attach(self, rob, part, file_name):
+    touch_links = self.robot.get_link_names(group=rob+'_hand')
+    self.scene.attach_mesh(rob+"_"+self.eef_link, part, file_name, touch_links=touch_links)
+
+  def dettach(self, rob, part):
+    self.scene.remove_attached_object(rob+"_"+self.eef_link, part)
+
+  #####
 
   def _list_to_js(self, joint_list):
     js = JointState()
@@ -64,11 +79,11 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
   def set_end_effector_link(self, _eef_link):
     MoveGroupCommander.set_end_effector_link(self, _eef_link)
     
-    eef_link = _eef_link[5:]
-    eef_offset = TCP_OFFSET[eef_link]
+    self.eef_link = _eef_link[5:]
+    eef_offset = TCP_OFFSET[self.eef_link]
     self.ur5e.set_eef_offset(eef_offset)
 
-  def _get_best_ik_plan(self, trans, rot):
+  def _get_best_ik_plan(self, trans, rot, c):
     '''
     [output]
     val1: if best solution with no collision and successful plan exists,
@@ -80,8 +95,13 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
           else,
             return -1
     '''
+
     cur_joint = self.get_current_joint_values()
-    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
+    
+    if c > 0: 
+      inv_sol = self.ur5e.inv_kin_full_sorted_c(trans, rot, cur_joint)
+    else:
+      inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
     self.ur5e.print_inv_sol(inv_sol)
     
     print "="*100
@@ -225,11 +245,11 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     oc.absolute_x_axis_tolerance = 0.01
     oc.absolute_y_axis_tolerance = 0.01
     oc.absolute_z_axis_tolerance = 0.01
-    oc.weight = 10
+    oc.weight = 50
     consts.orientation_constraints = [oc]
     
     self.set_path_constraints(consts)
-    s_idx = self.go_to_pose_goal(trans, rot,idx)
+    s_idx = self.go_to_pose_goal(trans, rot, idx)
     self.clear_path_constraints()
 
     return s_idx
@@ -250,7 +270,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
-  def move_to_grab_part(self, g_trans, g_rot, g_offset):
+  def move_to_grab_part(self, g_trans, g_rot, g_offset, c):
     '''
     [output]
     if plan0 and plan1 and plan2 and plan3 succeeded,
@@ -265,11 +285,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
             + list_str(g_rot, ['x','y','z','w'])
 
-    (result0, _) = self._get_best_ik_plan(g_trans, g_rot)
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
     print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 
+
     result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+  
+
     print "******plan1 = {}\n".format(result1)
     if result1 < 0: return False
     
@@ -283,7 +306,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     
     return True
 
-  def move_to_hold_part(self, g_trans, g_rot, g_offset):
+  def move_to_grab_check(self, g_trans, g_rot, g_offset, c):
     '''
     [output]
     if plan0 and plan1 and plan2 and plan3 succeeded,
@@ -298,7 +321,28 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
             + list_str(g_rot, ['x','y','z','w'])
 
-    (result0, _) = self._get_best_ik_plan(g_trans, g_rot)
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
+    print "******plan0 = {}\n".format(result0)
+    if result0 < 0: return False
+    
+    return True
+
+  def move_to_hold_part(self, g_trans, g_rot, g_offset, c):
+    '''
+    [output]
+    if plan0 and plan1 and plan2 and plan3 succeeded,
+      return True
+    else,
+      return False
+    '''
+    (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
+
+    print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
+            + list_str(pg_rot, ['x','y','z','w'])
+    print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
+            + list_str(g_rot, ['x','y','z','w'])
+
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
     print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 

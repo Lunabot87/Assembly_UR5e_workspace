@@ -20,7 +20,7 @@ class Assembly_motion():
         self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
         # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
-        # self.urx_rob1 = UrxMotion("192.168.13.101")
+        self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
 
         self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
@@ -29,6 +29,21 @@ class Assembly_motion():
         self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
         self.program_running()
 
+        self.init_pose(False)
+        self.init_pose(True)
+
+
+    def init_pose(self, robot=None):
+        rob1_init_pose = self.mg_rob1.get_named_target_values("rob1_init_pose")
+        rob2_init_pose = self.mg_rob2.get_named_target_values("rob2_init_pose")
+
+        if robot is False:
+            self.mg_rob1.go(rob1_init_pose)
+        elif robot is True:
+            self.mg_rob2.go(rob2_init_pose)
+        else:
+            self.mg_rob1.go(rob1_init_pose)
+            self.mg_rob2.go(rob2_init_pose)
 
     def program_running(self):
         rob1_connect = self.rob1_check()
@@ -112,13 +127,45 @@ class Assembly_motion():
         raw_input()
         rob.execute(plan, wait=True)
 
-    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot):
+    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
         if robot is False:
             rob = self.mg_rob1
         else:
             rob = self.mg_rob2
 
-        rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset)
+        rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset, c)
+
+
+    def move_check(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
+        if robot is False:
+            rob = self.mg_rob1
+        else:
+            rob = self.mg_rob2
+
+        success = rob.move_to_grab_check(grasp_trans, grasp_rot, grasp_offset, c)
+        return success
+
+
+    def attach(self, robot, part, file_name):
+        if robot is False:
+            rob = self.mg_rob1
+            hand = 'rob1'
+        else:
+            rob = self.mg_rob2
+            hand = 'rob2'
+
+        rob.attach(hand, part, file_name)
+
+
+    def dettach(self, robot, part):
+        if robot is False:
+            rob = self.mg_rob1
+            hand = 'rob1'
+        else:
+            rob = self.mg_rob2
+            hand = 'rob2'
+
+        rob.dettach(hand, part)
 
 
     def move_current_to(self,x,y,z,robot):
@@ -170,7 +217,7 @@ class Assembly_motion():
         # NotImplementedError
         
 
-    def hold_assistant(self, grasp_trans, grasp_rot, grasp_offset, robot):
+    def hold_assistant(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
         if robot is False:
             rob = self.mg_rob1
             urx = self.urx_rob1
@@ -181,11 +228,14 @@ class Assembly_motion():
         urx.gripper_move_and_wait(0)
         self.program_running()
 
-        rob.move_to_hold_part(grasp_trans, grasp_rot, grasp_offset)
+        r = rob.move_to_hold_part(grasp_trans, grasp_rot, grasp_offset, c)
+        if r is False: return r
 
 
         urx.gripper_move_and_wait(255)
         self.program_running()
+
+
         
     def gripper_control(self, robot, target):
         if robot is True:
@@ -200,16 +250,16 @@ class Assembly_motion():
 
 
  
-    def sprial_pin(self, robot = False):
+    def sprial_pin(self, robot = False, pitch = 0):
         # spiral motion을 진행하면서 pin을 insert 하는 작업
         # force값을 받아서 pin이 insert가 되었는지 아닌지 확인
         # insert가 되면 모션 중지하고 True를 반환
         # motion을 끝까지 진행하였는데도 insert가 안되었으면 False를 반환
         #####
         if robot is False:
-            self.urx_rob1.spiral_motion()
+            self.urx_rob1.spiral_motion(pitch)
         else:
-            self.urx_rob2.spiral_motion()
+            self.urx_rob2.spiral_motion(pitch)
 
         self.program_running()
         # return is_inserted

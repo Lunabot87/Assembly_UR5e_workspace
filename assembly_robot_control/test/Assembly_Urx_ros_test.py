@@ -273,7 +273,16 @@ class UrxMotion():
                 if force[2] > 50:
                     # print force[2]
                     time.sleep(1)
-                    self.send_program.publish("end_force_mode()")
+                    force_mod = [0,0,0,0,0,0]
+                    force_toq = [0,0,0,0,0,0]
+                    cmd_str  = "def real_insert():"
+                    cmd_str += "\tforce_mode_set_damping(0.005)\n"
+                    cmd_str += "\twhile (True):\n"
+                    cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
+                    #cmd_str += "\t\tsync()\n"
+                    cmd_str += "\tend\n"
+                    cmd_str += "end\n"
+                    self.send_program.publish(cmd_str)
                     break
             except KeyboardInterrupt:
                 self.send_program.publish("end_force_mode()")
@@ -292,7 +301,8 @@ class UrxMotion():
         #     dist = np.linalg.norm(np.array(current)-np.array(post_pose))
         #     if dist < 0.001:
         #         break
-        robot.movel(start_pose, wait=True)
+        # robot.movel(start_pose, wait=True)
+        return True
 
 def main():
     rob1 = UrxMotion("192.168.13.101")

@@ -48,7 +48,7 @@ class TF_Node(ASM_D.Assemble_Data):
 
 		moveit_commander.roscpp_initialize(sys.argv)
 		self.scene = moveit_commander.PlanningSceneInterface()
-		self.br = TransformBroadcaster()
+		self.br = StaticTransformBroadcaster()
 
 		self.init_TF_List()
 		self.init_Pin_List()
@@ -56,7 +56,7 @@ class TF_Node(ASM_D.Assemble_Data):
 		self.AList = {'part':[],'pin':[]}
 		self.part_add_flag = False
 		
-		rospy.Timer(rospy.Duration(1), self.send_TF)
+		# rospy.Timer(rospy.Duration(1), self.send_TF)
 
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}
@@ -275,7 +275,7 @@ class TF_Node(ASM_D.Assemble_Data):
 					self.TF_List[part_num]['holes'][hole_num] = []
 				else:
 					hole_data = HO.hole_offset[part_num][hole_num]
-					hole_pose = self.get_TF_pose(mesh_pose,hole_data)
+					hole_pose = self.get_TF_pose(self.zero_pose(), hole_data)#self.get_TF_pose(mesh_pose,hole_data)
 					self.TF_List[part_num]['holes'][hole_num] = copy.deepcopy(hole_pose)
 
 
@@ -286,8 +286,20 @@ class TF_Node(ASM_D.Assemble_Data):
 				else:
 					part_origin = self.TF_List[part_num]['origin']
 					tf_data = GP.grasping_pose[part_num][gp]
-					grasping_pose = self.get_TF_pose(part_origin,tf_data)
+					grasping_pose = self.get_TF_pose(self.zero_pose(),tf_data)
 				self.GP_List[part_num]['pose'][gp] = copy.deepcopy(grasping_pose)
+
+	def zero_pose(self):
+		p = geometry_msgs.msg.PoseStamped().pose
+		p.position.x = 0
+		p.position.y = 0
+		p.position.z = 0
+		p.orientation.x = 0
+		p.orientation.y = 0
+		p.orientation.z = 0
+		p.orientation.w = 1
+
+		return p
 
 	def set_pin_TF(self,pin_type,pin_tag): # fill Pin_lsit #Pin_name = pin_name[pin_number]+"-"+str(pin_exist+1)
 	
@@ -332,7 +344,23 @@ class TF_Node(ASM_D.Assemble_Data):
 
 						orientation_list = selected_part['holes'][h_num].orientation
 
-						self.br.sendTransform(self.Transform_data('world', hole_name, position_list, orientation_list) )
+						self.br.sendTransform(self.Transform_data(part_name[p_num], hole_name, position_list, orientation_list) )
+
+	def send_GP_TF(self):
+		for part_type in range(6):
+			if not self.TF_List[part_type]['origin'] == []:
+				num_of_gp = len(self.GP_List[part_type]['pose'])
+				selected_part = self.GP_List[part_type]
+				for g in range(num_of_gp):
+					gp_name = part_name[part_type]+"-GRASP-"+str(g+1)
+					position_list = self.make_position_list(selected_part['pose'][g].position)
+					# orientation_list = self.make_orientation_list(selected_part['pose'][g].orientation)
+
+					orientation_list = selected_part['pose'][g].orientation
+
+					self.br.sendTransform(self.Transform_data(part_name[part_type], gp_name, position_list, orientation_list))
+
+					
 	def send_pin_TF(self):
 		for pin_type in range(4):
 			selected_pin = self.Pin_List[pin_type]
@@ -371,27 +399,18 @@ class TF_Node(ASM_D.Assemble_Data):
 							orientation_list = selected_pin['pose'][pins].orientation
 
 							self.br.sendTransform(self.Transform_data('world', Pin_name, position_list, orientation_list))
-	def send_GP_TF(self):
-		for part_type in range(6):
-			if not self.TF_List[part_type]['origin'] == []:
-				num_of_gp = len(self.GP_List[part_type]['pose'])
-				selected_part = self.GP_List[part_type]
-				for g in range(num_of_gp):
-					gp_name = part_name[part_type]+"-GRASP-"+str(g+1)
-					position_list = self.make_position_list(selected_part['pose'][g].position)
-					# orientation_list = self.make_orientation_list(selected_part['pose'][g].orientation)
+	
 
-					orientation_list = selected_part['pose'][g].orientation
+	def send_TF(self):
+		# if self.part_add_flag == True:
+		# 	# print"[INFO] send_TF CALLED"
+		# 	self.send_part_TF()
+		# 	# self.send_pin_TF()
+		# 	self.send_GP_TF()
 
-					self.br.sendTransform(self.Transform_data('world', gp_name, position_list, orientation_list))
-
-	def send_TF(self,dumb_Data):
-		if self.part_add_flag == True:
-			# print"[INFO] send_TF CALLED"
-			self.send_part_TF()
-			# self.send_pin_TF()
-			self.send_GP_TF()
-
+		self.send_part_TF()
+		# self.send_pin_TF()
+		self.send_GP_TF()
 	def detach_part(self):
 		# self.part_add_flag = False
 		temp_list = copy.deepcopy(self.a_list)
@@ -436,6 +455,21 @@ class TF_Node(ASM_D.Assemble_Data):
 
 		return t
 
+	def zero_data(self):
+		t = geometry_msgs.msg.TransformStamped()
+
+		t.header.stamp = rospy.Time.now()
+		t.header.frame_id = 'header'
+		t.child_frame_id = 'frame_id'
+		t.transform.translation.x = 0
+		t.transform.translation.y = 0
+		t.transform.translation.z = 0
+		t.transform.rotation.orientation.x = 0
+		t.transform.rotation.orientation.y = 0
+		t.transform.rotation.orientation.z = 0
+		t.transform.rotation.orientation.w = 1
+
+		return t
 		
 def main():	
 	rospy.init_node('TF_test', anonymous=True)
@@ -443,6 +477,7 @@ def main():
 	while True:
 		try:
 			TF.set_parts()
+			TF.send_TF()
 			print "PRESS ENTER"
 			raw_input()
 		except rospy.ROSInterruptException:

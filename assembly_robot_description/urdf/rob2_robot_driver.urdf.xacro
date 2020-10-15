@@ -89,6 +89,30 @@
       </xacro:if>
     </xacro:if>
 
+    <joint name="${prefix}real_ee_link" type="fixed">
+      <parent link="${prefix}real_ee_link" />
+      <child link="${prefix}ELP_CAM" />
+      <origin xyz="0 0.045 0.040" rpy="0.0 0.0 0" />
+    </joint>
+
+    <link name="${prefix}ELP_CAM">
+       <visual>
+         <origin xyz="0 0 0.05" rpy="0 0 0" />
+         <geometry>
+           <box size="0.13 0.05 0.06" />
+         </geometry>
+         <material name="${prefix}ELP_CAM">
+           <color rgba="0.102 0.000 0.102 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0.05" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.13 0.05 0.06"/>
+         </geometry>
+       </collision>
+     </link>
 <!--     <xacro:if value="$(arg realsense_enabled)">
 
        <link name="${prefix}realsense_base_link" />
