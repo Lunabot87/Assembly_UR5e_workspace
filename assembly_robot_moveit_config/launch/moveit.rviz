@@ -120,7 +120,7 @@ Visualization Manager:
         chair_part3-GRASP-2:
           Value: false
         chair_part3-GRASP-3:
-          Value: false
+          Value: true
         chair_part4:
           Value: false
         chair_part4-GRASP-1:
@@ -156,7 +156,7 @@ Visualization Manager:
         chair_part6-GRASP-5:
           Value: false
         goal:
-          Value: false
+          Value: true
         hole2-1:
           Value: false
         hole2-2:
@@ -226,11 +226,11 @@ Visualization Manager:
         hole5-9:
           Value: false
         hole6-1:
-          Value: true
+          Value: false
         hole6-10:
           Value: false
         hole6-2:
-          Value: true
+          Value: false
         hole6-3:
           Value: false
         hole6-4:
@@ -248,7 +248,7 @@ Visualization Manager:
         re_target:
           Value: false
         real_goal:
-          Value: false
+          Value: true
         rob1_ELP_CAM:
           Value: true
         rob1_base:
@@ -365,6 +365,8 @@ Visualization Manager:
           Value: false
         target:
           Value: false
+        target_g:
+          Value: false
         world:
           Value: false
       Marker Scale: 0.5
@@ -382,8 +384,7 @@ Visualization Manager:
             chair_part2-GRASP-2:
               {}
             chair_part2-GRASP-3:
-              real_goal:
-                {}
+              {}
             hole2-1:
               {}
             hole2-2:
@@ -406,7 +407,8 @@ Visualization Manager:
             chair_part3-GRASP-2:
               {}
             chair_part3-GRASP-3:
-              {}
+              real_goal:
+                {}
             hole3-1:
               {}
             hole3-2:
@@ -422,6 +424,8 @@ Visualization Manager:
             hole3-7:
               {}
             hole3-8:
+              {}
+            target:
               {}
           chair_part4:
             chair_part4-GRASP-1:
@@ -490,6 +494,8 @@ Visualization Manager:
               {}
             chair_part6-GRASP-5:
               {}
+            goal:
+              {}
             hole6-1:
               {}
             hole6-10:
@@ -510,8 +516,6 @@ Visualization Manager:
               {}
             hole6-9:
               {}
-          goal:
-            {}
           table:
             bar1:
               {}
@@ -536,8 +540,7 @@ Visualization Manager:
                               rob1_ee_link:
                                 rob1_real_ee_link:
                                   camera_center_1:
-                                    re_target:
-                                      {}
+                                    {}
                                   rob1_ELP_CAM:
                                     {}
                                   rob1_tcp_gripper_closed:
@@ -575,7 +578,8 @@ Visualization Manager:
                               rob2_ee_link:
                                 rob2_real_ee_link:
                                   camera_center_2:
-                                    {}
+                                    re_target:
+                                      {}
                                   rob2_ELP_CAM:
                                     {}
                                   rob2_tcp_gripper_closed:
@@ -598,7 +602,7 @@ Visualization Manager:
                                       rob2_right_inner_finger:
                                         rob2_right_inner_finger_pad:
                                           {}
-          target:
+          target_g:
             {}
       Update Interval: 0
       Value: true
@@ -1300,25 +1304,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.813427209854126
+      Distance: 2.144850015640259
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.1587434560060501
-        Y: -0.020267590880393982
-        Z: 0.7857171297073364
+        X: 0.05634424090385437
+        Y: -0.029270358383655548
+        Z: 0.8399407863616943
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.274796962738037
+      Pitch: 0.6547969579696655
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.245369911193848
+      Yaw: 5.119010925292969
     Saved: ~
 Window Geometry:
   Displays:
