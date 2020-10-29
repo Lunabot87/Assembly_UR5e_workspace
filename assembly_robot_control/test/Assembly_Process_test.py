@@ -70,13 +70,13 @@ class Assembly_process():
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
 			ro_trans = [0, 0, 0, 0, 0, 1, 0.0000463]
-			z_trans = [0,0,0.35,0,0,0,1]
+			z_trans = [0,0,0.25,0,0,0,1]
 		else:
 			rob_camera = 'camera_center_2'
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
-			z_trans = [0,0,0.35,0,0,0,1]
+			z_trans = [0,0,0.25,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
@@ -104,12 +104,15 @@ class Assembly_process():
 			
 		#########카메라사용########
 		time.sleep(2)
-		self.client(pa_part, hole_name, robot)
+		trans_ = self.client(pa_part, hole_name, robot)
 
 
 		if move is True:
-
-			hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
+			if trans_ is not False: 
+				self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g0'))
+				hole_trans = self.tfBuffer.lookup_transform(base_link, 'target_g0', self.rospy.Time(0))
+			else:
+				hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
 
 
 			hole_trans_l = self.list_from_trans(hole_trans)
@@ -130,6 +133,9 @@ class Assembly_process():
 
 			self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
 
+		else:
+			return trans_
+
 		#return target_pose
 
 	def client(self, part, hole_name, robot):
@@ -141,7 +147,7 @@ class Assembly_process():
 			if result is False:
 				print "not found"
 				break
-				return -1
+				return False
 				
 
 			else:
@@ -157,33 +163,40 @@ class Assembly_process():
 					trans_ = self.qut_from_trans(trans_)
 
 
-					self.br.sendTransform(self.tran_from_list(trans_[:2]+hole_[2:], 'world', 'target_g'))
+					###############change 10/27#######################################################################
 
-					time.sleep(0.2)
 
-					# hole_ = self.tfBuffer.lookup_transform(part, hole_name, self.rospy.Time(0))
-					# hole_ = self.qut_from_trans(hole_)
-
-					# self.br.sendTransform(self.tran_from_list(hole_, part, hole_name))
+					# self.br.sendTransform(self.tran_from_list(trans_[:2]+hole_[2:], 'world', 'target_g'))
 
 					# time.sleep(0.2)
 
-					hole_ = self.tfBuffer.lookup_transform(hole_name, 'target_g', self.rospy.Time(0))
-					hole_ = self.qut_from_trans(hole_)
+					# # hole_ = self.tfBuffer.lookup_transform(part, hole_name, self.rospy.Time(0))
+					# # hole_ = self.qut_from_trans(hole_)
 
-					trans_ = self.tfBuffer.lookup_transform('world', part, self.rospy.Time(0))
-					trans_ = self.qut_from_trans(trans_)
+					# # self.br.sendTransform(self.tran_from_list(hole_, part, hole_name))
 
-					trans_t, trans_q = self.am.trans_check(trans_, hole_)
+					# # time.sleep(0.2)
 
-					self.br.sendTransform(self.tran_from_list(trans_t.tolist()+trans_q.tolist(), 'world', part))
-					time.sleep(0.2)
+					# hole_ = self.tfBuffer.lookup_transform(hole_name, 'target_g', self.rospy.Time(0))
+					# hole_ = self.qut_from_trans(hole_)
+
+					# trans_ = self.tfBuffer.lookup_transform('world', part, self.rospy.Time(0))
+					# trans_ = self.qut_from_trans(trans_)
+
+					# trans_t, trans_q = self.am.trans_check(trans_, hole_)
+
+					# self.br.sendTransform(self.tran_from_list(trans_t.tolist()+trans_q.tolist(), 'world', part))
+					# time.sleep(0.2)
 
 
-					break
-					return -1
+					# break
+					# return -1
+
+					###############change 10/27#######################################################################
+
+					return trans_[:2]+hole_[2:]
 						
-		return -1
+		return False
 
 
 
@@ -358,6 +371,9 @@ class Assembly_process():
 
 		time.sleep(1)
 
+		print "real :   "
+		print self.tfBuffer.lookup_transform('real_goal', 'goal', self.rospy.Time(0))
+
 		success = self.select_part_robot(robot, "real_goal")
 
 		if success is False and robot is False:
@@ -368,19 +384,25 @@ class Assembly_process():
 
 		hold_check = None
 
-		for i in pa_hole_list:
+		pa_goal_list = []
+
+		for i, j in zip(pa_hole_list, range(len(pa_hole_list))):
 			select = self.hand_over_hole_check(i)
 
-			if hold_check is not select:
-				self.hold_assist(select, pa_name, i)
-				self.hold_assist_reset(select, pa_name, i)
-				hold_check = copy.deepcopy(select)
-				self.am.init_pose()
+			# if hold_check is not select:
+			# 	self.hold_assist(select, pa_name, i)
+			# 	self.hold_assist_reset(select, pa_name, i)
+			# 	hold_check = copy.deepcopy(select)
+			# 	self.am.init_pose()
 
 
-			self.fine_tune_insert_target(pa_name, i, select, move = False)
+			trans_ = self.fine_tune_insert_target(pa_name, i, robot, move = False)
 
-		self.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list)
+			self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g'+str(j)))
+
+			pa_goal_list.append('target_g'+str(j))
+
+		self.send_tf(pa_name, pa_goal_list, ch_name, ch_hole_list)
 
 		trans_g = self.tfBuffer.lookup_transform('world', 'goal', self.rospy.Time(0))
 
@@ -403,6 +425,8 @@ class Assembly_process():
 		self.br.sendTransform(self.tran_from_list(trans, 'world', "real_goal"))
 
 		time.sleep(1)
+
+		print self.tfBuffer.lookup_transform('real_goal', 'goal', self.rospy.Time(0))
 			
 		return robot
 
@@ -637,8 +661,11 @@ class Assembly_process():
 			base_link= 'rob2_real_base_link'
 
 
-		point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
-		point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
+		# point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
+		# point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
+
+		point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
+		point2 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 		
 		point1_l = self.list_from_trans(point1)
 		point2_l = self.list_from_trans(point2)
@@ -704,8 +731,11 @@ class Assembly_process():
 			base_link= 'rob2_real_base_link'
 
 
-		point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
-		point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
+		# point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
+		# point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
+
+		point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
+		point2 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 		
 		point1_l = self.list_from_trans(point1)
 		point2_l = self.list_from_trans(point2)

@@ -182,8 +182,8 @@ class Assembly_motion():
 
         traj = rob.set_pose_target(c_pose)
         plan = rob.plan(traj)
-        print "go?"
-        raw_input()
+        # print "go?"
+        # raw_input()
         rob.execute(plan, wait=True)
 
 

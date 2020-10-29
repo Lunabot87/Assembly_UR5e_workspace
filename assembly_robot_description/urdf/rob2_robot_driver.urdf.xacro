@@ -113,6 +113,109 @@
          </geometry>
        </collision>
      </link>
+
+
+    <joint name="${prefix}real_sense_link" type="fixed">
+      <parent link="${prefix}real_ee_link" />
+      <child link="${prefix}sense_CAM" />
+      <origin xyz="0 -0.045 0.03" rpy="0.0 0.0 0" />
+    </joint>
+
+    <link name="${prefix}sense_CAM">
+       <visual>
+         <origin xyz="0 0 0.05" rpy="0 0 0" />
+         <geometry>
+           <box size="0.12 0.04 0.05" />
+         </geometry>
+         <material name="${prefix}sense_CAM">
+           <color rgba="0.102 0.000 0.102 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0 0.04" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.12 0.04 0.06"/>
+         </geometry>
+       </collision>
+     </link>
+
+
+     <joint name="${prefix}safety_link" type="fixed">
+      <parent link="${prefix}real_ee_link" />
+      <child link="${prefix}safety_zone" />
+      <origin xyz="0 0 0.05" rpy="0.0 0.0 0" />
+    </joint>
+
+   <link name="${prefix}safety_zone">
+     <visual>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <geometry>
+         <cylinder length="0.100" radius="0.045"/>
+       </geometry>
+       <material name="{prefix}safety_zone">
+         <color rgba="0.192 0.192 0.192 1.0"/>
+       </material>
+     </visual>
+
+     <collision>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <geometry>
+         <cylinder length="0.100" radius="0.045"/>
+       </geometry>
+     </collision>
+   </link>
+
+   <joint name="${prefix}safety_box1_link" type="fixed">
+      <parent link="${prefix}safety_zone" />
+      <child link="${prefix}safety_box1_zone" />
+      <origin xyz="0.07 0 0.06" rpy="0.0 0.0 0" />
+    </joint>
+
+   <link name="${prefix}safety_box1_zone">
+     <visual>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <geometry>
+         <box size="0.05 0.03 0.13"/>
+       </geometry>
+       <material name="{prefix}safety_box1_zone">
+         <color rgba="0.002 0.192 0.192 1.0"/>
+       </material>
+     </visual>
+
+     <collision>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <geometry>
+         <box size="0.05 0.03 0.13"/>
+       </geometry>
+     </collision>
+   </link>
+
+   <joint name="${prefix}safety_box2_link" type="fixed">
+      <parent link="${prefix}safety_zone" />
+      <child link="${prefix}safety_box2_zone" />
+      <origin xyz="-0.07 0 0.06" rpy="0.0 0.0 0" />
+    </joint>
+
+   <link name="${prefix}safety_box2_zone">
+     <visual>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <geometry>
+         <box size="0.05 0.03 0.13"/>
+       </geometry>
+       <material name="{prefix}safety_box2_zone">
+         <color rgba="0.002 0.192 0.192 1.0"/>
+       </material>
+     </visual>
+
+     <collision>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <geometry>
+         <box size="0.05 0.03 0.13"/>
+       </geometry>
+     </collision>
+   </link>
+   
 <!--     <xacro:if value="$(arg realsense_enabled)">
 
        <link name="${prefix}realsense_base_link" />

@@ -142,19 +142,19 @@ def main():
 	raw_input()
 	a.insert_part_test("chair_part6", ["hole6-1", "hole6-2"], "chair_part2", ["hole2-1", "hole2-2"])
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole2-3", "chair_part2")
-
-	# print 'start?'
-	# raw_input()
-	
-	# a.insert_pin_test("c101350_1", "hole2-4", "chair_part2")
+	a.insert_pin_test("c101350_1", "hole2-3", "chair_part2")
 
 	print 'start?'
 	raw_input()
-	a.insert_part_test("chair_part6", ["hole6-5", "hole6-6", 'hole6-7'], "chair_part4", ["hole4-1", "hole4-2", 'hole4-6'])
+	
+	a.insert_pin_test("c101350_1", "hole2-4", "chair_part2")
+
+	# print 'start?'
+	# raw_input()
+	# a.insert_part_test("chair_part6", ["hole6-5", "hole6-6", 'hole6-7'], "chair_part4", ["hole4-1", "hole4-2", 'hole4-6'])
 	
 
 	# print 'start?'
