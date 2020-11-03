@@ -233,7 +233,7 @@ class UrxMotion():
             try:
                 force = self.robot.get_tcp_force()
                 # print force[0], force[1]
-                if abs(force[0]) > 20 or abs(force[1]) > 20:
+                if abs(force[0]) > 15 or abs(force[1]) > 15:
                     # print force[0], force[1]
                     self.robot.send_program("end_force_mode()")
                     break

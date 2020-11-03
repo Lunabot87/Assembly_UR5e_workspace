@@ -8,8 +8,9 @@ import time
 import copy
 
 from moveit_commander.conversions import pose_to_list
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from math import pi
+from std_srvs.srv  import SetBool
 
 from geometry_msgs.msg import *
 from tf.transformations import *
@@ -47,6 +48,9 @@ class TF_Node(ASM_D.Assemble_Data):
 		super(TF_Node, self).__init__()
 
 		moveit_commander.roscpp_initialize(sys.argv)
+
+		self.s = rospy.Service('update_tf', SetBool, self.s_update)
+
 		self.scene = moveit_commander.PlanningSceneInterface()
 		self.br = StaticTransformBroadcaster()
 
@@ -57,6 +61,11 @@ class TF_Node(ASM_D.Assemble_Data):
 		self.part_add_flag = False
 		
 		# rospy.Timer(rospy.Duration(1), self.send_TF)
+
+	def s_update(self, data):
+		self.set_parts()
+		self.send_TF()
+		print "service call"
 
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}

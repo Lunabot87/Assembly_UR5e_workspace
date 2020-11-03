@@ -32,11 +32,13 @@ class Assembly_mode():
 		self.pr.grab_pin(pin) #asm_msg.child.pin
 
 		robot = self.pr.hand_over_pin_check(pin, target) #asm_msg.parent.target.name
-		if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: self.pr.hold_assist(robot, pa_part, target)
+		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
+		self.pr.hold_assist(robot, pa_part, target)
 		self.pr.fine_tune_insert_target(pa_part, target, robot)
 		# 학부 보조 연구원
 		self.pr.insert_spiral_pin_motion(robot)
-		if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: self.pr.hold_assist_reset(robot, pa_part, target)
+		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
+		self.pr.hold_assist_reset(robot, pa_part, target)
 
 
 	def insert_part(self, asm_msg):
@@ -50,10 +52,11 @@ class Assembly_mode():
 
 	def insert_part_test(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 		# rob1, rob2 작업, rob1이 작업 중심
+		self.pr.am.init_pose()
 		self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #중심으로 tf 재 설정
 
 		robot = self.pr.hand_over_part_check(ch_name, ch_hole_list, pa_name, pa_hole_list)
-		self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
+		# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
 		trans_ = self.pr.grab_part(robot, ch_name)
 		self.pr.insert_spiral_part_motion(robot, trans_)
 		self.pr.hold_assist_reset(robot, pa_name,  pa_hole_list[0])
@@ -72,57 +75,59 @@ def main():
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c122620_1", "hole2-5", "chair_part6")
+	# a.insert_pin_test("c122620_1", "hole2-5", "chair_part2")
 
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c122620_2", "hole2-6", "chair_part6")
+	# a.insert_pin_test("c122620_2", "hole2-6", "chair_part2")
 
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c122620_3", "hole3-5", "chair_part6")
+	# a.insert_pin_test("c122620_3", "hole3-5", "chair_part3")
 
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c122620_4", "hole3-6", "chair_part6")
+	# a.insert_pin_test("c122620_4", "hole3-6", "chair_part3")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole6-2", "chair_part6")
+	a.insert_pin_test("c101350_1", "hole6-3", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole6-1", "chair_part6")
+	a.insert_pin_test("c101350_1", "hole6-4", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole6-3", "chair_part6")
+	a.insert_pin_test("c101350_1", "hole6-2", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole6-4", "chair_part6")
+	a.insert_pin_test("c101350_1", "hole6-1", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
 	
-	# a.insert_pin_test("c101350_10", "hole6-5", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_11", "hole6-6", "chair_part6")
+	a.insert_pin_test("c101350_10", "hole6-5", "chair_part6")
 
-	# print 'start?'
-	# raw_input()
+	print 'start?'
+	raw_input()
 	
-	# a.insert_pin_test("c101350_12", "hole6-7", "chair_part6")
+	a.insert_pin_test("c101350_11", "hole6-6", "chair_part6")
+
+	print 'start? hole6-7'
+	raw_input()
+	
+	a.insert_pin_test("c101350_12", "hole6-7", "chair_part6")
 
 	# print 'start?'
 	# raw_input()
@@ -131,16 +136,16 @@ def main():
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole3-3", "chair_part3")
+	# a.insert_pin_test("c101350_1", "hole3-1", "chair_part3")
 
 	# print 'start?'
 	# raw_input()
 	
-	# a.insert_pin_test("c101350_1", "hole3-4", "chair_part3")
+	# a.insert_pin_test("c101350_1", "hole3-2", "chair_part3")
 	
-	print 'start?'
-	raw_input()
-	a.insert_part_test("chair_part6", ["hole6-1", "hole6-2"], "chair_part2", ["hole2-1", "hole2-2"])
+	# print 'start?'
+	# raw_input()
+	# a.insert_part_test("chair_part6", ["hole6-1", "hole6-2"], "chair_part2", ["hole2-1", "hole2-2"])
 
 	print 'start?'
 	raw_input()

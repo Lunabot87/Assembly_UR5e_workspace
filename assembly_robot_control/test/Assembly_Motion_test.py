@@ -42,7 +42,7 @@ class Assembly_motion():
         elif robot is True:
             self.mg_rob2.go(rob2_init_pose)
         else:
-            self.mg_rob1.go(rob1_init_pose)
+            self.mg_rob1.go(rob1_init_pose, wait=False)
             self.mg_rob2.go(rob2_init_pose)
 
     def program_running(self):
@@ -179,6 +179,21 @@ class Assembly_motion():
         c_pose.position.y += y
 
         print c_pose
+
+        traj = rob.set_pose_target(c_pose)
+        plan = rob.plan(traj)
+        # print "go?"
+        # raw_input()
+        rob.execute(plan, wait=True)
+
+    def move_current_up(self, z,robot):
+        if robot is False:
+            rob = self.mg_rob1
+        else:
+            rob = self.mg_rob2
+
+        c_pose = copy.deepcopy(rob.get_current_pose().pose)
+        c_pose.position.z += z
 
         traj = rob.set_pose_target(c_pose)
         plan = rob.plan(traj)
