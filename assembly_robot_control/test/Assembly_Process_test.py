@@ -98,7 +98,7 @@ class Assembly_process():
 
 		base_t = self.am.trans_convert(self.qut_from_trans(base_), temp_t)
 
-		self.am.move_motion(base_t, 0, robot, c=True)
+		self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True)
 			
 		#########카메라사용########
 		time.sleep(2)
@@ -114,11 +114,14 @@ class Assembly_process():
 				hole_trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 				hole_trans = self.am.trans_convert(self.qut_from_trans(hole_trans), trans_)
 
+				hole_trans = self.tran_from_list(hole_trans, '', '')
+				hole_trans_l = self.list_from_trans(hole_trans)
+
 			else:
 				hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
 
 
-			hole_trans_l = self.list_from_trans(hole_trans)
+				hole_trans_l = self.list_from_trans(hole_trans)
 			
 
 			hole_trans_l[2] += 0.18 #why use?

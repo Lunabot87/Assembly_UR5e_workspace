@@ -1,0 +1,5 @@
+string type
+Asm_test Parent
+Asm_test Child
+---
+bool result

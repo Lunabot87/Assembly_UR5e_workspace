@@ -99,7 +99,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     cur_joint = self.get_current_joint_values()
     
 
-    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
+    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint, c)
     self.ur5e.print_inv_sol(inv_sol)
     
     print "="*100
@@ -137,7 +137,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return -1, -1
 
-  def _get_selected_ik_plan(self, trans, rot, idx):
+  def _get_selected_ik_plan(self, trans, rot, idx, c=False):
     '''
     [output]
     val1: if selected idx has no collision and successful plan,
@@ -150,7 +150,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
             return -1
     '''
     cur_joint = self.get_current_joint_values()
-    inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint)
+    inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint, c)
     self.ur5e.print_inv_sol(inv_sol)
     
     print "="*100
@@ -184,7 +184,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     self.go(joint_goal, wait=True)
     # self.stop()
 
-  def go_to_pose_goal(self, trans, rot, idx=None):
+  def go_to_pose_goal(self, trans, rot, idx=None, c=False):
     '''
     [output]
     if go_to_pose_goal succeeded,
@@ -195,7 +195,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     if idx is None:
       (s_idx, traj) = self._get_best_ik_plan(trans, rot)
     else:
-      (s_idx, traj) = self._get_selected_ik_plan(trans, rot, idx)
+      (s_idx, traj) = self._get_selected_ik_plan(trans, rot, idx, c)
 
     if s_idx >= 0:
       self.execute(traj, wait=True)
@@ -203,7 +203,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     
     return s_idx
 
-  def go_to_part_goal(self, trans, rot, idx=None):
+  def go_to_part_goal(self, trans, rot, idx=None, c=False):
     '''
     [output]
     if go_to_pose_goal succeeded,
@@ -214,7 +214,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     if idx is None:
       (s_idx, traj) = self._get_best_ik_plan(trans, rot)
     else:
-      (s_idx, traj) = self._get_selected_ik_plan(trans, rot, idx)
+      (s_idx, traj) = self._get_selected_ik_plan(trans, rot, idx, c)
 
     if s_idx >= 0:
       self.execute(traj, wait=True)

@@ -3,15 +3,27 @@
 
 import rospy
 from Assembly_Process_test import Assembly_process
-
+from assembly_robot_msgs.srv import asm_Srv
 
 
 class Assembly_mode():
 
 	def __init__(self):
 		rospy.init_node('Assembly_Mode', anonymous=True)
-		self.pr = Assembly_process(rospy)
-		s = rospy.Service('control', Int, handle_add_two_ints)
+		#self.pr = Assembly_process(rospy)
+		self.srv = rospy.Service('Asm_protocal', asm_Srv, self.Asm_callback)
+		print "set"
+
+	def Asm_callback(self, data):
+
+		print data.Parent.hole[0]
+
+		# if data.type is 'insert':
+		# 	if 'C101350' in data.child.name[0] or 'C122620' in data.child.name[0]:
+		# 		self.insert_pin_test(data.child.name[0], data.parent.hole[0], data.parent.name[0])
+		# 	else:
+		# 		self.insert_part_test(data.parent.name[0], data.parent.hole, data.child.name[0], data.child.hole)
+		return True
 
 	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 
@@ -73,6 +85,7 @@ def main():
 
 	a = Assembly_mode()
 
+	rospy.spin()
 	# print 'start?'
 	# raw_input()
 	
@@ -93,42 +106,41 @@ def main():
 	
 	# a.insert_pin_test("c122620_4", "hole3-6", "chair_part3")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole6-3", "chair_part6")
+	# a.insert_pin_test("c101350_1", "hole6-3", "chair_part6")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole6-4", "chair_part6")
+	# a.insert_pin_test("c101350_1", "hole6-4", "chair_part6")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole6-2", "chair_part6")
+	# a.insert_pin_test("c101350_1", "hole6-2", "chair_part6")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole6-1", "chair_part6")
+	# a.insert_pin_test("c101350_1", "hole6-1", "chair_part6")
+	
 
+	# print 'start?'
+	# raw_input()
 	
+	# a.insert_pin_test("c101350_10", "hole6-5", "chair_part6")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_10", "hole6-5", "chair_part6")
+	# a.insert_pin_test("c101350_11", "hole6-6", "chair_part6")
 
-	print 'start?'
-	raw_input()
+	# print 'start? hole6-7'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_11", "hole6-6", "chair_part6")
-
-	print 'start? hole6-7'
-	raw_input()
-	
-	a.insert_pin_test("c101350_12", "hole6-7", "chair_part6")
+	# a.insert_pin_test("c101350_12", "hole6-7", "chair_part6")
 
 	# print 'start?'
 	# raw_input()
@@ -148,15 +160,15 @@ def main():
 	# raw_input()
 	# a.insert_part_test("chair_part6", ["hole6-1", "hole6-2"], "chair_part2", ["hole2-1", "hole2-2"])
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole2-3", "chair_part2")
+	# a.insert_pin_test("c101350_1", "hole2-3", "chair_part2")
 
-	print 'start?'
-	raw_input()
+	# print 'start?'
+	# raw_input()
 	
-	a.insert_pin_test("c101350_1", "hole2-4", "chair_part2")
+	# a.insert_pin_test("c101350_1", "hole2-4", "chair_part2")
 
 	# print 'start?'
 	# raw_input()

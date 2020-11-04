@@ -50,6 +50,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Asm.msg
+  Asm_test.msg
   Step.msg
   Child.msg
   Parent.msg
@@ -59,6 +60,7 @@ add_message_files(
 add_service_files(
   FILES
   cam_Srv.srv
+  asm_Srv.srv
 )
 
 ## Generate actions in the 'action' folder

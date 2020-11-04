@@ -41,7 +41,7 @@ class Assembly_motion():
         elif robot is True:
             self.mg_rob2.go(rob2_init_pose)
         else:
-            self.mg_rob1.go(rob1_init_pose, wait=False)
+            self.mg_rob1.go(rob1_init_pose)
             self.mg_rob2.go(rob2_init_pose)
 
     def program_running(self):

@@ -211,8 +211,8 @@ class UR5eInvKinForTF():
 
     return inv_sol_full
 
-  def inv_kin_full_sorted(self, trans, rot, cur_joint):
-    inv_sol_full = self.inv_kin_full(trans, rot, cur_joint)
+  def inv_kin_full_sorted(self, trans, rot, cur_joint, c):
+    inv_sol_full = self.inv_kin_full(trans, rot, cur_joint, c)
     inv_sol_full_sorted = sorted(inv_sol_full, key = lambda x: x['diff'])
 
     return inv_sol_full_sorted
