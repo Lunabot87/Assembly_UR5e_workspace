@@ -11,6 +11,7 @@ class Assembly_mode():
 	def __init__(self):
 		rospy.init_node('Assembly_Mode', anonymous=True)
 		self.pr = Assembly_process(rospy)
+		s = rospy.Service('control', Int, handle_add_two_ints)
 
 	def insert_pin(self, asm_msg):
 		# (일단은) 모두 rob1 이 작업 

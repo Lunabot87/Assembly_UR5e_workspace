@@ -189,7 +189,7 @@ class UR5eInvKinForTF():
     
     return inv_sol_limited
 
-  def inv_kin_full(self, trans, rot, cur_joint):
+  def inv_kin_full(self, trans, rot, cur_joint, c):
     '''
     inv_sol_full : list of dictionary
     '''
@@ -198,7 +198,7 @@ class UR5eInvKinForTF():
     # sorted_idx, sorted_diff = self._get_diff_idx(inv_sol, cur_joint)
 
     inv_sol_full = []
-    wrist_down = [0 ,1, 6, 7]
+    wrist_down = [1, 2, 6, 7] if c is True else [0 ,1, 6, 7] 
     for i in range(8):
       diff = 0.0
       if i in wrist_down:
@@ -217,34 +217,6 @@ class UR5eInvKinForTF():
 
     return inv_sol_full_sorted
 
-
-  def inv_kin_full_c(self, trans, rot, cur_joint):
-    '''
-    inv_sol_full : list of dictionary
-    '''
-    inv_sol = self.inv_kin(trans, rot)
-    # inv_sol = self.inv_kin_limited(trans, rot, cur_joint)
-    # sorted_idx, sorted_diff = self._get_diff_idx(inv_sol, cur_joint)
-
-    inv_sol_full = []
-    wrist_down = [1, 2, 6, 7]
-    for i in range(8):
-      diff = 0.0
-      if i in wrist_down:
-        diff += 100 #(m.pi)**2
-      for j in range(6): 
-        diff += self.w[j] * (inv_sol[j][i] - cur_joint[j])**2 
-      sol = inv_sol[:, i]
-      valid = self._get_state_validity(sol)
-      inv_sol_full.append({'idx':i, 'valid': valid, 'diff': diff, 'inv_sol': sol})
-
-    return inv_sol_full
-
-  def inv_kin_full_sorted_c(self, trans, rot, cur_joint):
-    inv_sol_full = self.inv_kin_full_c(trans, rot, cur_joint)
-    inv_sol_full_sorted = sorted(inv_sol_full, key = lambda x: x['diff'])
-
-    return inv_sol_full_sorted
 
   def print_inv_sol(self, list_of_dict):
     len_of_list = len(list_of_dict)

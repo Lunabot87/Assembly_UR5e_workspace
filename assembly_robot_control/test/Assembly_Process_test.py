@@ -82,35 +82,38 @@ class Assembly_process():
 
 		hole_trans = self.qut_from_trans(hole_trans)
 
-		# temp_t, temp_r = self.am.trans_check(hole_trans[:3] + [0,0,0,1], ro_trans)
+		# temp_t, temp_r = self.am.trans_convert(hole_trans[:3] + [0,0,0,1], ro_trans)
 
 		# temp_ = temp_t.tolist() + temp_r.tolist()
 
 		temp_ = hole_trans[:3] + ro_trans[3:]
 
-		temp_t, temp_r = self.am.trans_check(temp_, z_trans)
+		temp_t= self.am.trans_convert(temp_, z_trans)
 
-		temp = temp_t.tolist() + temp_r.tolist()
+		# trans_g = self.tfBuffer.lookup_transform(rob_camera, ee_link, self.rospy.Time(0))
 
-		trans_g = self.tfBuffer.lookup_transform(rob_camera, ee_link, self.rospy.Time(0))
-
-		temp_tg, temp_rg = self.am.trans_check(temp,[0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707])
+		temp_t= self.am.trans_convert(temp_t,[0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707])
 
 		base_ = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 
-		base_t, base_r = self.am.trans_check(self.qut_from_trans(base_), temp_tg.tolist() + temp_rg.tolist())
+		base_t = self.am.trans_convert(self.qut_from_trans(base_), temp_t)
 
-		self.am.move_motion(base_t.tolist(), base_r.tolist(), 0, robot, c=True)
+		self.am.move_motion(base_t, 0, robot, c=True)
 			
 		#########카메라사용########
 		time.sleep(2)
+
 		trans_ = self.client(pa_part, hole_name, robot)
 
 
+		#핀 커넥시 사용하는 값
+
 		if move is True:
 			if trans_ is not False: 
-				self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g0'))
-				hole_trans = self.tfBuffer.lookup_transform(base_link, 'target_g0', self.rospy.Time(0))
+				# self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g0'))
+				hole_trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
+				hole_trans = self.am.trans_convert(self.qut_from_trans(hole_trans), trans_)
+
 			else:
 				hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
 
@@ -158,20 +161,9 @@ class Assembly_process():
 					time.sleep(0.2)
 					hole_ = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
-
-					# print "*********************************************************************************************"
-					# print "client hole_ : "
-					# print hole_
-
 					hole_ = self.qut_from_trans(hole_)
-
-					# print "client1 hole_ : "
-					# print hole_
-
 					
 					trans_ = self.tfBuffer.lookup_transform('world', result.name, self.rospy.Time(0))
-
-					# trans_ = self.qut_from_trans(trans_)
 
 					trans_ = self.qut_from_trans(trans_)
 
@@ -213,7 +205,7 @@ class Assembly_process():
 					# trans_ = self.tfBuffer.lookup_transform('world', part, self.rospy.Time(0))
 					# trans_ = self.qut_from_trans(trans_)
 
-					# trans_t, trans_q = self.am.trans_check(trans_, hole_)
+					# trans_t, trans_q = self.am.trans_convert(trans_, hole_)
 
 					# self.br.sendTransform(self.tran_from_list(trans_t.tolist()+trans_q.tolist(), 'world', part))
 					# time.sleep(0.2)
@@ -374,26 +366,17 @@ class Assembly_process():
 
 		trans_l = self.qut_from_trans(trans)
 
-		temp_t, temp_r = self.am.trans_check(trans_l, [0,0,-0.155,0,0,0,1])
-
-		temp_t = temp_t.tolist()
-		temp_r = temp_r.tolist()
+		temp_t = self.am.trans_convert(trans_l, [0,0,-0.155,0,0,0,1])
 
 		trans_g = self.tfBuffer.lookup_transform('world', 'goal', self.rospy.Time(0))
 
 		# trans_g = self.rot_arrange(self.qut_from_trans(trans_g))
 
-		temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(trans_g), [0,0,0.05,0.9999997, 0, 0, 0.0007963])
+		temp_tg = self.am.trans_convert(self.qut_from_trans(trans_g), [0,0,0.05,0.9999997, 0, 0, 0.0007963])
 
-		temp_tg = temp_tg.tolist()
-		temp_rg = temp_rg.tolist()
+		trans_f = self.am.trans_convert(temp_tg, temp_t)
 
-		trans_f, rot_f = self.am.trans_check(temp_tg + temp_rg, temp_t + temp_r)
-
-		trans_f = trans_f.tolist()
-		rot_f = rot_f.tolist()
-
-		trans = trans_f + rot_f
+		trans = trans_f
 
 		# trans = temp_t + temp_r
 
@@ -460,17 +443,9 @@ class Assembly_process():
 
 		# trans_g = self.rot_arrange(self.qut_from_trans(trans_g))
 
-		temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(trans_g), [0,0,-0.05,0.9999997, 0, 0, 0.0007963])
+		temp_tg = self.am.trans_convert(self.qut_from_trans(trans_g), [0,0,-0.05,0.9999997, 0, 0, 0.0007963])
 
-		temp_tg = temp_tg.tolist()
-		temp_rg = temp_rg.tolist()
-
-		trans_f, rot_f = self.am.trans_check(temp_tg + temp_rg, temp_t + temp_r)
-
-		trans_f = trans_f.tolist()
-		rot_f = rot_f.tolist()
-
-		trans = trans_f + rot_f
+		trans = self.am.trans_convert(temp_tg, temp_t)
 
 		# trans = temp_t + temp_r
 
@@ -514,11 +489,11 @@ class Assembly_process():
 			trans = self.tfBuffer.lookup_transform(base_frame, goal, self.rospy.Time(0)) 
 			trans = self.qut_from_trans(trans)
 
-			success = self.am.move_check(trans[:3], trans[3:], 0, robot, c=True)
+			success = self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True, _check=True)
 		else: 
 			trans = goal
 			trans[2] += 0.155 
-			success = self.am.move_check(trans[:3], trans[3:], 0.1, robot, c=True)
+			success = self.am.move_motion(trans[:3], trans[3:], 0.1, robot, c=True, _check=True)
 
 		return success
 
@@ -530,17 +505,12 @@ class Assembly_process():
 
 	def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 
-		#self.am.init_pose()
-
-
 		goal_list = []
 		target_list = []
 
 		goal = [0,0,0,0,0,0]
 		target = [0,0,0,0,0,0]
 
-
-		
 
 		for i, j in zip(pa_hole_list, ch_hole_list):
 			goal_list.append(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0)))
@@ -654,9 +624,9 @@ class Assembly_process():
 
 		trans = self.tfBuffer.lookup_transform('world', trans_.header.frame_id, self.rospy.Time(0))
 
-		trans, rot = self.am.trans_check(self.qut_from_trans(trans), self.qut_from_trans(trans_))
+		trans = self.am.trans_convert(self.qut_from_trans(trans), self.qut_from_trans(trans_))
 
-		self.br.sendTransform(self.tran_from_list(trans.tolist()+ rot.tolist(), 'world', trans_.child_frame_id))
+		self.br.sendTransform(self.tran_from_list(trans, 'world', trans_.child_frame_id))
 
 		trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
 
@@ -664,7 +634,7 @@ class Assembly_process():
 
 		trans[2] += 0.3 
 
-		# temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(trans), [0,0,0.3,0, 0, 0, 1])
+		# temp_tg, temp_rg = self.am.trans_convert(self.qut_from_trans(trans), [0,0,0.3,0, 0, 0, 1])
 
 		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
 
@@ -735,43 +705,32 @@ class Assembly_process():
 		if check <= 0:
 			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
 
-			temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+			temp_tg = self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
 
-			temp_tg = temp_tg.tolist()
-			temp_rg = temp_rg.tolist()
-
-
-			t = self.am.hold_assistant(temp_tg, temp_rg, 0.1, robot)
+			t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 			
 			if t is False:
 				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
 
-				temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
-
-				temp_tg = temp_tg.tolist()
-				temp_rg = temp_rg.tolist()
+				temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
 			
-				t = self.am.hold_assistant(temp_tg, temp_rg, 0.1, robot)
+				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
 		else:
 			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 
-			temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+			temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
 
-			temp_tg = temp_tg.tolist()
-			temp_rg = temp_rg.tolist()
 		
-			t = self.am.hold_assistant(temp_tg, temp_rg, 0.1, robot)
+			t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
 			if t is False:
 				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
 
-				temp_tg, temp_rg = self.am.trans_check(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+				temp_tg = self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+				
 
-				temp_tg = temp_tg.tolist()
-				temp_rg = temp_rg.tolist()
-
-				t = self.am.hold_assistant(temp_tg, temp_rg, 0.1, robot)
+				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
 
 

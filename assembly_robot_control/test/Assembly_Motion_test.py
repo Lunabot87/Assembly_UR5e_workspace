@@ -29,8 +29,7 @@ class Assembly_motion():
         self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
         self.program_running()
 
-        self.init_pose(False)
-        self.init_pose(True)
+        self.init_pose()
 
 
     def init_pose(self, robot=None):
@@ -71,9 +70,10 @@ class Assembly_motion():
         self.group1.go(grasp.post_grasp)
 
     #remove
-    def trans_check(self, g_trans, t_trans):
-        trans, rot = self.mg_rob1._check_to_goal(g_trans, t_trans)
-        return trans, rot
+    def trans_convert(self, g_trans, t_trans):
+        trans, rot = self.mg_rob1._convert(g_trans, t_trans)
+        _trans_list = trans.tolist() + rot.tolist()
+        return _trans_list
 
 
     def camera_pose(self, robot):
@@ -127,22 +127,13 @@ class Assembly_motion():
         raw_input()
         rob.execute(plan, wait=True)
 
-    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
+    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False, _check = False):
         if robot is False:
             rob = self.mg_rob1
         else:
             rob = self.mg_rob2
 
-        rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset, c)
-
-
-    def move_check(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
-        if robot is False:
-            rob = self.mg_rob1
-        else:
-            rob = self.mg_rob2
-
-        success = rob.move_to_grab_check(grasp_trans, grasp_rot, grasp_offset, c)
+        success = rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset, c, _check)
         return success
 
 
@@ -185,6 +176,7 @@ class Assembly_motion():
         # print "go?"
         # raw_input()
         rob.execute(plan, wait=True)
+
 
     def move_current_up(self, z,robot):
         if robot is False:

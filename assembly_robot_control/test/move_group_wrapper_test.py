@@ -98,10 +98,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     cur_joint = self.get_current_joint_values()
     
-    if c > 0: 
-      inv_sol = self.ur5e.inv_kin_full_sorted_c(trans, rot, cur_joint)
-    else:
-      inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
+
+    inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint)
     self.ur5e.print_inv_sol(inv_sol)
     
     print "="*100
@@ -262,7 +260,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
-  def _check_to_goal(self, g_trans, g_target):
+  def _convert(self, g_trans, g_target):
     g_mat = tf_to_mat(g_trans[:3], g_trans[3:])
     gp_mat = tf_to_mat(g_target[:3], g_target[3:])
     p_mat = tf.transformations.concatenate_matrices(g_mat, gp_mat)
@@ -270,7 +268,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
-  def move_to_grab_part(self, g_trans, g_rot, g_offset, c):
+  def move_to_grab_part(self, g_trans, g_rot, g_offset, c, _check = False):
     '''
     [output]
     if plan0 and plan1 and plan2 and plan3 succeeded,
@@ -290,11 +288,11 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     if result0 < 0: return False
 
 
-    result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+    if _check is not True: 
+      result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
   
-
-    print "******plan1 = {}\n".format(result1)
-    if result1 < 0: return False
+      print "******plan1 = {}\n".format(result1)
+      if result1 < 0: return False
     
     # result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
     # print "******plan2 = {}\n".format(result2)
@@ -303,27 +301,6 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     # result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)
     # print "******plan3 = {}\n".format(result3)
     # if result3 < 0: return False
-    
-    return True
-
-  def move_to_grab_check(self, g_trans, g_rot, g_offset, c):
-    '''
-    [output]
-    if plan0 and plan1 and plan2 and plan3 succeeded,
-      return True
-    else,
-      return False
-    '''
-    (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
-
-    print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
-            + list_str(pg_rot, ['x','y','z','w'])
-    print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
-            + list_str(g_rot, ['x','y','z','w'])
-
-    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
-    print "******plan0 = {}\n".format(result0)
-    if result0 < 0: return False
     
     return True
 
