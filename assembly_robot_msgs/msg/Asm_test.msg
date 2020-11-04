@@ -1,2 +1,2 @@
 string[] name
-string[] hole
+string[] holepin

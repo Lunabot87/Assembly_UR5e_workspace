@@ -54,6 +54,7 @@ add_message_files(
   Step.msg
   Child.msg
   Parent.msg
+  PoseStamped.msg
 )
 
 ## Generate services in the 'srv' folder

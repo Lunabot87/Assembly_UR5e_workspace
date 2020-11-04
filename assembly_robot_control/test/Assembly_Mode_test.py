@@ -11,12 +11,12 @@ class Assembly_mode():
 	def __init__(self):
 		rospy.init_node('Assembly_Mode', anonymous=True)
 		#self.pr = Assembly_process(rospy)
-		self.srv = rospy.Service('Asm_protocal', asm_Srv, self.Asm_callback)
+		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
 		print "set"
 
 	def Asm_callback(self, data):
 
-		print data.Parent.hole[0]
+		print data
 
 		# if data.type is 'insert':
 		# 	if 'C101350' in data.child.name[0] or 'C122620' in data.child.name[0]:

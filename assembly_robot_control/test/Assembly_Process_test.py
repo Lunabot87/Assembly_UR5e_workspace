@@ -784,6 +784,7 @@ class Assembly_process():
 	def make_insert_msg(part_name, child_frame_pose):
 		pass
 
+
 def main():
 	rospy.init_node('Assembly_Process', anonymous=True)
 	ap = Assembly_process(rospy)

@@ -1,5 +1,7 @@
 string type
-Asm_test Parent
-Asm_test Child
+Asm_test parent
+Asm_test child
 ---
 bool result
+PoseStamped asm_pose
+PoseStamped[] holepin_pose
