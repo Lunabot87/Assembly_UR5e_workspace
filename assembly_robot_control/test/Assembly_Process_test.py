@@ -13,6 +13,7 @@ from assembly_robot_msgs.srv import *
 import time
 import copy
 
+from utils.holepin import *
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
 #python 규칙 상수는 _대문자
@@ -21,18 +22,13 @@ _KHOLECHECKOFFSET = 0.28 # 애들이 정함
 class Assembly_process():
 
 	def __init__(self, ros):
-		# self.rospy.init_node('Assembly_Process', anonymous=False)
-		# self.params = get_param_from_grasp_yaml()
-		# self.motion = Assembly_motion()
+
 		self.rospy = ros
 		self.am = Assembly_motion(ros)
 		self.tfBuffer = Buffer()
 		self.listener = TransformListener(self.tfBuffer)
 		self.br = StaticTransformBroadcaster()
 		time.sleep(2)
-		##########################msg타입 수정 필요##############################3
-		# self.pub = self.rospy.Publisher('/camera_op', Float32, queue_size=10)
-		# print "go!"
 
 
 	def elp_camera_client(self, name, robot):
@@ -70,13 +66,15 @@ class Assembly_process():
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
 			ro_trans = [0, 0, 0, 0, 0, 1, 0.0000463]
-			z_trans = [0,0,0.25,0,0,0,1]
+
 		else:
 			rob_camera = 'camera_center_2'
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
-			z_trans = [0,0,0.25,0,0,0,1]
+
+		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
+		z_trans = [0,0,0.25,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
@@ -92,36 +90,37 @@ class Assembly_process():
 
 		# trans_g = self.tfBuffer.lookup_transform(rob_camera, ee_link, self.rospy.Time(0))
 
-		temp_t= self.am.trans_convert(temp_t,[0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707])
+		temp_t= self.am.trans_convert(temp_t, camera_trans)
 
 		base_ = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 
 		base_t = self.am.trans_convert(self.qut_from_trans(base_), temp_t)
 
-		self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True)
+		result = self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True) #c = 카메라 화면처럼 움직여야 할때
+
+		if result < 0: return -1 #error 상태 수정 
 			
 		#########카메라사용########
 		time.sleep(2)
 
 		trans_ = self.client(pa_part, hole_name, robot)
 
-
 		#핀 커넥시 사용하는 값
 
 		if move is True:
 			if trans_ is not False: 
-				# self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g0'))
+				# self.br.sendTransform(self.trans_from_list(trans_, 'world', 'target_g0'))
 				hole_trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 				hole_trans = self.am.trans_convert(self.qut_from_trans(hole_trans), trans_)
 
-				hole_trans = self.tran_from_list(hole_trans, '', '')
-				hole_trans_l = self.list_from_trans(hole_trans)
+				hole_trans = self.trans_from_list(hole_trans, '', '')
+				hole_trans_l = self.list_from_trans(hole_trans, euler=True)
 
 			else:
 				hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
 
 
-				hole_trans_l = self.list_from_trans(hole_trans)
+				hole_trans_l = self.list_from_trans(hole_trans, euler=True)
 			
 
 			hole_trans_l[2] += 0.18 #why use?
@@ -137,7 +136,8 @@ class Assembly_process():
 			# self.am.move_to(xyz, robot)
 
 
-			self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+			if result < -1: return -1 
 
 		else:
 			return trans_
@@ -191,14 +191,14 @@ class Assembly_process():
 					###############change 10/27#######################################################################
 
 
-					# self.br.sendTransform(self.tran_from_list(trans_[:2]+hole_[2:], 'world', 'target_g'))
+					# self.br.sendTransform(self.trans_from_list(trans_[:2]+hole_[2:], 'world', 'target_g'))
 
 					# time.sleep(0.2)
 
 					# # hole_ = self.tfBuffer.lookup_transform(part, hole_name, self.rospy.Time(0))
 					# # hole_ = self.qut_from_trans(hole_)
 
-					# # self.br.sendTransform(self.tran_from_list(hole_, part, hole_name))
+					# # self.br.sendTransform(self.trans_from_list(hole_, part, hole_name))
 
 					# # time.sleep(0.2)
 
@@ -210,7 +210,7 @@ class Assembly_process():
 
 					# trans_t, trans_q = self.am.trans_convert(trans_, hole_)
 
-					# self.br.sendTransform(self.tran_from_list(trans_t.tolist()+trans_q.tolist(), 'world', part))
+					# self.br.sendTransform(self.trans_from_list(trans_t.tolist()+trans_q.tolist(), 'world', part))
 					# time.sleep(0.2)
 
 
@@ -228,14 +228,15 @@ class Assembly_process():
 	def hand_over_pin_check(self, pin, target_name):
 
 		not_hand_over = ['c122620_1','c122620_2' ,'c122620_3' ,'c122620_4']
+		# not_hand_over = ['C122620_1', 'C122620_2', 'C122620_3', 'C122620_4',]
 
 		rob1_trans = self.tfBuffer.lookup_transform('rob1_real_base_link', target_name, self.rospy.Time(0))
 
-		rob1_trans_l = self.list_from_trans(rob1_trans)
+		rob1_trans_l = self.list_from_trans(rob1_trans, euler=True)
 
 		rob2_trans = self.tfBuffer.lookup_transform('rob2_real_base_link', target_name, self.rospy.Time(0))
 
-		rob2_trans_l = self.list_from_trans(rob2_trans)
+		rob2_trans_l = self.list_from_trans(rob2_trans, euler=True)
 
 		dist = np.linalg.norm(np.array(rob1_trans_l[:3]))-np.linalg.norm(np.array(rob2_trans_l[:3]))
 		if dist > 0:
@@ -248,20 +249,8 @@ class Assembly_process():
 		else:
 			return False
 
-	def list_from_trans(self, t):
-		list_trans = []
-		euler = tf.transformations.euler_from_quaternion([t.transform.rotation.x,t.transform.rotation.y,t.transform.rotation.z,t.transform.rotation.w])
-		list_trans.append(t.transform.translation.x)
-		list_trans.append(t.transform.translation.y)
-		list_trans.append(t.transform.translation.z)
-		list_trans.append(euler[0])
-		list_trans.append(euler[1])
-		list_trans.append(euler[2])
 
-		return list_trans
-
-
-	def trans_from_list(self, l, header, frame_id):
+	def trans_from_list(self, l, header, frame_id, euler = False):
 		t = geometry_msgs.msg.TransformStamped()
 		t.header.stamp = rospy.Time.now()
 		t.header.frame_id = header
@@ -269,41 +258,38 @@ class Assembly_process():
 		t.transform.translation.x = l[0]
 		t.transform.translation.y = l[1]
 		t.transform.translation.z = l[2]
-		quat = tf.transformations.quaternion_from_euler(l[3],l[4],l[5])
-		t.transform.rotation.x = quat[0]
-		t.transform.rotation.y = quat[1]
-		t.transform.rotation.z = quat[2]
-		t.transform.rotation.w = quat[3]
+		if euler is not True:
+			t.transform.rotation.x = l[3]
+			t.transform.rotation.y = l[4]
+			t.transform.rotation.z = l[5]
+			t.transform.rotation.w = l[6]
+		else:
+			quat = tf.transformations.quaternion_from_euler(l[3],l[4],l[5])
+			t.transform.rotation.x = quat[0]
+			t.transform.rotation.y = quat[1]
+			t.transform.rotation.z = quat[2]
+			t.transform.rotation.w = quat[3]
 
 		return t
 
 
-	def tran_from_list(self, l, header, frame_id):
-		t = geometry_msgs.msg.TransformStamped()
-		t.header.stamp = rospy.Time.now()
-		t.header.frame_id = header
-		t.child_frame_id = frame_id
-		t.transform.translation.x = l[0]
-		t.transform.translation.y = l[1]
-		t.transform.translation.z = l[2]
-		t.transform.rotation.x = l[3]
-		t.transform.rotation.y = l[4]
-		t.transform.rotation.z = l[5]
-		t.transform.rotation.w = l[6]
-
-		return t
-
-
-	def qut_from_trans(self, t):
+	def list_from_trans(self, t, euler = False):
 		list_trans = []
 		
 		list_trans.append(t.transform.translation.x)
 		list_trans.append(t.transform.translation.y)
 		list_trans.append(t.transform.translation.z)
-		list_trans.append(t.transform.rotation.x)
-		list_trans.append(t.transform.rotation.y)
-		list_trans.append(t.transform.rotation.z)
-		list_trans.append(t.transform.rotation.w)
+		if euler is not True:
+			list_trans.append(t.transform.rotation.x)
+			list_trans.append(t.transform.rotation.y)
+			list_trans.append(t.transform.rotation.z)
+			list_trans.append(t.transform.rotation.w)
+
+		else:
+			euler = tf.transformations.euler_from_quaternion([t.transform.rotation.x,t.transform.rotation.y,t.transform.rotation.z,t.transform.rotation.w])
+			list_trans.append(euler[0])
+			list_trans.append(euler[1])
+			list_trans.append(euler[2])
 
 		return list_trans
 
@@ -383,7 +369,7 @@ class Assembly_process():
 
 		# trans = temp_t + temp_r
 
-		self.br.sendTransform(self.tran_from_list(trans, 'world', "real_goal"))
+		self.br.sendTransform(self.trans_from_list(trans, 'world', "real_goal"))
 
 		time.sleep(1)
 
@@ -405,20 +391,15 @@ class Assembly_process():
 		self.hold_assist(robot, pa_name, pa_hole_list[0])
 
 		for i, j in zip(pa_hole_list, range(len(pa_hole_list))):
-			select = self.hand_over_hole_check(i)
 
-			# if hold_check is not select:
-			# 	self.hold_assist(select, pa_name, i)
-			# 	self.hold_assist_reset(select, pa_name, i)
-			# 	hold_check = copy.deepcopy(select)
-			# 	self.am.init_pose()
-
-			
+			select = self.hand_over_hole_check(i)	
 
 			trans_ = self.fine_tune_insert_target(pa_name, i, robot, move = False)
 
 			if trans_ is not False:
-				self.br.sendTransform(self.tran_from_list(trans_, 'world', 'target_g'+str(j)))
+
+				self.br.sendTransform(self.trans_from_list(trans_, 'world', 'target_g'+str(j)))
+
 				time.sleep(0.05)
 				
 			else:
@@ -426,15 +407,9 @@ class Assembly_process():
 
 				time.sleep(0.05)
 
-				self.br.sendTransform(self.tran_from_list(self.qut_from_trans(trans_), 'world', 'target_g'+str(j)))
+				self.br.sendTransform(self.trans_from_list(self.qut_from_trans(trans_), 'world', 'target_g'+str(j)))
 
 				time.sleep(0.05)
-				print "*********************************************************************************************"
-
-				print "trans :   "
-				print self.tfBuffer.lookup_transform('world', 'target_g'+str(j), self.rospy.Time(0))
-
-				print "*********************************************************************************************"
 
 			pa_goal_list.append('target_g'+str(j))
 
@@ -452,7 +427,7 @@ class Assembly_process():
 
 		# trans = temp_t + temp_r
 
-		self.br.sendTransform(self.tran_from_list(trans, 'world', "real_goal"))
+		self.br.sendTransform(self.trans_from_list(trans, 'world', "real_goal"))
 
 		time.sleep(1)
 
@@ -465,11 +440,11 @@ class Assembly_process():
 
 		rob1_trans = self.tfBuffer.lookup_transform('rob1_real_base_link', target_name, self.rospy.Time(0))
 
-		rob1_trans_l = self.list_from_trans(rob1_trans)
+		rob1_trans_l = self.list_from_trans(rob1_trans, euler=True)
 
 		rob2_trans = self.tfBuffer.lookup_transform('rob2_real_base_link', target_name, self.rospy.Time(0))
 
-		rob2_trans_l = self.list_from_trans(rob2_trans)
+		rob2_trans_l = self.list_from_trans(rob2_trans, euler=True)
 
 		dist = np.linalg.norm(np.array(rob1_trans_l[:3]))-np.linalg.norm(np.array(rob2_trans_l[:3]))
 		
@@ -505,6 +480,32 @@ class Assembly_process():
 		# self.motion.pick_up_pin(grasp)
 		self.am.pick_up_pin(pin_name)
 
+	#################################################현철이 코드 적용 부분###############################################
+	# def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
+
+	# 	goal_list = []
+	# 	target_list = []
+
+	# 	goal = [0,0,0,0,0,0]
+	# 	target = [0,0,0,0,0,0]
+
+	# 	for i, j in zip(pa_hole_list, ch_hole_list):
+	# 		goal_list.append(self.qut_from_trans(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0))))
+	# 		target_list.append(self.qut_from_trans(self.tfBuffer.lookup_transform(ch_name, j, self.rospy.Time(0))))
+
+		
+
+	# 	trans_, rot_, axis_ = get_asm_pose_by_HolePin(goal_list, target_list)
+
+	# 	print trans_
+
+	# 	print rot_
+
+	# 	self.br.sendTransform(self.trans_from_list(trans_.tolist()+rot_.tolist() , pa_name, "goal"))
+
+	# 	time.sleep(1)
+
+	############################################11/05###########################################	
 
 	def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 
@@ -520,8 +521,8 @@ class Assembly_process():
 			target_list.append(self.tfBuffer.lookup_transform(ch_name, j, self.rospy.Time(0)))
 		
 		for i, j in zip(goal_list, target_list):
-			temp_g = self.list_from_trans(i)
-			temp_t = self.list_from_trans(j)
+			temp_g = self.list_from_trans(i, euler=True)
+			temp_t = self.list_from_trans(j, euler=True)
 			for k in range(6):
 				if k < 3:
 					goal[k] += temp_g[k]
@@ -555,8 +556,8 @@ class Assembly_process():
 		# print goal[4]
 
 
-		self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal"))
-		self.br.sendTransform(self.trans_from_list(target, ch_name, "target"))
+		self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal", euler=True))
+		self.br.sendTransform(self.trans_from_list(target, ch_name, "target", euler=True))
 
 		time.sleep(1)
 
@@ -629,7 +630,7 @@ class Assembly_process():
 
 		trans = self.am.trans_convert(self.qut_from_trans(trans), self.qut_from_trans(trans_))
 
-		self.br.sendTransform(self.tran_from_list(trans, 'world', trans_.child_frame_id))
+		self.br.sendTransform(self.trans_from_list(trans, 'world', trans_.child_frame_id))
 
 		trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
 
@@ -645,144 +646,154 @@ class Assembly_process():
 
 		self.am.init_pose(robot)
 
-	def insert_part_motion(sorted_insert_target_poses):
-		## ??? 
-		pass
+	##############################################사용안함################################################
+	# def sort_insert_target(self, asm_parents_msg):
+	# 	groups = dict()
+	# 	singles = []
+	# 	for parent in len(asm_parents_msg):
+	# 		if parent.group_name is not '':
+	# 			if parent.group_name in gruops:
+	# 				groups[parent.group_name].append(parent.target)
+	# 			else:
+	# 				groups[parent.group_name] = [parent.target]
+	# 		else:
+	# 			singles.append(parent.target)
 
-	def sort_insert_target(self, asm_parents_msg):
-		groups = dict()
-		singles = []
-		for parent in len(asm_parents_msg):
-			if parent.group_name is not '':
-				if parent.group_name in gruops:
-					groups[parent.group_name].append(parent.target)
-				else:
-					groups[parent.group_name] = [parent.target]
-			else:
-				singles.append(parent.target)
+	# 	insert_sorted_poses = self.sort_priority(groups, singles) 
+	# 	return insert_sorted_poses
 
-		insert_sorted_poses = self.sort_priority(groups, singles) 
-		return insert_sorted_poses
-
-	def sort_priority(groups, singles):
-		# priority는 single 인지 group 인지를 기준으로 설정
-		# 추후 child를 잡고 있는 위치 값도 들어가야 함(무게중심의 기준값으로 친다)
-		pass
-
-	def make_grasp_msg(self, part_name, child_frame_pose):
-		# child_frame_pose가 들어오면, part_name을 pick_config.yaml에서 찾아서
-		# 해당하는 part_grasp_target_pose 값과 child_frame_pose를 합쳐서 grasping pose(robot base frame 기준) 결정
-		# child_frame_pose가 들어오지 않으면, pick_config.yaml에서 
-		# common_area_grasp_target_pose(world frame 기준)로 grasping pose 결정
-		global_child_pose = child_frame_pose
-		self.params[part_name].target_pose
-		self.params[part_name].offset		
-		return grasp
+	# def sort_priority(groups, singles):
+	# 	# priority는 single 인지 group 인지를 기준으로 설정
+	# 	# 추후 child를 잡고 있는 위치 값도 들어가야 함(무게중심의 기준값으로 친다)
+	# 	pass
 
 
-	def hold_assist(self, rob, part_name, hole):
+	# def make_grasp_msg(self, part_name, child_frame_pose):
+	# 	# child_frame_pose가 들어오면, part_name을 pick_config.yaml에서 찾아서
+	# 	# 해당하는 part_grasp_target_pose 값과 child_frame_pose를 합쳐서 grasping pose(robot base frame 기준) 결정
+	# 	# child_frame_pose가 들어오지 않으면, pick_config.yaml에서 
+	# 	# common_area_grasp_target_pose(world frame 기준)로 grasping pose 결정
+	# 	global_child_pose = child_frame_pose
+	# 	self.params[part_name].target_pose
+	# 	self.params[part_name].offset		
+	# 	return grasp
+
+	####################################################################################################
+	
+
+	def hold_assist(self, rob, part_name, hole, reset=False):
 
 		if rob is True:
 			robot = False
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
+			
 		else:
 			robot = True
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 
-
-		# point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
-		# point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
-
 		point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
 		point2 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 		
-		point1_l = self.list_from_trans(point1)
-		point2_l = self.list_from_trans(point2)
+		point1_l = self.list_from_trans(point1, euler=True)
+		point2_l = self.list_from_trans(point2, euler=True)
 
 		check = np.linalg.norm(np.array(point1_l[:3]))-np.linalg.norm(np.array(point2_l[:3]))
 
-		print "hold_assistant"
+		# print "hold_assistant"
+
+		if reset is not True:
 	
-		if check <= 0:
-			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
-
-			temp_tg = self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
-
-			t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
-			
-			if t is False:
-				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
-
-				temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
-			
-				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
-
-		else:
-			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
-
-			temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
-
-		
-			t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
-
-			if t is False:
-				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
+			if check <= 0:
+				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
 
 				temp_tg = self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
-				
 
 				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
+				
+				if t is False:
+					grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
 
+					temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+				
+					t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
+			else:
+				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 
-	def hold_assist_reset(self, rob, part_name, hole):
-		self.am.gripper_control(rob, 0)
+				temp_tg= self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
 
+			
+				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
-		if rob is True:
-			robot = False
-			ee_link = 'rob1_real_ee_link'
-			base_link= 'rob1_real_base_link'
+				if t is False:
+					grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
+
+					temp_tg = self.am.trans_convert(self.qut_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+					
+
+					t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
+
 		else:
-			robot = True
-			ee_link = 'rob2_real_ee_link'
-			base_link= 'rob2_real_base_link'
+
+			if check <= 0:
+				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
+
+				grab_l = self.list_from_trans(grab, euler=True)
+			
+				grab_l[2] += 0.16 #why use?
+
+				self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
+			else:
+				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
+
+				grab_l = self.list_from_trans(grab, euler=True)
+
+				grab_l[2] += 0.16 #why use?
+				self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
 
 
-		# point1 = self.tfBuffer.lookup_transform(part_name + "-GRASP-1", hole, self.rospy.Time(0))
-		# point2 = self.tfBuffer.lookup_transform(part_name + "-GRASP-2", hole, self.rospy.Time(0))
 
-		point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
-		point2 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
+	# def hold_assist_reset(self, rob, part_name, hole):
+	# 	self.am.gripper_control(rob, 0)
+
+
+	# 	if rob is True:
+	# 		robot = False
+	# 		ee_link = 'rob1_real_ee_link'
+	# 		base_link= 'rob1_real_base_link'
+	# 	else:
+	# 		robot = True
+	# 		ee_link = 'rob2_real_ee_link'
+	# 		base_link= 'rob2_real_base_link'
+
+
+	# 	point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
+	# 	point2 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 		
-		point1_l = self.list_from_trans(point1)
-		point2_l = self.list_from_trans(point2)
+	# 	point1_l = self.list_from_trans(point1, euler=True)
+	# 	point2_l = self.list_from_trans(point2, euler=True)
 
-		check = np.linalg.norm(np.array(point1_l[:3]))-np.linalg.norm(np.array(point2_l[:3]))
+	# 	check = np.linalg.norm(np.array(point1_l[:3]))-np.linalg.norm(np.array(point2_l[:3]))
 
-		print check
+	# 	# print check
 	
-		if check <= 0:
-			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
+	# 	if check <= 0:
+	# 		grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
 
-			grab_l = self.list_from_trans(grab)
+	# 		grab_l = self.list_from_trans(grab, euler=True)
 		
-			grab_l[2] += 0.16 #why use?
+	# 		grab_l[2] += 0.16 #why use?
 
-			self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
-		else:
-			grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
+	# 		self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
+	# 	else:
+	# 		grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 
-			grab_l = self.list_from_trans(grab)
-			print "aa"
-			grab_l[2] += 0.16 #why use?
-			self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
-
-
-	def make_insert_msg(part_name, child_frame_pose):
-		pass
+	# 		grab_l = self.list_from_trans(grab, euler=True)
+	# 		print "aa"
+	# 		grab_l[2] += 0.16 #why use?
+	# 		self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
 
 
 def main():
