@@ -18,13 +18,15 @@ class Assembly_motion():
 
         self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
         self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
-        # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
-        # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
+        self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
+        self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
+        
         self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
 
         self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
         self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
+
         self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
         self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
         self.program_running()

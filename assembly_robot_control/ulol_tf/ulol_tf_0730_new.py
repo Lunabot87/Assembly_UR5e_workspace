@@ -66,6 +66,7 @@ class TF_Node(ASM_D.Assemble_Data):
 		self.set_parts()
 		self.send_TF()
 		print "service call"
+		return True, ''
 
 	def init_Pin_List(self):
 		self.Pin_List = [{'pose':[]},{'pose':[]}
