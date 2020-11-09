@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        self.robot.send_program(self._set_gripper())
+        # self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -68,6 +68,7 @@ class UrxMotion():
         cmd_str  = "def sprial():\n"
         cmd_str += "\tforce_mode_set_damping(0.0)\n"
         cmd_str += "\tthread Thread_1():\n"
+        cmd_str += "\tset_digital_out(4, False)\n"
         cmd_str += "\t\twhile (True):\n"
         cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\t\tsync()\n"
@@ -83,6 +84,7 @@ class UrxMotion():
         
         cmd_str += "\tend_force_mode()\n"
         cmd_str += "\tkill thrd\n"
+        cmd_str += "\tset_digital_out(4, True)\n"
         cmd_str += "end\n"
 
         return cmd_str
@@ -233,6 +235,12 @@ class UrxMotion():
             try:
                 force = self.robot.get_tcp_force()
                 # print force[0], force[1]
+                digi = self.robot.get_digital_out(4)
+                # print "digi : {0}".format(type(digi))
+                if digi > 0: #spiral 실패시
+                    self.robot.send_program("set_digital_out(4, False)")
+                    return False
+
                 if abs(force[0]) > 15 or abs(force[1]) > 15:
                     # print force[0], force[1]
                     self.robot.send_program("end_force_mode()")
@@ -284,7 +292,7 @@ class UrxMotion():
         #     dist = np.linalg.norm(np.array(current)-np.array(post_pose))
         #     if dist < 0.001:
         #         break
-
+        return True
 
 def main():
     rob1 = UrxMotion("192.168.13.101")

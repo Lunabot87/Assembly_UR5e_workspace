@@ -3,5 +3,5 @@ Asm_test parent
 Asm_test child
 ---
 bool result
-PoseStamped asm_pose
-PoseStamped[] holepin_pose
+TransStamped asm_pose
+TransStamped[] holepin_pose

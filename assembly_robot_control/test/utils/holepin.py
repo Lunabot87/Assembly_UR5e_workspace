@@ -1,9 +1,12 @@
-from utils.const import *
-from utils.conversions import *
+#-*- coding:utf-8 -*-
+
+from const import *
+from conversions import *
 
 import util
 import numpy as np 
 
+pi = 3.1415
 
 def get_asm_pose_by_HolePin(ref_coors_raw, move_coors_raw): # mat
     target_tr = np.array([0, 0, 0])
@@ -26,10 +29,24 @@ def get_asm_pose_by_HolePin(ref_coors_raw, move_coors_raw): # mat
     # P6hole4={'trans':[0.367368, 0.375477,-0.050],'rot':[0,0,0]}
 
     ref_quats = [tf.transformations.quaternion_from_matrix(coor) for coor in ref_coors]
+
+    # print('ref_quats : {0}'.format(ref_quats)) #회전값 출력
+
     ref_trs = [tf.transformations.translation_from_matrix(coor) for coor in ref_coors]
+
+    # print('ref_trs : {0}'.format(ref_trs)) #좌표값 출력 
+
     ref_zs = [util.get_transformed_zAxis(quat) for quat in ref_quats]
+
+    # print('ref_zs : {0}'.format(ref_zs)) #z축 기준으로 얼마나 회전했는지 출력 
+
     ref_z_diffs = [util.zAxis_difference(ref_zs[0], zAxis) for zAxis in ref_zs]
+
+    # print('ref_z_diffs : {0}'.format(ref_z_diffs))
+
     ref_tr_diffs = [tr - ref_trs[0] for tr in ref_trs]
+
+    # print('after ref_z_diffs : {0}'.format(ref_z_diffs))
 
     # move_coors = [const[cri+"Coordinate"] for (const, cri) \
     #     in zip(move_consts, criterion)]
@@ -41,17 +58,21 @@ def get_asm_pose_by_HolePin(ref_coors_raw, move_coors_raw): # mat
 					# P3hole4={'trans':[-0.125-0.0065,-0.0160, 0.01],'rot':[0,pi/2,0]}
 
     move_quats = [tf.transformations.quaternion_from_matrix(coor) for coor in move_coors]
+    print('move_quats : {0}'.format(move_quats))
     move_trs = [tf.transformations.translation_from_matrix(coor) for coor in move_coors]
+    print('move_trs : {0}'.format(move_trs))
     move_zs = [util.get_transformed_zAxis(quat) for quat in move_quats]
+    print('move_zs : {0}'.format(move_zs))
     move_z_diffs = [util.zAxis_difference(move_zs[0], zAxis) for zAxis in move_zs]
+    print('move_z_diffs : {0}'.format(move_z_diffs))
     move_tr_diffs = [tr - move_trs[0] for tr in move_trs]
 
     is_same_z_diffs = [np.allclose(ref_z_diff, move_z_diff, rtol=0.005, atol=0.005) \
         for (ref_z_diff, move_z_diff) in zip(ref_z_diffs, move_z_diffs)]
     if not is_same_z_diffs:
-        print(ref_z_diffs)
-        print(move_z_diffs)
-        print(is_same_z_diffs)
+        print("ref_z_diffs : {0}".format(ref_z_diffs))
+        print("move_z_diffs : {0}".format(move_z_diffs))
+        print("is_same_z_diffs : {0}".format(is_same_z_diffs))
         rospy.logwarn("Target hole and pin's direction is not proper for assembly!")
         pass
     else:
@@ -99,4 +120,4 @@ def get_min_vector_from_ref(self, zs, trs, tr_diffs):
 
 
 if __name__ == '__main__':
-   print(get_asm_pose_by_HolePin())
+   print(get_asm_pose_by_HolePin(1,1))

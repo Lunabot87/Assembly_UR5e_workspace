@@ -21,17 +21,17 @@ class Assembly_motion():
         self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         
-        self.urx_rob1 = UrxMotion("192.168.13.101")
-        self.urx_rob2 = UrxMotion("192.168.13.100")
+        # self.urx_rob1 = UrxMotion("192.168.13.101")
+        # self.urx_rob2 = UrxMotion("192.168.13.100")
 
-        self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
-        self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
+        # self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
+        # self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
 
-        self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
-        self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
-        self.program_running()
+        # self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        # self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        # self.program_running()
 
-        self.init_pose()
+        # self.init_pose()
 
 
     def init_pose(self, robot=None):
@@ -48,7 +48,7 @@ class Assembly_motion():
 
     def program_running(self):
         rob1_connect = self.rob1_check()
-        rob2_connect = self.rob2_check()
+        # rob2_connect = self.rob2_check()
         while rob1_connect.program_running is not True:
             self.rob1_client()
             time.sleep(0.5)
@@ -56,12 +56,12 @@ class Assembly_motion():
             if rob1_connect.program_running is True:
                 break
 
-        while rob2_connect.program_running is not True:
-            self.rob2_client()
-            time.sleep(0.5)
-            rob2_connect = self.rob2_check()
-            if rob2_connect.program_running is True:
-                break
+        # while rob2_connect.program_running is not True:
+        #     self.rob2_client()
+        #     time.sleep(0.5)
+        #     rob2_connect = self.rob2_check()
+        #     if rob2_connect.program_running is True:
+        #         break
 
         time.sleep(2)
 
@@ -180,7 +180,7 @@ class Assembly_motion():
         rob.execute(plan, wait=True)
 
 
-    def move_current_up(self, z,robot):
+    def move_current_up(self, z, robot):
         if robot is False:
             rob = self.mg_rob1
         else:
@@ -195,6 +195,18 @@ class Assembly_motion():
         # raw_input()
         rob.execute(plan, wait=True)
 
+    def current_pose(self, robot, reset = False, pose = None):
+        rob = self.mg_rob1 if robot is False else self.mg_rob2
+
+        print rob.get_current_pose().pose
+
+        if reset is False:
+            return rob.get_current_pose().pose
+        else:
+            traj = rob.set_pose_target(pose)
+            plan = rob.plan(traj)
+            rob.execute(plan, wait=True)
+            
 
     def hand_over_pin(self):
         # 넘기기 작업만 사용 판단은 상위에서
@@ -265,12 +277,16 @@ class Assembly_motion():
         # insert가 되면 모션 중지하고 True를 반환
         # motion을 끝까지 진행하였는데도 insert가 안되었으면 False를 반환
         #####
-        if robot is False:
-            self.urx_rob1.spiral_motion(pitch)
-        else:
-            self.urx_rob2.spiral_motion(pitch)
+        rob = self.urx_rob2 if robot is True else self.urx_rob1          
 
+        result = rob.spiral_motion(pitch)
         self.program_running()
+
+        return result
+
+
+
+        
         # return is_inserted
 
 

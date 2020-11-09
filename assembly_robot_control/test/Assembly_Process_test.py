@@ -141,6 +141,8 @@ class Assembly_process():
 			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
 			if result < -1: return -1 
 
+			return hole_trans #transposeStamped
+
 		else:
 			return trans_
 
@@ -260,17 +262,21 @@ class Assembly_process():
 		# print "real :   "
 		# print self.tfBuffer.lookup_transform('real_goal', 'goal', self.rospy.Time(0))
 
-		success = self.select_part_robot(robot, "real_goal")
+		# success = self.select_part_robot(robot, "real_goal")
+
+		success = self.select_part_robot(robot, trans_)
 
 		if success is False and robot is False:
 			robot = True
-			success = self.select_part_robot(robot, "real_goal")
+			success = self.select_part_robot(robot, trans_)
 			if success is not True:
 				return -1
 
 		hold_check = None
 
 		pa_goal_list = []
+
+		hole_list = []
 
 		self.hold_assist(robot, pa_name, pa_hole_list[0])
 
@@ -297,6 +303,8 @@ class Assembly_process():
 
 			pa_goal_list.append('target_g'+str(j))
 
+			hole_list.append(trans_)
+
 			# if trans_ is False:
 			# 	trans_ = self.tfBuffer.lookup_transform('world', i, self.rospy.Time(0))
 
@@ -320,7 +328,7 @@ class Assembly_process():
 
 		# print self.tfBuffer.lookup_transform('real_goal', 'goal', self.rospy.Time(0))
 			
-		return robot
+		return robot, trans, hole_list #hole_list : list로 생성 되어있음 
 
 
 	def hand_over_hole_check(self, target_name):
@@ -351,10 +359,14 @@ class Assembly_process():
 
 
 		if idx is not True: 
-			trans = self.tfBuffer.lookup_transform(base_frame, goal, self.rospy.Time(0)) 
+			# trans = self.tfBuffer.lookup_transform(base_frame, goal, self.rospy.Time(0))
+			trans = self.tfBuffer.lookup_transform(base_frame, 'world', self.rospy.Time(0)) 
 			trans = self.list_from_trans(trans)
 
+			trans = self.am.trans_convert(trans, goal)
+
 			result = self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True, _check=True)
+		
 		else: 
 			trans = goal
 			trans[2] += 0.155 
@@ -456,7 +468,7 @@ class Assembly_process():
 	# 	return goal, target
 
 
-	def grab_part(self, robot, ch_name):
+	def grab_part(self, robot, ch_name, pin_list, goal):
 
 		Path = "/home/care/ur_ws/src/Assembly_UR5e_workspace/assembly_robot_control/ulol_tf/object_description/chair_meshes/"
 
@@ -485,9 +497,13 @@ class Assembly_process():
 
 		self.am.move_motion(trans[:3], trans[3:], 0.1, robot)
 
-		trans = self.tfBuffer.lookup_transform(base_link, 'real_goal', self.rospy.Time(0))
+		# trans = self.tfBuffer.lookup_transform(base_link, 'real_goal', self.rospy.Time(0))
+
+		trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 
 		trans = self.list_from_trans(trans)
+
+		trans = self.am.trans_convert(trans, goal)
 
 		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
 
@@ -500,8 +516,18 @@ class Assembly_process():
 		# for i in range(num_of_trial):
 		# 	if self.am.sprial_motion():
 		# 		break
-		self.am.sprial_pin(robot)
+		start = self.am.current_pose(robot)	
+		for count in range(num_of_trial):
+			result = self.am.sprial_pin(robot)
+			if result is not True:
+				self.am.current_pose(robot, reset =True, pose = start)
+				x = 0 if count > 2 else (1 - count*2)
+				y = 0 if count < 2 else (count-3)
 
+				self.am.move_current_to(x*0.01, y*0.01, 0,robot)
+			else:
+				break
+				
 	def insert_spiral_part_motion(self, robot, trans_,num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복
 		# target pose와 grasp_config.yaml 의 데이터를 합쳐서 approach, retreat도 결정 
@@ -524,7 +550,9 @@ class Assembly_process():
 
 		trans = self.am.trans_convert(self.list_from_trans(trans), self.list_from_trans(trans_))
 
-		self.br.sendTransform(self.trans_from_list(trans, 'world', trans_.child_frame_id))
+		trans_ = self.trans_from_list(trans, 'world', trans_.child_frame_id)
+
+		self.br.sendTransform(trans_)
 
 		trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
 
@@ -539,6 +567,8 @@ class Assembly_process():
 		# self.am.move_current_up(0.3, robot)
 
 		self.am.init_pose(robot)
+
+		return True, trans_
 
 
 	def hold_assist(self, rob, part_name, hole, reset=False):
@@ -668,6 +698,27 @@ class Assembly_process():
 		return list_trans
 
 	# def hand_over_part(self, chname):
+
+	def list_from_pose(self, t, euler = False):
+		list_trans = []
+		
+		list_trans.append(t.position.x)
+		list_trans.append(t.position.y)
+		list_trans.append(t.position.z)
+		if euler is not True:
+			list_trans.append(t.orientation.x)
+			list_trans.append(t.orientation.y)
+			list_trans.append(t.orientation.z)
+			list_trans.append(t.orientation.w)
+
+		else:
+			euler = tf.transformations.euler_from_quaternion([t.orientation.x,t.orientation.y,t.orientation.z,t.orientation.w])
+			list_trans.append(euler[0])
+			list_trans.append(euler[1])
+			list_trans.append(euler[2])
+
+		return list_trans
+
 
 
 	#지금 사용 안함 

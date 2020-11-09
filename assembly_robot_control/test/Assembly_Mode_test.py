@@ -32,33 +32,22 @@ class Assembly_mode():
 		asm_pose = PoseStamped()
 		pin_pose = PoseStamped()
 		pin_list = []
-		if data.type == 'insert':
-			if 'c101350' in data.child.name[0] or 'c122620' in data.child.name[0]:
-				print "pin"
-				pin_pose = self.insert_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
-				pin_list.append(pin_pose)
-			else:
-				asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+		# if data.type == 'insert':
+		# 	if 'c101350' in data.child.name[0] or 'c122620' in data.child.name[0]:
+		# 		print "pin"
+		# 		_result, pin_pose = self.insert_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
+		# 		# pin_list.append(pin_pose)
+		# 	else:
+		# 		_result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 		
+		self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+
 		return True, asm_pose, [pin_pose] # _result, asm_pose, pin_list
-
-	# def insert_pin(self, asm_msg):
-	# 	# (일단은) 모두 rob1 이 작업 
-	# 	# real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
-	# 	self.pr.grab_pin(pin) #asm_msg.child.pin
-
-	# 	robot = self.pr.hand_over_pin_check(pin, target) #asm_msg.parent.target.name
-	# 	self.pr.hold_assist(robot, "chair_part2", target)
-	# 	self.pr.fine_tune_insert_target(target, robot)
-	# 	# 학부 보조 연구원
-	# 	self.pr.insert_spiral_pin_motion(robot)
-	# 	self.pr.hold_assist_reset(robot, "chair_part2", target)
 
 
 
 	def insert_pin_test(self, pin, target, pa_part):
-		# (일단은) 모두 rob1 이 작업 
-		# real_insert_target_pose = self.process.fine_tune_insert_target(asm_msg.parent.target) # pin일 때는 parent 타겟이 항상 하나
+		################################################################################
 		self.pr.grab_pin(pin) #asm_msg.child.pin
 
 		robot = self.pr.hand_over_pin_check(pin, target) #asm_msg.parent.target.name
@@ -69,35 +58,25 @@ class Assembly_mode():
 		self.pr.insert_spiral_pin_motion(robot)
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
 		self.pr.hold_assist(robot, pa_part, target, reset=True)
+		################################################################################
+		# self.pr.insert_spiral_pin_motion(False)
 
 		return True, pin_pose
 
 
-	# def insert_part(self, asm_msg):
-	# 	# rob1, rob2 작업, rob1이 작업 중심
-	# 	sorted_insert_target_poses = self.pr.sort_insert_target(asm_msg.parents)
-	# 	## move() - parent part는 고정, child part가 rob1이 작업을 할 수 있는 위치에 없으면 할수 있는 위치로 옮긴다
-	# 	is_moved = self.pr.hand_over_part(sorted_insert_target_poses, asm_msg)
-	# 	self.pr.grab_part(asm_msg.child, is_moved)
-	# 	self.pr.insert_part_motion(sorted_insert_target_poses[0])
-
-
 	def insert_part_test(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 		# rob1, rob2 작업, rob1이 작업 중심
-		self.pr.am.init_pose()
+		# self.pr.am.init_pose()
 
-		self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #중심으로 tf 재 설정
+		self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
 
-		robot = self.pr.hand_over_part_check(ch_name, ch_hole_list, pa_name, pa_hole_list)
+		# robot, goal, pin_list = self.pr.hand_over_part_check(ch_name, ch_hole_list, pa_name, pa_hole_list)
 		# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
-		trans_ = self.pr.grab_part(robot, ch_name)
-		self.pr.insert_spiral_part_motion(robot, trans_)
-		self.pr.hold_assist(robot, pa_name,  pa_hole_list[0], reset=True)
-		# sorted_insert_target_poses = self.pr.sort_insert_target(asm_msg.parents)
-		## move() - parent part는 고정, child part가 rob1이 작업을 할 수 있는 위치에 없으면 할수 있는 위치로 옮긴다
-		# is_moved = self.pr.hand_over_part(sorted_insert_target_poses, asm_msg)
-		# self.pr.grab_part(asm_msg.child, is_moved)
-		# self.pr.insert_part_motion(sorted_insert_target_poses[0])
+		# trans_ = self.pr.grab_part(robot, ch_name, pin_list, goal)
+		# _result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_)
+		# self.pr.hold_assist(robot, pa_name,  pa_hole_list[0], reset=True)
+
+		# return True, asm_pose, [pin_list]
 
 
 
