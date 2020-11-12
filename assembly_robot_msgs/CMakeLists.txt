@@ -62,6 +62,9 @@ add_service_files(
   FILES
   cam_Srv.srv
   asm_Srv.srv
+  check_Srv.srv
+  fineRefHoles_Srv.srv
+  chan_Srv.srv
 )
 
 ## Generate actions in the 'action' folder

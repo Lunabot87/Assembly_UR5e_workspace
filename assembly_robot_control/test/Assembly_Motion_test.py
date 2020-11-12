@@ -7,6 +7,7 @@ from Assembly_Math_test import *
 from move_group_wrapper_test import MoveGroupCommanderWrapper
 from std_srvs.srv import *
 from ur_dashboard_msgs.srv import *
+
 import time
 
 import copy
@@ -18,20 +19,23 @@ class Assembly_motion():
 
         self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
         self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
-        self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
-        self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
+        # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
+        # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         
-        # self.urx_rob1 = UrxMotion("192.168.13.101")
-        # self.urx_rob2 = UrxMotion("192.168.13.100")
+        self.urx_rob1 = UrxMotion("192.168.13.101")
+        self.urx_rob2 = UrxMotion("192.168.13.100")
 
-        # self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
-        # self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
+        self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
+        self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
 
-        # self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
-        # self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
-        # self.program_running()
+        self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
 
-        # self.init_pose()
+        
+        self.program_running()
+
+        self.init_pose()
+
 
 
     def init_pose(self, robot=None):
@@ -48,7 +52,7 @@ class Assembly_motion():
 
     def program_running(self):
         rob1_connect = self.rob1_check()
-        # rob2_connect = self.rob2_check()
+        rob2_connect = self.rob2_check()
         while rob1_connect.program_running is not True:
             self.rob1_client()
             time.sleep(0.5)
@@ -56,12 +60,12 @@ class Assembly_motion():
             if rob1_connect.program_running is True:
                 break
 
-        # while rob2_connect.program_running is not True:
-        #     self.rob2_client()
-        #     time.sleep(0.5)
-        #     rob2_connect = self.rob2_check()
-        #     if rob2_connect.program_running is True:
-        #         break
+        while rob2_connect.program_running is not True:
+            self.rob2_client()
+            time.sleep(0.5)
+            rob2_connect = self.rob2_check()
+            if rob2_connect.program_running is True:
+                break
 
         time.sleep(2)
 

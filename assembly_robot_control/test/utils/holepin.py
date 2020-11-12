@@ -58,13 +58,13 @@ def get_asm_pose_by_HolePin(ref_coors_raw, move_coors_raw): # mat
 					# P3hole4={'trans':[-0.125-0.0065,-0.0160, 0.01],'rot':[0,pi/2,0]}
 
     move_quats = [tf.transformations.quaternion_from_matrix(coor) for coor in move_coors]
-    print('move_quats : {0}'.format(move_quats))
+    # print('move_quats : {0}'.format(move_quats))
     move_trs = [tf.transformations.translation_from_matrix(coor) for coor in move_coors]
-    print('move_trs : {0}'.format(move_trs))
+    # print('move_trs : {0}'.format(move_trs))
     move_zs = [util.get_transformed_zAxis(quat) for quat in move_quats]
-    print('move_zs : {0}'.format(move_zs))
+    # print('move_zs : {0}'.format(move_zs))
     move_z_diffs = [util.zAxis_difference(move_zs[0], zAxis) for zAxis in move_zs]
-    print('move_z_diffs : {0}'.format(move_z_diffs))
+    # print('move_z_diffs : {0}'.format(move_z_diffs))
     move_tr_diffs = [tr - move_trs[0] for tr in move_trs]
 
     is_same_z_diffs = [np.allclose(ref_z_diff, move_z_diff, rtol=0.005, atol=0.005) \

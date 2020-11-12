@@ -103,146 +103,6 @@ Visualization Manager:
           Value: false
         camera_center_2:
           Value: false
-        chair_part1:
-          Value: false
-        chair_part2:
-          Value: false
-        chair_part2-GRASP-1:
-          Value: false
-        chair_part2-GRASP-2:
-          Value: false
-        chair_part2-GRASP-3:
-          Value: false
-        chair_part3:
-          Value: false
-        chair_part3-GRASP-1:
-          Value: false
-        chair_part3-GRASP-2:
-          Value: false
-        chair_part3-GRASP-3:
-          Value: false
-        chair_part4:
-          Value: false
-        chair_part4-GRASP-1:
-          Value: false
-        chair_part4-GRASP-2:
-          Value: false
-        chair_part4-GRASP-3:
-          Value: false
-        chair_part4-GRASP-4:
-          Value: false
-        chair_part5:
-          Value: false
-        chair_part5-GRASP-1:
-          Value: false
-        chair_part5-GRASP-2:
-          Value: false
-        chair_part5-GRASP-3:
-          Value: false
-        chair_part5-GRASP-4:
-          Value: false
-        chair_part5-GRASP-5:
-          Value: false
-        chair_part6:
-          Value: false
-        chair_part6-GRASP-1:
-          Value: false
-        chair_part6-GRASP-2:
-          Value: false
-        chair_part6-GRASP-3:
-          Value: false
-        chair_part6-GRASP-4:
-          Value: false
-        chair_part6-GRASP-5:
-          Value: false
-        hole2-1:
-          Value: false
-        hole2-2:
-          Value: false
-        hole2-3:
-          Value: false
-        hole2-4:
-          Value: false
-        hole2-5:
-          Value: false
-        hole2-6:
-          Value: false
-        hole2-7:
-          Value: false
-        hole2-8:
-          Value: false
-        hole3-1:
-          Value: false
-        hole3-2:
-          Value: false
-        hole3-3:
-          Value: false
-        hole3-4:
-          Value: false
-        hole3-5:
-          Value: false
-        hole3-6:
-          Value: false
-        hole3-7:
-          Value: false
-        hole3-8:
-          Value: false
-        hole4-1:
-          Value: false
-        hole4-2:
-          Value: false
-        hole4-3:
-          Value: false
-        hole4-4:
-          Value: false
-        hole4-5:
-          Value: false
-        hole4-6:
-          Value: false
-        hole4-7:
-          Value: false
-        hole4-8:
-          Value: false
-        hole5-1:
-          Value: false
-        hole5-10:
-          Value: false
-        hole5-2:
-          Value: false
-        hole5-3:
-          Value: false
-        hole5-4:
-          Value: false
-        hole5-5:
-          Value: false
-        hole5-6:
-          Value: false
-        hole5-7:
-          Value: false
-        hole5-8:
-          Value: false
-        hole5-9:
-          Value: false
-        hole6-1:
-          Value: false
-        hole6-10:
-          Value: false
-        hole6-2:
-          Value: false
-        hole6-3:
-          Value: false
-        hole6-4:
-          Value: false
-        hole6-5:
-          Value: false
-        hole6-6:
-          Value: false
-        hole6-7:
-          Value: false
-        hole6-8:
-          Value: false
-        hole6-9:
-          Value: false
         rob1_ELP_CAM:
           Value: false
         rob1_base:
@@ -371,8 +231,6 @@ Visualization Manager:
           Value: false
         table:
           Value: false
-        target_g0:
-          Value: false
         world:
           Value: false
       Marker Scale: 0.5
@@ -382,141 +240,6 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          chair_part1:
-            {}
-          chair_part2:
-            chair_part2-GRASP-1:
-              {}
-            chair_part2-GRASP-2:
-              {}
-            chair_part2-GRASP-3:
-              {}
-            hole2-1:
-              {}
-            hole2-2:
-              {}
-            hole2-3:
-              {}
-            hole2-4:
-              {}
-            hole2-5:
-              {}
-            hole2-6:
-              {}
-            hole2-7:
-              {}
-            hole2-8:
-              {}
-          chair_part3:
-            chair_part3-GRASP-1:
-              {}
-            chair_part3-GRASP-2:
-              {}
-            chair_part3-GRASP-3:
-              {}
-            hole3-1:
-              {}
-            hole3-2:
-              {}
-            hole3-3:
-              {}
-            hole3-4:
-              {}
-            hole3-5:
-              {}
-            hole3-6:
-              {}
-            hole3-7:
-              {}
-            hole3-8:
-              {}
-          chair_part4:
-            chair_part4-GRASP-1:
-              {}
-            chair_part4-GRASP-2:
-              {}
-            chair_part4-GRASP-3:
-              {}
-            chair_part4-GRASP-4:
-              {}
-            hole4-1:
-              {}
-            hole4-2:
-              {}
-            hole4-3:
-              {}
-            hole4-4:
-              {}
-            hole4-5:
-              {}
-            hole4-6:
-              {}
-            hole4-7:
-              {}
-            hole4-8:
-              {}
-          chair_part5:
-            chair_part5-GRASP-1:
-              {}
-            chair_part5-GRASP-2:
-              {}
-            chair_part5-GRASP-3:
-              {}
-            chair_part5-GRASP-4:
-              {}
-            chair_part5-GRASP-5:
-              {}
-            hole5-1:
-              {}
-            hole5-10:
-              {}
-            hole5-2:
-              {}
-            hole5-3:
-              {}
-            hole5-4:
-              {}
-            hole5-5:
-              {}
-            hole5-6:
-              {}
-            hole5-7:
-              {}
-            hole5-8:
-              {}
-            hole5-9:
-              {}
-          chair_part6:
-            chair_part6-GRASP-1:
-              {}
-            chair_part6-GRASP-2:
-              {}
-            chair_part6-GRASP-3:
-              {}
-            chair_part6-GRASP-4:
-              {}
-            chair_part6-GRASP-5:
-              {}
-            hole6-1:
-              {}
-            hole6-10:
-              {}
-            hole6-2:
-              {}
-            hole6-3:
-              {}
-            hole6-4:
-              {}
-            hole6-5:
-              {}
-            hole6-6:
-              {}
-            hole6-7:
-              {}
-            hole6-8:
-              {}
-            hole6-9:
-              {}
           table:
             bar1:
               {}
@@ -614,8 +337,6 @@ Visualization Manager:
                                       rob2_right_inner_finger:
                                         rob2_right_inner_finger_pad:
                                           {}
-          target_g0:
-            {}
       Update Interval: 0
       Value: true
     - Acceleration_Scaling_Factor: 1
@@ -1386,25 +1107,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.144850015640259
+      Distance: 4.674468994140625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.05634424090385437
-        Y: -0.029270358383655548
-        Z: 0.8399407863616943
+        X: 0.08395896106958389
+        Y: 0.048466168344020844
+        Z: 0.8771662712097168
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8447969555854797
+      Pitch: 0.5847971439361572
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.45082536339759827
+      Yaw: 6.0390119552612305
     Saved: ~
 Window Geometry:
   Displays:

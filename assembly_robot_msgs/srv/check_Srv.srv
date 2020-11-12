@@ -1,0 +1,5 @@
+TransStamped asm_pose
+TransStamped[] holepin_pose
+---
+bool result
+

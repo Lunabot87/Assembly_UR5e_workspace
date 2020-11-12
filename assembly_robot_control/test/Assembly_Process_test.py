@@ -13,6 +13,9 @@ from assembly_robot_msgs.srv import *
 import time
 import copy
 
+from assembly_robot_msgs.srv import *
+from assembly_robot_msgs.msg import *
+
 from utils.holepin import *
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
@@ -28,6 +31,9 @@ class Assembly_process():
 		self.tfBuffer = Buffer()
 		self.listener = TransformListener(self.tfBuffer)
 		self.br = StaticTransformBroadcaster()
+
+		self.mid_check = ros.ServiceProxy('check_ASM_possible', check_Srv)
+
 		time.sleep(2)
 
 
@@ -106,6 +112,7 @@ class Assembly_process():
 		time.sleep(2)
 
 		trans_ = self.client(pa_part, hole_name, robot)
+		# trans_ = False
 
 		#핀 커넥시 사용하는 값
 
@@ -115,15 +122,30 @@ class Assembly_process():
 				hole_trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 				hole_trans = self.am.trans_convert(self.list_from_trans(hole_trans), trans_)
 
+				return_hole = self.tfBuffer.lookup_transform(pa_part, 'world', self.rospy.Time(0))
+				return_hole = self.am.trans_convert(self.list_from_trans(return_hole), trans_)
+				return_hole = self.trans_from_list(return_hole, pa_part, hole_name)
+
 				hole_trans = self.trans_from_list(hole_trans, '', '')
 				hole_trans_l = self.list_from_trans(hole_trans, euler=True)
 
 			else:
+				return_hole = self.tfBuffer.lookup_transform(pa_part, hole_name, self.rospy.Time(0))
 				hole_trans = self.tfBuffer.lookup_transform(base_link, hole_name, self.rospy.Time(0))
 
-
 				hole_trans_l = self.list_from_trans(hole_trans, euler=True)
-			
+
+
+			asm_pose = TransStamped()
+			pin_pose = TransStamped()
+			pin_list = []
+
+			asm_pose.TransStamped = return_hole
+			pin_pose.TransStamped = return_hole
+			pin_list.append(pin_pose)
+
+			# result = self.mid_check(asm_pose, pin_list)
+			# if result is False: return -1
 
 			hole_trans_l[2] += 0.18 #why use?
 
@@ -141,12 +163,106 @@ class Assembly_process():
 			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
 			if result < -1: return -1 
 
-			return hole_trans #transposeStamped
+			# print return_hole
+
+			return  return_hole#hole_trans #transposeStamped
 
 		else:
 			return trans_
 
 		return False
+
+	#### chan_control ####
+
+	def chan_camera_pose(self, hole_name, robot):
+		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
+		# kHoleCheckOffset
+		# 7/22 적용
+		# xyz, rpy = self.listener.lookupTransform('/world', part_name, self.rospy.Time(0))
+
+		# self.am.camera_pose(robot)
+
+		if robot is False:
+			rob_camera = 'camera_center_1'
+			ee_link = 'rob1_real_ee_link'
+			base_link= 'rob1_real_base_link'
+			ro_trans = [0, 0, 0, 0, 0, 1, 0.0000463]
+
+		else:
+			rob_camera = 'camera_center_2'
+			ee_link = 'rob2_real_ee_link'
+			base_link= 'rob2_real_base_link'
+			ro_trans = [0, 0, 0, 0, 0, 0, 1]
+
+		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
+		z_trans = [0,0,0.22,0,0,0,1]
+
+		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
+
+		hole_trans = self.list_from_trans(hole_trans)
+
+		# temp_t, temp_r = self.am.trans_convert(hole_trans[:3] + [0,0,0,1], ro_trans)
+
+		# temp_ = temp_t.tolist() + temp_r.tolist()
+
+		temp_ = hole_trans[:3] + ro_trans[3:]
+
+		temp_t= self.am.trans_convert(temp_, z_trans)
+
+		# trans_g = self.tfBuffer.lookup_transform(rob_camera, ee_link, self.rospy.Time(0))
+
+		temp_t= self.am.trans_convert(temp_t, camera_trans)
+
+		base_ = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
+
+		base_t = self.am.trans_convert(self.list_from_trans(base_), temp_t)
+
+		base_t = self.rot_arrange(base_t) ##문제시 이거 삭제 
+
+		result = self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True) #c = 카메라 화면처럼 움직여야 할때
+
+		if result < 0: return -1 #error 상태 수정 
+			
+
+
+	def chan_insert_pose(self, robot):
+
+		if robot is False:
+			rob_camera = 'camera_center_1'
+			ee_link = 'rob1_real_ee_link'
+			base_link= 'rob1_real_base_link'
+			ro_trans = [0, 0, 0, 0, 0, 1, 0.0000463]
+
+		else:
+			rob_camera = 'camera_center_2'
+			ee_link = 'rob2_real_ee_link'
+			base_link= 'rob2_real_base_link'
+			ro_trans = [0, 0, 0, 0, 0, 0, 1]
+
+		
+		hole_trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
+
+		hole_trans_l = self.list_from_trans(hole_trans, euler=True)
+
+
+		hole_trans_l[2] = 0.30 #why use?
+
+		hole_trans_l[3] = 3.1415
+		hole_trans_l[4] = 0
+		hole_trans_l[5] = -1.5707
+
+
+		result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+		if result < -1: return 
+
+
+
+
+
+
+
+
+
 
 	def client(self, part, hole_name, robot):
 		
@@ -243,7 +359,7 @@ class Assembly_process():
 
 		# temp_t = self.am.trans_convert(trans_l, [0,0,-0.155,0,0,0,1])
 
-		temp_t = self.am.trans_convert(trans, [0,0,-0.155,0,0,0,1])
+		temp_t = self.am.trans_convert(trans, [0,0,-0.165,0,0,0,1])
 
 		trans_g = self.am.trans_convert(self.list_from_trans(self.tfBuffer.lookup_transform('world', pa_name, self.rospy.Time(0))), _goal) #수정중  
 
@@ -369,7 +485,9 @@ class Assembly_process():
 		
 		else: 
 			trans = goal
-			trans[2] += 0.155 
+			trans[2] += 0.165
+
+
 			result = self.am.move_motion(trans[:3], trans[3:], 0.1, robot, c=True, _check=True)
 
 		return result
@@ -380,32 +498,6 @@ class Assembly_process():
 		self.am.pick_up_pin(pin_name)
 
 	#################################################현철이 코드 적용 부분###############################################
-	def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
-
-		goal_list = []
-		target_list = []
-
-		goal = [0,0,0,0,0,0]
-		target = [0,0,0,0,0,0]
-
-		for i, j in zip(pa_hole_list, ch_hole_list):
-			goal_list.append(self.list_from_trans(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0))))
-			target_list.append(self.list_from_trans(self.tfBuffer.lookup_transform(ch_name, j, self.rospy.Time(0))))
-
-		
-
-		trans_, rot_, axis_ = get_asm_pose_by_HolePin(goal_list, target_list)
-
-		print trans_
-
-		print rot_
-
-		self.br.sendTransform(self.trans_from_list(trans_.tolist()+rot_.tolist() , pa_name, "goal"))
-
-		time.sleep(1)
-
-	############################################11/05###########################################	
-
 	# def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 
 	# 	goal_list = []
@@ -414,58 +506,94 @@ class Assembly_process():
 	# 	goal = [0,0,0,0,0,0]
 	# 	target = [0,0,0,0,0,0]
 
-
 	# 	for i, j in zip(pa_hole_list, ch_hole_list):
-	# 		goal_list.append(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0)))
-	# 		target_list.append(self.tfBuffer.lookup_transform(j, ch_name, self.rospy.Time(0)))
-		
-	# 	for i, j in zip(goal_list, target_list):
-	# 		temp_g = self.list_from_trans(i, euler=True)
-	# 		temp_t = self.list_from_trans(j, euler=True)
-	# 		for k in range(6):
-	# 			if k < 3:
-	# 				goal[k] += temp_g[k]
-	# 				target[k] += temp_t[k]
-	# 			else:
-	# 				goal[k] = temp_g[k]
-	# 				target[k] = temp_t[k]
-
-	# 	for i in range(3):
-	# 		goal[i] = goal[i]/len(pa_hole_list)
-	# 		target[i] = target[i]/len(ch_hole_list)
+	# 		goal_list.append(self.list_from_trans(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0))))
+	# 		target_list.append(self.list_from_trans(self.tfBuffer.lookup_transform(ch_name, j, self.rospy.Time(0))))
 
 		
-	# 	# print goal[4]
 
-	# 	if goal[4] < 0:
-	# 		if abs(goal[4] + 3.14) < 0.1:
-	# 			goal[4] = -3.1415
-	# 		elif abs(goal[4] + 1.5707) < 0.1:
-	# 			goal[4] = -1.5707
-	# 		else:
-	# 			goal[4] = 0
-	# 	else:
-	# 		if abs(goal[4] - 3.14) < 0.1:
-	# 			goal[4] = 3.1415
-	# 		elif abs(goal[4] - 1.5707) < 0.1:
-	# 			goal[4] = 1.5707
-	# 		else:
-	# 			goal[4] = 0
+	# 	trans_, rot_, axis_ = get_asm_pose_by_HolePin(goal_list, target_list)
 
-	# 	# print goal[4]
+	# 	print trans_
+
+	# 	print rot_
+
+	# 	self.br.sendTransform(self.trans_from_list(trans_.tolist()+rot_.tolist() , pa_name, "goal"))
+
+	# 	time.sleep(1)
+
+	# 	asm_pose = trans_.tolist()+rot_.tolist()
+	# 	asm_pose[2] = 0.3
+
+	# 	pin_pose = []
+	# 	pin_pose.append([self.trans_from_list(pin , pa_name, pa_hole) for pin, pa_hole in zip(goal_list, pa_hole_list)])
+
+	# 	print pin_pose
+
+	# 	return True, self.trans_from_list(asm_pose, pa_name, ch_name), pin_pose
+
+	############################################11/05###########################################	
+
+	def send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
+
+		goal_list = []
+		target_list = []
+
+		goal = [0,0,0,0,0,0]
+		target = [0,0,0,0,0,0]
 
 
-	# 	# self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal", euler=True))
-	# 	# self.br.sendTransform(self.trans_from_list(target, ch_name, "target", euler=True))
+		for i, j in zip(pa_hole_list, ch_hole_list):
+			goal_list.append(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0)))
+			target_list.append(self.tfBuffer.lookup_transform(j, ch_name, self.rospy.Time(0)))
+		
+		for i, j in zip(goal_list, target_list):
+			temp_g = self.list_from_trans(i, euler=True)
+			temp_t = self.list_from_trans(j, euler=True)
+			for k in range(6):
+				if k < 3:
+					goal[k] += temp_g[k]
+					target[k] += temp_t[k]
+				else:
+					goal[k] = temp_g[k]
+					target[k] = temp_t[k]
 
-	# 	# time.sleep(1)
+		for i in range(3):
+			goal[i] = goal[i]/len(pa_hole_list)
+			target[i] = target[i]/len(ch_hole_list)
 
-	# 	goal = self.list_from_trans(self.trans_from_list(goal, pa_name, "goal", euler=True))
-	# 	target = self.list_from_trans(self.trans_from_list(target, ch_name, "target", euler=True))
+		
+		# print goal[4]
 
-	# 	print "goal  :  {0},  target  :  {1}".format(goal, target)
+		if goal[4] < 0:
+			if abs(goal[4] + 3.14) < 0.1:
+				goal[4] = -3.1415
+			elif abs(goal[4] + 1.5707) < 0.1:
+				goal[4] = -1.5707
+			else:
+				goal[4] = 0
+		else:
+			if abs(goal[4] - 3.14) < 0.1:
+				goal[4] = 3.1415
+			elif abs(goal[4] - 1.5707) < 0.1:
+				goal[4] = 1.5707
+			else:
+				goal[4] = 0
 
-	# 	return goal, target
+		# print goal[4]
+
+
+		# self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal", euler=True))
+		# self.br.sendTransform(self.trans_from_list(target, ch_name, "target", euler=True))
+
+		# time.sleep(1)
+
+		goal = self.list_from_trans(self.trans_from_list(goal, pa_name, "goal", euler=True))
+		target = self.list_from_trans(self.trans_from_list(target, ch_name, "target", euler=True))
+
+		print "goal  :  {0},  target  :  {1}".format(goal, target)
+
+		return goal, target
 
 
 	def grab_part(self, robot, ch_name, pin_list, goal):
@@ -483,7 +611,7 @@ class Assembly_process():
 
 		trans = self.list_from_trans(trans)
 		
-		trans[2] += 0.152 #why use?
+		trans[2] += 0.165 #why use?
 
 		self.am.hold_assistant(trans[:3], trans[3:], 0.1, robot)
 
@@ -520,6 +648,7 @@ class Assembly_process():
 		for count in range(num_of_trial):
 			result = self.am.sprial_pin(robot)
 			if result is not True:
+				self.am.move_current_up(0.1, robot)
 				self.am.current_pose(robot, reset =True, pose = start)
 				x = 0 if count > 2 else (1 - count*2)
 				y = 0 if count < 2 else (count-3)
@@ -543,12 +672,17 @@ class Assembly_process():
 			base_link= 'rob2_real_base_link'
 
 
-		self.am.sprial_pin(robot)#, 1)
+		result = self.am.sprial_pin(robot)#, 1)
+
+		if result is not True: self.am.gripper_control(robot, 0)
+
 		self.am.dettach(robot, trans_.child_frame_id)
 
 		trans = self.tfBuffer.lookup_transform('world', trans_.header.frame_id, self.rospy.Time(0))
 
 		trans = self.am.trans_convert(self.list_from_trans(trans), self.list_from_trans(trans_))
+
+		print "update part : {0}".format(trans)
 
 		trans_ = self.trans_from_list(trans, 'world', trans_.child_frame_id)
 

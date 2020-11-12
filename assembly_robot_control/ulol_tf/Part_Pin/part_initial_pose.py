@@ -22,6 +22,7 @@ part1_pose.pose.position.y = 1.05
 
 part2_pose.pose.position.x = -0.26
 part2_pose.pose.position.y = 0.13
+part2_pose.pose.position.z -= 0
 orientation_list = quaternion_from_euler(0,0,3.14)
 
 # part2_pose.pose.position.x = 0.040
@@ -35,6 +36,7 @@ part2_pose.pose.orientation.w = orientation_list[3]
 
 part3_pose.pose.position.x = -0.25
 part3_pose.pose.position.y = -0.02
+part3_pose.pose.position.z -= 0
 orientation_list = quaternion_from_euler(0,0,3.14)
 
 
@@ -50,7 +52,7 @@ part3_pose.pose.orientation.w = orientation_list[3]
 
 part4_pose.pose.position.x = -0.5
 part4_pose.pose.position.y = -0.8
-part4_pose.pose.position.z += 0.02
+part4_pose.pose.position.z += 0.01
 orientation_list = quaternion_from_euler(3.1415,0,-1.5707)
 part4_pose.pose.orientation.x = orientation_list[0]
 part4_pose.pose.orientation.y = orientation_list[1]

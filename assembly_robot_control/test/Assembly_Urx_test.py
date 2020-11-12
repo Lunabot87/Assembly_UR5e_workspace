@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        # self.robot.send_program(self._set_gripper())
+        self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):

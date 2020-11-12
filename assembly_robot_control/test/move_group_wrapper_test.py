@@ -126,8 +126,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
         traj = self.plan(self._list_to_js(selected_q))
 
-        user_choice = raw_input("--> press [y/n(wrong ik)]") 
-        # user_choice = 'y'
+        # user_choice = raw_input("--> press [y/n(wrong ik)]") 
+        user_choice = 'y'
         if user_choice == 'y':
           return inv_sol[i]['idx'], traj
         else:

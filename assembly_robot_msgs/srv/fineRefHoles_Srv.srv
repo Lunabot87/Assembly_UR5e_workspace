@@ -1,0 +1,4 @@
+string parent
+---
+bool result
+TransStamped[] holepin_pose
