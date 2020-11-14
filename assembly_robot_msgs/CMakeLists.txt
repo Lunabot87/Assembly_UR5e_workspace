@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   std_msgs
   message_generation
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,6 +56,7 @@ add_message_files(
   Child.msg
   Parent.msg
   TransStamped.msg
+  hole_pose.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -65,6 +67,7 @@ add_service_files(
   check_Srv.srv
   fineRefHoles_Srv.srv
   chan_Srv.srv
+  Hole_poses.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -77,7 +80,7 @@ add_service_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  geometry_msgs  std_msgs
+  geometry_msgs  std_msgs sensor_msgs
 )
 
 ################################################
@@ -112,7 +115,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES assembly_robot_msgs
- CATKIN_DEPENDS geometry_msgs std_msgs message_runtime
+ CATKIN_DEPENDS geometry_msgs std_msgs message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
 
