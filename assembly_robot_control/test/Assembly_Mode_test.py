@@ -20,8 +20,8 @@ class Assembly_mode():
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
 
 		rospy.wait_for_service('update_tf')
-		rospy.wait_for_service('camera_server_1')
-		rospy.wait_for_service('camera_server_2')
+		# rospy.wait_for_service('camera_server_1')
+		# rospy.wait_for_service('camera_server_2')
 		
 		tf_update = rospy.ServiceProxy('update_tf', SetBool)
 		tf_update(True)

@@ -195,7 +195,7 @@ class Assembly_process():
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
-		z_trans = [0,0,0.22,0,0,0,1]
+		z_trans = [0,0,0.15,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
