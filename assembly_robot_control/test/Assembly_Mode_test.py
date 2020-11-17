@@ -16,19 +16,21 @@ class Assembly_mode():
 		self.pr = Assembly_process(rospy)
 
 		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
+
+		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
 
-		rospy.wait_for_service('update_tf')
+		# rospy.wait_for_service('update_tf')
 		# rospy.wait_for_service('camera_server_1')
 		# rospy.wait_for_service('camera_server_2')
 		
-		tf_update = rospy.ServiceProxy('update_tf', SetBool)
-		tf_update(True)
+		# tf_update = rospy.ServiceProxy('update_tf', SetBool)
+		# tf_update(True)
 		
-		asm = TransStamped().TransStamped.header
+		# asm = TransStamped().TransStamped.header
 
-		print asm
+		# print asm
 
 		print "set"
 
@@ -46,6 +48,31 @@ class Assembly_mode():
 		else:
 			return False, "no mode!"
 
+	def Asm_tfupdate_server(self, data):
+
+		print "Asm_tf_update_server"
+
+		pin_list = []
+
+		for i in data.parent.holepin:
+			# print "name : {0}, holepin : {1}".format(data.parent.name, i)
+			pin_list.append(self.pr.hole_find_update(data.parent.name[0], i))
+
+
+		asm_pose = self.pr.hc_send_tf(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+
+		asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
+
+		print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
+
+		return True, asm_pose, pin_list
+
+
+
+
+
+		
+
 	def Asm_callback(self, data):
 
 		asm_pose = TransStamped().TransStamped # sendtf target
@@ -57,6 +84,8 @@ class Assembly_mode():
 		for i in range(len(data.parent.holepin)):
 			temp_msg = TransStamped()
 			temp_msg.TransStamped.transform.translation.z = 3
+
+		# 실제 작업용 
 		if data.type == 'insert':
 			if 'c101350' in data.child.name[0] or 'c122620' in data.child.name[0]:
 				print "pin"
@@ -66,20 +95,18 @@ class Assembly_mode():
 			else:
 				_result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 		
-		# self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
-		# pin_list = []
-		# rospy.logwarn(data.parent.holepin)
 
-		# for i in range(len(data.parent.holepin)):
-		# 	temp_msg = TransStamped()
-		# 	temp_msg.TransStamped.transform.translation.z = 3
-		# 	pin_list.append(temp_msg)
+		#현철이 테스트용#
+		#self.hc_test(self, data)
+
 
 		asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
 
-		# print "asm_pose : {0},    pin_list : {1}".format(asm_pose, pin_list)
+		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
 		return True, asm_pose, pin_list # _result, asm_pose, pin_list
+
+
 
 
 
@@ -123,33 +150,33 @@ class Assembly_mode():
 
 		asm = TransStamped()
 		b = TransStamped()
-		pin = [b]
+		pin = []
 
-		# print "asm_pose : {0},    pin_list : {1} \t\t asm : {2},    b : {3}".format(asm_pose, pin_list, asm, b)
+		# print "asm_pose : {0} \n\n    pin_list : {1}".format(asm_pose, pin_list)
 
-		# asm.TransStamped.header.frame_id = asm_pose.header.frame_id
-		# asm.TransStamped.child_frame_id = asm_pose.child_frame_id
-		# asm.TransStamped.transform.translation.x = asm_pose.transform.translation.x
-		# asm.TransStamped.transform.translation.y = asm_pose.transform.translation.y
-		# asm.TransStamped.transform.translation.z = asm_pose.transform.translation.z
-		# asm.TransStamped.transform.rotation.x = asm_pose.transform.rotation.x
-		# asm.TransStamped.transform.rotation.y = asm_pose.transform.rotation.y
-		# asm.TransStamped.transform.rotation.z = asm_pose.transform.rotation.z
-		# asm.TransStamped.transform.rotation.w = asm_pose.transform.rotation.w
+		asm.TransStamped.header.frame_id = asm_pose.header.frame_id
+		asm.TransStamped.child_frame_id = asm_pose.child_frame_id
+		asm.TransStamped.transform.translation.x = asm_pose.transform.translation.x
+		asm.TransStamped.transform.translation.y = asm_pose.transform.translation.y
+		asm.TransStamped.transform.translation.z = asm_pose.transform.translation.z
+		asm.TransStamped.transform.rotation.x = asm_pose.transform.rotation.x
+		asm.TransStamped.transform.rotation.y = asm_pose.transform.rotation.y
+		asm.TransStamped.transform.rotation.z = asm_pose.transform.rotation.z
+		asm.TransStamped.transform.rotation.w = asm_pose.transform.rotation.w
 
-		# for j in pin_list:
+		for j in pin_list:
 
-		# 	b.TransStamped.header.frame_id = j.header.frame_id
-		# 	b.TransStamped.child_frame_id = j.child_frame_id
-		# 	b.TransStamped.transform.translation.x = j.transform.translation.x
-		# 	b.TransStamped.transform.translation.y = j.transform.translation.y
-		# 	b.TransStamped.transform.translation.z = j.transform.translation.z
-		# 	b.TransStamped.transform.rotation.x = j.transform.rotation.x
-		# 	b.TransStamped.transform.rotation.y = j.transform.rotation.y
-		# 	b.TransStamped.transform.rotation.z = j.transform.rotation.z
-		# 	b.TransStamped.transform.rotation.w = j.transform.rotation.w
+			b.TransStamped.header.frame_id = j.header.frame_id
+			b.TransStamped.child_frame_id = j.child_frame_id
+			b.TransStamped.transform.translation.x = j.transform.translation.x
+			b.TransStamped.transform.translation.y = j.transform.translation.y
+			b.TransStamped.transform.translation.z = j.transform.translation.z
+			b.TransStamped.transform.rotation.x = j.transform.rotation.x
+			b.TransStamped.transform.rotation.y = j.transform.rotation.y
+			b.TransStamped.transform.rotation.z = j.transform.rotation.z
+			b.TransStamped.transform.rotation.w = j.transform.rotation.w
 
-		# 	pin.append(b)
+			pin.append(b)
 
 
 
