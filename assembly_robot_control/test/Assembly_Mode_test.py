@@ -21,12 +21,12 @@ class Assembly_mode():
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
 
-		# rospy.wait_for_service('update_tf')
-		# rospy.wait_for_service('camera_server_1')
-		# rospy.wait_for_service('camera_server_2')
+		rospy.wait_for_service('update_tf')
+		rospy.wait_for_service('camera_server_1')
+		rospy.wait_for_service('camera_server_2')
 		
-		# tf_update = rospy.ServiceProxy('update_tf', SetBool)
-		# tf_update(True)
+		tf_update = rospy.ServiceProxy('update_tf', SetBool)
+		tf_update(True)
 		
 		# asm = TransStamped().TransStamped.header
 
@@ -93,7 +93,10 @@ class Assembly_mode():
 				pin_list.append(pin_pose)
 				asm_pose = pin_pose
 			else:
-				_result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+
+				# result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+				print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+				self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 		
 
 		#현철이 테스트용#
@@ -104,7 +107,7 @@ class Assembly_mode():
 
 		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
-		return True, asm_pose, pin_list # _result, asm_pose, pin_list
+		# return True, asm_pose, pin_list # _result, asm_pose, pin_list
 
 
 
@@ -134,7 +137,8 @@ class Assembly_mode():
 		# rob1, rob2 작업, rob1이 작업 중심
 		self.pr.am.init_pose()
 		print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(pa_name, pa_hole_list, ch_name, ch_hole_list)
-		# _result, asm_pose, pin_list = self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
+		
+		# result, asm_pose, pin_list = self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
 
 		robot, goal, pin_list = self.pr.hand_over_part_check(ch_name, ch_hole_list, pa_name, pa_hole_list)
 		# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])

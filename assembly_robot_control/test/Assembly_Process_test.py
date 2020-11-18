@@ -284,7 +284,7 @@ class Assembly_process():
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
-		z_trans = [0,0,0.15,0,0,0,1]
+		z_trans = [0,0,0.22,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
@@ -436,7 +436,7 @@ class Assembly_process():
 			hold_ = self.list_from_trans(hold_)
 
 			success = self.select_part_robot(robot, hold_, idx=True)
-			if success is not True: return -1
+			#if success is not True: return -1
 
 		tmp = self.tfBuffer.lookup_transform(ch_name, ch_name+'-GRASP-3', self.rospy.Time(0))
 
@@ -474,8 +474,8 @@ class Assembly_process():
 		if success is False and robot is False:
 			robot = True
 			success = self.select_part_robot(robot, trans_)
-			if success is not True:
-				return -1
+			#if success is not True:
+			#	return -1
 
 		hold_check = None
 
@@ -532,7 +532,9 @@ class Assembly_process():
 			time.sleep(0.2)
 
 		# print self.tfBuffer.lookup_transform('real_goal', 'goal', self.rospy.Time(0))
-			
+		
+		# print "robot : {0}, trans : {1}, hole_list : {2}".format(robot, trans, hole_list)
+		# print "type robot : {0}, trans : {1}, hole_list : {2}".format(type(robot), type(trans), type(hole_list))
 		return robot, trans, hole_list #hole_list : list로 생성 되어있음 
 
 
