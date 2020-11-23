@@ -102,15 +102,24 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint, c)
     self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    #print "="*100
+    #print "current q: ", cur_joint
 
     for i in range(8):
       if inv_sol[i]['valid']:
         selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
+        # print "selected q: ", selected_q
 
         self.ur5e.publish_state(selected_q, True)
+        print "next pass"
+        raw_input()
+
+    for i in range(8):
+      if inv_sol[i]['valid']:
+        selected_q = (inv_sol[i]['inv_sol'])
+        # print "selected q: ", selected_q
+
+        # self.ur5e.publish_state(selected_q, True)
         # ------------------updated version
         # (success, traj, b, err) = self.plan(self._list_to_js(selected_q))        
         # if success:
@@ -124,7 +133,12 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         #   print "plan error:", b, err
         # ------------------updated version
 
-        traj = self.plan(self._list_to_js(selected_q))
+        if selected_q[3] < 0 and selected_q[3] > -0.75 and abs(abs(selected_q[4]) - 1.57) < 0.1:
+          continue
+        elif selected_q[2] < 0:
+          continue
+        else:
+          traj = self.plan(self._list_to_js(selected_q))
 
         # user_choice = raw_input("--> press [y/n(wrong ik)]") 
         user_choice = 'y'
@@ -153,12 +167,12 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     inv_sol = self.ur5e.inv_kin_full(trans, rot, cur_joint, c)
     self.ur5e.print_inv_sol(inv_sol)
     
-    print "="*100
-    print "current q: ", cur_joint
+    # print "="*100
+    # print "current q: ", cur_joint
     
     if inv_sol[idx]['valid']:
       selected_q = (inv_sol[idx]['inv_sol'])
-      print "selected q: ", selected_q
+      # print "selected q: ", selected_q
       
       self.ur5e.publish_state(selected_q, True)
       # ------------------updated version
@@ -252,9 +266,9 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return s_idx
 
-  def _grasp_to_pregrasp(self, g_trans, g_rot, g_offset):
+  def _grasp_to_pregrasp(self, g_trans, g_rot, g_offset, y_offset = 0):
     g_mat = tf_to_mat(g_trans, g_rot)
-    gp_mat = tf_to_mat([0, 0, -g_offset], [0, 0, 0, 1])
+    gp_mat = tf_to_mat([0, y_offset, -g_offset], [0, 0, 0, 1])
     p_mat = tf.transformations.concatenate_matrices(g_mat, gp_mat)
     (p_trans, p_rot) = mat_to_tf(p_mat)
 
@@ -278,20 +292,20 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
 
-    print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
-            + list_str(pg_rot, ['x','y','z','w'])
-    print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
-            + list_str(g_rot, ['x','y','z','w'])
+    #print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
+    #        + list_str(pg_rot, ['x','y','z','w'])
+    #print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
+    #        + list_str(g_rot, ['x','y','z','w'])
 
     (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
-    print "******plan0 = {}\n".format(result0)
+    #print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 
 
     if _check is not True: 
       result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
   
-      print "******plan1 = {}\n".format(result1)
+     # print "******plan1 = {}\n".format(result1)
       if result1 < 0: return False
     
     # result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
@@ -314,21 +328,28 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     '''
     (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, g_offset)
 
-    print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
-            + list_str(pg_rot, ['x','y','z','w'])
-    print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
-            + list_str(g_rot, ['x','y','z','w'])
+    # print "pre grasp pose| " + list_str(pg_trans, ['x','y','z']) \
+    #         + list_str(pg_rot, ['x','y','z','w'])
+    # print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
+    #         + list_str(g_rot, ['x','y','z','w'])
 
     (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
-    print "******plan0 = {}\n".format(result0)
+    # print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 
     result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
-    print "******plan1 = {}\n".format(result1)
-    if result1 < 0: return False
+    # print "******plan1 = {}\n".format(result1)
+    if result1 < 0: 
+      (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, 0, y_offset = 0.3)
+      result1y = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+      if result1y < 0:
+        (pg_trans, pg_rot) = self._grasp_to_pregrasp(g_trans, g_rot, 0, y_offset = -0.3)
+        result1y_ = self.go_to_pose_goal(pg_trans, pg_rot, result0)
+        if result1y_ < 0:
+          return False
     
     result2 = self.go_linear_to_pose_goal(g_trans, g_rot, result0)
-    print "******plan2 = {}\n".format(result2)
+    # print "******plan2 = {}\n".format(result2)
     if result2 < 0: return False
     
     # result3 = self.go_linear_to_pose_goal(pg_trans, pg_rot, result0)

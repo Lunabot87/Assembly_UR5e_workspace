@@ -520,7 +520,7 @@ class Assembly_process():
 
 		# trans_g = self.rot_arrange(self.list_from_trans(trans_g))
 
-		temp_tg = self.am.trans_convert(trans_g, [0,0,-0.05,0.9999997, 0, 0, 0.0007963])
+		temp_tg = self.am.trans_convert(trans_g, [0,0,-0.02,0.9999997, 0, 0, 0.0007963])
 
 		trans = self.am.trans_convert(temp_tg, temp_t)
 
@@ -749,6 +749,7 @@ class Assembly_process():
 				self.am.move_current_to(x*0.01, y*0.01, 0,robot)
 			else:
 				break
+		self.am.init_pose(robot)
 				
 	def insert_spiral_part_motion(self, robot, trans_,num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복

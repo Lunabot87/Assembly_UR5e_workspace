@@ -13,6 +13,8 @@ class Assembly_mode():
 	def __init__(self):
 		rospy.init_node('Assembly_Mode', anonymous=True)
 
+		
+
 		self.pr = Assembly_process(rospy)
 
 		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
@@ -27,6 +29,7 @@ class Assembly_mode():
 		
 		tf_update = rospy.ServiceProxy('update_tf', SetBool)
 		tf_update(True)
+
 		
 		# asm = TransStamped().TransStamped.header
 
@@ -107,7 +110,7 @@ class Assembly_mode():
 
 		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
-		# return True, asm_pose, pin_list # _result, asm_pose, pin_list
+		return True, asm_pose, pin_list # _result, asm_pose, pin_list
 
 
 

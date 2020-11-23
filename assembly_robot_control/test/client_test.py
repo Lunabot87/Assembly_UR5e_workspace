@@ -31,8 +31,8 @@ class Interface_for_Robot():
         # parent = Asm_test(["chair_part2"], ["hole2-5"])
         # child = Asm_test(["c122620_1"], ['c122620_1'])
         # resp = self.client_for_robot("insert", parent, child)
-        # print "next?"
-        # raw_input()
+        # # print "next?"
+        # # raw_input()
 
         # parent = Asm_test(["chair_part6"], ["hole6-1"])
         # child = Asm_test(["c101350_1"], ['c101350_1'])
@@ -80,43 +80,66 @@ class Interface_for_Robot():
         # child = Asm_test(["chair_part3"], ["hole3-3", "hole3-4"])
         # resp = self.client_for_robot("insert", parent, child)
         # # print "next?"
-        # raw_input()
+        # # raw_input()
 
         # parent = Asm_test(["chair_part3"], ["hole3-1"])
-        # child = Asm_test(["c101350_3"], ['c101350_3'])
-        # resp = self.client_for_robot("insert", parent, child)
-        # print "next?"
-        # raw_input()
-
-        parent = Asm_test(["chair_part3"], ["hole3-2"])
-        child = Asm_test(["c101350_4"], ['c101350_4'])
-        resp = self.client_for_robot("insert", parent, child)
-        # print "next?"
-        raw_input()
-
-        # parent = Asm_test(["chair_part6"], ["hole6-1", "hole6-2"])
-        # child = Asm_test(["chair_part2"], ["hole2-1", "hole2-2"])
+        # child = Asm_test(["c101350_1"], ['c101350_1'])
         # resp = self.client_for_robot("insert", parent, child)
         # # print "next?"
         # # raw_input()
 
-        parent = Asm_test(["chair_part2"], ["hole2-3"])
-        child = Asm_test(["c101350_1"], ['c101350_1'])
-        resp = self.client_for_robot("insert", parent, child)
-        print "next?"
-        raw_input()
-
-        parent = Asm_test(["chair_part2"], ["hole2-4"])
-        child = Asm_test(["c101350_1"], ['c101350_1'])
-        resp = self.client_for_robot("insert", parent, child)
-        print "next?"
-        raw_input()
-
-        # parent = Asm_test(["chair_part6"], ["hole6-7", "hole6-6"])
-        # child = Asm_test(["chair_part4"], ["hole4-1", "hole4-2"])
+        # parent = Asm_test(["chair_part3"], ["hole3-2"])
+        # child = Asm_test(["c101350_2"], ['c101350_2'])
         # resp = self.client_for_robot("insert", parent, child)
         # print "next?"
         # raw_input()
+
+        # parent = Asm_test(["chair_part6"], ["hole6-1", "hole6-2"])
+        # child = Asm_test(["chair_part2"], ["hole2-1", "hole2-2"])
+        # resp = self.client_for_robot("insert", parent, child)
+        # # # print "next?"
+        # # # raw_input()
+
+        # parent = Asm_test(["chair_part2"], ["hole2-3"])
+        # child = Asm_test(["c101350_3"], ['c101350_3'])
+        # resp = self.client_for_robot("insert", parent, child)
+        # # print "next?"
+        # # raw_input()
+
+        # parent = Asm_test(["chair_part2"], ["hole2-4"])
+        # child = Asm_test(["c101350_4"], ['c101350_4'])
+        # resp = self.client_for_robot("insert", parent, child)
+        # print "next?"
+        # raw_input()
+
+        # parent = Asm_test(["chair_part6"], ["hole6-7", "hole6-6"])#, "hole6-5"])
+        # child = Asm_test(["chair_part4"], ["hole4-1", "hole4-2"])#, "hole4-6"])
+        # resp = self.client_for_robot("insert", parent, child)
+        # print "next?"
+        # raw_input()
+
+
+        # parent = Asm_test(["chair_part4"], ["hole4-3"])
+        # child = Asm_test(["c101350_5"], ['c101350_5'])
+        # resp = self.client_for_robot("insert", parent, child)
+        # # print "next?"
+        # # raw_input()
+
+        # parent = Asm_test(["chair_part4"], ["hole4-4"])
+        # child = Asm_test(["c101350_6"], ['c101350_6'])
+        # resp = self.client_for_robot("insert", parent, child)
+
+        # parent = Asm_test(["chair_part4"], ["hole4-5"])
+        # child = Asm_test(["c101350_7"], ['c101350_7'])
+        # resp = self.client_for_robot("insert", parent, child)
+
+        parent = Asm_test(["chair_part3"], ["hole3-1", "hole3-2"])
+        child = Asm_test(["chair_part5"], ["hole5-4", "hole5-3"])
+        resp = self.client_for_robot("insert", parent, child)
+        # print "next?"
+        # raw_input()
+
+
 
         # parent = Asm_test(["PART6_1"], ["PART2_1-hole_1"])
         # child = Asm_test(["C101350_1"], ["C101350_1-pin_1"])

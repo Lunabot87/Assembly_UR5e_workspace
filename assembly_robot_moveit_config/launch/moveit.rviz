@@ -10,6 +10,7 @@ Panels:
         - /TF1/Frames1
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
+        - /RobotState1
       Splitter Ratio: 0.5
     Tree Height: 310
   - Class: rviz/Selection
@@ -103,6 +104,148 @@ Visualization Manager:
           Value: false
         camera_center_2:
           Value: false
+        chair_part1:
+          Value: false
+        chair_part2:
+          Value: false
+        chair_part2-GRASP-1:
+          Value: false
+        chair_part2-GRASP-2:
+          Value: false
+        chair_part2-GRASP-3:
+          Value: false
+        chair_part3:
+          Value: false
+        chair_part3-GRASP-1:
+          Value: false
+        chair_part3-GRASP-2:
+          Value: false
+        chair_part3-GRASP-3:
+          Value: false
+        chair_part4:
+          Value: false
+        chair_part4-GRASP-1:
+          Value: false
+        chair_part4-GRASP-2:
+          Value: false
+        chair_part4-GRASP-3:
+          Value: false
+        chair_part4-GRASP-4:
+          Value: false
+        chair_part5:
+          Value: false
+        chair_part5-GRASP-1:
+          Value: true
+        chair_part5-GRASP-2:
+          Value: true
+        chair_part5-GRASP-3:
+          Value: true
+        chair_part5-GRASP-4:
+          Value: true
+        chair_part5-GRASP-5:
+          Value: false
+        chair_part6:
+          Value: false
+        chair_part6-GRASP-1:
+          Value: false
+        chair_part6-GRASP-2:
+          Value: false
+        chair_part6-GRASP-3:
+          Value: true
+        chair_part6-GRASP-4:
+          Value: false
+        chair_part6-GRASP-5:
+          Value: false
+        hole2-1:
+          Value: false
+        hole2-2:
+          Value: false
+        hole2-3:
+          Value: false
+        hole2-4:
+          Value: false
+        hole2-5:
+          Value: false
+        hole2-6:
+          Value: false
+        hole2-7:
+          Value: false
+        hole2-8:
+          Value: false
+        hole3-1:
+          Value: false
+        hole3-2:
+          Value: false
+        hole3-3:
+          Value: false
+        hole3-4:
+          Value: false
+        hole3-5:
+          Value: false
+        hole3-6:
+          Value: false
+        hole3-7:
+          Value: false
+        hole3-8:
+          Value: false
+        hole4-1:
+          Value: false
+        hole4-2:
+          Value: false
+        hole4-3:
+          Value: false
+        hole4-4:
+          Value: false
+        hole4-5:
+          Value: false
+        hole4-6:
+          Value: false
+        hole4-7:
+          Value: false
+        hole4-8:
+          Value: false
+        hole5-1:
+          Value: false
+        hole5-10:
+          Value: false
+        hole5-2:
+          Value: false
+        hole5-3:
+          Value: false
+        hole5-4:
+          Value: false
+        hole5-5:
+          Value: false
+        hole5-6:
+          Value: false
+        hole5-7:
+          Value: false
+        hole5-8:
+          Value: false
+        hole5-9:
+          Value: false
+        hole6-1:
+          Value: false
+        hole6-10:
+          Value: false
+        hole6-2:
+          Value: false
+        hole6-3:
+          Value: false
+        hole6-4:
+          Value: false
+        hole6-5:
+          Value: false
+        hole6-6:
+          Value: false
+        hole6-7:
+          Value: false
+        hole6-8:
+          Value: false
+        hole6-9:
+          Value: false
+        real_goal:
+          Value: true
         rob1_ELP_CAM:
           Value: false
         rob1_base:
@@ -124,7 +267,7 @@ Visualization Manager:
         rob1_left_outer_knuckle:
           Value: false
         rob1_real_base_link:
-          Value: false
+          Value: true
         rob1_real_ee_link:
           Value: false
         rob1_right_inner_finger:
@@ -231,6 +374,12 @@ Visualization Manager:
           Value: false
         table:
           Value: false
+        target_g0:
+          Value: true
+        target_g1:
+          Value: true
+        update:
+          Value: true
         world:
           Value: false
       Marker Scale: 0.5
@@ -240,6 +389,143 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
+          chair_part1:
+            {}
+          chair_part2:
+            chair_part2-GRASP-1:
+              {}
+            chair_part2-GRASP-2:
+              {}
+            chair_part2-GRASP-3:
+              {}
+            hole2-1:
+              {}
+            hole2-2:
+              {}
+            hole2-3:
+              {}
+            hole2-4:
+              {}
+            hole2-5:
+              {}
+            hole2-6:
+              {}
+            hole2-7:
+              {}
+            hole2-8:
+              {}
+          chair_part3:
+            chair_part3-GRASP-1:
+              {}
+            chair_part3-GRASP-2:
+              {}
+            chair_part3-GRASP-3:
+              {}
+            hole3-1:
+              {}
+            hole3-2:
+              {}
+            hole3-3:
+              {}
+            hole3-4:
+              {}
+            hole3-5:
+              {}
+            hole3-6:
+              {}
+            hole3-7:
+              {}
+            hole3-8:
+              {}
+          chair_part4:
+            chair_part4-GRASP-1:
+              {}
+            chair_part4-GRASP-2:
+              {}
+            chair_part4-GRASP-3:
+              {}
+            chair_part4-GRASP-4:
+              {}
+            hole4-1:
+              {}
+            hole4-2:
+              {}
+            hole4-3:
+              {}
+            hole4-4:
+              {}
+            hole4-5:
+              {}
+            hole4-6:
+              {}
+            hole4-7:
+              {}
+            hole4-8:
+              {}
+          chair_part5:
+            chair_part5-GRASP-1:
+              {}
+            chair_part5-GRASP-2:
+              {}
+            chair_part5-GRASP-3:
+              {}
+            chair_part5-GRASP-4:
+              {}
+            chair_part5-GRASP-5:
+              {}
+            hole5-1:
+              {}
+            hole5-10:
+              {}
+            hole5-2:
+              {}
+            hole5-3:
+              {}
+            hole5-4:
+              {}
+            hole5-5:
+              {}
+            hole5-6:
+              {}
+            hole5-7:
+              {}
+            hole5-8:
+              {}
+            hole5-9:
+              {}
+          chair_part6:
+            chair_part6-GRASP-1:
+              {}
+            chair_part6-GRASP-2:
+              {}
+            chair_part6-GRASP-3:
+              {}
+            chair_part6-GRASP-4:
+              {}
+            chair_part6-GRASP-5:
+              {}
+            hole6-1:
+              {}
+            hole6-10:
+              {}
+            hole6-2:
+              {}
+            hole6-3:
+              {}
+            hole6-4:
+              {}
+            hole6-5:
+              {}
+            hole6-6:
+              {}
+            hole6-7:
+              {}
+            hole6-8:
+              {}
+            hole6-9:
+              {}
+          real_goal:
+            {}
           table:
             bar1:
               {}
@@ -337,6 +623,12 @@ Visualization Manager:
                                       rob2_right_inner_finger:
                                         rob2_right_inner_finger_pad:
                                           {}
+          target_g0:
+            {}
+          target_g1:
+            {}
+          update:
+            {}
       Update Interval: 0
       Value: true
     - Acceleration_Scaling_Factor: 1
@@ -1079,6 +1371,352 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 1
+    - Attached Body Color: 150; 50; 150
+      Class: moveit_rviz_plugin/RobotState
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        bar1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bar4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_center_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        camera_center_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_ELP_CAM:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_safety_box1_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_safety_box2_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_safety_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_tcp_gripper_closed:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_tcp_gripper_open:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob1_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_ELP_CAM:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_left_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_real_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_real_ee_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_right_inner_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_finger_pad:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_inner_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_finger:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_right_outer_knuckle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_robotiq_arg2f_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_safety_box1_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_safety_box2_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_safety_zone:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_sense_CAM:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_tcp_gripper_closed:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_tcp_gripper_open:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_upper_arm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rob2_wrist_1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_wrist_3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        table:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Name: RobotState
+      Robot Alpha: 1
+      Robot Description: robot_description
+      Robot State Topic: /inv_kin_sol
+      Show All Links: true
+      Show Highlights: true
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -1107,25 +1745,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.674468994140625
+      Distance: 2.814969539642334
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.08395896106958389
-        Y: 0.048466168344020844
-        Z: 0.8771662712097168
+        X: 0.21366699039936066
+        Y: -0.5328277945518494
+        Z: 0.8123772144317627
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5847971439361572
+      Pitch: 0.10479659587144852
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.0390119552612305
+      Yaw: 0.17581260204315186
     Saved: ~
 Window Geometry:
   Displays:

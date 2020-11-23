@@ -252,7 +252,7 @@ class UrxMotion():
 
         # real insert
         print "="*20 +"real_insert"+"="*20
-        force_mod = [1,1,1,0,0,0]
+        force_mod = [1,0,1,0,0,0]
         force_toq = [0,0,-50,0,0,0]
         cmd_str  = "def real_insert():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
