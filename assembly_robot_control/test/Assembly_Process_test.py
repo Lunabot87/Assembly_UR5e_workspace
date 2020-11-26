@@ -261,7 +261,59 @@ class Assembly_process():
 
 		return False
 
-	#### chan_control ####
+
+
+	def group_to_hole(self, ch_hole_name):
+
+		hole_list = []
+
+		for name in ch_hole_name:
+			hole_list.append(self.list_from_trans(self.tfBuffer.lookup_transform('world', name, self.rospy.Time(0)))) #list
+
+		count = len(hole_list)
+		group_ = [[ch_hole_name[0]]]
+
+		
+
+		for i in range(count):
+			temp_list = []
+			temp_list.append(ch_hole_name[i])
+			for j in range(count-(1+i)):
+
+				dist = np.linalg.norm(np.array(hole_list[i][:2]))-np.linalg.norm(np.array(hole_list[i+j+1][:2]))
+				if dist < 0.05:
+					temp_list.append(ch_hole_name[i+j+1])
+
+			
+
+			if len(temp_list) <= count:
+				for num in range(len(group_)):
+					if temp_list[0] in group_[num]:
+						for k in range(len(temp_list)-1):
+							group_[num].append(temp_list[k+1])
+						break
+					else:
+						group_.append(temp_list)
+						break
+
+
+			else:
+				for num in range(len(group_)):
+					if temp_list in group_[num]:
+						continue
+					else:
+						group_.append(temp_list)
+						break
+
+
+		return group_
+
+
+
+
+
+
+	######################################## chan_control ########################################
 
 	def chan_camera_pose(self, hole_name, robot):
 		# target_pose[PoseStamped] : 핀을 꽂은 상태에서 eef의 목표 값
@@ -345,7 +397,7 @@ class Assembly_process():
 		if result < -1: return 
 
 
-
+	###############################################################################################
 
 
 
@@ -416,11 +468,32 @@ class Assembly_process():
 
 
 
-	def hand_over_part_check(self, ch_name, ch_hole_list, pa_name, pa_hole_list):
+	def hand_over_part_check(self, ch_name, group, pa_name, pa_hole_list):
 
+		sort_list = []
+		sort_hole_list = []
+		sort_count = len(group)
+
+		# print "group : {0}".format(group)
+
+		for i in range(sort_count):
+			trans = self.list_from_trans(self.tfBuffer.lookup_transform(ch_name+'-GRASP-3', group[i][0], self.rospy.Time(0)))
+			print trans[:2]
+			sort_list.append(np.linalg.norm(np.array(trans[:2]))) #list
+
+		temp_sort = copy.deepcopy(sort_list)
+		temp_sort.sort()
+
+		for i in range(sort_count):
+			sort_hole_list.append(group[sort_list.index(temp_sort[i])])
+				
 		robot = False
 
-		_goal, _target = self.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list)
+		# print "ch_hole_list : {0}".format(sort_hole_list)
+
+		_goal, _target = self.send_tf(pa_name, pa_hole_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
+
+
 
 		hold_ = self.tfBuffer.lookup_transform('rob1_real_base_link', ch_name+'-GRASP-3', self.rospy.Time(0))
 
@@ -514,13 +587,13 @@ class Assembly_process():
 			# 	trans_ = self.tfBuffer.lookup_transform('world', i, self.rospy.Time(0))
 
 
-		_goal, _target = self.send_tf(pa_name, pa_goal_list, ch_name, ch_hole_list)
+		_goal, _target = self.send_tf(pa_name, pa_goal_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
 
 		trans_g = self.am.trans_convert(self.list_from_trans(self.tfBuffer.lookup_transform('world', pa_name, self.rospy.Time(0))), _goal) #수정중  
 
 		# trans_g = self.rot_arrange(self.list_from_trans(trans_g))
 
-		temp_tg = self.am.trans_convert(trans_g, [0,0,-0.02,0.9999997, 0, 0, 0.0007963])
+		temp_tg = self.am.trans_convert(trans_g, [0,0,-0.05,0.9999997, 0, 0, 0.0007963])
 
 		trans = self.am.trans_convert(temp_tg, temp_t)
 
@@ -535,7 +608,7 @@ class Assembly_process():
 		
 		# print "robot : {0}, trans : {1}, hole_list : {2}".format(robot, trans, hole_list)
 		# print "type robot : {0}, trans : {1}, hole_list : {2}".format(type(robot), type(trans), type(hole_list))
-		return robot, trans, hole_list #hole_list : list로 생성 되어있음 
+		return robot, trans, hole_list, sort_hole_list #hole_list : list로 생성 되어있음 
 
 
 	def hand_over_hole_check(self, target_name):
@@ -751,12 +824,13 @@ class Assembly_process():
 				break
 		self.am.init_pose(robot)
 				
-	def insert_spiral_part_motion(self, robot, trans_,num_of_trial=5):
+	def insert_spiral_part_motion(self, robot, trans_, sort_list, ch_name, num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복
 		# target pose와 grasp_config.yaml 의 데이터를 합쳐서 approach, retreat도 결정 
 		# for i in range(num_of_trial):
 		# 	if self.am.sprial_motion():
 		# 		break
+
 
 		if robot is False:
 			ee_link = 'rob1_real_ee_link'
@@ -766,9 +840,8 @@ class Assembly_process():
 			base_link= 'rob2_real_base_link'
 
 
+		
 		result = self.am.sprial_pin(robot)#, 1)
-
-		if result is not True: self.am.gripper_control(robot, 0)
 
 		self.am.dettach(robot, trans_.child_frame_id)
 
@@ -781,6 +854,41 @@ class Assembly_process():
 		trans_ = self.trans_from_list(trans, 'world', trans_.child_frame_id)
 
 		self.br.sendTransform(trans_)
+
+
+		if len(sort_list) < 2:
+
+			if result is not True: self.am.gripper_control(robot, 0)
+
+			
+
+		else:	
+			self.am.torque_mode(robot, [0,0,1,0,1,1], [0,0,-50,0,0,0]) #torque z y yaw 풀고
+			temp_base = 'rob2_real_base_link' if robot is False else 'rob1_real_base_link'
+			robot_temp = True if robot is False else False
+
+			grab = self.tfBuffer.lookup_transform(temp_base, ch_name+'-GRASP-4', self.rospy.Time(0))
+			trans = self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.16,0,0,0,0])
+
+			self.am.hold_assistant(trans[:3], trans[3:], 0.1, robot_temp)#grep pose로 가서 잡기
+
+			self.am.move_current_up(0.01, robot_temp)
+			
+			self.am.torque_mode(robot_temp, [0,0,1,0,0,0], [0,0,0,0,0,0], tool=True, sleep = 2)
+
+			self.am.sprial_pin(robot_temp)
+
+			self.am.gripper_control(robot_temp, 0)
+
+			self.am.gripper_control(robot, 0)
+
+			self.am.move_current_up(0.1, robot_temp)
+
+			#z로 3cm올리고 tool 기준 z 축 토크 풀고
+			#z로 다시 스파이럴(tool 기준 z) 진행
+
+
+		
 
 		trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
 

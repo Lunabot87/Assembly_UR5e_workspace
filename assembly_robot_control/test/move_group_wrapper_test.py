@@ -30,8 +30,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     MoveGroupCommander.__init__(self, name)
     
     # setup for move group
-    self.set_planning_time(3)
-    self.set_num_planning_attempts(5)
+    self.set_planning_time(10)
+    self.set_num_planning_attempts(100)
     self.set_max_velocity_scaling_factor(1)
     self.set_max_acceleration_scaling_factor(1)
 
@@ -105,14 +105,14 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #print "="*100
     #print "current q: ", cur_joint
 
-    for i in range(8):
-      if inv_sol[i]['valid']:
-        selected_q = (inv_sol[i]['inv_sol'])
-        # print "selected q: ", selected_q
+    # for i in range(8):
+    #   if inv_sol[i]['valid']:
+    #     selected_q = (inv_sol[i]['inv_sol'])
+    #     # print "selected q: ", selected_q
 
-        self.ur5e.publish_state(selected_q, True)
-        print "next pass"
-        raw_input()
+    #     self.ur5e.publish_state(selected_q, True)
+    #     print "next pass"
+    #     raw_input()
 
     for i in range(8):
       if inv_sol[i]['valid']:

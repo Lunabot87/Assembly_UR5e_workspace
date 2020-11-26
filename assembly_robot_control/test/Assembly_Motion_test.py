@@ -19,8 +19,8 @@ class Assembly_motion():
 
         self.mg_rob1 = MoveGroupCommanderWrapper('rob1_arm', 'rob1_real_ee_link')
         self.mg_rob2 = MoveGroupCommanderWrapper('rob2_arm', 'rob2_real_ee_link')
-        # self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
-        # self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
+        self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
+        self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
         
         self.urx_rob1 = UrxMotion("192.168.13.101")
         self.urx_rob2 = UrxMotion("192.168.13.100")
@@ -35,6 +35,12 @@ class Assembly_motion():
         self.program_running()
 
         self.init_pose()
+
+
+    def torque_mode(self, robot ,force_mod, force_toq, tool = False, sleep = 0):
+        urx = self.urx_rob1 if robot is False else self.urx_rob2
+        urx.torque_mode(force_mod, force_toq, tool)
+        time.sleep(sleep)
 
 
 

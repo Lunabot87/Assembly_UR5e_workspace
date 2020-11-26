@@ -86,7 +86,7 @@
        <visual>
          <origin xyz="0 0 -0.4" rpy="0 0 0" />
          <geometry>
-           <box size="1.2 2 0.8" />
+           <box size="2.3 3 0.8" />
          </geometry>
          <material name="table">
            <color rgba="0.192 0.192 0.192 1.0"/>
@@ -96,7 +96,7 @@
        <collision>
          <origin xyz="0 0 -0.4" rpy="0 0 0"/>
          <geometry>
-           <box size="1.2 1.98 0.8"/>
+           <box size="2.3 3 0.8"/>
          </geometry>
        </collision>
      </link>

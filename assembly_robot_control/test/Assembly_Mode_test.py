@@ -99,7 +99,7 @@ class Assembly_mode():
 
 				# result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 				print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
-				self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
+				self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
 		
 
 		#현철이 테스트용#
@@ -138,18 +138,24 @@ class Assembly_mode():
 
 	def insert_part_test(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 		# rob1, rob2 작업, rob1이 작업 중심
-		self.pr.am.init_pose()
-		print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(pa_name, pa_hole_list, ch_name, ch_hole_list)
+
 		
-		# result, asm_pose, pin_list = self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
 
-		robot, goal, pin_list = self.pr.hand_over_part_check(ch_name, ch_hole_list, pa_name, pa_hole_list)
-		# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
-		trans_ = self.pr.grab_part(robot, ch_name, pin_list, goal)
-		_result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_)
-		self.pr.hold_assist(robot, pa_name,  pa_hole_list[0], reset=True)
 
-		return _result, asm_pose, pin_list
+		if len(pa_name) < 2:
+			self.pr.am.init_pose()
+			# print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(pa_name, pa_hole_list, ch_name, ch_hole_list)
+			
+			# result, asm_pose, pin_list = self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
+			group = self.pr.group_to_hole(ch_hole_list)
+
+			robot, goal, pin_list, sort_list = self.pr.hand_over_part_check(ch_name[0], group, pa_name[0], pa_hole_list)
+			# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
+			trans_ = self.pr.grab_part(robot, ch_name[0], pin_list, goal)
+			_result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_, sort_list, ch_name[0])
+			self.pr.hold_assist(robot, pa_name[0],  pa_hole_list[0], reset=True)
+
+			return _result, asm_pose, pin_list
 
 
 	def TransStamped(self, asm_pose, pin_list):
