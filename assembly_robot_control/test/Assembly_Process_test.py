@@ -169,7 +169,7 @@ class Assembly_process():
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
-		z_trans = [0,0,0.22,0,0,0,1]
+		z_trans = [0,0,0.15,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
@@ -461,7 +461,7 @@ class Assembly_process():
 				return False
 
 			else:
-				self.am.hand_over_pin()
+				# self.am.hand_over_pin()
 				return True
 		else:
 			return False
@@ -802,6 +802,26 @@ class Assembly_process():
 		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
 
 		return trans_
+
+
+	def screw_drive_motion(self, robot, goal):
+		if robot is False:
+			ee_link = 'rob1_real_ee_link'
+			base_link= 'rob1_real_base_link'
+		else:
+			ee_link = 'rob2_real_ee_link'
+			base_link= 'rob2_real_base_link'
+
+		trans = self.tfBuffer.lookup_transform('screw_tool_link', ee_link, self.rospy.Time(0))
+
+		trans_ = self.am.trans_convert(self.list_from_trans(goal), [0,0,-0.15,0,0,0,0])
+
+		trans = self.am.trans_convert(trans_, self.list_from_trans(trans))
+
+		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
+
+		self.am.screw_motion(robot)
+
 
 		
 	def insert_spiral_pin_motion(self, robot, num_of_trial=5):

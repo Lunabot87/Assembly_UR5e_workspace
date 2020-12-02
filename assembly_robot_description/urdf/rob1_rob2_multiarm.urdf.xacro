@@ -42,4 +42,13 @@
         <child link="camera_center_2" />
         <origin xyz="0 0.05785 0.0721" rpy="1.5707 0 0" />
     </joint>
+
+    <link name="screw_tool_link"/>
+
+    <joint name="screw_tool_joint" type="fixed">
+        <parent link="rob1_real_ee_link" />
+        <child link="screw_tool_link" />
+        <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
+    </joint>
+
 </robot>

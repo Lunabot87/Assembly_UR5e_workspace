@@ -30,8 +30,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     MoveGroupCommander.__init__(self, name)
     
     # setup for move group
-    self.set_planning_time(10)
-    self.set_num_planning_attempts(100)
+    self.set_planning_time(3)
+    self.set_num_planning_attempts(5)
     self.set_max_velocity_scaling_factor(1)
     self.set_max_acceleration_scaling_factor(1)
 
@@ -98,26 +98,27 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     cur_joint = self.get_current_joint_values()
     
+    print "get_best_ik"
 
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint, c)
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
     #print "="*100
     #print "current q: ", cur_joint
 
     # for i in range(8):
-    #   if inv_sol[i]['valid']:
-    #     selected_q = (inv_sol[i]['inv_sol'])
-    #     # print "selected q: ", selected_q
+    #   # if inv_sol[i]['valid']:
+    #   selected_q = (inv_sol[i]['inv_sol'])
+    #   # print "selected q: ", selected_q
 
-    #     self.ur5e.publish_state(selected_q, True)
-    #     print "next pass"
-    #     raw_input()
+    #   self.ur5e.publish_state(selected_q, True)
+    #   print "next pass"
+    #   raw_input()
 
     for i in range(8):
       if inv_sol[i]['valid']:
         selected_q = (inv_sol[i]['inv_sol'])
-        # print "selected q: ", selected_q
+        print "selected q: ", selected_q
 
         # self.ur5e.publish_state(selected_q, True)
         # ------------------updated version
@@ -135,7 +136,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
         if selected_q[3] < 0 and selected_q[3] > -0.75 and abs(abs(selected_q[4]) - 1.57) < 0.1:
           continue
-        elif selected_q[2] < 0:
+        elif selected_q[2] > 0:
           continue
         else:
           traj = self.plan(self._list_to_js(selected_q))

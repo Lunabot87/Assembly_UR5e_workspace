@@ -17,8 +17,9 @@ class Assembly_mode():
 
 		self.pr = Assembly_process(rospy)
 
-		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
+		# self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
 
+		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback_pass)
 		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
@@ -57,9 +58,9 @@ class Assembly_mode():
 
 		pin_list = []
 
-		for i in data.parent.holepin:
-			# print "name : {0}, holepin : {1}".format(data.parent.name, i)
-			pin_list.append(self.pr.hole_find_update(data.parent.name[0], i))
+		# for i in data.parent.holepin:
+		# 	# print "name : {0}, holepin : {1}".format(data.parent.name, i)
+		# 	pin_list.append(self.pr.hole_find_update(data.parent.name[0], i))
 
 
 		asm_pose = self.pr.hc_send_tf(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
@@ -71,8 +72,13 @@ class Assembly_mode():
 		return True, asm_pose, pin_list
 
 
+	def Asm_callback_pass(self, data):
 
+		asm = TransStamped()
+		b = TransStamped()
+		pin = [b]
 
+		return True, asm, pin
 
 		
 
@@ -101,6 +107,11 @@ class Assembly_mode():
 				print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 				self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
 		
+		elif data.type == 'screw':
+			if 'c104322' in data.child.name[0]:
+				print 'screw'
+				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
+
 
 		#현철이 테스트용#
 		#self.hc_test(self, data)
@@ -113,21 +124,38 @@ class Assembly_mode():
 		return True, asm_pose, pin_list # _result, asm_pose, pin_list
 
 
+	def screw_pin_test(self, pin, part_hole, part_name):
+		robot = self.pr.hand_over_pin_check(pin, part_hole)
+
+		self.pr.grab_pin(pin)
+
+		# self.pr.hold_assist(robot, part_name, part_hole)
+		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
+
+		print "pin_pose : {0}".format(pin_pose)
+
+		self.pr.insert_spiral_pin_motion(robot)
+
+		# self.pr.grab_screw_tool(pin)
+
+		self.pr.screw_drive_motion(robot, pin_pose)
+
+		#self.pr.hold_assist(robot, pa_part, part_hole, reset=True)
 
 
 
-	def insert_pin_test(self, pin, target, pa_part):
+	def insert_pin_test(self, pin, part_hole, pa_part):
 		################################################################################
 		self.pr.grab_pin(pin) #asm_msg.child.pin
 
-		robot = self.pr.hand_over_pin_check(pin, target) #asm_msg.parent.target.name
+		robot = self.pr.hand_over_pin_check(pin, part_hole) #asm_msg.parent.target.name
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
-		self.pr.hold_assist(robot, pa_part, target)
-		pin_pose = self.pr.fine_tune_insert_target(pa_part, target, robot)
+		self.pr.hold_assist(robot, pa_part, part_hole)
+		pin_pose = self.pr.fine_tune_insert_target(pa_part, part_hole, robot)
 		# 학부 보조 연구원
 		self.pr.insert_spiral_pin_motion(robot)
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
-		self.pr.hold_assist(robot, pa_part, target, reset=True)
+		self.pr.hold_assist(robot, pa_part, part_hole, reset=True)
 		################################################################################
 		# self.pr.insert_spiral_pin_motion(False)
 
