@@ -6,6 +6,7 @@ import math as m
 import copy 
 import geometry_msgs.msg
 import moveit_msgs.msg
+import numpy as np
 from sensor_msgs.msg import JointState
 from moveit_commander import MoveGroupCommander, PlanningSceneInterface, RobotCommander
 
@@ -83,6 +84,16 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     eef_offset = TCP_OFFSET[self.eef_link]
     self.ur5e.set_eef_offset(eef_offset)
 
+  def _joint_verification(self, joints):
+    eef_mat = self.ur5e.ur5e_ik.fwd_kin(joints)
+    rot_zaxis = eef_mat[:3,2]
+
+    z_axis = [0,0,1]
+    y_axis = [0,1,0]
+    x_axis = [1,0,0]
+
+    return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
+
   def _get_best_ik_plan(self, trans, rot, c):
     '''
     [output]
@@ -109,16 +120,17 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     # for i in range(8):
     #   # if inv_sol[i]['valid']:
     #   selected_q = (inv_sol[i]['inv_sol'])
-    #   # print "selected q: ", selected_q
+    #   print "selected q: ", selected_q
 
     #   self.ur5e.publish_state(selected_q, True)
+    #   print self.scene.getGlobalLinkTransform(self.eef_link)
     #   print "next pass"
     #   raw_input()
 
     for i in range(8):
       if inv_sol[i]['valid']:
         selected_q = (inv_sol[i]['inv_sol'])
-        print "selected q: ", selected_q
+        
 
         # self.ur5e.publish_state(selected_q, True)
         # ------------------updated version
@@ -134,13 +146,18 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         #   print "plan error:", b, err
         # ------------------updated version
 
-        if selected_q[3] < 0 and selected_q[3] > -0.75 and abs(abs(selected_q[4]) - 1.57) < 0.1:
+        axis = self._joint_verification(selected_q)
+        print "axis : {0}".format(axis)
+        abs_axis = map(abs, axis)
+        if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
           continue
-        elif selected_q[2] > 0:
+        elif selected_q[2] < 0 and selected_q[0] > 0:
+          continue
+        elif selected_q[2] > 0 and selected_q[0] < 0:
           continue
         else:
           traj = self.plan(self._list_to_js(selected_q))
-
+          print "selected q: ", selected_q
         # user_choice = raw_input("--> press [y/n(wrong ik)]") 
         user_choice = 'y'
         if user_choice == 'y':

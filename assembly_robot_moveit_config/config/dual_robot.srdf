@@ -87,6 +87,28 @@
     </group_state>
 
 
+<!--zero pose-->
+
+    <group_state name="rob1_zero_pose" group="rob1_arm">
+        <joint name="rob2_shoulder_pan_joint" value="0" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.57080854992" />
+        <joint name="rob2_elbow_joint" value="0" />        
+        <joint name="rob2_wrist_1_joint" value="-1.57079758267" />
+        <joint name="rob2_wrist_2_joint" value="0" />
+        <joint name="rob2_wrist_3_joint" value="0" />
+    </group_state>
+
+    <group_state name="rob2_zero_pose" group="rob2_arm">
+        <joint name="rob2_shoulder_pan_joint" value="0" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.57080854992" />
+        <joint name="rob2_elbow_joint" value="0" />        
+        <joint name="rob2_wrist_1_joint" value="-1.57079758267" />
+        <joint name="rob2_wrist_2_joint" value="0" />
+        <joint name="rob2_wrist_3_joint" value="0" />
+    </group_state>
+
+
+
 
 <!--pre grasp-->
 
@@ -1137,6 +1159,12 @@
     <disable_collisions link1="rob2_safety_box1_zone" link2="rob1_safety_box1_zone" reason="Never" />
     <disable_collisions link1="rob2_safety_box1_zone" link2="rob1_safety_box2_zone" reason="Never" />
     <disable_collisions link1="rob2_safety_box1_zone" link2="rob2_sense_CAM" reason="Never" />
+
+    <disable_collisions link1="bar1" link2="ceiling" reason="Never" />
+    <disable_collisions link1="bar2" link2="ceiling" reason="Never" />
+    <disable_collisions link1="bar3" link2="ceiling" reason="Never" />
+    <disable_collisions link1="bar4" link2="ceiling" reason="Never" />
+
 
 
     

@@ -169,7 +169,7 @@ class Assembly_process():
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		camera_trans = [0.000, -0.072, 0.058,-0.707, 0.000, 0.000, 0.707]
-		z_trans = [0,0,0.15,0,0,0,1]
+		z_trans = [0,0,0.22,0,0,0,1]
 
 		hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
@@ -254,7 +254,7 @@ class Assembly_process():
 
 			# print return_hole
 
-			return  return_hole#hole_trans #transposeStamped
+			return  hole_trans#return_hole#hole_trans #transposeStamped
 
 		else:
 			return trans_
@@ -461,7 +461,7 @@ class Assembly_process():
 				return False
 
 			else:
-				# self.am.hand_over_pin()
+				self.am.hand_over_pin()
 				return True
 		else:
 			return False
@@ -812,13 +812,22 @@ class Assembly_process():
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 
+		print "screw_drive"
+		raw_input()
+
 		trans = self.tfBuffer.lookup_transform('screw_tool_link', ee_link, self.rospy.Time(0))
 
-		trans_ = self.am.trans_convert(self.list_from_trans(goal), [0,0,-0.15,0,0,0,0])
+		# trans_ = self.am.trans_convert(self.list_from_trans(goal), [0,0,-0.15,0,0,0,0])
+
+		trans_ = self.list_from_trans(goal)
+
+		trans_[2] += 0.1
 
 		trans = self.am.trans_convert(trans_, self.list_from_trans(trans))
 
 		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
+
+		start = self.am.current_pose(robot)	
 
 		self.am.screw_motion(robot)
 
@@ -861,7 +870,7 @@ class Assembly_process():
 
 
 		
-		result = self.am.sprial_pin(robot)#, 1)
+		result = self.am.sprial_pin(robot, gripper = 0)#, 1)
 
 		self.am.dettach(robot, trans_.child_frame_id)
 
@@ -878,7 +887,7 @@ class Assembly_process():
 
 		if len(sort_list) < 2:
 
-			if result is not True: self.am.gripper_control(robot, 0)
+			self.am.gripper_control(robot, 0)
 
 			
 
@@ -929,9 +938,6 @@ class Assembly_process():
 
 	def hold_assist(self, rob, part_name, hole, reset=False):
 
-		if reset is True: 
-			self.am.gripper_control(rob, 0)
-			print "gripper open"
 
 
 		if rob is True:
@@ -944,7 +950,10 @@ class Assembly_process():
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 
-		
+
+		if reset is True: 
+			self.am.gripper_control(robot, 0)
+			print "gripper open"		
 
 
 		point1 = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))

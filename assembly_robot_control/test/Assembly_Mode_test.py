@@ -17,9 +17,11 @@ class Assembly_mode():
 
 		self.pr = Assembly_process(rospy)
 
-		# self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
+		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
 
-		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback_pass)
+		# self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback_pass)
+
+
 		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
@@ -48,6 +50,12 @@ class Assembly_mode():
 		elif srv.mode is 2: #mode insert
 			self.pr.chan_insert_pose(srv.robot)
 			return True, "insert_pose"
+
+		elif srv.mode is 3:
+			self.pr.hold_assist4(srv.robot, 'chair_part4', 'hole4-4')
+
+		elif srv.mode is 4:
+			self.pr.hold_assist4(srv.robot, 'chair_part4', 'hole4-4', reset = True)
 
 		else:
 			return False, "no mode!"
@@ -125,14 +133,16 @@ class Assembly_mode():
 
 
 	def screw_pin_test(self, pin, part_hole, part_name):
-		robot = self.pr.hand_over_pin_check(pin, part_hole)
 
 		self.pr.grab_pin(pin)
 
-		# self.pr.hold_assist(robot, part_name, part_hole)
+		robot = self.pr.hand_over_hole_check(part_hole)
+
+
+		self.pr.hold_assist(robot, part_name, part_hole)
 		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
 
-		print "pin_pose : {0}".format(pin_pose)
+		# print "pin_pose : {0}".format(pin_pose)
 
 		self.pr.insert_spiral_pin_motion(robot)
 
@@ -140,7 +150,7 @@ class Assembly_mode():
 
 		self.pr.screw_drive_motion(robot, pin_pose)
 
-		#self.pr.hold_assist(robot, pa_part, part_hole, reset=True)
+		self.pr.hold_assist(robot, pa_part, part_hole, reset=True)
 
 
 

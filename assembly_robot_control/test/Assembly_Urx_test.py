@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        # self.robot.send_program(self._set_gripper())
+        self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -206,8 +206,11 @@ class UrxMotion():
         time.sleep(0.2)
         # print self.robot.get_tcp_force()
 
+
         # go down
         print "="*20 +"go_down"+"="*20
+      
+
         force_mod = [0,0,1,0,pitch,0]
         force_toq = [0,0,-1,0,0,0] 
 
@@ -313,29 +316,40 @@ class UrxMotion():
 
     def screw_motion(self, pitch = 0):
 
+        # print "reset"
+        # raw_input()
+
+
         self.reset()
         time.sleep(1)
+
+        # print "zero_ftsensor"
+        # raw_input()
+
 
         self.robot.send_program("zero_ftsensor()")
         time.sleep(0.2)
         # print self.robot.get_tcp_force()
 
+        # print "go_down"
+        # raw_input()
+
         # go down
         print "="*20 +"go_down"+"="*20
-        force_mod = [0,0,1,0,pitch,0]
+        force_mod = [0,0,1,0,0,0]
         force_toq = [0,0,-5,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
         # cmd_str += "\tforce_mode_set_damping(0)\n"
         cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
         time.sleep(0.1)
         self.robot.send_program(cmd_str)
-        time.sleep(0.2)
+        time.sleep(0.5)
 
         # print self.robot.get_tcp_force()
 
@@ -343,9 +357,9 @@ class UrxMotion():
             try:
                 # print "try"
                 force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
                 # print force[2]
-                # print force[2]
-                if abs(force[2]) > 3:
+                if abs(force[2]) > 8:
                     # print force[2]
                     self.robot.send_program("end_force_mode()")
                     break
@@ -382,6 +396,9 @@ class UrxMotion():
                 break
         time.sleep(0.1)
 
+        print "real_insert now?"
+        raw_input()
+
         
 
         print "="*20 +"real_insert"+"="*20
@@ -401,8 +418,8 @@ class UrxMotion():
 
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
-        init_pose = copy.deepcopy(inital)
-        spiral_cmd = self._get_spiral_cmd(initial)
+        init_pose = copy.deepcopy(initial)
+        spiral_cmd = self._get_spiral_cmd(init_pose)
         self.robot.send_program(spiral_cmd)
 
         while(True):
@@ -427,20 +444,20 @@ def main():
     # rob1.spiral_motion()
 
 
-    # print "torque start?"
-    # raw_input()
+    print "torque start?"
+    raw_input()
 
-    # rob1.screw_motion()
+    rob1.screw_motion()
 
     # rob1.torque_mode([0,0,1,0,0,0], [0,0,-10,0,0,0])
     # rob2.torque_mode([0,0,1,0,0,0], [0,0,-30,0,0,0])
 
-    print "torque start?"
-    raw_input()
+    # print "torque start?"
+    # raw_input()
 
-    initial = rob1.robot.getl()
-    spiral_cmd = rob1._get_spiral_cmd(initial, reverse=True)
-    rob1.robot.send_program(spiral_cmd)
+    # initial = rob1.robot.getl()
+    # spiral_cmd = rob1._get_spiral_cmd(initial, reverse=True)
+    # rob1.robot.send_program(spiral_cmd)
 
     # print "torque start?"
     # raw_input()

@@ -50,15 +50,15 @@ P4hole_offset=[P4hole1,P4hole2,P4hole3,P4hole4,
 # P5hole9={'trans':[0.369205, 0.391455, 0.020],'rot':[0,0,pi/2]}
 # P5hole10={'trans':[0.429349, 0.860216, 0.020],'rot':[0,0,pi/2]}
 
-P5hole1={'trans':[0.000, 0.40422, 0.015],'rot':[0,-pi,pi/2]}
+P5hole1={'trans':[0.000, 0.425, 0.015],'rot':[0,-pi,pi/2]}
 P5hole2={'trans':[0.000, 0.392, 0.015],'rot':[0,-pi,pi/2]}
 P5hole3={'trans':[0.36666, 0.40831, 0.050],'rot':[-pi,0,0]}
 P5hole4={'trans':[0.36651, 0.37903, 0.050],'rot':[-pi,0,0]}
 P5hole5={'trans':[0.39163, 0.56715, 0.050],'rot':[0,pi,pi/2]}
 P5hole6={'trans':[0.43931, 0.84512, 0.050],'rot':[0,pi,pi/2]}
 P5hole7={'trans':[0.44464, 0.87769, 0.050],'rot':[0,pi,pi/2]}
-P5hole8={'trans':[0.001329, 0.4045,-0.015],'rot':[0,0,0]}
-P5hole9={'trans':[0.36727, 0.39261, 0.050],'rot':[0,0,pi/2]}
+P5hole8={'trans':[0.001329, 0.4085,-0.015],'rot':[0,0,0]}
+P5hole9={'trans':[0.36727, 0.39553, 0.050],'rot':[0,0,pi/2]}
 P5hole10={'trans':[0.44198, 0.8614, 0.050],'rot':[0,0,pi/2]}
 
 P5hole_offset=[P5hole1,P5hole2,P5hole3,P5hole4,P5hole5,
@@ -75,15 +75,15 @@ P5hole_offset=[P5hole1,P5hole2,P5hole3,P5hole4,P5hole5,
 # P6hole9={'trans':[0.369205, 0.391455,-0.050],'rot':[0,pi,0]}
 # P6hole10={'trans':[0.429349, 0.860216,-0.050],'rot':[0,pi,0]}
 
-P6hole1={'trans':[0.00, 0.40422,-0.015],'rot':[0,0,0]}
+P6hole1={'trans':[0.00, 0.425,-0.015],'rot':[0,0,0]}
 P6hole2={'trans':[0.000, 0.387,-0.015],'rot':[0,0,0]}
-P6hole3={'trans':[0.36666, 0.40831,-0.050],'rot':[0,0,0]}
-P6hole4={'trans':[0.36651, 0.37903,-0.050],'rot':[0,0,0]}
+P6hole3={'trans':[0.370, 0.41203,-0.050],'rot':[0,0,0]}
+P6hole4={'trans':[0.370, 0.37903,-0.050],'rot':[0,0,0]}
 P6hole5={'trans':[0.39163, 0.56715,-0.050],'rot':[0,0,0]}
 P6hole6={'trans':[0.43931, 0.84512,-0.050],'rot':[0,0,0]}
 P6hole7={'trans':[0.44464, 0.87769,-0.050],'rot':[0,0,0]}
-P6hole8={'trans':[0.001329, 0.4045,-0.015],'rot':[0,pi,0]}
-P6hole9={'trans':[0.36727, 0.39261,-0.050],'rot':[0,pi,0]}
+P6hole8={'trans':[0.001329, 0.4085,-0.015],'rot':[0,pi,0]}
+P6hole9={'trans':[0.36727, 0.39553,-0.050],'rot':[0,pi,0]}
 P6hole10={'trans':[0.44198, 0.8614,-0.050],'rot':[0,pi,0]}
 
 theta = acos( dot(array(P6hole7['trans'])-array(P6hole6['trans']),[0,1,0]) / norm(array(P6hole7['trans'])-array(P6hole6['trans'])))
