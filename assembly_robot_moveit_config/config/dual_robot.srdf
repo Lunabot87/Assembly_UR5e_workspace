@@ -90,12 +90,12 @@
 <!--zero pose-->
 
     <group_state name="rob1_zero_pose" group="rob1_arm">
-        <joint name="rob2_shoulder_pan_joint" value="0" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.57080854992" />
-        <joint name="rob2_elbow_joint" value="0" />        
-        <joint name="rob2_wrist_1_joint" value="-1.57079758267" />
-        <joint name="rob2_wrist_2_joint" value="0" />
-        <joint name="rob2_wrist_3_joint" value="0" />
+        <joint name="rob1_shoulder_pan_joint" value="0" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.57080854992" />
+        <joint name="rob1_elbow_joint" value="0" />        
+        <joint name="rob1_wrist_1_joint" value="-1.57079758267" />
+        <joint name="rob1_wrist_2_joint" value="0" />
+        <joint name="rob1_wrist_3_joint" value="0" />
     </group_state>
 
     <group_state name="rob2_zero_pose" group="rob2_arm">

@@ -281,8 +281,10 @@ class Assembly_process():
 			for j in range(count-(1+i)):
 
 				dist = np.linalg.norm(np.array(hole_list[i][:2]))-np.linalg.norm(np.array(hole_list[i+j+1][:2]))
-				if dist < 0.05:
+				# print "dist : {0}".format(dist)
+				if abs(dist) < 0.05:
 					temp_list.append(ch_hole_name[i+j+1])
+					# print "temp_list : {0}".format(temp_list)
 
 			
 
@@ -870,7 +872,7 @@ class Assembly_process():
 
 
 		
-		result = self.am.sprial_pin(robot, gripper = 0)#, 1)
+		result = self.am.sprial_pin(robot, gripper = 255)#, 1)
 
 		self.am.dettach(robot, trans_.child_frame_id)
 
@@ -878,7 +880,7 @@ class Assembly_process():
 
 		trans = self.am.trans_convert(self.list_from_trans(trans), self.list_from_trans(trans_))
 
-		print "update part : {0}".format(trans)
+		print "sort_list : {0}".format(sort_list)
 
 		trans_ = self.trans_from_list(trans, 'world', trans_.child_frame_id)
 

@@ -187,7 +187,10 @@ class Assembly_mode():
 			# result, asm_pose, pin_list = self.pr.send_tf(pa_name, pa_hole_list, ch_name, ch_hole_list) #test 용
 			group = self.pr.group_to_hole(ch_hole_list)
 
+			# print "group : {0}".format(group)
+
 			robot, goal, pin_list, sort_list = self.pr.hand_over_part_check(ch_name[0], group, pa_name[0], pa_hole_list)
+
 			# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
 			trans_ = self.pr.grab_part(robot, ch_name[0], pin_list, goal)
 			_result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_, sort_list, ch_name[0])
