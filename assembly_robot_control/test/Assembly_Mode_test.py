@@ -26,12 +26,12 @@ class Assembly_mode():
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
 
-		rospy.wait_for_service('update_tf')
-		rospy.wait_for_service('camera_server_1')
-		rospy.wait_for_service('camera_server_2')
+		# rospy.wait_for_service('update_tf')
+		# rospy.wait_for_service('camera_server_1')
+		# rospy.wait_for_service('camera_server_2')
 		
-		tf_update = rospy.ServiceProxy('update_tf', SetBool)
-		tf_update(True)
+		# tf_update = rospy.ServiceProxy('update_tf', SetBool)
+		# tf_update(True)
 
 		
 		# asm = TransStamped().TransStamped.header
@@ -66,9 +66,9 @@ class Assembly_mode():
 
 		pin_list = []
 
-		# for i in data.parent.holepin:
-		# 	# print "name : {0}, holepin : {1}".format(data.parent.name, i)
-		# 	pin_list.append(self.pr.hole_find_update(data.parent.name[0], i))
+		for i in data.parent.holepin:
+			# print "name : {0}, holepin : {1}".format(data.parent.name, i)
+			pin_list.append(self.pr.hole_find_update(data.parent.name[0], i))
 
 
 		asm_pose = self.pr.hc_send_tf(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)

@@ -429,7 +429,7 @@ class UrxMotion():
 
 
 def main():
-    rob1 = UrxMotion("192.168.13.101")
+    # rob1 = UrxMotion("192.168.13.101")
     rob2 = UrxMotion("192.168.13.100")
 
     #rob1.gripper_move_and_wait(255)
@@ -444,10 +444,10 @@ def main():
     # rob1.spiral_motion()
 
 
-    print "torque start?"
-    raw_input()
+    # print "torque start?"
+    # raw_input()
 
-    rob1.screw_motion()
+    # rob1.screw_motion()
 
     # rob1.torque_mode([0,0,1,0,0,0], [0,0,-10,0,0,0])
     # rob2.torque_mode([0,0,1,0,0,0], [0,0,-30,0,0,0])
@@ -472,7 +472,9 @@ def main():
     print "stop??"
     raw_input()
 
-    rob1.robot.send_program("end_force_mode()")
+    rob2._gripper_move(100)
+
+    # rob1.robot.send_program("end_force_mode()")
 
 if __name__ == '__main__':
     main()

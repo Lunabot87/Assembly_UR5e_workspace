@@ -61,7 +61,7 @@ class Assembly_process():
 
 	def hole_find_update(self, pa_part, hole_name):
 
-		not_hand_over = ['c122620_1','c122620_2' ,'c122620_3' ,'c122620_4']
+		not_hand_over = ['C122620_1','C122620_2' ,'C122620_3' ,'C122620_4']
 
 		rob1_trans = self.tfBuffer.lookup_transform('rob1_real_base_link', hole_name, self.rospy.Time(0))
 
@@ -119,14 +119,15 @@ class Assembly_process():
 
 		base_t = self.rot_arrange(base_t) ##문제시 이거 삭제 
 
-		result = self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True) #c = 카메라 화면처럼 움직여야 할때
+		# result = self.am.move_motion(base_t[:3], base_t[3:], 0, robot, c=True) #c = 카메라 화면처럼 움직여야 할때
 
-		if result < 0: return -1 #error 상태 수정 
+		# if result < 0: return -1 #error 상태 수정 
 			
 		#########카메라사용########
 		time.sleep(2)
 
-		trans_ = self.client(pa_part, hole_name, robot)
+		#trans_ = self.client(pa_part, hole_name, robot)
+		trans_ = False
 
 		if trans_ is not False: 
 			# self.br.sendTransform(self.trans_from_list(trans_, 'world', 'target_g0'))
