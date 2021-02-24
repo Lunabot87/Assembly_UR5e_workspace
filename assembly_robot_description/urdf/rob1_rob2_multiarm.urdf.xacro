@@ -24,7 +24,7 @@
         <parent link = "table"/>
         <child link = "rob2_world"/>
         <axis xyz = "0 0 0"/>
-        <origin xyz = "0.10 -0.690 0.01" rpy = "0 0 ${M_PI}"/>
+        <origin xyz = "0.10 -0.630 0.01" rpy = "0 0 ${M_PI}"/>
     </joint>
 
     <link name="camera_center_1"/>

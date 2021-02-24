@@ -10,8 +10,8 @@ class UrxMotion():
 
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
-        self.reset()
-        self.robot.send_program(self._set_gripper())
+        # self.reset()
+        # self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -212,7 +212,7 @@ class UrxMotion():
       
 
         force_mod = [0,0,1,0,pitch,0]
-        force_toq = [0,0,-1,0,0,0] 
+        force_toq = [0,0,-5,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
@@ -261,7 +261,7 @@ class UrxMotion():
                     self.robot.send_program("set_digital_out(4, False)")
                     return False
 
-                if abs(force[0]) > 15 or abs(force[1]) > 15:
+                if abs(force[0]) > 25 or abs(force[1]) > 25:
                     # print force[0], force[1]
                     self.robot.send_program("end_force_mode()")
                     break
@@ -472,7 +472,9 @@ def main():
     print "stop??"
     raw_input()
 
-    rob2._gripper_move(100)
+    rob2.spiral_motion()
+
+    # rob2._gripper_move(100)
 
     # rob1.robot.send_program("end_force_mode()")
 
