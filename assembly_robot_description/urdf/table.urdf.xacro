@@ -122,17 +122,17 @@
 
      <link name="table_station1">
        <visual>
-         <origin xyz="0 -0.09 -0.015" rpy="0 0 0" />
+         <origin xyz="0 -0.18 -0.015" rpy="0 0 0" />
          <geometry>
            <box size="1.2 0.18 0.03" />
          </geometry>
          <material name="color1">
-           <color rgba="0.7 0.01 0.7 1.0"/>
+           <color rgba="0.7 0.01 0.7 0.8"/>
          </material>
        </visual>
 
        <collision>
-         <origin xyz="0 -0.09 -0.015" rpy="0 0 0"/>
+         <origin xyz="0 -0.18 -0.015" rpy="0 0 0"/>
          <geometry>
            <box size="1.2 0.18 0.8"/>
          </geometry>
@@ -141,17 +141,17 @@
 
      <link name="table_station2">
        <visual>
-         <origin xyz="0 0.135 -0.015" rpy="0 0 0" />
+         <origin xyz="0 0.045 -0.015" rpy="0 0 0" />
          <geometry>
            <box size="1.2 0.27 0.03" />
          </geometry>
          <material name="color2">
-           <color rgba="0.1 0.7 0.1 1.0"/>
+           <color rgba="0.1 0.7 0.1 0.8"/>
          </material>
        </visual>
 
        <collision>
-         <origin xyz="0 0.135 -0.015" rpy="0 0 0"/>
+         <origin xyz="0 0.045 -0.015" rpy="0 0 0"/>
          <geometry>
            <box size="1.2 0.27 0.03"/>
          </geometry>
@@ -160,26 +160,7 @@
 
      <link name="table_link1">
        <visual>
-         <origin xyz="0 -0.585 -0.4" rpy="0 0 0" />
-         <geometry>
-           <box size="1.2 0.81 0.8" />
-         </geometry>
-         <material name="table">
-           <color rgba="0.192 0.192 0.192 1.0"/>
-         </material>
-       </visual>
-
-       <collision>
-         <origin xyz="0 -0.585 -0.4" rpy="0 0 0"/>
-         <geometry>
-           <box size="1.2 0.81 0.8"/>
-         </geometry>
-       </collision>
-     </link>
-
-     <link name="table_link2">
-       <visual>
-         <origin xyz="0 0.63 -0.4" rpy="0 0 0" />
+         <origin xyz="0 -0.630 -0.4" rpy="0 0 0" />
          <geometry>
            <box size="1.2 0.72 0.8" />
          </geometry>
@@ -189,9 +170,28 @@
        </visual>
 
        <collision>
-         <origin xyz="0 0.63 -0.4" rpy="0 0 0"/>
+         <origin xyz="0 -0.630 -0.4" rpy="0 0 0"/>
          <geometry>
            <box size="1.2 0.72 0.8"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="table_link2">
+       <visual>
+         <origin xyz="0 0.585 -0.4" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 0.81 0.8" />
+         </geometry>
+         <material name="table">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0.585 -0.4" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 0.81 0.8"/>
          </geometry>
        </collision>
      </link>
