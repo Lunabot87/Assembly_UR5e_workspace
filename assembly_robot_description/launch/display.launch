@@ -1,6 +1,8 @@
 <launch>
-	<include file="$(find assembly_robot_description)/launch/description.launch"/>
+	<!-- <include file="$(find assembly_robot_description)/launch/description.launch"/> -->
 	
+	<param name="robot_description" command="$(find xacro)/xacro '$(find assembly_robot_description)/urdf/table.urdf.xacro' --inorder" />
+
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
 		<param name="use_gui" value="false"/>	
 	</node>

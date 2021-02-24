@@ -82,7 +82,7 @@
 
 
 
-    <link name="table">
+   <!--  <link name="table">
        <visual>
          <origin xyz="0 0 -0.4" rpy="0 0 0" />
          <geometry>
@@ -97,6 +97,101 @@
          <origin xyz="0 0 -0.4" rpy="0 0 0"/>
          <geometry>
            <box size="2.3 3 0.8"/>
+         </geometry>
+       </collision>
+     </link> -->
+
+     <link name="table">
+       <visual>
+         <origin xyz="-0.885  0 -0.4" rpy="0 0 0" />
+         <geometry>
+           <box size="0.57 1.98 0.8" />
+         </geometry>
+         <material name="table">
+           <color rgba="0.192 0.192 0.192 0.7"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="-0.885 0 -0.4" rpy="0 0 0"/>
+         <geometry>
+           <box size="0.57 1.98 0.8"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="table_station1">
+       <visual>
+         <origin xyz="0 -0.09 -0.015" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 0.18 0.03" />
+         </geometry>
+         <material name="color1">
+           <color rgba="0.7 0.01 0.7 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 -0.09 -0.015" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 0.18 0.8"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="table_station2">
+       <visual>
+         <origin xyz="0 0.135 -0.015" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 0.27 0.03" />
+         </geometry>
+         <material name="color2">
+           <color rgba="0.1 0.7 0.1 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0.135 -0.015" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 0.27 0.03"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="table_link1">
+       <visual>
+         <origin xyz="0 -0.585 -0.4" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 0.81 0.8" />
+         </geometry>
+         <material name="table">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 -0.585 -0.4" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 0.81 0.8"/>
+         </geometry>
+       </collision>
+     </link>
+
+     <link name="table_link2">
+       <visual>
+         <origin xyz="0 0.63 -0.4" rpy="0 0 0" />
+         <geometry>
+           <box size="1.2 0.72 0.8" />
+         </geometry>
+         <material name="table">
+           <color rgba="0.192 0.192 0.192 1.0"/>
+         </material>
+       </visual>
+
+       <collision>
+         <origin xyz="0 0.63 -0.4" rpy="0 0 0"/>
+         <geometry>
+           <box size="1.2 0.72 0.8"/>
          </geometry>
        </collision>
      </link>
@@ -124,31 +219,59 @@
     <joint name="table_bar1" type="fixed">
       <parent link="table" />
       <child link="bar1" />
-      <origin xyz="0.585 0.985 0.75" rpy="0.0 0.0 0" />
+      <origin xyz="0.990 0.985 0.75" rpy="0.0 0.0 0" />
     </joint>
 
     <joint name="table_bar2" type="fixed">
       <parent link="table" />
       <child link="bar2" />
-      <origin xyz="-0.585 0.985 0.75" rpy="0.0 0.0 0" />
+      <origin xyz="-1.125 0.985 0.75" rpy="0.0 0.0 0" />
     </joint>
 
     <joint name="table_bar3" type="fixed">
       <parent link="table" />
       <child link="bar3" />
-      <origin xyz="0.585 -0.985 0.75" rpy="0.0 0.0 0" />
+      <origin xyz="0.990 -0.985 0.75" rpy="0.0 0.0 0" />
     </joint>
 
     <joint name="table_bar4" type="fixed">
       <parent link="table" />
       <child link="bar4" />
-      <origin xyz="-0.585 -0.985 0.75" rpy="0.0 0.0 0" />
+      <origin xyz="-1.125 -0.985 0.75" rpy="0.0 0.0 0" />
     </joint>
 
     <joint name="table_ceiling" type="fixed">
       <parent link="table" />
       <child link="ceiling" />
       <origin xyz="0 0 1.4" rpy="0.0 0.0 0" />
+    </joint>
+
+    <joint name="table_p_joint1" type="prismatic">
+      <parent link="table" />
+      <child link="table_station1" />
+      <origin xyz="0 0 0" rpy="0.0 0.0 0" />
+      <axis xyz="0 0 1"/>
+      <limit effort="30" velocity="1.0" lower="-1.65" upper="0.084" />
+    </joint>
+
+    <joint name="table_p_joint2" type="prismatic">
+      <parent link="table" />
+      <child link="table_station2" />
+      <origin xyz="0 0 0" rpy="0.0 0.0 0" />
+      <axis xyz="0 0 1"/>
+      <limit effort="30" velocity="1.0" lower="-0.028" upper="0.375" />
+    </joint>
+
+    <joint name="table_joint1" type="fixed">
+      <parent link="table" />
+      <child link="table_link1" />
+      <origin xyz="0 0 0" rpy="0.0 0.0 0" />
+    </joint>
+
+    <joint name="table_joint2" type="fixed">
+      <parent link="table" />
+      <child link="table_link2" />
+      <origin xyz="0 0 0" rpy="0.0 0.0 0" />
     </joint>
 
 </robot>
