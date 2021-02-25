@@ -4,6 +4,7 @@
     <xacro:include filename="$(find assembly_robot_description)/urdf/rob1_robot_driver.urdf.xacro" />
     <xacro:include filename="$(find assembly_robot_description)/urdf/rob2_robot_driver.urdf.xacro" />
     <xacro:include filename="$(find assembly_robot_description)/urdf/table.urdf.xacro" />
+    <!-- <xacro:include filename="$(find assembly_robot_description)/urdf/station.xacro" /> -->
 
     <link name="world"/>
 
@@ -50,5 +51,11 @@
         <child link="screw_tool_link" />
         <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
     </joint>
+
+    <!-- <joint name="station_joint" type="fixed">
+        <parent link="table"/>
+        <child link="station_base_link"/>
+        <origin xyz="0.825 0 -0.455" rpy="0 0 3.14"/>
+    </joint> -->
 
 </robot>

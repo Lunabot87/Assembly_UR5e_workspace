@@ -10,8 +10,8 @@ class UrxMotion():
 
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
-        # self.reset()
-        # self.robot.send_program(self._set_gripper())
+        self.reset()
+        self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -157,6 +157,18 @@ class UrxMotion():
         else:
             cmd_str += "\t\tforce_mode(tool_pose(), "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.2)
+
+
+    def freedrive_mode(self):
+
+        cmd_str  = "def freedrive():"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tfreedrive_mode()\n"
         cmd_str += "\tend\n"
         cmd_str += "end\n"
         time.sleep(0.1)
@@ -469,10 +481,10 @@ def main():
 
     # rob1.torque_mode([0,0,1,0,0,0], [0,0,10,0,0,0])
 
-    print "stop??"
+    print "free_drive"
     raw_input()
 
-    rob2.spiral_motion()
+    rob2.freedrive_mode()
 
     # rob2._gripper_move(100)
 

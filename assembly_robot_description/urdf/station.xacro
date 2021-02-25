@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="station">
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  <material name="light_grey"><color rgba="0.4 0.4 0.4 1.0" /></material>
+
+  <link name="station_base_link">
+
+    <visual>
+      <geometry>
+        <box size="0.45 1.98 0.69"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="light_grey"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.18 0.05"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+  <link name="2ndb">
+
+    <visual>
+      <geometry>
+        <box size="0.185 1.45 0.19"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="light_grey"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.18 0.005"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+  <link name="3ndb">
+
+    <visual>
+      <geometry>
+        <box size="0.185 1.45 0.09"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.185 1.45 0.09"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+  <link name="plate1">
+
+    <visual>
+      <geometry>
+        <box size="0.18 0.35 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.18 0.35 0.01"/>
+      </geometry>
+    </collision>
+
+  <joint name="joint2" type="fixed">
+    <parent link="2ndb"/>
+    <child link="3ndb"/>
+    <origin xyz="0.185 0 -0.05"/>
+  </joint>
+
+  </link>
+
+  <link name="plate2">
+
+    <visual>
+      <geometry>
+        <box size="0.2 0.6 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.2 0.6 0.01"/>
+      </geometry>
+    </collision>
+
+  <joint name="joint2" type="fixed">
+    <parent link="2ndb"/>
+    <child link="3ndb"/>
+    <origin xyz="0.185 0 -0.05"/>
+  </joint>
+
+  </link>
+
+  <joint name="joint1" type="fixed">
+    <parent link="station_base_link"/>
+    <child link="2ndb"/>
+    <origin xyz="-0.0525 0.05 0.44"/>
+  </joint>
+
+  <joint name="joint2" type="fixed">
+    <parent link="2ndb"/>
+    <child link="3ndb"/>
+    <origin xyz="0.185 0 -0.05"/>
+  </joint>
+
+  <joint name="joint3" type="fixed">
+    <parent link="3ndb"/>
+    <child link="plate1"/>
+    <origin xyz="0 0 0.05"/>
+  </joint>
+
+  <joint name="joint4" type="fixed">
+    <parent link="2ndb"/>
+    <child link="plate2"/>
+    <origin xyz="0 0 0.1"/>
+  </joint>
+
+</robot>
