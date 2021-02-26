@@ -103,6 +103,40 @@ class Assembly_motion():
             # raw_input()
             self.mg_rob2.execute(plan)
 
+    def grab_tool(self, robot, pin):
+        if robot is False:
+            rob_tool = 'rob1'
+            rob = self.mg_rob1
+            urx = self.urx_rob1
+        else:
+            rob_tool = 'rob2'
+            rob = self.mg_rob2
+            urx = self.urx_rob2
+
+        urx.gripper_move_and_wait(0)
+        self.program_running()
+
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
+        plan = rob.plan(tool_pre_grab) 
+        # print "move_camera?"
+        # raw_input()
+        rob.execute(plan)
+        urx.gripper_move_and_wait(255)
+        self.program_running()
+
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_grasp_pose")
+        plan = rob.plan(tool_pre_grab) 
+        # print "move_camera?"
+        # raw_input()
+        rob.execute(plan)
+
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
+        plan = rob.plan(tool_pre_grab) 
+        # print "move_camera?"
+        # raw_input()
+        rob.execute(plan)
+
+
     def pick_up_pin(self, pin_name):
 
         rob1_pin1_pre_grasp = self.mg_rob1.get_named_target_values("rob1_" + pin_name + "_pre_grasp")

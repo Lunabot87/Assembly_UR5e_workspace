@@ -484,7 +484,8 @@ def main():
     print "free_drive"
     raw_input()
 
-    rob2.freedrive_mode()
+    rob2.torque_mode([1,1,0,0,1,0], [0,0,0,0,0,0])
+    # rob2.freedrive_mode()
 
     # rob2._gripper_move(100)
 

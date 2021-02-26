@@ -112,7 +112,9 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     print "get_best_ik"
 
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint, c)
-    # self.ur5e.print_inv_sol(inv_sol)
+
+    # print inv_sol
+    self.ur5e.print_inv_sol(inv_sol)
     
     #print "="*100
     #print "current q: ", cur_joint
@@ -123,7 +125,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #   print "selected q: ", selected_q
 
     #   self.ur5e.publish_state(selected_q, True)
-    #   print self.scene.getGlobalLinkTransform(self.eef_link)
+    #   # print self.scene.getGlobalLinkTransform(self.eef_link)
     #   print "next pass"
     #   raw_input()
 
@@ -132,7 +134,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         selected_q = (inv_sol[i]['inv_sol'])
         
 
-        # self.ur5e.publish_state(selected_q, True)
+        self.ur5e.publish_state(selected_q, True)
         # ------------------updated version
         # (success, traj, b, err) = self.plan(self._list_to_js(selected_q))        
         # if success:
@@ -158,8 +160,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         else:
           traj = self.plan(self._list_to_js(selected_q))
           print "selected q: ", selected_q
-        user_choice = raw_input("--> press [y/n(wrong ik)]") 
-        # user_choice = 'y'
+        #user_choice = raw_input("--> press [y/n(wrong ik)]") 
+        user_choice = 'y'
         if user_choice == 'y':
           return inv_sol[i]['idx'], traj
         else:
@@ -224,6 +226,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     else,
       return -1
     '''
+
+    print "go_to_pose_goal"
     if idx is None:
       (s_idx, traj) = self._get_best_ik_plan(trans, rot)
     else:
@@ -316,11 +320,12 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #        + list_str(g_rot, ['x','y','z','w'])
 
     (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
-    #print "******plan0 = {}\n".format(result0)
+    print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 
 
     if _check is not True: 
+
       result1 = self.go_to_pose_goal(pg_trans, pg_rot, result0)
   
      # print "******plan1 = {}\n".format(result1)

@@ -807,6 +807,17 @@ class Assembly_process():
 		return trans_
 
 
+	def grab_screw_tool(self,robot, pin):
+		if robot is False:
+			ee_link = 'rob1_real_ee_link'
+			base_link= 'rob1_real_base_link'
+		else:
+			ee_link = 'rob2_real_ee_link'
+			base_link= 'rob2_real_base_link'
+
+		self.am.grab_tool(robot, pin)
+
+
 	def screw_drive_motion(self, robot, goal):
 		if robot is False:
 			ee_link = 'rob1_real_ee_link'

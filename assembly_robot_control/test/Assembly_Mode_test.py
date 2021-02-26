@@ -136,21 +136,34 @@ class Assembly_mode():
 
 		self.pr.grab_pin(pin)
 
+		print "grab_pin"
+		raw_input()
+
 		robot = self.pr.hand_over_hole_check(part_hole)
 
+		print "2 : {0}".format(robot)
+		raw_input()
 
 		self.pr.hold_assist(robot, part_name, part_hole)
+
+		print "3"
+		raw_input()
+
 		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
 
-		# print "pin_pose : {0}".format(pin_pose)
+		print "4"
+		raw_input()
 
 		self.pr.insert_spiral_pin_motion(robot)
 
-		# self.pr.grab_screw_tool(pin)
+		print "5"
+		raw_input()
+
+		self.pr.grab_screw_tool(robot, pin)
 
 		self.pr.screw_drive_motion(robot, pin_pose)
 
-		self.pr.hold_assist(robot, pa_part, part_hole, reset=True)
+		self.pr.hold_assist(robot, part_name, part_hole, reset=True)
 
 
 
@@ -246,6 +259,8 @@ def main():
 	# print 'start?'
 	# raw_input()
 	
+	# a.screw_pin_test('c104322')
+
 	# a.insert_pin_test("c122620_1", "hole2-5", "chair_part2")
 
 	# print 'start?'
