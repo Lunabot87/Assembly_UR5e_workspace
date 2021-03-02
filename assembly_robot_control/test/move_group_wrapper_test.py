@@ -100,7 +100,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     eef_offset = TCP_OFFSET[self.eef_link]
     self.ur5e.set_eef_offset(eef_offset)
 
-  def _joint_verification(self, joints):
+  def _joint_verification_z(self, joints):
     eef_mat = self.ur5e.ur5e_ik.fwd_kin(joints)
     rot_zaxis = eef_mat[:3,2]
 
@@ -109,6 +109,18 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     x_axis = [1,0,0]
 
     return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
+
+
+  def _joint_verification_y(self, joints):
+    eef_mat = self.ur5e.ur5e_ik.fwd_kin(joints)
+    rot_zaxis = eef_mat[:3,1]
+
+    z_axis = [0,0,1]
+    y_axis = [0,1,0]
+    x_axis = [1,0,0]
+
+    return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
+
 
   def _get_best_ik_plan(self, trans, rot, c):
     '''
@@ -164,12 +176,16 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         #   print "plan error:", b, err
         # ------------------updated version
 
-        axis = self._joint_verification(selected_q)
+        axis = self._joint_verification_z(selected_q)
+        axis_y = self._joint_verification_y(selected_q)
+
         print "axis : {0}".format(axis)
         abs_axis = map(abs, axis)
 
         if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
           continue
+        # elif c is True and axis_y[abs_axis.index(max(abs_axis)) == 1]:
+        #     continue
         elif selected_q[2] > 0:
           continue
         else:

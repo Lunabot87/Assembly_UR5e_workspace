@@ -162,6 +162,7 @@ class Assembly_process():
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
 			ro_trans = [0, 0, 0, 0, 0, 1, 0.0000463]
+			# ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		else:
 			rob_camera = 'camera_center_2'
