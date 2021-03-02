@@ -120,7 +120,7 @@
        </collision>
      </link>
 
-     <link name="table_station1">
+     <link name="table_station2">
        <visual>
          <origin xyz="0 -0.18 -0.015" rpy="0 0 0" />
          <geometry>
@@ -134,12 +134,12 @@
        <collision>
          <origin xyz="0 -0.18 -0.015" rpy="0 0 0"/>
          <geometry>
-           <box size="1.2 0.18 0.8"/>
+           <box size="1.2 0.18 0.03"/>
          </geometry>
        </collision>
      </link>
 
-     <link name="table_station2">
+     <link name="table_station1">
        <visual>
          <origin xyz="0 0.045 -0.015" rpy="0 0 0" />
          <geometry>
@@ -246,17 +246,17 @@
       <origin xyz="0 0 1.4" rpy="0.0 0.0 0" />
     </joint>
 
-    <joint name="table_p_joint1" type="prismatic">
+    <joint name="table_p_joint2" type="prismatic">
       <parent link="table" />
-      <child link="table_station1" />
+      <child link="table_station2" />
       <origin xyz="0 0 0" rpy="0.0 0.0 0" />
       <axis xyz="0 0 1"/>
       <limit effort="30" velocity="1.0" lower="-1.65" upper="0.084" />
     </joint>
 
-    <joint name="table_p_joint2" type="prismatic">
+    <joint name="table_p_joint1" type="prismatic">
       <parent link="table" />
-      <child link="table_station2" />
+      <child link="table_station1" />
       <origin xyz="0 0 0" rpy="0.0 0.0 0" />
       <axis xyz="0 0 1"/>
       <limit effort="30" velocity="1.0" lower="-0.028" upper="0.375" />

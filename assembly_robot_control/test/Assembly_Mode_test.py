@@ -134,17 +134,11 @@ class Assembly_mode():
 
 	def screw_pin_test(self, pin, part_hole, part_name):
 
-		self.pr.grab_pin(pin)
-
-		print "grab_pin"
-		raw_input()
-
 		robot = self.pr.hand_over_hole_check(part_hole)
 
-		print "2 : {0}".format(robot)
-		raw_input()
+		self.pr.grab_pin(robot, pin)
 
-		self.pr.hold_assist(robot, part_name, part_hole)
+		# self.pr.hold_assist(robot, part_name, part_hole)
 
 		print "3"
 		raw_input()
@@ -156,22 +150,28 @@ class Assembly_mode():
 
 		self.pr.insert_spiral_pin_motion(robot)
 
-		print "5"
+		print "tool grab"
 		raw_input()
 
 		self.pr.grab_screw_tool(robot, pin)
 
+		print "screw"
+		raw_input()
+
 		self.pr.screw_drive_motion(robot, pin_pose)
 
-		self.pr.hold_assist(robot, part_name, part_hole, reset=True)
+		# self.pr.hold_assist(robot, part_name, part_hole, reset=True)
 
 
 
 	def insert_pin_test(self, pin, part_hole, pa_part):
 		################################################################################
-		self.pr.grab_pin(pin) #asm_msg.child.pin
+		# robot = self.pr.hand_over_pin_check(pin, part_hole) #asm_msg.parent.target.name
 
-		robot = self.pr.hand_over_pin_check(pin, part_hole) #asm_msg.parent.target.name
+		robot = self.pr.hand_over_hole_check(part_hole)
+		
+		self.pr.grab_pin(robot, pin) #asm_msg.child.pin
+
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
 		self.pr.hold_assist(robot, pa_part, part_hole)
 		pin_pose = self.pr.fine_tune_insert_target(pa_part, part_hole, robot)

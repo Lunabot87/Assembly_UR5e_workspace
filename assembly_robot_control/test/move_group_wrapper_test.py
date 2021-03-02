@@ -66,8 +66,24 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     touch_links = self.robot.get_link_names(group=rob+'_hand')
     self.scene.attach_mesh(rob+"_"+self.eef_link, part, file_name, touch_links=touch_links)
 
+  def attachbox(self, rob, name):
+    touch_links = self.robot.get_link_names(group=rob+'_hand')
+    self.scene.attach_box(rob+"_"+self.eef_link, name, touch_links=touch_links)
+
+
   def dettach(self, rob, part):
     self.scene.remove_attached_object(rob+"_"+self.eef_link, part)
+
+  def addbox(self, rob, name):
+    if "c104322" in name:
+      box_pose = geometry_msgs.msg.PoseStamped()
+      box_pose.header.frame_id = rob+"_"+self.eef_link
+      box_pose.pose.position.z = 0.18
+      box_pose.pose.orientation.w = 1.0
+      box_name = name
+      self.scene.add_box(box_name, box_pose, size=(0.01, 0.01, 0.1))
+    else:
+      print "no match"
 
   #####
 
@@ -114,7 +130,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     inv_sol = self.ur5e.inv_kin_full_sorted(trans, rot, cur_joint, c)
 
     # print inv_sol
-    self.ur5e.print_inv_sol(inv_sol)
+    # self.ur5e.print_inv_sol(inv_sol)
     
     #print "="*100
     #print "current q: ", cur_joint
@@ -151,17 +167,16 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         axis = self._joint_verification(selected_q)
         print "axis : {0}".format(axis)
         abs_axis = map(abs, axis)
+
         if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
           continue
-        elif selected_q[2] < 0 and selected_q[0] > 0:
-          continue
-        elif selected_q[2] > 0 and selected_q[0] < 0:
+        elif selected_q[2] > 0:
           continue
         else:
           traj = self.plan(self._list_to_js(selected_q))
           print "selected q: ", selected_q
-        #user_choice = raw_input("--> press [y/n(wrong ik)]") 
-        user_choice = 'y'
+        user_choice = raw_input("--> press [y/n(wrong ik)]") 
+        # user_choice = 'y'
         if user_choice == 'y':
           return inv_sol[i]['idx'], traj
         else:

@@ -155,51 +155,53 @@
    </link>
 
    <joint name="${prefix}safety_box1_link" type="fixed">
-      <parent link="${prefix}safety_zone" />
+      <!-- <parent link="${prefix}safety_zone" /> -->
+      <parent link="${prefix}right_inner_finger_pad" />
       <child link="${prefix}safety_box1_zone" />
-      <origin xyz="0.05 0 0.06" rpy="0.0 0.0 0" />
+      <origin xyz="0.0 0 0.0" rpy="0.0 0.0 0" />
     </joint>
 
    <link name="${prefix}safety_box1_zone">
      <visual>
-       <origin xyz="0 0 0" rpy="0 0 0" />
+       <origin xyz="0 0.02 0" rpy="0 0 0" />
        <geometry>
-         <box size="0.02 0.05 0.13"/>
+         <box size="0.05 0.02 0.08"/>
        </geometry>
        <material name="{prefix}safety_box1_zone">
-         <color rgba="0.002 0.192 0.192 1.0"/>
+         <color rgba="0.002 0.192 0.192 0.5"/>
        </material>
      </visual>
 
      <collision>
-       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <origin xyz="0 0.02 0" rpy="0 0 0"/>
        <geometry>
-         <box size="0.02 0.05 0.13"/>
+         <box size="0.05 0.04 0.01"/>
        </geometry>
      </collision>
    </link>
 
    <joint name="${prefix}safety_box2_link" type="fixed">
-      <parent link="${prefix}safety_zone" />
+      <!-- <parent link="${prefix}safety_zone" /> -->
+      <parent link="${prefix}left_inner_finger_pad" />
       <child link="${prefix}safety_box2_zone" />
-      <origin xyz="-0.05 0 0.06" rpy="0.0 0.0 0" />
+      <origin xyz="0.00 0 0.0" rpy="0.0 0.0 0" />
     </joint>
 
    <link name="${prefix}safety_box2_zone">
      <visual>
-       <origin xyz="0 0 0" rpy="0 0 0" />
+       <origin xyz="0 0.02 0" rpy="0 0 0" />
        <geometry>
-         <box size="0.02 0.05 0.13"/>
+         <box size="0.05 0.02 0.08"/>
        </geometry>
        <material name="{prefix}safety_box2_zone">
-         <color rgba="0.002 0.192 0.192 1.0"/>
+         <color rgba="0.002 0.192 0.192 0.5"/>
        </material>
      </visual>
 
      <collision>
-       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <origin xyz="0 0.02 0" rpy="0 0 0"/>
        <geometry>
-         <box size="0.02 0.05 0.13"/>
+         <box size="0.05 0.04 0.01"/>
        </geometry>
      </collision>
    </link>

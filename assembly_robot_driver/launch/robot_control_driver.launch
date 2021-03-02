@@ -95,7 +95,7 @@
   </group> -->
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
-    <rosparam param="source_list">["/rob1/joint_states", "/rob2/joint_states", "/table/joint_states"]</rosparam>
+    <rosparam param="source_list">["/rob1/joint_states", "/rob2/joint_states", "/table/joint_states","/hand/joint_states"]</rosparam>
   </node>
 
   <include file="$(find assembly_robot_moveit_config)/launch/assembly_robot_moveit_planning_execution.launch">

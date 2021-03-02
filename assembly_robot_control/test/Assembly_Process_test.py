@@ -250,7 +250,7 @@ class Assembly_process():
 			# self.am.move_to(xyz, robot)
 
 
-			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.1, robot)
 			if result < -1: return -1 
 
 			# print return_hole
@@ -659,10 +659,10 @@ class Assembly_process():
 
 		return result
 
-	def grab_pin(self, pin_name):#asm_child_msg, is_moved):
+	def grab_pin(self, robot, pin_name):#asm_child_msg, is_moved):
 		# grasp = self.make_grasp_msg(asm_child_msg.pin, asm_child_msg.pose)
 		# self.motion.pick_up_pin(grasp)
-		self.am.pick_up_pin(pin_name)
+		self.am.pick_up_pin(robot, pin_name)
 
 	################################################현철이 코드 적용 부분###############################################
 	def hc_send_tf(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
@@ -855,7 +855,7 @@ class Assembly_process():
 		# 		break
 		start = self.am.current_pose(robot)	
 		for count in range(num_of_trial):
-			result = self.am.sprial_pin(robot)
+			result = self.am.sprial_pin(robot, gripper = 255)
 			if result is not True:
 				self.am.move_current_up(0.1, robot)
 				self.am.current_pose(robot, reset =True, pose = start)
@@ -865,6 +865,8 @@ class Assembly_process():
 				self.am.move_current_to(x*0.01, y*0.01, 0,robot)
 			else:
 				break
+		self.am.gripper_control(robot, 0)
+
 		self.am.init_pose(robot)
 				
 	def insert_spiral_part_motion(self, robot, trans_, sort_list, ch_name, num_of_trial=5):

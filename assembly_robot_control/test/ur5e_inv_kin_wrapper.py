@@ -102,7 +102,7 @@ class UR5eInvKinForTF():
     result = self.sv_srv.call(gsvr)
     rv = result.valid
     rc = result.contacts
-    # print joint, rv, rc
+    print joint, rv, rc
 
     # print("+"*70)
     # print('state validity result')
