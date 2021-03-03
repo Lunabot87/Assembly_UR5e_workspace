@@ -251,7 +251,7 @@ class Assembly_process():
 			# self.am.move_to(xyz, robot)
 
 
-			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.1, robot)
+			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.10, robot, collision=False)
 			if result < -1: return -1 
 
 			# print return_hole
@@ -385,7 +385,7 @@ class Assembly_process():
 			ro_trans = [0, 0, 0, 0, 0, 0, 1]
 
 		
-		hole_trans = self.tfBuffer.lookup_transform(base_link, ee_link, self.rospy.Time(0))
+		hole_trans = self.tfBuffer.lookup_transform(base_link, rob_camera, self.rospy.Time(0))
 
 		hole_trans_l = self.list_from_trans(hole_trans, euler=True)
 
@@ -398,6 +398,8 @@ class Assembly_process():
 
 
 		result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+		
+
 		if result < -1: return 
 
 
@@ -823,14 +825,16 @@ class Assembly_process():
 		if robot is False:
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
+			rob = "rob1_"
 		else:
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
+			rob = "rob2_"
 
 		print "screw_drive"
 		raw_input()
 
-		trans = self.tfBuffer.lookup_transform('screw_tool_link', ee_link, self.rospy.Time(0))
+		trans = self.tfBuffer.lookup_transform(rob + 'screw_tool_link', ee_link, self.rospy.Time(0))
 
 		# trans_ = self.am.trans_convert(self.list_from_trans(goal), [0,0,-0.15,0,0,0,0])
 

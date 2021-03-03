@@ -144,15 +144,15 @@ class Assembly_motion():
         rob.execute(plan)
 
 
-        urx.gripper_move_and_wait(255)
-        self.hand_mode(robot, 255)
-        self.program_running()
-
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
         rob.execute(plan)
+
+        urx.gripper_move_and_wait(255)
+        self.hand_mode(robot, 255)
+        self.program_running()
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
@@ -218,13 +218,13 @@ class Assembly_motion():
         raw_input()
         rob.execute(plan, wait=True)
 
-    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False, _check = False):
+    def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False, _check = False, collision = True):
         if robot is False:
             rob = self.mg_rob1
         else:
             rob = self.mg_rob2
 
-        success = rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset, c, _check)
+        success = rob.move_to_grab_part(grasp_trans, grasp_rot, grasp_offset, c, _check, collision)
         return success
 
 

@@ -31,10 +31,10 @@
     <link name="camera_center_1"/>
 
     <joint name="basler_joint" type="fixed">
-        <!-- <parent link="rob1_real_ee_link" / -->>
-        <parent link="rob1_robotiq_arg2f_base_link" />
+        <parent link="rob1_real_ee_link" />
+        <!-- <parent link="rob1_robotiq_arg2f_base_link" /> -->
         <child link="camera_center_1" />
-        <origin xyz="-0.05785 0 0.06386" rpy="-1.5707 3.1415 -1.5707" />
+        <origin xyz="0 0.05785 0.0721" rpy="1.5707 0 0" />
     </joint>
 
     <link name="camera_center_2"/>
@@ -46,13 +46,22 @@
         <origin xyz="0 0.05785 0.0721" rpy="1.5707 0 0" />
     </joint>
 
-    <link name="screw_tool_link"/>
+    <link name="rob1_screw_tool_link"/>
 
-    <joint name="screw_tool_joint" type="fixed">
+    <joint name="rob1_screw_tool_joint" type="fixed">
         <parent link="rob1_real_ee_link" />
-        <child link="screw_tool_link" />
+        <child link="rob1_screw_tool_link" />
         <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
     </joint>
+
+    <link name="rob2_screw_tool_link"/>
+
+    <joint name="rob2_screw_tool_joint" type="fixed">
+        <parent link="rob2_real_ee_link" />
+        <child link="rob2_screw_tool_link" />
+        <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
+    </joint>
+
 
     <joint name="station_joint" type="fixed">
         <parent link="table"/>

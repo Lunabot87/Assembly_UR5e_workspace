@@ -140,13 +140,7 @@ class Assembly_mode():
 
 		# self.pr.hold_assist(robot, part_name, part_hole)
 
-		print "3"
-		raw_input()
-
 		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
-
-		print "4"
-		raw_input()
 
 		self.pr.insert_spiral_pin_motion(robot)
 

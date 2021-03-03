@@ -31,8 +31,8 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     MoveGroupCommander.__init__(self, name)
     
     # setup for move group
-    self.set_planning_time(3)
-    self.set_num_planning_attempts(5)
+    self.set_planning_time(5)
+    self.set_num_planning_attempts(10)
     self.set_max_velocity_scaling_factor(1)
     self.set_max_acceleration_scaling_factor(1)
 
@@ -122,7 +122,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
 
 
-  def _get_best_ik_plan(self, trans, rot, c):
+  def _get_best_ik_plan(self, trans, rot, c, collision = True):
     '''
     [output]
     val1: if best solution with no collision and successful plan exists,
@@ -158,7 +158,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #   raw_input()
 
     for i in range(8):
-      if inv_sol[i]['valid']:
+      if inv_sol[i]['valid'] or collision is False:
         selected_q = (inv_sol[i]['inv_sol'])
         
 
@@ -335,7 +335,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return p_trans, p_rot
 
-  def move_to_grab_part(self, g_trans, g_rot, g_offset, c, _check = False):
+  def move_to_grab_part(self, g_trans, g_rot, g_offset, c, _check = False, collision = True):
     '''
     [output]
     if plan0 and plan1 and plan2 and plan3 succeeded,
@@ -350,7 +350,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #print "grasp pose| " + list_str(g_trans, ['x','y','z']) \
     #        + list_str(g_rot, ['x','y','z','w'])
 
-    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c)
+    (result0, _) = self._get_best_ik_plan(g_trans, g_rot, c, collision)
     print "******plan0 = {}\n".format(result0)
     if result0 < 0: return False
 
