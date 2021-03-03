@@ -30,6 +30,7 @@ class Table_pulisher():
 		self.table2_state = -0.165
 
 		self.init_flag = 1
+		self.count = 0
 
 		rospy.Timer(rospy.Duration(0.1), self.callback)
 
@@ -99,39 +100,67 @@ class Table_pulisher():
 		self.run = data.digital_in_states[0].state
 		self.pin = [data.digital_out_states[0].state, data.digital_out_states[1].state, data.digital_out_states[2].state, data.digital_out_states[3].state]
 
-	def callback(self, data):
-		jointState = JointState()
-		jointState.header.stamp = rospy.Time.now()
-		jointState.name = ['table_p_joint1', 'table_p_joint2']
-		jointState.position = [self.table1_state, self.table2_state]
-		if self.run is True:
-			self.pub.publish(jointState)
+		if self.pin[:2] == [0, 0]:
+			self.table1_state = -0.028
+		elif self.pin[:2] == [0, 1]:
+			self.table1_state = 0
+		elif self.pin[:2] == [1, 1]:
+			self.table1_state = 0.375
 
-	def main(self):
-		# while not rospy.is_shutdown():
+		if self.pin[2:] == [0, 0]:
+			self.table2_state = -0.165
+		elif self.pin[2:] == [0, 1]:
+			self.table2_state = 0
+		elif self.pin[2:] == [1, 1]:
+			self.table2_state = 0.03
+
 		if self.init_flag:
 			self.init_flag = 0
-			if self.pin[:2] is [0, 0]:
-				self.table1_state = -0.028
-			elif self.pin[:2] is [0, 1]:
-				self.table1_state = 0
-			elif self.pin[:2] is [1, 1]:
-				self.table1_state = 0.375
-
-			if self.pin[2:] is [0, 0]:
-				self.table2_state = -0.165
-			elif self.pin[2:] is [0, 1]:
-				self.table2_state = 0
-			elif self.pin[2:] is [1, 1]:
-				self.table2_state = 0.03
-
-			else:
+			if self.pin[:2] == [1,0] or self.pin[2:] == [1, 0]:
 				self.table(1,0,0)
 				self.table(1,1,0)
 				self.table(1,3,0)
 				self.table(1,2,0)
 
-		rospy.spin()	
+		
+
+	def callback(self, data):
+		self.count = self.count + 1
+		jointState = JointState()
+		jointState.header.stamp = rospy.Time.now()
+		jointState.name = ['table_p_joint1', 'table_p_joint2']
+		jointState.position = [self.table1_state, self.table2_state]
+		if self.run is True and self.count > 10:
+			self.pub.publish(jointState)
+			self.count = 0
+
+	def main(self):
+		# while not rospy.is_shutdown():
+
+		# if self.init_flag:
+		# 	self.init_flag = 0
+		# 	if self.pin[:2] == [0, 0]:
+		# 		self.table1_state = -0.028
+		# 	elif self.pin[:2] == [0, 1]:
+		# 		self.table1_state = 0
+		# 	elif self.pin[:2] == [1, 1]:
+		# 		self.table1_state = 0.375
+
+		# 	if self.pin[2:] == [0, 0]:
+		# 		self.table2_state = -0.165
+		# 	elif self.pin[2:] == [0, 1]:
+		# 		self.table2_state = 0
+		# 	elif self.pin[2:] == [1, 1]:
+		# 		self.table2_state = 0.03
+
+		# 	else:
+		# 		self.table(1,0,0)
+		# 		self.table(1,1,0)
+		# 		self.table(1,3,0)
+		# 		self.table(1,2,0)
+
+		rospy.spin()
+		
 
 
 if __name__ == '__main__':
