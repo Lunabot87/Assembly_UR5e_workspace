@@ -70,10 +70,13 @@ class Assembly_mode():
 		elif data.type == 'half_screw':
 			pass
 			
-		elif data.type == 'rotate':
+		elif data.type == 'total_screw':
 			pass
 
 		elif data.type == 'attach':
+			pass
+
+		elif data.type == 'rotate':
 			pass
 		#현철이 테스트용#
 		#self.hc_test(self, data)
