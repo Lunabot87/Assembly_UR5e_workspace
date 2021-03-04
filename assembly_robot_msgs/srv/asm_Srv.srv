@@ -1,7 +1,9 @@
 string type
 Asm_test parent
 Asm_test child
+Float64 rotate_degree
 ---
 bool result
 TransStamped asm_pose
 TransStamped[] holepin_pose
+TransStamped parent_pose

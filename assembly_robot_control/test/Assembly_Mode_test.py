@@ -121,6 +121,14 @@ class Assembly_mode():
 				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 
 
+		elif data.type == 'half_screw':
+			pass
+			
+		elif data.type == 'rotate':
+			pass
+
+		elif data.type == 'attach':
+			pass
 		#현철이 테스트용#
 		#self.hc_test(self, data)
 
