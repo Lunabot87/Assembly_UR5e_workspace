@@ -51,7 +51,7 @@
     <joint name="rob1_screw_tool_joint" type="fixed">
         <parent link="rob1_real_ee_link" />
         <child link="rob1_screw_tool_link" />
-        <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
+        <origin xyz="0 -0.1115 0.144" rpy="-1.5707 -1.5707 3.1415" />
     </joint>
 
     <link name="rob2_screw_tool_link"/>
@@ -59,7 +59,7 @@
     <joint name="rob2_screw_tool_joint" type="fixed">
         <parent link="rob2_real_ee_link" />
         <child link="rob2_screw_tool_link" />
-        <origin xyz="0 0.1115 0.144" rpy="-1.5707 -1.5707 0" />
+        <origin xyz="0 -0.1115 0.144" rpy="-1.5707 -1.5707 3.1415" />
     </joint>
 
 

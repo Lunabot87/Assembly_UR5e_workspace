@@ -147,15 +147,15 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #print "="*100
     #print "current q: ", cur_joint
 
-    # for i in range(8):
-    #   # if inv_sol[i]['valid']:
-    #   selected_q = (inv_sol[i]['inv_sol'])
-    #   print "selected q: ", selected_q
+    for i in range(8):
+      # if inv_sol[i]['valid']:
+      selected_q = (inv_sol[i]['inv_sol'])
+      print "selected q: ", selected_q
 
-    #   self.ur5e.publish_state(selected_q, True)
-    #   # print self.scene.getGlobalLinkTransform(self.eef_link)
-    #   print "next pass"
-    #   raw_input()
+      self.ur5e.publish_state(selected_q, True)
+      # print self.scene.getGlobalLinkTransform(self.eef_link)
+      print "next pass"
+      raw_input()
 
     for i in range(8):
       if inv_sol[i]['valid'] or collision is False:

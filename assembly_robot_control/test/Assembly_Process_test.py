@@ -245,12 +245,12 @@ class Assembly_process():
 				hole_trans_l[4] = 0
 				hole_trans_l[5] = -1.5707
 
-			# xyz.append(3.1415)
-			# xyz.append(0)
-			# xyz.append(0)
-			# self.am.move_to(xyz, robot)
+		# xyz.append(3.1415)
+		# xyz.append(0)
+		# xyz.append(0)
+		# self.am.move_to(xyz, robot)
 
-
+		
 			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.10, robot, collision=False)
 			if result < -1: return -1 
 
@@ -259,7 +259,15 @@ class Assembly_process():
 			return  hole_trans#return_hole#hole_trans #transposeStamped
 
 		else:
-			return trans_
+			if trans_ is not False: 
+				return trans_
+
+			else:
+
+				hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
+
+				return  self.list_from_trans(hole_trans)
+
 
 		return False
 
@@ -838,13 +846,19 @@ class Assembly_process():
 
 		# trans_ = self.am.trans_convert(self.list_from_trans(goal), [0,0,-0.15,0,0,0,0])
 
-		trans_ = self.list_from_trans(goal)
+		# trans_ = self.list_from_trans(goal)
+
+		world = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
+
+		trans_ = goal
 
 		trans_[2] += 0.1
 
+		trans_ = self.am.trans_convert(self.list_from_trans(world), trans_)
+
 		trans = self.am.trans_convert(trans_, self.list_from_trans(trans))
 
-		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
+		self.am.move_motion(trans[:3], trans[3:], 0, robot)
 
 		start = self.am.current_pose(robot)	
 

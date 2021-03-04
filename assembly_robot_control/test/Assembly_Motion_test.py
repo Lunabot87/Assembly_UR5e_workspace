@@ -137,18 +137,25 @@ class Assembly_motion():
         self.hand_mode(robot, 0)
         self.program_running()
 
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_pre_grasp_pose")
+        plan = rob.plan(tool_pre_grab) 
+        # print "move_camera?"
+        # raw_input()
+        rob.execute(plan, wait=True)
+
+
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
-        rob.execute(plan)
+        rob.execute(plan, wait=True)
 
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
-        rob.execute(plan)
+        rob.execute(plan, wait=True)
 
         urx.gripper_move_and_wait(255)
         self.hand_mode(robot, 255)
@@ -158,6 +165,19 @@ class Assembly_motion():
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
+        rob.execute(plan)
+
+
+        waylist = []
+
+        waypoint = rob.get_current_pose().pose
+
+        waypoint.position.z += 0.3
+
+        waylist.append(copy.deepcopy(waypoint))
+
+        plan, fraction = rob.compute_cartesian_path(waylist, 0.01, 0)
+
         rob.execute(plan)
 
 
@@ -193,7 +213,26 @@ class Assembly_motion():
         self.hand_mode(False, 255)
         self.program_running()
 
-        mg_rob.go(rob_pin_pre_grasp)
+        waylist = []
+
+        waypoint = mg_rob.get_current_pose().pose
+
+        waypoint.position.z += 0.3
+
+        waylist.append(copy.deepcopy(waypoint))
+
+        # waypoint.position.z += 0.1
+
+        # waylist.append(copy.deepcopy(waypoint))
+
+        # waypoint.position.z += 0.1
+
+        # waylist.append(copy.deepcopy(waypoint))
+
+        plan, fraction = mg_rob.compute_cartesian_path(waylist, 0.01, 0)
+
+        print "plan : {0}".format(plan)
+        mg_rob.execute(plan, wait=True)
 
         # print "addbox"
         # raw_input()

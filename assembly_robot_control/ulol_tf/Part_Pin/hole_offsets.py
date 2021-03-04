@@ -58,8 +58,8 @@ P5hole5={'trans':[0.39163, 0.56715, 0.050],'rot':[0,pi,pi/2]}
 P5hole6={'trans':[0.43931, 0.84512, 0.050],'rot':[0,pi,pi/2]}
 P5hole7={'trans':[0.44464, 0.87769, 0.050],'rot':[0,pi,pi/2]}
 P5hole8={'trans':[0.001329, 0.4085,-0.015],'rot':[0,0,0]}
-P5hole9={'trans':[0.36727, 0.39553, 0.050],'rot':[0,0,pi/2]}
-P5hole10={'trans':[0.44198, 0.8614, 0.050],'rot':[0,0,pi/2]}
+P5hole9={'trans':[0.36727, 0.39553, 0.050],'rot':[0,0,pi]}
+P5hole10={'trans':[0.44198, 0.8614, 0.050],'rot':[0,0,pi]}
 
 P5hole_offset=[P5hole1,P5hole2,P5hole3,P5hole4,P5hole5,
 				P5hole6,P5hole7,P5hole8,P5hole9,P5hole10]
