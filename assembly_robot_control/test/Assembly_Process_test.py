@@ -848,17 +848,25 @@ class Assembly_process():
 
 		# trans_ = self.list_from_trans(goal)
 
-		world = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
+		# world = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 
 		trans_ = goal
 
 		trans_[2] += 0.1
 
-		trans_ = self.am.trans_convert(self.list_from_trans(world), trans_)
+		# trans_ = self.am.trans_convert(self.list_from_trans(world), trans_)
 
 		trans = self.am.trans_convert(trans_, self.list_from_trans(trans))
 
-		self.am.move_motion(trans[:3], trans[3:], 0, robot)
+		pose = self.pose_from_list(trans, '', '')
+
+		waylist = [pose.pose]
+
+		print waylist
+
+		self.am.cartestian_move(robot, waylist)
+
+		# self.am.move_motion(trans[:3], trans[3:], 0, robot)
 
 		start = self.am.current_pose(robot)	
 
@@ -1073,6 +1081,28 @@ class Assembly_process():
 			t.transform.rotation.y = quat[1]
 			t.transform.rotation.z = quat[2]
 			t.transform.rotation.w = quat[3]
+
+		return t
+
+
+	def pose_from_list(self, l, header, frame_id, euler = False):
+		t = geometry_msgs.msg.PoseStamped()
+		t.header.stamp = rospy.Time.now()
+		t.header.frame_id = header
+		t.pose.position.x = l[0]
+		t.pose.position.y = l[1]
+		t.pose.position.z = l[2]
+		if euler is not True:
+			t.pose.orientation.x = l[3]
+			t.pose.orientation.y = l[4]
+			t.pose.orientation.z = l[5]
+			t.pose.orientation.w = l[6]
+		else:
+			quat = tf.transformations.quaternion_from_euler(l[3],l[4],l[5])
+			t.pose.orientation.x = quat[0]
+			t.pose.orientation.y = quat[1]
+			t.pose.orientation.z = quat[2]
+			t.pose.orientation.w = quat[3]
 
 		return t
 

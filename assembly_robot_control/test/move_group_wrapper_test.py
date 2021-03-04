@@ -147,20 +147,35 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     #print "="*100
     #print "current q: ", cur_joint
 
-    for i in range(8):
-      # if inv_sol[i]['valid']:
-      selected_q = (inv_sol[i]['inv_sol'])
-      print "selected q: ", selected_q
+    # for i in range(8):
+    #   # if inv_sol[i]['valid']:
+    #   selected_q = (inv_sol[i]['inv_sol'])
+    #   print "selected q: ", selected_q
 
-      self.ur5e.publish_state(selected_q, True)
-      # print self.scene.getGlobalLinkTransform(self.eef_link)
-      print "next pass"
-      raw_input()
+    #   self.ur5e.publish_state(selected_q, True)
+    #   # print self.scene.getGlobalLinkTransform(self.eef_link)
+    #   print "next pass"
+    #   raw_input()
 
     for i in range(8):
       if inv_sol[i]['valid'] or collision is False:
         selected_q = (inv_sol[i]['inv_sol'])
         
+        axis = self._joint_verification_z(selected_q)
+        axis_y = self._joint_verification_y(selected_q)
+
+        # print "axis : {0}".format(axis)
+        abs_axis = map(abs, axis)
+
+        if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
+          continue
+        # elif c is True and axis_y[abs_axis.index(max(abs_axis)) == 1]:
+        #     continue
+        elif selected_q[2] > 0 and selected_q[0] < 0 or selected_q[2] < 0 and selected_q[0] > 0:
+          continue
+        else:
+          traj = self.plan(self._list_to_js(selected_q))
+          print "selected q: ", selected_q
 
         self.ur5e.publish_state(selected_q, True)
         # ------------------updated version
@@ -176,21 +191,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         #   print "plan error:", b, err
         # ------------------updated version
 
-        axis = self._joint_verification_z(selected_q)
-        axis_y = self._joint_verification_y(selected_q)
-
-        print "axis : {0}".format(axis)
-        abs_axis = map(abs, axis)
-
-        if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
-          continue
-        # elif c is True and axis_y[abs_axis.index(max(abs_axis)) == 1]:
-        #     continue
-        elif selected_q[2] > 0:
-          continue
-        else:
-          traj = self.plan(self._list_to_js(selected_q))
-          print "selected q: ", selected_q
+        
         user_choice = raw_input("--> press [y/n(wrong ik)]") 
         # user_choice = 'y'
         if user_choice == 'y':

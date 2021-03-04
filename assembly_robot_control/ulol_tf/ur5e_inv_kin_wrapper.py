@@ -29,7 +29,8 @@ class UR5eInvKinForTF():
     
     # variables
     self.group_name = group_name
-    self.w = [1.0, 1.0, 1.0, 0.5, 0.5, 0.2]
+    # self.w = [1.0, 1.0, 1.0, 0.5, 0.5, 0.2]
+    self.w = [1.0, 1.0, 1.0, 1, 1, 1]
     self.aco = None
 
   ##############################################################################
@@ -200,10 +201,10 @@ class UR5eInvKinForTF():
     wrist_down = [0, 1, 6, 7]
     for i in range(8):
       diff = 0.0
-      if i in wrist_down:
-        diff += (m.pi)**2
+      # if i in wrist_down:
+      #   diff += (m.pi)**2
       for j in range(6): 
-        diff += self.w[j] * (inv_sol[j][i] - cur_joint[j])**2 
+        diff += self.w[j] * inv_sol[j][i]#(inv_sol[j][i] - cur_joint[j])**2 
       sol = inv_sol[:, i]
       valid = self._get_state_validity(sol)
       inv_sol_full.append({'idx':i, 'valid': valid, 'diff': diff, 'inv_sol': sol})

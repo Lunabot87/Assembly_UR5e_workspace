@@ -243,6 +243,19 @@ class Assembly_motion():
 
         # mg_rob.attachbox(rob, pin_name)
 
+    def cartestian_move(self, robot, waylist):
+        if robot is False:
+            mg_rob = self.mg_rob1
+
+        else:
+            mg_rob = self.mg_rob2
+
+
+
+        plan, fraction = mg_rob.compute_cartesian_path(waylist, 0.01, 0)
+
+        mg_rob.execute(plan, wait=True)
+
     def move_to(self, target_pose, robot):
         if robot is False:
             rob = self.mg_rob1

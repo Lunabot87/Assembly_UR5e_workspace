@@ -68,7 +68,7 @@ class UrxMotion():
         cmd_str  = "def sprial():\n"
         cmd_str += "\tforce_mode_set_damping(0.0)\n"
         cmd_str += "\tthread Thread_1():\n"
-        cmd_str += "\tset_digital_out(4, False)\n"
+        cmd_str += "\tset_digital_out(6, False)\n"
         cmd_str += "\t\twhile (True):\n"
         cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\t\tsync()\n"
@@ -84,7 +84,7 @@ class UrxMotion():
         
         cmd_str += "\tend_force_mode()\n"
         cmd_str += "\tkill thrd\n"
-        cmd_str += "\tset_digital_out(4, True)\n"
+        cmd_str += "\tset_digital_out(6, True)\n"
         cmd_str += "end\n"
 
         return cmd_str
@@ -136,7 +136,7 @@ class UrxMotion():
         msg += "\t\trq_pos = socket_get_var(\"POS\",\"gripper_socket\")\n"
         #msg += "\t\ttextmsg(\"rq_pos:\", rq_pos)\n"
         msg += "\t\tif norm(rq_pos_1 - rq_pos) < 0.5:\n"
-        msg += "\t\t\tset_digital_out(1, True)\n"
+        msg += "\t\t\tset_digital_out(7, True)\n"
         msg += "\t\t\tbreak\n"
         msg += "\t\telse:\n"
         msg += "\t\t\trq_pos_1 = rq_pos\n"
@@ -182,8 +182,8 @@ class UrxMotion():
         robot.send_program(self._gripper_move(pos))
 
         while True:
-            if self.robot.get_digital_out(1) != 0:
-                self.robot.send_program("set_digital_out(1, False)")
+            if self.robot.get_digital_out(7) != 0:
+                self.robot.send_program("set_digital_out(7, False)")
                 print "gripper_move_and_wait complete"
                 break
             else:
@@ -267,10 +267,10 @@ class UrxMotion():
             try:
                 force = self.robot.get_tcp_force()
                 # print force[0], force[1]
-                digi = self.robot.get_digital_out(4)
+                digi = self.robot.get_digital_out(6)
                 # print "digi : {0}".format(type(digi))
                 if digi > 0: #spiral 실패시
-                    self.robot.send_program("set_digital_out(4, False)")
+                    self.robot.send_program("set_digital_out(6, False)")
                     return False
 
                 if abs(force[0]) > 25 or abs(force[1]) > 25:
@@ -392,10 +392,10 @@ class UrxMotion():
             try:
                 force = self.robot.get_tcp_force()
                 # print force[0], force[1]
-                digi = self.robot.get_digital_out(4)
+                digi = self.robot.get_digital_out(6)
                 # print "digi : {0}".format(type(digi))
                 if digi > 0: #spiral 실패시
-                    self.robot.send_program("set_digital_out(4, False)")
+                    self.robot.send_program("set_digital_out(6, False)")
                     return False
 
                 if abs(force[0]) > 15 or abs(force[1]) > 15:
