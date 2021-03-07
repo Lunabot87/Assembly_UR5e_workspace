@@ -4,6 +4,7 @@
 import rospy
 from Assembly_Process_test import Assembly_process
 from assembly_robot_msgs.srv import asm_Srv, chan_Srv
+from assembly_robot_msgs.srv import asm_SrvResponse
 from assembly_robot_msgs.msg import TransStamped
 from std_srvs.srv  import SetBool
 
@@ -116,7 +117,7 @@ class Assembly_mode():
 				self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
 		
 		elif data.type == 'screw':
-			if 'c104322' in data.child.name[0]:
+			if 'C104322' in data.child.name[0]:
 				print 'screw'
 				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 
@@ -135,9 +136,13 @@ class Assembly_mode():
 
 		asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
 
+		test_null = asm_SrvResponse()
+
 		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
-		return True, asm_pose, pin_list # _result, asm_pose, pin_list
+		# return True, asm_pose, pin_list # _result, asm_pose, pin_list
+
+		return test_null
 
 
 	def screw_pin_test(self, pin, part_hole, part_name):

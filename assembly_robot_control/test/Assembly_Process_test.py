@@ -420,6 +420,12 @@ class Assembly_process():
 
 
 	def client(self, part, hole_name, robot):
+
+		hole_ = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
+
+		hole_ = self.list_from_trans(hole_)
+
+		trans_ = [0,0,0,0,0,0,0]
 		
 		for count in range(10):
 
@@ -432,14 +438,20 @@ class Assembly_process():
 				
 
 			else:
+				
 				if result.result is False:
+					print "result : {0}".format(result)
 					self.am.move_current_to(result.x, result.y, result.z, robot)
+
+					trans_[0] = hole_[0] + result.x
+					trans_[1] = hole_[1] + result.y
+
+					self.br.sendTransform(self.trans_from_list(trans_[:2]+hole_[2:], 'world', 'update'))
+
 					time.sleep(0.5)
+
 				else:
 					time.sleep(0.2)
-					hole_ = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
-
-					hole_ = self.list_from_trans(hole_)
 					
 					trans_ = self.tfBuffer.lookup_transform('world', result.name, self.rospy.Time(0))
 
@@ -452,13 +464,13 @@ class Assembly_process():
 
 					return trans_[:2]+hole_[2:]
 						
-		return False
+		return trans_[:2]+hole_[2:]
 
 
 
 	def hand_over_pin_check(self, pin, target_name):
 
-		not_hand_over = ['c122620_1','c122620_2' ,'c122620_3' ,'c122620_4']
+		# not_hand_over = []
 		# not_hand_over = ['C122620_1', 'C122620_2', 'C122620_3', 'C122620_4',]
 
 		rob1_trans = self.tfBuffer.lookup_transform('rob1_real_base_link', target_name, self.rospy.Time(0))
@@ -471,12 +483,10 @@ class Assembly_process():
 
 		dist = np.linalg.norm(np.array(rob1_trans_l[:3]))-np.linalg.norm(np.array(rob2_trans_l[:3]))
 		if dist > 0:
-			if pin in not_hand_over:
-				return False
+			return False
 
-			else:
-				self.am.hand_over_pin()
-				return True
+
+			return True
 		else:
 			return False
 
@@ -1042,21 +1052,21 @@ class Assembly_process():
 			if check <= 0:
 				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-1", self.rospy.Time(0))
 
-				temp_tg = self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+				temp_tg = self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.15,0, 0, 0, 0])
 
 				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 				
 				if t is False:
 					grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
 
-					temp_tg= self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+					temp_tg= self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.15,0, 0, 0, 0])
 				
 					t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
 
 			else:
 				grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-2", self.rospy.Time(0))
 
-				temp_tg= self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+				temp_tg= self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.15,0, 0, 0, 0])
 
 			
 				t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)
@@ -1064,7 +1074,7 @@ class Assembly_process():
 				if t is False:
 					grab = self.tfBuffer.lookup_transform(base_link, part_name + "-GRASP-3", self.rospy.Time(0))
 
-					temp_tg = self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.16,0, 0, 0, 0])
+					temp_tg = self.am.trans_convert(self.list_from_trans(grab), [0,0,-0.15,0, 0, 0, 0])
 					
 
 					t = self.am.hold_assistant(temp_tg[:3], temp_tg[3:], 0.1, robot)

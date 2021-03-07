@@ -336,13 +336,17 @@ class Assembly_motion():
         c_pose.position.x += x
         c_pose.position.y += y
 
-        print c_pose
+        # print c_pose
 
         traj = rob.set_pose_target(c_pose)
+
+
         plan = rob.plan(traj)
         # print "go?"
         # raw_input()
         rob.execute(plan, wait=True)
+
+        # rob.go(traj)
 
 
     def move_current_up(self, z, robot):

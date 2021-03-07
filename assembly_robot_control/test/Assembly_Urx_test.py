@@ -269,9 +269,10 @@ class UrxMotion():
                 # print force[0], force[1]
                 digi = self.robot.get_digital_out(6)
                 # print "digi : {0}".format(type(digi))
+
                 if digi > 0: #spiral 실패시
                     self.robot.send_program("set_digital_out(6, False)")
-                    return False
+                    # return False #실패모드 사용시 주석 해제 
 
                 if abs(force[0]) > 25 or abs(force[1]) > 25:
                     # print force[0], force[1]
@@ -284,7 +285,7 @@ class UrxMotion():
 
         # real insert
         print "="*20 +"real_insert"+"="*20
-        force_mod = [1,0,1,0,0,0]
+        force_mod = [1,1,1,0,0,0]
         force_toq = [0,0,-50,0,0,0]
         cmd_str  = "def real_insert():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
