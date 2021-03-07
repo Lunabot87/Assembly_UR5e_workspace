@@ -123,7 +123,7 @@ class Assembly_motion():
             # raw_input()
             self.mg_rob2.execute(plan)
 
-    def grab_tool(self, robot, pin):
+    def grab_tool(self, robot, pin, reverse = False):
         if robot is False:
             rob_tool = 'rob1'
             rob = self.mg_rob1
@@ -133,9 +133,14 @@ class Assembly_motion():
             rob = self.mg_rob2
             urx = self.urx_rob2
 
-        urx.gripper_move_and_wait(0)
-        self.hand_mode(robot, 0)
-        self.program_running()
+        if reverse is False:
+            urx.gripper_move_and_wait(0)
+            self.hand_mode(robot, 0)
+            self.program_running()
+        else:
+            urx.gripper_move_and_wait(255)
+            self.hand_mode(robot, 255)
+            self.program_running()
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
@@ -157,9 +162,15 @@ class Assembly_motion():
         # raw_input()
         rob.execute(plan, wait=True)
 
-        urx.gripper_move_and_wait(255)
-        self.hand_mode(robot, 255)
-        self.program_running()
+        if reverse is False:
+            urx.gripper_move_and_wait(255)
+            self.hand_mode(robot, 255)
+            self.program_running()
+        else:
+            urx.gripper_move_and_wait(0)
+            self.hand_mode(robot, 0)
+            self.program_running()
+
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
@@ -243,14 +254,27 @@ class Assembly_motion():
 
         # mg_rob.attachbox(rob, pin_name)
 
-    def cartestian_move(self, robot, waylist):
+    def cartestian_move(self, robot, waypoint):
         if robot is False:
             mg_rob = self.mg_rob1
 
         else:
             mg_rob = self.mg_rob2
 
+        waylist = []
 
+        point = Pose()
+
+        start = mg_rob.get_current_pose().pose
+
+        point.position.x = (start.position.x + waypoint.position.x)/2
+        point.position.y = (start.position.y + waypoint.position.y)/2
+        point.position.z = (start.position.z + waypoint.position.z)/2
+
+        point.orientation = waypoint.orientation
+
+        waylist.append(point)
+        waylist.append(waypoint)
 
         plan, fraction = mg_rob.compute_cartesian_path(waylist, 0.01, 0)
 
@@ -441,9 +465,6 @@ class Assembly_motion():
         raw_input()        
 
         result = urx.screw_motion(pitch)
-        urx.gripper_move_and_wait(gripper)
-        self.hand_mode(robot, gripper)
-        self.program_running()
 
         return result
         # return is_inserted

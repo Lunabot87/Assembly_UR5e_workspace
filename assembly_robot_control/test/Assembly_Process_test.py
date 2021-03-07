@@ -398,14 +398,14 @@ class Assembly_process():
 		hole_trans_l = self.list_from_trans(hole_trans, euler=True)
 
 
-		hole_trans_l[2] = 0.30 #why use?
+		# hole_trans_l[2] = 0.30 #why use?
 
 		hole_trans_l[3] = 3.1415
 		hole_trans_l[4] = 0
 		hole_trans_l[5] = -1.5707
 
 
-		result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot)
+		result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.05, robot, collision=False)
 		
 
 		if result < -1: return 
@@ -569,6 +569,8 @@ class Assembly_process():
 		pa_goal_list = []
 
 		hole_list = []
+
+		#########03/06 업데이트####
 
 		self.hold_assist(robot, pa_name, pa_hole_list[0])
 
@@ -791,7 +793,7 @@ class Assembly_process():
 
 		trans = self.list_from_trans(trans)
 		
-		trans[2] += 0.165 #why use?
+		trans[2] += 0.180 #why use?
 
 		self.am.hold_assistant(trans[:3], trans[3:], 0.1, robot)
 
@@ -803,17 +805,43 @@ class Assembly_process():
 
 		# trans_ = self.list_from_trans(trans_)
 
-		self.am.move_motion(trans[:3], trans[3:], 0.1, robot)
+		z_trans = self.tfBuffer.lookup_transform('real_goal', ee_link,  self.rospy.Time(0))
 
-		# trans = self.tfBuffer.lookup_transform(base_link, 'real_goal', self.rospy.Time(0))
-
-		trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
+		trans = self.tfBuffer.lookup_transform('world', ee_link, self.rospy.Time(0))
 
 		trans = self.list_from_trans(trans)
 
-		trans = self.am.trans_convert(trans, goal)
+		trans[2] += (z_trans.transform.translation.z*0.7)
 
-		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
+		print "trans[2] : {0}".format(trans)
+		raw_input()
+
+		way = self.pose_from_list(trans, '' ,'')
+
+		self.am.cartestian_move(robot, way.pose)
+
+		#self.am.move_motion(trans[:3], trans[3:], 0.1, robot)
+
+		# trans = self.tfBuffer.lookup_transform(base_link, 'real_goal', self.rospy.Time(0))
+
+		trans = self.tfBuffer.lookup_transform('world', 'real_goal', self.rospy.Time(0))
+
+		trans = self.list_from_trans(trans)
+
+		# trans = self.am.trans_convert(trans, goal)
+
+		# self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
+
+
+
+		pose = self.pose_from_list(trans, '', '')
+
+		waypoint = pose.pose
+
+		# print waylist
+
+		self.am.cartestian_move(robot, waypoint)
+
 
 		return trans_
 
@@ -860,11 +888,11 @@ class Assembly_process():
 
 		pose = self.pose_from_list(trans, '', '')
 
-		waylist = [pose.pose]
+		waypoint = pose.pose
 
-		print waylist
+		# print waylist
 
-		self.am.cartestian_move(robot, waylist)
+		self.am.cartestian_move(robot, waypoint)
 
 		# self.am.move_motion(trans[:3], trans[3:], 0, robot)
 

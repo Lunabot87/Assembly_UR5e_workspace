@@ -105,7 +105,7 @@ class Table_pulisher():
 		elif self.pin[:2] == [0, 1]:
 			self.table1_state = 0
 		elif self.pin[:2] == [1, 1]:
-			self.table1_state = 0.375
+			self.table1_state = 0.345
 
 		if self.pin[2:] == [0, 0]:
 			self.table2_state = -0.165

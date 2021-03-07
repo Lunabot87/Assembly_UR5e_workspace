@@ -427,6 +427,8 @@ class UrxMotion():
 
         time.sleep(3)
 
+        print "reverse now?"
+        raw_input()
 
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
@@ -435,7 +437,7 @@ class UrxMotion():
         self.robot.send_program(spiral_cmd)
 
         while(True):
-            if abs(self.robot.getl() - init_pose) > 0.1:
+            if (abs(self.robot.getl()[2]) - abs(init_pose[2])) > 0.1:
                 self.robot.send_program("end_force_mode()")
                 break
 

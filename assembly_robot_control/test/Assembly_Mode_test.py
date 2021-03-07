@@ -144,13 +144,13 @@ class Assembly_mode():
 
 		robot = self.pr.hand_over_hole_check(part_hole)
 
-		# self.pr.grab_pin(robot, pin)
+		self.pr.grab_pin(robot, pin)
 
-		# # self.pr.hold_assist(robot, part_name, part_hole)
+		self.pr.hold_assist(robot, part_name, part_hole)
 
-		# pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
+		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot)
 
-		# self.pr.insert_spiral_pin_motion(robot)
+		self.pr.insert_spiral_pin_motion(robot)
 
 		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot, move = False)
 
@@ -158,6 +158,8 @@ class Assembly_mode():
 
 
 		self.pr.screw_drive_motion(robot, pin_pose)
+
+		self.pr.grab_screw_tool(robot, pin, reverse = True)
 
 		# self.pr.hold_assist(robot, part_name, part_hole, reset=True)
 
