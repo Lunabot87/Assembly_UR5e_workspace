@@ -6,6 +6,7 @@ from Assembly_Process_test import Assembly_process
 from assembly_robot_msgs.srv import asm_Srv, chan_Srv
 from assembly_robot_msgs.srv import asm_SrvResponse
 from assembly_robot_msgs.msg import TransStamped
+from geometry_msgs.msg import TransformStamped
 from std_srvs.srv  import SetBool
 
 
@@ -96,6 +97,8 @@ class Assembly_mode():
 		asm_pose = TransStamped().TransStamped # sendtf target
 		# pin_pose = TransStamped() # update pin
 
+		test_null = asm_SrvResponse()
+
 		#pin_pose.TransStamped.transform.rotation.z = 3
 
 		pin_list = []
@@ -110,6 +113,9 @@ class Assembly_mode():
 				_result, pin_pose = self.insert_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 				pin_list.append(pin_pose)
 				asm_pose = pin_pose
+
+				test_null.result = True
+				test_null.asm_pose.TransStamped = pin_pose
 			else:
 
 				# result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
@@ -117,7 +123,7 @@ class Assembly_mode():
 				self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
 		
 		elif data.type == 'screw':
-			if 'C104322' in data.child.name[0]:
+			if 'c104322' in data.child.name[0]:
 				print 'screw'
 				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 
@@ -136,7 +142,9 @@ class Assembly_mode():
 
 		asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
 
-		test_null = asm_SrvResponse()
+		
+
+		print test_null
 
 		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
@@ -180,7 +188,8 @@ class Assembly_mode():
 
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 
 		self.pr.hold_assist(robot, pa_part, part_hole)
-		pin_pose = self.pr.fine_tune_insert_target(pa_part, part_hole, robot)
+		pose, pin_pose = self.pr.fine_tune_insert_target(pa_part, part_hole, robot)
+
 		# 학부 보조 연구원
 		self.pr.insert_spiral_pin_motion(robot)
 		# if pin not in ['c122620_1', 'c122620_2', 'c122620_3', 'c122620_4']: 

@@ -131,6 +131,9 @@
         <joint name="rob2_wrist_3_joint" value="-0.000568691884176" />
     </group_state>
 
+
+
+
          
 
     <group_state name="rob1_tool1_pre_grasp_pose" group="rob1_arm">
@@ -143,6 +146,16 @@
     </group_state>
 
          
+
+    <group_state name="rob1_tool2_pre_grasp_pose" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="0.11527299881" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.92902388195" />
+        <joint name="rob1_elbow_joint" value="-0.846169471741" />        
+        <joint name="rob1_wrist_1_joint" value="-3.50834240536" />
+        <joint name="rob1_wrist_2_joint" value="-1.45488673845" />
+        <joint name="rob1_wrist_3_joint" value="-0.00129014650454" />
+    </group_state>
+
 
     <group_state name="rob2_tool1_pre_grasp_pose" group="rob2_arm">
         <joint name="rob2_shoulder_pan_joint" value="-2.31786996523" />
@@ -170,7 +183,14 @@
         <joint name="rob1_wrist_3_joint" value="-0.00166160265078" />
     </group_state>
 
-         
+    <group_state name="rob1_tool2_grasp_pose" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="0.113906860352" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.88220657925" />
+        <joint name="rob1_elbow_joint" value="-1.45128536224" />        
+        <joint name="rob1_wrist_1_joint" value="-2.95006861309" />
+        <joint name="rob1_wrist_2_joint" value="-1.45514995257" />
+        <joint name="rob1_wrist_3_joint" value="-0.000990215932028" />
+    </group_state>
 
     <group_state name="rob2_tool1_grasp_pose" group="rob2_arm">
         <joint name="rob2_shoulder_pan_joint" value="-2.58330995241" />
@@ -190,143 +210,143 @@
 
 
     <group_state name="rob1_c101350_1_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.357621494924" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.82498898129" />
-        <joint name="rob1_elbow_joint" value="-1.38631534576" />        
-        <joint name="rob1_wrist_1_joint" value="-1.50052435816" />
-        <joint name="rob1_wrist_2_joint" value="1.56979608536" />
-        <joint name="rob1_wrist_3_joint" value="-0.355052773152" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.335285011922" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.8866383038" />
+        <joint name="rob1_elbow_joint" value="-1.68225288391" />        
+        <joint name="rob1_wrist_1_joint" value="-1.13132126749" />
+        <joint name="rob1_wrist_2_joint" value="1.53414869308" />
+        <joint name="rob1_wrist_3_joint" value="-0.333081547414" />
     </group_state>
-     
+          
           
 
     <group_state name="rob1_c101350_2_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.342314545308" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.89970650295" />
-        <joint name="rob1_elbow_joint" value="-1.44168376923" />        
-        <joint name="rob1_wrist_1_joint" value="-1.37044365824" />
-        <joint name="rob1_wrist_2_joint" value="1.56974840164" />
-        <joint name="rob1_wrist_3_joint" value="-0.339977566396" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.318778816854" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.94546522717" />
+        <joint name="rob1_elbow_joint" value="-1.6019449234" />        
+        <joint name="rob1_wrist_1_joint" value="-1.15337880075" />
+        <joint name="rob1_wrist_2_joint" value="1.53384923935" />
+        <joint name="rob1_wrist_3_joint" value="-0.316758457814" />
+    </group_state>
+     
+               
+
+    <group_state name="rob1_c101350_3_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.303687874471" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.00200714687" />
+        <joint name="rob1_elbow_joint" value="-1.51024913788" />        
+        <joint name="rob1_wrist_1_joint" value="-1.18907483042" />
+        <joint name="rob1_wrist_2_joint" value="1.5336689949" />
+        <joint name="rob1_wrist_3_joint" value="-0.301815334951" />
+    </group_state>
+     
+             
+
+    <group_state name="rob1_c101350_4_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.29071408907" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.06310286144" />
+        <joint name="rob1_elbow_joint" value="-1.43058490753" />        
+        <joint name="rob1_wrist_1_joint" value="-1.20812542856" />
+        <joint name="rob1_wrist_2_joint" value="1.53341722488" />
+        <joint name="rob1_wrist_3_joint" value="-0.289044205342" />
+    </group_state>
+     
+
+          
+    <group_state name="rob1_c101350_5_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.381886307393" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.91003574947" />
+        <joint name="rob1_elbow_joint" value="-1.60619831085" />        
+        <joint name="rob1_wrist_1_joint" value="-1.18235857904" />
+        <joint name="rob1_wrist_2_joint" value="1.5347495079" />
+        <joint name="rob1_wrist_3_joint" value="-0.3798010985" />
     </group_state>
      
           
 
-    <group_state name="rob1_c101350_3_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.326168362294" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.95059790234" />
-        <joint name="rob1_elbow_joint" value="-1.26860713959" />        
-        <joint name="rob1_wrist_1_joint" value="-1.49263747156" />
-        <joint name="rob1_wrist_2_joint" value="1.56971216202" />
-        <joint name="rob1_wrist_3_joint" value="-0.324074570333" />
-    </group_state>
-     
-        
-
-    <group_state name="rob1_c101350_4_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.311629120504" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.02003254513" />
-        <joint name="rob1_elbow_joint" value="-1.19586277008" />        
-        <joint name="rob1_wrist_1_joint" value="-1.49584467829" />
-        <joint name="rob1_wrist_2_joint" value="1.56967687607" />
-        <joint name="rob1_wrist_3_joint" value="-0.309766594564" />
-    </group_state>
-     
-
-     
-    <group_state name="rob1_c101350_5_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.204828087484" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.1053639851" />
-        <joint name="rob1_elbow_joint" value="-1.43029689789" />        
-        <joint name="rob1_wrist_1_joint" value="-1.17676527918" />
-        <joint name="rob1_wrist_2_joint" value="1.56910085678" />
-        <joint name="rob1_wrist_3_joint" value="-0.203003231679" />
-    </group_state>
-     
-     
-
     <group_state name="rob1_c101350_6_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.298195664083" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.84329285244" />
-        <joint name="rob1_elbow_joint" value="-1.65031719208" />        
-        <joint name="rob1_wrist_1_joint" value="-1.21876223505" />
-        <joint name="rob1_wrist_2_joint" value="1.56953287125" />
-        <joint name="rob1_wrist_3_joint" value="-0.295692745839" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.364602867757" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.98140587429" />
+        <joint name="rob1_elbow_joint" value="-1.55754947662" />        
+        <joint name="rob1_wrist_1_joint" value="-1.16026194513" />
+        <joint name="rob1_wrist_2_joint" value="1.53435277939" />
+        <joint name="rob1_wrist_3_joint" value="-0.362716023122" />
     </group_state>
-     
+          
 
      
     <group_state name="rob1_c101350_7_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.283796612416" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.96304573635" />
-        <joint name="rob1_elbow_joint" value="-1.66370296478" />        
-        <joint name="rob1_wrist_1_joint" value="-1.08570940912" />
-        <joint name="rob1_wrist_2_joint" value="1.56922101974" />
-        <joint name="rob1_wrist_3_joint" value="-0.281354252492" />
-    </group_state>
-     
-    <group_state name="rob1_c101350_8_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.270572010671" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.97371878246" />
-        <joint name="rob1_elbow_joint" value="-1.51003360748" />        
-        <joint name="rob1_wrist_1_joint" value="-1.22869379938" />
-        <joint name="rob1_wrist_2_joint" value="1.56930494308" />
-        <joint name="rob1_wrist_3_joint" value="-0.268428150808" />
-    </group_state>
-     
-    <group_state name="rob1_c101350_9_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.257791344319" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.03226484875" />
-        <joint name="rob1_elbow_joint" value="-1.40229511261" />        
-        <joint name="rob1_wrist_1_joint" value="-1.27791960657" />
-        <joint name="rob1_wrist_2_joint" value="1.56929254532" />
-        <joint name="rob1_wrist_3_joint" value="-0.255862538015" />
-    </group_state>
-     
-    <group_state name="rob1_c101350_10_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.24745685259" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.11541332821" />
-        <joint name="rob1_elbow_joint" value="-1.36362552643" />        
-        <joint name="rob1_wrist_1_joint" value="-1.23338969172" />
-        <joint name="rob1_wrist_2_joint" value="1.56912469864" />
-        <joint name="rob1_wrist_3_joint" value="-0.245716396962" />
-    </group_state>
-     
-    <group_state name="rob1_c101350_11_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.346273247396" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.90274538616" />
-        <joint name="rob1_elbow_joint" value="-1.64238452911" />        
-        <joint name="rob1_wrist_1_joint" value="-1.16726477564" />
-        <joint name="rob1_wrist_2_joint" value="1.56932878494" />
-        <joint name="rob1_wrist_3_joint" value="-0.343838993703" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.347868744527" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.03705229382" />
+        <joint name="rob1_elbow_joint" value="-1.46597385406" />        
+        <joint name="rob1_wrist_1_joint" value="-1.19677145899" />
+        <joint name="rob1_wrist_2_joint" value="1.53412485123" />
+        <joint name="rob1_wrist_3_joint" value="-0.346129719411" />
     </group_state>
           
+    <group_state name="rob1_c101350_8_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.332765881215" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.09946503262" />
+        <joint name="rob1_elbow_joint" value="-1.38064098358" />        
+        <joint name="rob1_wrist_1_joint" value="-1.22016032168" />
+        <joint name="rob1_wrist_2_joint" value="1.53381299973" />
+        <joint name="rob1_wrist_3_joint" value="-0.331258122121" />
+    </group_state>
+          
+    <group_state name="rob1_c101350_9_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.42736417452" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.95883621792" />
+        <joint name="rob1_elbow_joint" value="-1.57127857208" />        
+        <joint name="rob1_wrist_1_joint" value="-1.16688282908" />
+        <joint name="rob1_wrist_2_joint" value="1.53528928757" />
+        <joint name="rob1_wrist_3_joint" value="-0.425423447286" />
+    </group_state>
+          
+    <group_state name="rob1_c101350_10_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.407193485891" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.01602282147" />
+        <joint name="rob1_elbow_joint" value="-1.48868370056" />        
+        <joint name="rob1_wrist_1_joint" value="-1.19297106684" />
+        <joint name="rob1_wrist_2_joint" value="1.53491735458" />
+        <joint name="rob1_wrist_3_joint" value="-0.405487362538" />
+    </group_state>
+          
+    <group_state name="rob1_c101350_11_pre_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.390318218862" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.06943239788" />
+        <joint name="rob1_elbow_joint" value="-1.4059419632" />        
+        <joint name="rob1_wrist_1_joint" value="-1.22287352503" />
+        <joint name="rob1_wrist_2_joint" value="1.53459310532" />
+        <joint name="rob1_wrist_3_joint" value="-0.388726536428" />
+    </group_state>
+              
     <group_state name="rob1_c101350_12_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.330462757741" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.95780481915" />
-        <joint name="rob1_elbow_joint" value="-1.56540775299" />        
-        <joint name="rob1_wrist_1_joint" value="-1.18918259562" />
-        <joint name="rob1_wrist_2_joint" value="1.56925630569" />
-        <joint name="rob1_wrist_3_joint" value="-0.328200165425" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.373598400746" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.13292898754" />
+        <joint name="rob1_elbow_joint" value="-1.32004833221" />        
+        <joint name="rob1_wrist_1_joint" value="-1.24581129969" />
+        <joint name="rob1_wrist_2_joint" value="1.53428125381" />
+        <joint name="rob1_wrist_3_joint" value="-0.37228900591" />
     </group_state>
-     
+          
     <group_state name="rob1_c101350_13_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.3153842131241" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.03092398266" />
-        <joint name="rob1_elbow_joint" value="-1.50404262543" />        
-        <joint name="rob1_wrist_1_joint" value="-1.1774700445" />
-        <joint name="rob1_wrist_2_joint" value="1.56910085678" />
-        <joint name="rob1_wrist_3_joint" value="-0.313280407582" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.469734970723" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.99822487454" />
+        <joint name="rob1_elbow_joint" value="-1.51155567169" />        
+        <joint name="rob1_wrist_1_joint" value="-1.18581231058" />
+        <joint name="rob1_wrist_2_joint" value="1.53585290909" />
+        <joint name="rob1_wrist_3_joint" value="-0.467935864125" />
     </group_state>
-     
+          
     <group_state name="rob1_c101350_14_pre_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.301600758229" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.09260906796" />
-        <joint name="rob1_elbow_joint" value="-1.4178314209" />        
-        <joint name="rob1_wrist_1_joint" value="-1.20201857508" />
-        <joint name="rob1_wrist_2_joint" value="1.56906461716" />
-        <joint name="rob1_wrist_3_joint" value="-0.299717728292" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.44889051119" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.06191839794" />
+        <joint name="rob1_elbow_joint" value="-1.44495105743" />        
+        <joint name="rob1_wrist_1_joint" value="-1.18942149103" />
+        <joint name="rob1_wrist_2_joint" value="1.5354809761" />
+        <joint name="rob1_wrist_3_joint" value="-0.447314564382" />
     </group_state>
-     
+          
     <group_state name="rob1_c101350_15_pre_grasp" group="rob1_arm">
         <joint name="rob1_shoulder_pan_joint" value="-0.289767090474" />
         <joint name="rob1_shoulder_lift_joint" value="-2.14250292401" />
@@ -450,157 +470,157 @@
           
 
     <group_state name="rob1_c101350_1_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.357993427907" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.01809324841" />
-        <joint name="rob1_elbow_joint" value="-1.76393413544" />        
-        <joint name="rob1_wrist_1_joint" value="-0.929809407597" />
-        <joint name="rob1_wrist_2_joint" value="1.5697722435" />
-        <joint name="rob1_wrist_3_joint" value="-0.355460468923" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.335489098226" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.0023180447" />
+        <joint name="rob1_elbow_joint" value="-1.79364299774" />        
+        <joint name="rob1_wrist_1_joint" value="-0.904284314518" />
+        <joint name="rob1_wrist_2_joint" value="1.53376531601" />
+        <joint name="rob1_wrist_3_joint" value="-0.333117310201" />
     </group_state>
-
+     
 
     
     <group_state name="rob1_c101350_2_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.342614475881" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.06346191982" />
-        <joint name="rob1_elbow_joint" value="-1.69106483459" />        
-        <joint name="rob1_wrist_1_joint" value="-0.957320050602" />
-        <joint name="rob1_wrist_2_joint" value="1.56972455978 " />
-        <joint name="rob1_wrist_3_joint" value="-0.340265099202" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.319042507802" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.05416502575" />
+        <joint name="rob1_elbow_joint" value="-1.71114349365" />        
+        <joint name="rob1_wrist_1_joint" value="-0.935589150792" />
+        <joint name="rob1_wrist_2_joint" value="1.53353643417 " />
+        <joint name="rob1_wrist_3_joint" value="-0.316866223012" />
     </group_state>
-
+     
           
     <group_state name="rob1_c101350_3_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.326564137136" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.11607327084" />
-        <joint name="rob1_elbow_joint" value="-1.60430431366" />        
-        <joint name="rob1_wrist_1_joint" value="-0.991470174198" />
-        <joint name="rob1_wrist_2_joint" value="1.56970071793" />
-        <joint name="rob1_wrist_3_joint" value="-0.324458424245" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.303940121328" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.10671629528" />
+        <joint name="rob1_elbow_joint" value="-1.62354564667" />        
+        <joint name="rob1_wrist_1_joint" value="-0.971105412846" />
+        <joint name="rob1_wrist_2_joint" value="1.53333234787" />
+        <joint name="rob1_wrist_3_joint" value="-0.301959339772" />
     </group_state>
                
-
+     
      
     <group_state name="rob1_c101350_4_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.312001053487" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.1701199017" />
-        <joint name="rob1_elbow_joint" value="-1.51277828217" />        
-        <joint name="rob1_wrist_1_joint" value="-1.0289247793" />
-        <joint name="rob1_wrist_2_joint" value="1.56964063644" />
-        <joint name="rob1_wrist_3_joint" value="-0.31010276476" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.290893856679" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.15745129208" />
+        <joint name="rob1_elbow_joint" value="-1.53710651398" />        
+        <joint name="rob1_wrist_1_joint" value="-1.00726540506" />
+        <joint name="rob1_wrist_2_joint" value="1.53316450119" />
+        <joint name="rob1_wrist_3_joint" value="-0.28915197054" />
+    </group_state>
+          
+          
+    <group_state name="rob1_c101350_5_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.382138077413" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.03473009686" />
+        <joint name="rob1_elbow_joint" value="-1.73973560333" />        
+        <joint name="rob1_wrist_1_joint" value="-0.924149350529" />
+        <joint name="rob1_wrist_2_joint" value="1.53436517715" />
+        <joint name="rob1_wrist_3_joint" value="-0.379945103322" />
+    </group_state>
+     
+     
+    <group_state name="rob1_c101350_6_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.364842716848" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.0829531155" />
+        <joint name="rob1_elbow_joint" value="-1.66171360016" />        
+        <joint name="rob1_wrist_1_joint" value="-0.954448060398" />
+        <joint name="rob1_wrist_2_joint" value="1.5340886116" />
+        <joint name="rob1_wrist_3_joint" value="-0.362824741994" />
     </group_state>
      
           
-    <group_state name="rob1_c101350_5_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.205018822347" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.19218411068" />
-        <joint name="rob1_elbow_joint" value="-1.51434803009" />        
-        <joint name="rob1_wrist_1_joint" value="-1.00593407572" />
-        <joint name="rob1_wrist_2_joint" value="1.56894445419" />
-        <joint name="rob1_wrist_3_joint" value="-0.203110996877" />
-    </group_state>
-     
-
-    <group_state name="rob1_c101350_6_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.298507038747" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.00954737286" />
-        <joint name="rob1_elbow_joint" value="-1.82402515411" />        
-        <joint name="rob1_wrist_1_joint" value="-0.878866032963" />
-        <joint name="rob1_wrist_2_joint" value="1.56899213791" />
-        <joint name="rob1_wrist_3_joint" value="-0.295836750661" />
-    </group_state>
-     
-     
 
     <group_state name="rob1_c101350_7_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.283928219472" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.05737175564" />
-        <joint name="rob1_elbow_joint" value="-1.74072933197" />        
-        <joint name="rob1_wrist_1_joint" value="-0.914431886082" />
-        <joint name="rob1_wrist_2_joint" value="1.5689330101" />
-        <joint name="rob1_wrist_3_joint" value="-0.281473461782" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.34800082842" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.13565220455" />
+        <joint name="rob1_elbow_joint" value="-1.57489585876" />        
+        <joint name="rob1_wrist_1_joint" value="-0.989228085881" />
+        <joint name="rob1_wrist_2_joint" value="1.53383684158" />
+        <joint name="rob1_wrist_3_joint" value="-0.346237484609" />
     </group_state>
      
-
+     
 
 
     <group_state name="rob1_c101350_8_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.270835701619" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.10748304943" />
-        <joint name="rob1_elbow_joint" value="-1.65584278107" />        
-        <joint name="rob1_wrist_1_joint" value="-0.94915898264" />
-        <joint name="rob1_wrist_2_joint" value="1.56899213791" />
-        <joint name="rob1_wrist_3_joint" value="-0.2685602347" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.332946125661" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.18778099636" />
+        <joint name="rob1_elbow_joint" value="-1.48372745514" />        
+        <joint name="rob1_wrist_1_joint" value="-1.02880509317" />
+        <joint name="rob1_wrist_2_joint" value="1.53359651566" />
+        <joint name="rob1_wrist_3_joint" value="-0.331366364156" />
     </group_state>
      
 
-
+     
     <group_state name="rob1_c101350_9_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.258079353963" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.16625704388" />
-        <joint name="rob1_elbow_joint" value="-1.56325244904" />        
-        <joint name="rob1_wrist_1_joint" value="-0.982991055851" />
-        <joint name="rob1_wrist_2_joint" value="1.56892061234" />
-        <joint name="rob1_wrist_3_joint" value="-0.256042305623" />
-    </group_state>
-     
-
-
-    <group_state name="rob1_c101350_10_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.247672382985" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.21585526089" />
-        <joint name="rob1_elbow_joint" value="-1.4738035202" />        
-        <joint name="rob1_wrist_1_joint" value="-1.02282031" />
-        <joint name="rob1_wrist_2_joint" value="1.56886053085" />
-        <joint name="rob1_wrist_3_joint" value="-0.245884243642" />
-    </group_state>
-     
-
-
-    <group_state name="rob1_c101350_11_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.346489254628" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.03415550808" />
-        <joint name="rob1_elbow_joint" value="-1.76994991302" />        
-        <joint name="rob1_wrist_1_joint" value="-0.908319310551" />
-        <joint name="rob1_wrist_2_joint" value="1.5689330101" />
-        <joint name="rob1_wrist_3_joint" value="-0.343971077596" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.427591625844" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.0676976643" />
+        <joint name="rob1_elbow_joint" value="-1.68516254425" />        
+        <joint name="rob1_wrist_1_joint" value="-0.944132642155" />
+        <joint name="rob1_wrist_2_joint" value="1.5349650383" />
+        <joint name="rob1_wrist_3_joint" value="-0.425531212484" />
     </group_state>
           
 
 
-    <group_state name="rob1_c101350_12_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.330678764974" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.08369507412" />
-        <joint name="rob1_elbow_joint" value="-1.69254970551" />        
-        <joint name="rob1_wrist_1_joint" value="-0.936115579014" />
-        <joint name="rob1_wrist_2_joint" value="1.56888437271" />
-        <joint name="rob1_wrist_3_joint" value="-0.328319851552" />
+    <group_state name="rob1_c101350_10_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.407481495534" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.11716475109" />
+        <joint name="rob1_elbow_joint" value="-1.60084247589" />        
+        <joint name="rob1_wrist_1_joint" value="-0.979697064762" />
+        <joint name="rob1_wrist_2_joint" value="1.53461694717" />
+        <joint name="rob1_wrist_3_joint" value="-0.405607525502" />
     </group_state>
      
 
+     
+    <group_state name="rob1_c101350_11_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.390509907399" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.16661705593" />
+        <joint name="rob1_elbow_joint" value="-1.52037620544" />        
+        <joint name="rob1_wrist_1_joint" value="-1.01131899775" />
+        <joint name="rob1_wrist_2_joint" value="1.53437662125" />
+        <joint name="rob1_wrist_3_joint" value="-0.388870541249" />
+    </group_state>
+          
+
+     
+    <group_state name="rob1_c101350_12_grasp" group="rob1_arm">
+        <joint name="rob1_shoulder_pan_joint" value="-0.373862568532" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.21944298367" />
+        <joint name="rob1_elbow_joint" value="-1.42782497406" />        
+        <joint name="rob1_wrist_1_joint" value="-1.05159981669" />
+        <joint name="rob1_wrist_2_joint" value="1.53411340714" />
+        <joint name="rob1_wrist_3_joint" value="-0.372433010732" />
+    </group_state>
+     
+     
 
     <group_state name="rob1_c101350_13_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.315587822591" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.13390078167" />
-        <joint name="rob1_elbow_joint" value="-1.60583782196" />        
-        <joint name="rob1_wrist_1_joint" value="-0.972720937138" />
-        <joint name="rob1_wrist_2_joint" value="1.56880044937" />
-        <joint name="rob1_wrist_3_joint" value="-0.313412968312" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.469938103353" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.10420336346" />
+        <joint name="rob1_elbow_joint" value="-1.62695026398" />        
+        <joint name="rob1_wrist_1_joint" value="-0.964440183049" />
+        <joint name="rob1_wrist_2_joint" value="1.53558969498" />
+        <joint name="rob1_wrist_3_joint" value="-0.468079868947" />
     </group_state>
      
-
+     
 
     <group_state name="rob1_c101350_14_grasp" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.30175668398" />
-        <joint name="rob1_shoulder_lift_joint" value="-2.18744482617" />
-        <joint name="rob1_elbow_joint" value="-1.51611042023" />        
-        <joint name="rob1_wrist_1_joint" value="-1.00890810907" />
-        <joint name="rob1_wrist_2_joint" value="1.568836689" />
-        <joint name="rob1_wrist_3_joint" value="-0.299837414418" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.449117962514" />
+        <joint name="rob1_shoulder_lift_joint" value="-2.15228046993" />
+        <joint name="rob1_elbow_joint" value="-1.54440402985" />        
+        <joint name="rob1_wrist_1_joint" value="-0.999542073613" />
+        <joint name="rob1_wrist_2_joint" value="1.53522920609" />
+        <joint name="rob1_wrist_3_joint" value="-0.447446171437" />
     </group_state>
      
 
-
+     
     <group_state name="rob1_c101350_15_grasp" group="rob1_arm">
         <joint name="rob1_shoulder_pan_joint" value="-0.290042702352" />
         <joint name="rob1_shoulder_lift_joint" value="-2.23757090191" />
@@ -707,45 +727,45 @@
 
 
     <group_state name="rob2_c101350_1_pre_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.69742471377" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.7175890408" />
-        <joint name="rob2_elbow_joint" value="-1.89817523956" />        
-        <joint name="rob2_wrist_1_joint" value="-1.09807761133" />
-        <joint name="rob2_wrist_2_joint" value="1.57178926468" />
-        <joint name="rob2_wrist_3_joint" value="0.446335315704" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.595600907" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.73127045254" />
+        <joint name="rob2_elbow_joint" value="-1.82759952545" />        
+        <joint name="rob2_wrist_1_joint" value="-1.15428908289" />
+        <joint name="rob2_wrist_2_joint" value="1.57144069672" />
+        <joint name="rob2_wrist_3_joint" value="0.548162937164" />
     </group_state>
-               
+                    
     <group_state name="rob2_c101350_2_pre_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.72029000918" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.79789270977" />
-        <joint name="rob2_elbow_joint" value="-1.84208965302" />        
-        <joint name="rob2_wrist_1_joint" value="-1.07392294825" />
-        <joint name="rob2_wrist_2_joint" value="1.5715970993" />
-        <joint name="rob2_wrist_3_joint" value="0.423484325409" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.6230228583" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.79715027432" />
+        <joint name="rob2_elbow_joint" value="-1.75233364105" />        
+        <joint name="rob2_wrist_1_joint" value="-1.16366751612" />
+        <joint name="rob2_wrist_2_joint" value="1.57136869431" />
+        <joint name="rob2_wrist_3_joint" value="0.520529270172" />
     </group_state>
                
      
-
+     
     <group_state name="rob2_c101350_3_pre_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.74226838747" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.85547937969" />
-        <joint name="rob2_elbow_joint" value="-1.74284076691" />        
-        <joint name="rob2_wrist_1_joint" value="-1.11555846155" />
-        <joint name="rob2_wrist_2_joint" value="1.5715970993" />
-        <joint name="rob2_wrist_3_joint" value="0.401278018951" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.64865953127" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.87581314663" />
+        <joint name="rob2_elbow_joint" value="-1.68877887726" />        
+        <joint name="rob2_wrist_1_joint" value="-1.14857085169" />
+        <joint name="rob2_wrist_2_joint" value="1.57126045227" />
+        <joint name="rob2_wrist_3_joint" value="0.494818210602" />
     </group_state>
           
-     
+          
 
     <group_state name="rob2_c101350_4_pre_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.76131326357" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.92258085827" />
-        <joint name="rob2_elbow_joint" value="-1.65930652618" />        
-        <joint name="rob2_wrist_1_joint" value="-1.13206274927" />
-        <joint name="rob2_wrist_2_joint" value="1.57151269913" />
-        <joint name="rob2_wrist_3_joint" value="0.382030487061" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.67193490664" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.912968298" />
+        <joint name="rob2_elbow_joint" value="-1.54409503937" />        
+        <joint name="rob2_wrist_1_joint" value="-1.25609476984" />
+        <joint name="rob2_wrist_2_joint" value="1.57130908966" />
+        <joint name="rob2_wrist_3_joint" value="0.471192836761" />
     </group_state>
-     
+          
           
      
     <group_state name="rob2_c101350_5_pre_grasp" group="rob2_arm">
@@ -1008,43 +1028,43 @@
      
 
     <group_state name="rob2_c101350_1_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.69756776491" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.87362589459" />
-        <joint name="rob2_elbow_joint" value="-2.02794933319" />        
-        <joint name="rob2_wrist_1_joint" value="-0.81231768549" />
-        <joint name="rob2_wrist_2_joint" value="1.57122468948" />
-        <joint name="rob2_wrist_3_joint" value="0.446657180786" />
-    </group_state>
-          
-    <group_state name="rob2_c101350_2_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.72037297884" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.92972149471" />
-        <joint name="rob2_elbow_joint" value="-1.94724178314" />        
-        <joint name="rob2_wrist_1_joint" value="-0.836935834294" />
-        <joint name="rob2_wrist_2_joint" value="1.57120037079" />
-        <joint name="rob2_wrist_3_joint" value="0.423687458038" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.59567338625" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.87974276165" />
+        <joint name="rob2_elbow_joint" value="-1.97283267975" />        
+        <joint name="rob2_wrist_1_joint" value="-0.860516862278" />
+        <joint name="rob2_wrist_2_joint" value="1.57094860077" />
+        <joint name="rob2_wrist_3_joint" value="0.548451900482" />
     </group_state>
                
+    <group_state name="rob2_c101350_2_grasp" group="rob2_arm">
+        <joint name="rob2_shoulder_pan_joint" value="-2.62312776247" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.9356500111" />
+        <joint name="rob2_elbow_joint" value="-1.89099979401" />        
+        <joint name="rob2_wrist_1_joint" value="-0.886479215031" />
+        <joint name="rob2_wrist_2_joint" value="1.57092428207" />
+        <joint name="rob2_wrist_3_joint" value="0.520781993866" />
+    </group_state>
+                    
     <group_state name="rob2_c101350_3_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.74235231081" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.98883452038" />
-        <joint name="rob2_elbow_joint" value="-1.85744190216" />        
-        <joint name="rob2_wrist_1_joint" value="-0.867649869328" />
-        <joint name="rob2_wrist_2_joint" value="1.571164608" />
-        <joint name="rob2_wrist_3_joint" value="0.401468753815" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.64869481722" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.99420322994" />
+        <joint name="rob2_elbow_joint" value="-1.80415058136" />        
+        <joint name="rob2_wrist_1_joint" value="-0.914754704838" />
+        <joint name="rob2_wrist_2_joint" value="1.570936203" />
+        <joint name="rob2_wrist_3_joint" value="0.495021820068" />
     </group_state>
                         
-
+     
     <group_state name="rob2_c101350_4_grasp" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.76138574282" />
-        <joint name="rob2_shoulder_lift_joint" value="-2.04458107571" />
-        <joint name="rob2_elbow_joint" value="-1.76758670807" />        
-        <joint name="rob2_wrist_1_joint" value="-0.901683644657" />
-        <joint name="rob2_wrist_2_joint" value="1.571164608" />
-        <joint name="rob2_wrist_3_joint" value="0.382269859314" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.67210275332" />
+        <joint name="rob2_shoulder_lift_joint" value="-2.05062403301" />
+        <joint name="rob2_elbow_joint" value="-1.71096324921" />        
+        <joint name="rob2_wrist_1_joint" value="-0.951483563786" />
+        <joint name="rob2_wrist_2_joint" value="1.57092428207" />
+        <joint name="rob2_wrist_3_joint" value="0.471433162689" />
     </group_state>
                
-          
+               
     <group_state name="rob2_c101350_5_grasp" group="rob2_arm">
         <joint name="rob2_shoulder_pan_joint" value="-2.77934152285" />
         <joint name="rob2_shoulder_lift_joint" value="-2.10386242489" />

@@ -36,7 +36,7 @@ class UrxMotion():
         radius = 0.0005
 
         force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-12,0,0,0] if reverse is False else [0,0,12,0,0,0]
+        force_toq = [0,0,-9,0,0,0] if reverse is False else [0,0,9,0,0,0]
 
         # spiral motion
         R = 0.008  #0.006 #0.003

@@ -17,6 +17,7 @@ from assembly_robot_msgs.srv import *
 from assembly_robot_msgs.msg import *
 
 from utils.holepin import *
+from utils.conversions import *
 
 _KHOLECHECKOFFSET = 0.28 # 애들이 정함
 #python 규칙 상수는 _대문자
@@ -256,17 +257,17 @@ class Assembly_process():
 
 			# print return_hole
 
-			return  hole_trans#return_hole#hole_trans #transposeStamped
+			return  hole_trans, self.tfBuffer.lookup_transform(pa_part, 'update', self.rospy.Time(0))#return_hole#hole_trans #transposeStamped
 
 		else:
 			if trans_ is not False: 
-				return trans_
+				return trans_ , self.tfBuffer.lookup_transform(pa_part, 'update', self.rospy.Time(0))
 
 			else:
 
 				hole_trans = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
 
-				return  self.list_from_trans(hole_trans)
+				return self.list_from_trans(hole_trans), self.tfBuffer.lookup_transform(pa_part, 'update', self.rospy.Time(0))
 
 
 		return False
@@ -515,8 +516,22 @@ class Assembly_process():
 
 		# print "ch_hole_list : {0}".format(sort_hole_list)
 
-		_goal, _target = self.send_tf(pa_name, pa_hole_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
 
+		########
+
+		test_ = self.tfBuffer.lookup_transform('world', pa_hole_list[0], self.rospy.Time(0))
+
+		test_ = self.list_from_trans(test_)
+
+		eef_mat = tf_to_mat(test_[:3], test_[3:])
+
+		rot_zaxis = eef_mat[:3,2]
+
+		z_axis = [0,0,1]
+
+		########
+
+		_goal, _target = self.send_tf(pa_name, pa_hole_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
 
 
 		hold_ = self.tfBuffer.lookup_transform('rob1_real_base_link', ch_name+'-GRASP-3', self.rospy.Time(0))
@@ -535,6 +550,7 @@ class Assembly_process():
 			success = self.select_part_robot(robot, hold_, idx=True)
 			#if success is not True: return -1
 
+
 		tmp = self.tfBuffer.lookup_transform(ch_name, ch_name+'-GRASP-3', self.rospy.Time(0))
 
 		tmp = self.list_from_trans(tmp)
@@ -551,11 +567,17 @@ class Assembly_process():
 
 		# trans_g = self.rot_arrange(self.list_from_trans(trans_g))
 
+		if (np.dot(z_axis, rot_zaxis)) > 0.8:
+			print"-------"*100
+			trans_g = self.hc_send_tf(pa_name, pa_hole_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
+
+
 		temp_tg = self.am.trans_convert(trans_g, [0,0,0.05,0.9999997, 0, 0, 0.0007963])
 
 		trans_ = self.am.trans_convert(temp_tg, temp_t)
 
 		# trans = temp_t + temp_r
+
 
 		self.br.sendTransform(self.trans_from_list(trans_, 'world', "real_goal")) #살리냐 죽이냐 그것이 문제로다 
 
@@ -588,7 +610,7 @@ class Assembly_process():
 
 			select = self.hand_over_hole_check(i)	
 
-			trans_ = self.fine_tune_insert_target(pa_name, i, robot, move = False)
+			trans_, null = self.fine_tune_insert_target(pa_name, i, robot, move = False)
 
 			if trans_ is not False:
 
@@ -620,6 +642,9 @@ class Assembly_process():
 		# trans_g = self.rot_arrange(self.list_from_trans(trans_g))
 
 		temp_tg = self.am.trans_convert(trans_g, [0,0,-0.05,0.9999997, 0, 0, 0.0007963])
+
+		if (np.dot(z_axis, rot_zaxis)) > 0.8:
+			trans_g = self.hc_send_tf(pa_name, pa_hole_list[:len(sort_hole_list[0])], ch_name, sort_hole_list[0])
 
 		trans = self.am.trans_convert(temp_tg, temp_t)
 
@@ -710,7 +735,7 @@ class Assembly_process():
 
 		# print "rot_ : {0}".format(rot_)
 
-		# self.br.sendTransform(self.trans_from_list(trans_.tolist()+rot_.tolist() , pa_name, "goal"))
+		self.br.sendTransform(self.trans_from_list(trans_.tolist()+rot_.tolist() , pa_name, "goal"))
 
 		time.sleep(1)
 
@@ -722,7 +747,10 @@ class Assembly_process():
 
 		# print "asm_pose : {0}".format(asm_pose)
 
-		return self.trans_from_list(asm_pose, pa_name, ch_name)
+		self.br.sendTransform(self.trans_from_list(asm_pose, pa_name, "update_goal"))
+
+		return asm_pose# self.trans_from_list(asm_pose, pa_name, ch_name)
+
 
 	###########################################11/05###########################################	
 
@@ -738,6 +766,9 @@ class Assembly_process():
 		for i, j in zip(pa_hole_list, ch_hole_list):
 			goal_list.append(self.tfBuffer.lookup_transform(pa_name, i, self.rospy.Time(0)))
 			target_list.append(self.tfBuffer.lookup_transform(j, ch_name, self.rospy.Time(0)))
+
+
+
 		
 		for i, j in zip(goal_list, target_list):
 			temp_g = self.list_from_trans(i, euler=True)
@@ -775,8 +806,8 @@ class Assembly_process():
 		# print goal[4]
 
 
-		# self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal", euler=True))
-		# self.br.sendTransform(self.trans_from_list(target, ch_name, "target", euler=True))
+		self.br.sendTransform(self.trans_from_list(goal, pa_name, "goal", euler=True))
+		self.br.sendTransform(self.trans_from_list(target, ch_name, "target", euler=True))
 
 		# time.sleep(1)
 
