@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        self.robot.send_program(self._set_gripper())
+        # self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -146,7 +146,44 @@ class UrxMotion():
 
         return msg
 
+    def suction_attach(self, force_mod, force_toq):
+
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.2)
+
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.2)
+
+        while(True):
+            try:
+                force = self.robot.get_tcp_force()
+                # print force[2]
+                if force[2] > 5:
+                    # print force[2]
+                    time.sleep(1)
+                    self.robot.send_program("end_force_mode()")
+                    return True
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+
     def torque_mode(self, force_mod, force_toq, tool = False):
+
+        # self.robot.send_program("zero_ftsensor()")
+        # time.sleep(0.2)
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
@@ -443,9 +480,154 @@ class UrxMotion():
                 break
 
 
+    def suction_align(self):
+        self.reset()
+        time.sleep(1)
+
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.2)
+
+        print "="*20 +"go_down"+"="*20
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-5,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.5)
+
+        # print self.robot.get_tcp_force()
+
+        while(True):
+            try:
+                # print "try"
+                force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
+                # print force[2]
+                if abs(force[2]) > 8:
+                    # print force[2]
+                    self.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+        print "="*20 +"go_front"+"="*20
+        force_mod = [0,1,0,0,0,0]
+        force_toq = [0,-5,0,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.5)
+
+        # print self.robot.get_tcp_force()
+
+        while(True):
+            try:
+                # print "try"
+                force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
+                # print force[2]
+                if abs(force[1]) > 8:
+                    # print force[2]
+                    self.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+        print "="*20 +"go_side"+"="*20
+        force_mod = [1,0,0,0,0,1]
+        force_toq = [8,0,0,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.5)
+
+        # print self.robot.get_tcp_force()
+
+        while(True):
+            try:
+                # print "try"
+                force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
+                # print force[2]
+                if abs(force[0]) > 4:
+                    # print force[2]
+                    self.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+        print "="*20 +"go_side"+"="*20
+        force_mod = [1,1,1,0,0,1]
+        force_toq = [0,-8,0,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.5)
+
+        # print self.robot.get_tcp_force()
+
+        while(True):
+            try:
+                # print "try"
+                force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
+                # print force[2]
+                if abs(force[2]) > 6:
+                    # print force[2]
+                    self.robot.send_program("end_force_mode()")
+                    print "end"
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+
+
+
+
+
 def main():
     # rob1 = UrxMotion("192.168.13.101")
-    rob2 = UrxMotion("192.168.13.100")
+    rob2 = UrxMotion("192.168.13.101")
 
     #rob1.gripper_move_and_wait(255)
     #rob2.gripper_move_and_wait(255)
@@ -487,7 +669,7 @@ def main():
     print "free_drive"
     raw_input()
 
-    rob2.torque_mode([0,0,1,0,0,0], [0,0,0,0,0,0])
+    rob2.suction_align()
     # rob2.freedrive_mode()
 
     # rob2._gripper_move(100)

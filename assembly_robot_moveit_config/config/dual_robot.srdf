@@ -110,14 +110,16 @@
 
 
 <!--tool1_pre_grasp pose-->
+
+     
      
     <group_state name="rob1_pre_grasp_pose" group="rob1_arm">
-        <joint name="rob1_shoulder_pan_joint" value="-0.284539524709" />
-        <joint name="rob1_shoulder_lift_joint" value="-1.74724449734" />
-        <joint name="rob1_elbow_joint" value="-1.2702665329" />        
-        <joint name="rob1_wrist_1_joint" value="-3.26661791424" />
-        <joint name="rob1_wrist_2_joint" value="-1.85355121294" />
-        <joint name="rob1_wrist_3_joint" value="-0.00178176561464" />
+        <joint name="rob1_shoulder_pan_joint" value="-0.446353737508" />
+        <joint name="rob1_shoulder_lift_joint" value="-1.56028492868" />
+        <joint name="rob1_elbow_joint" value="-0.976117134094" />        
+        <joint name="rob1_wrist_1_joint" value="-3.74778523068" />
+        <joint name="rob1_wrist_2_joint" value="-2.01543075243" />
+        <joint name="rob1_wrist_3_joint" value="-0.0019009749042" />
     </group_state>
 
 
@@ -145,7 +147,7 @@
         <joint name="rob1_wrist_3_joint" value="-0.00161391893496" />
     </group_state>
 
-         
+
 
     <group_state name="rob1_tool2_pre_grasp_pose" group="rob1_arm">
         <joint name="rob1_shoulder_pan_joint" value="0.11527299881" />

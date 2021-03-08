@@ -64,6 +64,19 @@ class Assembly_motion():
         urx = self.urx_rob1 if robot is False else self.urx_rob2
         urx.torque_mode(force_mod, force_toq, tool)
         time.sleep(sleep)
+        self.program_running()
+        
+
+    def suction_attach(self, robot, force_mod, force_toq):
+        urx = self.urx_rob1 if robot is False else self.urx_rob2
+        urx.suction_attach(force_mod, force_toq)  
+        self.program_running()
+
+
+    def suction_align(self, robot):
+        urx = self.urx_rob1 if robot is False else self.urx_rob2
+        urx.suction_align()
+        self.program_running()
 
 
 
@@ -126,7 +139,7 @@ class Assembly_motion():
             # raw_input()
             self.mg_rob2.execute(plan)
 
-    def grab_tool(self, robot, pin, reverse = False):
+    def grab_tool(self, robot, tool, reverse = False):
         if robot is False:
             rob_tool = 'rob1'
             rob = self.mg_rob1
@@ -152,14 +165,14 @@ class Assembly_motion():
         rob.execute(plan, wait=True)
 
 
-        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
         rob.execute(plan, wait=True)
 
 
-        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_grasp_pose")
+        tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
         # print "move_camera?"
         # raw_input()
@@ -174,12 +187,14 @@ class Assembly_motion():
             self.hand_mode(robot, 0)
             self.program_running()
 
+        if tool is not 'tool2':
 
-        tool_pre_grab = rob.get_named_target_values(rob_tool + "_tool1_pre_grasp_pose")
-        plan = rob.plan(tool_pre_grab) 
-        # print "move_camera?"
-        # raw_input()
-        rob.execute(plan)
+
+            tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_pre_grasp_pose")
+            plan = rob.plan(tool_pre_grab) 
+            # print "move_camera?"
+            # raw_input()
+            rob.execute(plan)
 
 
         waylist = []
@@ -378,6 +393,22 @@ class Assembly_motion():
             traj = rob.set_pose_target(pose)
             plan = rob.plan(traj)
             rob.execute(plan, wait=True)
+
+    def attach_motion(self, robot, joint):
+        rob = self.mg_rob1 if robot is False else self.mg_rob2
+
+        joint_value = rob.get_current_joint_values()
+
+        joint_value = joint
+
+        rob.set_joint_value_target(joint_value)
+
+        plan = rob.plan()
+
+        print"go?"
+        raw_input()
+
+        rob.execute(plan, wait=True)
             
 
     def hand_over_pin(self):

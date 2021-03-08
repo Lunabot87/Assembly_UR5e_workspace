@@ -887,7 +887,7 @@ class Assembly_process():
 		return trans_
 
 
-	def grab_screw_tool(self,robot, pin):
+	def grab_screw_tool(self,robot, tool):
 		if robot is False:
 			ee_link = 'rob1_real_ee_link'
 			base_link= 'rob1_real_base_link'
@@ -895,7 +895,7 @@ class Assembly_process():
 			ee_link = 'rob2_real_ee_link'
 			base_link= 'rob2_real_base_link'
 
-		self.am.grab_tool(robot, pin)
+		self.am.grab_tool(robot, tool)
 
 
 	def screw_drive_motion(self, robot, goal):
@@ -1129,6 +1129,55 @@ class Assembly_process():
 
 			# 	grab_l[2] += 0.16 #why use?
 			# 	self.am.move_motion(grab_l[:3], tf.transformations.quaternion_from_euler(grab_l[3],grab_l[4],grab_l[5]), 0.1, robot)
+
+
+	def attach_plate(self, robot):
+
+		# waypoint1 
+		print "waypoint1"
+		raw_input()
+
+		self.am.attach_motion(robot, [-1.34457284609, -1.42656166971, -0.667553901672, -4.17625465016, -1.46750957171, -0.00291997591128])
+
+		# waypoint2
+
+		print "waypoint2"
+		raw_input()
+
+		self.am.attach_motion(robot, [-2.56117803255, -1.45668204248, -1.61196041107, -3.21516432385, -0.987765614186, 0.000255584716797])
+
+
+		print "suction_attach"
+		raw_input()
+
+		self.am.suction_attach(robot, [0,0,1,0,0,0], [0,0,-5,0,0,0])
+
+		print "suction on"
+		raw_input()
+
+		print "waypoint3"
+		raw_input()
+
+		self.am.attach_motion(robot, [-2.48155194918, -1.67284931759, -0.77380657196, -3.83269800762, -1.64082271258, 1.57356262207e-05])
+
+		print "waypoint4"
+		raw_input()
+
+		self.am.attach_motion(robot, [-1.0631535689, -1.53731520594, -0.916102409363, -3.82601179699, -1.14120322863, -0.00082236925234])
+
+		print "align"
+		raw_input()
+
+		self.am.suction_align(robot)
+
+		print "suction off"
+		raw_input()
+
+
+		 
+		# force control 석션 
+		# waypoint3 
+		# 정렬 
 
 
 	def trans_from_list(self, l, header, frame_id, euler = False):

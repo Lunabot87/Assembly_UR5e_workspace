@@ -135,7 +135,7 @@ class Assembly_mode():
 			pass
 
 		elif data.type == 'attach':
-			pass
+			self.attach_test()
 		#현철이 테스트용#
 		#self.hc_test(self, data)
 
@@ -153,6 +153,18 @@ class Assembly_mode():
 		return test_null
 
 
+	def attach_test(self):
+		robot = False
+
+		self.pr.grab_screw_tool(robot, 'tool2')
+
+		self.pr.attach_plate(robot)
+
+		self.pr.grab_screw_tool(robot, 'tool2', reverse = True)
+
+
+
+
 	def screw_pin_test(self, pin, part_hole, part_name):
 
 		robot = self.pr.hand_over_hole_check(part_hole)
@@ -167,12 +179,12 @@ class Assembly_mode():
 
 		pin_pose = self.pr.fine_tune_insert_target(part_name, part_hole, robot, move = False)
 
-		self.pr.grab_screw_tool(robot, pin)
+		self.pr.grab_screw_tool(robot, 'tool1')
 
 
 		self.pr.screw_drive_motion(robot, pin_pose)
 
-		self.pr.grab_screw_tool(robot, pin, reverse = True)
+		self.pr.grab_screw_tool(robot, 'tool1', reverse = True)
 
 		# self.pr.hold_assist(robot, part_name, part_hole, reset=True)
 
@@ -269,6 +281,8 @@ class Assembly_mode():
 def main():
 
 	a = Assembly_mode()
+
+	a.attach_test()
 
 	rospy.spin()
 	# print 'start?'
