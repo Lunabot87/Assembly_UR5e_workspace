@@ -36,7 +36,7 @@ class UrxMotion():
         radius = 0.0005
 
         force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-9,0,0,0] if reverse is False else [0,0,9,0,0,0]
+        force_toq = [0,0,-12,0,0,0] if reverse is False else [0,0,12,0,0,0]
 
         # spiral motion
         R = 0.008  #0.006 #0.003
@@ -68,7 +68,7 @@ class UrxMotion():
         cmd_str  = "def sprial():\n"
         cmd_str += "\tforce_mode_set_damping(0.0)\n"
         cmd_str += "\tthread Thread_1():\n"
-        cmd_str += "\tset_digital_out(6, False)\n"
+        cmd_str += "\tset_digital_out(4, False)\n"
         cmd_str += "\t\twhile (True):\n"
         cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\t\tsync()\n"
@@ -88,6 +88,7 @@ class UrxMotion():
         cmd_str += "end\n"
 
         return cmd_str
+
 
     # def wait_for_move()
 
@@ -299,6 +300,7 @@ class UrxMotion():
         initial = self.robot.getl()
         spiral_cmd = self._get_spiral_cmd(initial)
         self.robot.send_program(spiral_cmd)
+        time.sleep(0.1)
 
         while(True):
             try:
@@ -309,7 +311,7 @@ class UrxMotion():
 
                 if digi > 0: #spiral 실패시
                     self.robot.send_program("set_digital_out(6, False)")
-                    # return False #실패모드 사용시 주석 해제 
+                    return False #실패모드 사용시 주석 해제 
 
                 if abs(force[0]) > 25 or abs(force[1]) > 25:
                     # print force[0], force[1]
@@ -418,7 +420,7 @@ class UrxMotion():
                 break
 
 
-        time.sleep(0.1)
+        time.sleep(0.5)
 
         # spiral    
         print "="*20 +"spiral"+"="*20
@@ -604,13 +606,15 @@ class UrxMotion():
 
         # print self.robot.get_tcp_force()
 
+        start_time = time.time()
+
         while(True):
             try:
                 # print "try"
                 force = self.robot.get_tcp_force()
                 # print "force z : {0}".format(force[2])
                 # print force[2]
-                if abs(force[2]) > 6:
+                if abs(force[2]) > 8 or time.time() - start_time > 20:
                     # print force[2]
                     self.robot.send_program("end_force_mode()")
                     print "end"
@@ -622,12 +626,125 @@ class UrxMotion():
 
 
 
+    def screw_motion_cus(self, pitch = 0):
 
+        # print "reset"
+        # raw_input()
+
+
+        self.reset()
+        time.sleep(1)
+
+        # print "zero_ftsensor"
+        # raw_input()
+
+
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.2)
+        # print self.robot.get_tcp_force()
+
+        # print "go_down"
+        # raw_input()
+
+        # go down
+        print "="*20 +"go_down"+"="*20
+        force_mod = [1,1,1,1,1,0]
+        force_toq = [0,0,-15,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        # cmd_str += "\tforce_mode_set_damping(0)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0,0,0,0,0,0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        time.sleep(0.1)
+        self.robot.send_program(cmd_str)
+        time.sleep(0.5)
+
+        # print self.robot.get_tcp_force()
+
+        while(True):
+            try:
+                # print "try"
+                force = self.robot.get_tcp_force()
+                # print "force z : {0}".format(force[2])
+                # print force[2]
+                if abs(force[2]) > 8:
+                    # print force[2]
+                    self.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+
+        time.sleep(0.5)
+
+        # spiral    
+        print "="*20 +"spiral"+"="*20
+        initial = self.robot.getl()
+        spiral_cmd = self._get_spiral_cmd(initial)
+        self.robot.send_program(spiral_cmd)
+
+        while(True):
+            try:
+                force = self.robot.get_tcp_force()
+                # print force[0], force[1]
+                digi = self.robot.get_digital_out(6)
+                # print "digi : {0}".format(type(digi))
+                if digi > 0: #spiral 실패시
+                    self.robot.send_program("set_digital_out(6, False)")
+                    return False
+
+                if abs(force[0]) > 35 or abs(force[1]) > 35:
+                    # print force[0], force[1]
+                    self.robot.send_program("end_force_mode()")
+                    break
+
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+        time.sleep(0.1)
+
+        print "real_insert now?"
+        raw_input()
+
+        
+
+        print "="*20 +"real_insert"+"="*20
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-30,0,0,0]
+        cmd_str  = "def real_insert():"
+        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+        self.robot.send_program(cmd_str)
+
+        time.sleep(3)
+
+        print "reverse now?"
+        raw_input()
+
+        print "="*20 +"spiral_reverse"+"="*20
+        initial = self.robot.getl()
+        init_pose = copy.deepcopy(initial)
+        spiral_cmd = self._get_spiral_cmd(init_pose)
+        self.robot.send_program(spiral_cmd)
+
+        while(True):
+            if (abs(self.robot.getl()[2]) - abs(init_pose[2])) > 0.1:
+                self.robot.send_program("end_force_mode()")
+                break
 
 
 def main():
     # rob1 = UrxMotion("192.168.13.101")
-    rob2 = UrxMotion("192.168.13.101")
+    rob2 = UrxMotion("192.168.13.100")
 
     #rob1.gripper_move_and_wait(255)
     #rob2.gripper_move_and_wait(255)
@@ -669,7 +786,7 @@ def main():
     print "free_drive"
     raw_input()
 
-    rob2.suction_align()
+    rob2.screw_motion_cus()
     # rob2.freedrive_mode()
 
     # rob2._gripper_move(100)

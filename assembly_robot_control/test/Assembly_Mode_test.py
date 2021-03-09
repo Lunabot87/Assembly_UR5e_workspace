@@ -3,10 +3,11 @@
 
 import rospy
 from Assembly_Process_test import Assembly_process
-from assembly_robot_msgs.srv import asm_Srv, chan_Srv
+from assembly_robot_msgs.srv import asm_Srv, chan_Srv, twoRobot_Srv
 from assembly_robot_msgs.srv import asm_SrvResponse
 from assembly_robot_msgs.msg import TransStamped
 from geometry_msgs.msg import TransformStamped
+from std_msgs.msg import Int64
 from std_srvs.srv  import SetBool
 
 
@@ -23,6 +24,7 @@ class Assembly_mode():
 
 		# self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback_pass)
 
+		self.rotate_client = rospy.ServiceProxy('two_robot_task', twoRobot_Srv)
 
 		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
@@ -108,7 +110,7 @@ class Assembly_mode():
 
 		# 실제 작업용 
 		if data.type == 'insert':
-			if 'c101350' in data.child.name[0] or 'c122620' in data.child.name[0]:
+			if 'C101350' in data.child.name[0] or 'C122620' in data.child.name[0]:
 				print "pin"
 				_result, pin_pose = self.insert_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 				pin_list.append(pin_pose)
@@ -116,11 +118,18 @@ class Assembly_mode():
 
 				test_null.result = True
 				test_null.asm_pose.TransStamped = pin_pose
+
+			elif 'part5' in data.child.name[0]:
+				pass
+
 			else:
 
 				# result, asm_pose, pin_list = self.insert_part_test(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
 				print "pa_name : {0}, pa_hole : {1}, ch_name : {2}, ch_hole : {3}".format(data.parent.name[0], data.parent.holepin, data.child.name[0], data.child.holepin)
-				self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
+				asm_pose = self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
+
+				test_null.result = True
+				test_null.asm_pose.TransStamped = asm_pose
 		
 		elif data.type == 'screw':
 			if 'c104322' in data.child.name[0]:
@@ -132,7 +141,15 @@ class Assembly_mode():
 			pass
 			
 		elif data.type == 'rotate':
-			pass
+			msg = Int64()
+
+			msg = data.rot_radians
+			result = self.rotate_client(msg)
+			asm_pose = self.Trans_to_Pose(result.object_pose,'world','part6_1')
+
+			test_null.result = True
+
+			test_null.asm_pose = asm_pose
 
 		elif data.type == 'attach':
 			self.attach_test()
@@ -144,7 +161,7 @@ class Assembly_mode():
 
 		
 
-		print test_null
+		# print test_null
 
 		# print "asm_pose : {0},\n\n    pin_list : {1}".format(asm_pose, pin_list)
 
@@ -233,10 +250,10 @@ class Assembly_mode():
 
 			# self.pr.hold_assist(robot, pa_name, pa_hole_list[0])
 			trans_ = self.pr.grab_part(robot, ch_name[0], pin_list, goal)
-			_result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_, sort_list, ch_name[0])
+			_result, asm_pose = self.pr.insert_spiral_part_motion(robot, trans_, sort_list, ch_name[0], pa_name)
 			self.pr.hold_assist(robot, pa_name[0],  pa_hole_list[0], reset=True)
 
-			return _result, asm_pose, pin_list
+			return asm_pose
 
 
 	def TransStamped(self, asm_pose, pin_list):
@@ -277,12 +294,25 @@ class Assembly_mode():
 		return asm, pin
 
 
+	def Trans_to_Pose(self, pose, frame_id, child_frame_id):
+		asm = TransStamped()
+
+		asm.TransStamped.header.frame_id = frame_id
+		asm.TransStamped.child_frame_id = child_frame_id
+		asm.TransStamped.transform.translation.x = pose.position.x
+		asm.TransStamped.transform.translation.y = pose.position.y
+		asm.TransStamped.transform.translation.z = pose.position.z
+		asm.TransStamped.transform.rotation.x = pose.orientation.x
+		asm.TransStamped.transform.rotation.y = pose.orientation.y
+		asm.TransStamped.transform.rotation.z = pose.orientation.z
+		asm.TransStamped.transform.rotation.w = pose.orientation.w
+
 
 def main():
 
 	a = Assembly_mode()
 
-	a.attach_test()
+	# a.attach_test()
 
 	rospy.spin()
 	# print 'start?'

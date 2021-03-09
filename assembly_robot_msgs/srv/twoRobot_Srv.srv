@@ -1,0 +1,4 @@
+int64 task_name
+---
+geometry_msgs/Pose object_pose
+bool success

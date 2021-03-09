@@ -121,6 +121,12 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
     return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
 
+  def _wrist_joint_axis(self, joints):
+    eef_mat = self.fwd_kin_wrist1(joints)
+    rot_zaxis = eef_mat[:3,1]
+
+    z_axis = [0,0,1]
+    return np.dot(z_axis, rot_zaxis)
 
   def _get_best_ik_plan(self, trans, rot, c, collision = True):
     '''
@@ -166,6 +172,10 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
 
         # print "axis : {0}".format(axis)
         abs_axis = map(abs, axis)
+
+        if c is True:
+          if self._wrist_joint_axis(selected_q) < 0:
+            continue
 
         if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
           continue

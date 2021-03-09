@@ -36,6 +36,14 @@ class UR5eInvKin:
 
         return np.dot(np.dot(np.dot(np.dot(np.dot(T01, T12), T23), T34), T45), T56)
 
+    def fwd_kin_wrist1(self, joints):
+        T01 = self.DH(self.a[0], self.alpha[0], self.d[0], joints[0])
+        T12 = self.DH(self.a[1], self.alpha[1], self.d[1], joints[1])
+        T23 = self.DH(self.a[2], self.alpha[2], self.d[2], joints[2])
+        T34 = self.DH(self.a[3], self.alpha[3], self.d[3], joints[3])
+
+        return np.dot(np.dot(np.dot(T01, T12), T23), T34)
+
     def inv_kin(self, pose):
         # pose is the 4x4 matrix of the end effector
         # DH parameters

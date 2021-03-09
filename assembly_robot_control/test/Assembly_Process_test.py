@@ -209,7 +209,7 @@ class Assembly_process():
 		#핀 커넥시 사용하는 값
 
 		if move is True:
-			if trans_ is not False: 
+			if trans_ is not [0,0,0,0,0,0]: 
 				# self.br.sendTransform(self.trans_from_list(trans_, 'world', 'target_g0'))
 				hole_trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 				hole_trans = self.am.trans_convert(self.list_from_trans(hole_trans), trans_)
@@ -834,7 +834,7 @@ class Assembly_process():
 
 		trans = self.list_from_trans(trans)
 		
-		trans[2] += 0.180 #why use?
+		trans[2] += 0.165 #why use?
 
 		self.am.hold_assistant(trans[:3], trans[3:], 0.1, robot)
 
@@ -846,43 +846,17 @@ class Assembly_process():
 
 		# trans_ = self.list_from_trans(trans_)
 
-		z_trans = self.tfBuffer.lookup_transform('real_goal', ee_link,  self.rospy.Time(0))
-
-		trans = self.tfBuffer.lookup_transform('world', ee_link, self.rospy.Time(0))
-
-		trans = self.list_from_trans(trans)
-
-		trans[2] += (z_trans.transform.translation.z*0.7)
-
-		print "trans[2] : {0}".format(trans)
-		raw_input()
-
-		way = self.pose_from_list(trans, '' ,'')
-
-		self.am.cartestian_move(robot, way.pose)
-
-		#self.am.move_motion(trans[:3], trans[3:], 0.1, robot)
+		self.am.move_motion(trans[:3], trans[3:], 0.1, robot)
 
 		# trans = self.tfBuffer.lookup_transform(base_link, 'real_goal', self.rospy.Time(0))
 
-		trans = self.tfBuffer.lookup_transform('world', 'real_goal', self.rospy.Time(0))
+		trans = self.tfBuffer.lookup_transform(base_link, 'world', self.rospy.Time(0))
 
 		trans = self.list_from_trans(trans)
 
-		# trans = self.am.trans_convert(trans, goal)
+		trans = self.am.trans_convert(trans, goal)
 
-		# self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
-
-
-
-		pose = self.pose_from_list(trans, '', '')
-
-		waypoint = pose.pose
-
-		# print waylist
-
-		self.am.cartestian_move(robot, waypoint)
-
+		self.am.move_motion(trans[:3], trans[3:], 0, robot, c=True)
 
 		return trans_
 
@@ -965,7 +939,7 @@ class Assembly_process():
 
 		self.am.init_pose(robot)
 				
-	def insert_spiral_part_motion(self, robot, trans_, sort_list, ch_name, num_of_trial=5):
+	def insert_spiral_part_motion(self, robot, trans_, sort_list, ch_name, pa_name,num_of_trial=5):
 		# spiral() 실행, 성공할 때까지 num_of_trial 만큼 반복
 		# target pose와 grasp_config.yaml 의 데이터를 합쳐서 approach, retreat도 결정 
 		# for i in range(num_of_trial):
@@ -1044,6 +1018,8 @@ class Assembly_process():
 		# self.am.move_current_up(0.3, robot)
 
 		self.am.init_pose(robot)
+
+		trans_ = self.tfBuffer.lookup_transform(pa_name, ch_name, self.rospy.Time(0))
 
 		return True, trans_
 
@@ -1171,6 +1147,11 @@ class Assembly_process():
 		self.am.suction_align(robot)
 
 		print "suction off"
+		raw_input()
+
+		self.am.move_current_up(0.02, robot)
+
+		print "back?"
 		raw_input()
 
 

@@ -69,6 +69,7 @@ add_service_files(
   fineRefHoles_Srv.srv
   chan_Srv.srv
   Hole_poses.srv
+  twoRobot_Srv.srv
 )
 
 ## Generate actions in the 'action' folder
