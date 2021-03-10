@@ -135,30 +135,6 @@ class Table_pulisher():
 			self.count = 0
 
 	def main(self):
-		# while not rospy.is_shutdown():
-
-		# if self.init_flag:
-		# 	self.init_flag = 0
-		# 	if self.pin[:2] == [0, 0]:
-		# 		self.table1_state = -0.028
-		# 	elif self.pin[:2] == [0, 1]:
-		# 		self.table1_state = 0
-		# 	elif self.pin[:2] == [1, 1]:
-		# 		self.table1_state = 0.375
-
-		# 	if self.pin[2:] == [0, 0]:
-		# 		self.table2_state = -0.165
-		# 	elif self.pin[2:] == [0, 1]:
-		# 		self.table2_state = 0
-		# 	elif self.pin[2:] == [1, 1]:
-		# 		self.table2_state = 0.03
-
-		# 	else:
-		# 		self.table(1,0,0)
-		# 		self.table(1,1,0)
-		# 		self.table(1,3,0)
-		# 		self.table(1,2,0)
-
 		rospy.spin()
 		
 

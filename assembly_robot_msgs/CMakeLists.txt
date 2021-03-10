@@ -58,6 +58,7 @@ add_message_files(
   TransStamped.msg
   hole_pose.msg
   String_list.msg
+  Tool.msg
 )
 
 ## Generate services in the 'srv' folder
