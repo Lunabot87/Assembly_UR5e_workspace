@@ -164,7 +164,7 @@ class Assembly_mode():
 		#self.hc_test(self, data)
 
 
-		asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
+		# asm_pose, pin_list = self.TransStamped(asm_pose, pin_list)
 
 		
 
