@@ -29,7 +29,8 @@ class UR5eInvKinForTF():
     
     # variables
     self.group_name = group_name
-    self.w = [1.0, 1.0, 1.0, 0.5, 0.5, 0.2]
+    # self.w = [1.0, 1.0, 1.0, 0.5, 0.5, 0.2]
+    self.w = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
     self.aco = None
 
   ##############################################################################
@@ -198,7 +199,8 @@ class UR5eInvKinForTF():
     # sorted_idx, sorted_diff = self._get_diff_idx(inv_sol, cur_joint)
 
     inv_sol_full = []
-    wrist_down = [1, 2, 6, 7] if c is True else [0 ,1, 6, 7] 
+    wrist_down = []
+    # wrist_down = [1, 2, 6, 7] if c is True else [0 ,5, 6, 7] 
     for i in range(8):
       diff = 0.0
       if i in wrist_down:

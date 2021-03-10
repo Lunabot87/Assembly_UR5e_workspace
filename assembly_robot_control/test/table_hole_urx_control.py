@@ -17,7 +17,7 @@ class UrxMotion():
 
     def reset(self):
         connected = False 
-        while not connected:      
+        while not connected:
             try:         
                 self.robot = urx.URRobot(self.robot_ip, use_rt=True)        
                 connected = True    
@@ -134,7 +134,7 @@ class UrxMotion():
 
 
 
-def main():
+def main(): 
     rob1 = UrxMotion("192.168.13.101")
     rob2 = UrxMotion("192.168.13.100")
 
@@ -221,6 +221,9 @@ def main():
     rob2.pose_z_axis_up(0.05)
 
     rob2._gripper_move(255) #gripper open
+
+
+    
 
 if __name__ == '__main__':
     main()

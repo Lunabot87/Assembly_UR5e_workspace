@@ -41,8 +41,9 @@ class UR5eInvKin:
         T12 = self.DH(self.a[1], self.alpha[1], self.d[1], joints[1])
         T23 = self.DH(self.a[2], self.alpha[2], self.d[2], joints[2])
         T34 = self.DH(self.a[3], self.alpha[3], self.d[3], joints[3])
+        T45 = self.DH(self.a[4], self.alpha[4], self.d[4], joints[4])
 
-        return np.dot(np.dot(np.dot(T01, T12), T23), T34)
+        return np.dot(np.dot(np.dot(np.dot(T01, T12), T23), T34), T45)
 
     def inv_kin(self, pose):
         # pose is the 4x4 matrix of the end effector

@@ -122,7 +122,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
 
   def _wrist_joint_axis(self, joints):
-    eef_mat = self.fwd_kin_wrist1(joints)
+    eef_mat = self.ur5e.ur5e_ik.fwd_kin_wrist1(joints)
     rot_zaxis = eef_mat[:3,1]
 
     z_axis = [0,0,1]

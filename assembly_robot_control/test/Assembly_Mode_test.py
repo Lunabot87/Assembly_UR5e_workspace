@@ -140,11 +140,18 @@ class Assembly_mode():
 		elif data.type == 'half_screw':
 			pass
 			
-		elif data.type == 'rotate':
+		elif data.type == 'rotation':
 			msg = Int64()
 
-			msg = data.rot_radians
+			if abs(data.rot_radians) < 100:
+				msg = 90
+
+			else:
+				msg = 180
 			result = self.rotate_client(msg)
+
+			print "result : {0}".format(result)
+
 			asm_pose = self.Trans_to_Pose(result.object_pose,'world','part6_1')
 
 			test_null.result = True
