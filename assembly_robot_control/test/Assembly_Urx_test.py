@@ -68,7 +68,7 @@ class UrxMotion():
         cmd_str  = "def sprial():\n"
         cmd_str += "\tforce_mode_set_damping(0.0)\n"
         cmd_str += "\tthread Thread_1():\n"
-        cmd_str += "\tset_digital_out(4, False)\n"
+        cmd_str += "\tset_digital_out(6, False)\n"
         cmd_str += "\t\twhile (True):\n"
         cmd_str += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\t\tsync()\n"
@@ -137,7 +137,7 @@ class UrxMotion():
         msg += "\t\trq_pos = socket_get_var(\"POS\",\"gripper_socket\")\n"
         #msg += "\t\ttextmsg(\"rq_pos:\", rq_pos)\n"
         msg += "\t\tif norm(rq_pos_1 - rq_pos) < 0.5:\n"
-        msg += "\t\t\tset_digital_out(7, True)\n"
+        msg += "\t\t\tset_digital_out(6, True)\n"
         msg += "\t\t\tbreak\n"
         msg += "\t\telse:\n"
         msg += "\t\t\trq_pos_1 = rq_pos\n"
@@ -220,8 +220,8 @@ class UrxMotion():
         robot.send_program(self._gripper_move(pos))
 
         while True:
-            if self.robot.get_digital_out(7) != 0:
-                self.robot.send_program("set_digital_out(7, False)")
+            if self.robot.get_digital_out(6) != 0:
+                self.robot.send_program("set_digital_out(6, False)")
                 print "gripper_move_and_wait complete"
                 break
             else:
@@ -742,9 +742,156 @@ class UrxMotion():
                 break
 
 
+    def part5_motion1(self):
+        pre_mid_grip = [0.162392139435, -1.89387526135, -0.950741767883, -1.9049107037, 1.55921697617, 1.54703569412]
+
+        waypoint1 = [-0.22529, -1.9370, -0.90308, -1.8737, 1.5711, 1.3456]
+
+        waypoint2 = [-0.406, -1.954, -0.877, -1.8811, 1.5710, 1.16406]
+
+        waypoint3 = [-0.4849, -1.9116, -0.9383, -1.8636, 1.5710, 1.08604]
+
+        waypoint4 = [-0.641, -2.06462, -0.7144, -1.934, 1.570, 0.9285]
+
+        waypoint4 = [-0.8742, -1.9357, -0.9049, -1.8730, 1.5709, 0.6966]
+
+        goal1 = [-1.42738, -2.15893, -0.56316, -1.9913, 1.57056, 0.14275]
+
+        goal2 = [-1.39765, -1.82456, -1.2239, -1.4413, 1.504668, 0.13185]
+
+        self.gripper_move_and_wait(0)
+
+        self.robot.movej(pre_mid_grip, 1, 1)
+
+        start = self.robot.getl()
+
+        start[2] -= 0.4
+
+        self.robot.movel(start, 1, 1)
+
+        self.gripper_move_and_wait(255)
+
+
+        start = self.robot.getl()
+
+        start[2] += 0.4
+
+        self.robot.movel(start, 1, 1)
+
+        self.robot.movej(waypoint1, 1, 1)
+        self.robot.movej(waypoint2, 1, 1)
+        self.robot.movej(waypoint3, 1, 1)
+        self.robot.movej(waypoint4, 1, 1)
+        self.robot.movej(goal1, 1, 1)
+        self.robot.movej(goal2, 1, 1)
+
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.1)
+
+        force_mod = [0,0,1,1,0,0]
+        force_toq = [0,0,-15,0,0,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.robot.send_program(cmd_str)
+
+        while(True):
+            try:
+                force = self.robot.get_tcp_force()
+
+                if force[2] > 10:
+                    self.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+
+        force_mod = [1,0,1,1,1,0]
+        force_toq = [0,0,-15,0,2,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.robot.send_program(cmd_str)
+
+
+    def part5_motion2(self):
+
+        pre_pose1 = [0.15941, -1.9702, -1.8790, -2.4396, 0.20743, 0.032413]
+
+        pre_pose2 = [-0.79945, -2.5119, -1.1388, -2.6832, 0.77916, 0.032761]
+
+        self.gripper_move_and_wait(0)
+
+        self.robot.movej(pre_pose1,1,1)
+
+        self.robot.movej(pre_pose2,1,1)
+
+        start = self.robot.getl()
+
+        start[0] -= 0.1
+
+        self.robot.movel(start, 1, 1)
+
+        self.gripper_move_and_wait(255)
+
+        print "="*20 +"spiral"+"="*20
+        initial = self.robot.getl()
+        spiral_cmd = self._get_spiral_cmd(initial)
+        self.robot.send_program(spiral_cmd)
+        time.sleep(0.2)
+
+        while(True):
+            try:
+                force = self.robot.get_tcp_force()
+                # print force[0], force[1]
+                digi = self.robot.get_digital_out(6)
+                # print "digi : {0}".format(type(digi))
+                if digi > 0: #spiral 실패시
+                    self.robot.send_program("set_digital_out(6, False)")
+                    return False
+
+                if abs(force[0]) > 35 or abs(force[1]) > 35:
+                    # print force[0], force[1]
+                    self.robot.send_program("end_force_mode()")
+                    break
+
+            except KeyboardInterrupt:
+                self.robot.send_program("end_force_mode()")
+                break
+        time.sleep(0.1)
+
+        self.gripper_move_and_wait(0)
+
+        self.robot.movej(pre_pose2,1,1)
+
+        self.robot.movej(pre_pose1,1,1)
+
+
 def main():
-    # rob1 = UrxMotion("192.168.13.101")
+    rob1 = UrxMotion("192.168.13.101")
     rob2 = UrxMotion("192.168.13.100")
+
+    rob2.part5_motion1()
+
+    rob1.part5_motion2()
 
     #rob1.gripper_move_and_wait(255)
     #rob2.gripper_move_and_wait(255)

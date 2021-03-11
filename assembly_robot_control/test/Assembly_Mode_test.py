@@ -5,10 +5,16 @@ import rospy
 from Assembly_Process_test import Assembly_process
 from assembly_robot_msgs.srv import asm_Srv, chan_Srv, twoRobot_Srv
 from assembly_robot_msgs.srv import asm_SrvResponse
-from assembly_robot_msgs.msg import TransStamped
+from assembly_robot_msgs.msg import TransStamped, two_finsh
 from geometry_msgs.msg import TransformStamped
+from ur_dashboard_msgs.srv import *
+from ur_dashboard_msgs.msg import *
+from geometry_msgs.msg import *
+from ur_msgs.msg import *
+from ur_msgs.srv import *
 from std_msgs.msg import Int64
 from std_srvs.srv  import SetBool
+import time
 
 
 class Assembly_mode():
@@ -26,9 +32,23 @@ class Assembly_mode():
 
 		self.rotate_client = rospy.ServiceProxy('two_robot_task', twoRobot_Srv)
 
+		self.table = rospy.ServiceProxy('/rob1/ur_hardware_interface/set_io', SetIO)
+
+		self.state = rospy.Subscriber("/rob1/ur_hardware_interface/io_states", IOStates, self.io_state)
+		
 		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
 		self.chan = rospy.Service('chan_con', chan_Srv, self.chan_CB)
+
+		self.pub = rospy.Publisher('/two/start', Int64, queue_size=10)
+
+		self.sub = rospy.Subscriber("/two/finish", two_finsh, self.sub)
+
+		self.state = False
+
+		self.flag = False
+
+		self.pose = Pose()
 
 		# rospy.wait_for_service('update_tf')
 		# rospy.wait_for_service('camera_server_1')
@@ -43,6 +63,30 @@ class Assembly_mode():
 		# print asm
 
 		print "set"
+
+	def io_state(self, data):
+		self.state = data.digital_in_states[1].state
+		# print self.state
+
+	def tool_station(self, robot):
+		state = self.state
+		if robot is False:
+			self.table(1,0,1)
+			self.table(1,1,0)
+			self.table(1,2,0)
+			self.table(1,3,0)
+
+		else:
+			self.table(1,0,0)
+			self.table(1,1,1)
+			self.table(1,2,0)
+			self.table(1,3,0)
+
+		time.sleep(0.5)
+
+		while state is not True:
+			time.sleep(0.1)
+
 
 	def chan_CB(self, srv):
 		if srv.mode is 0: #camera mode
@@ -92,6 +136,9 @@ class Assembly_mode():
 
 		return True, asm, pin
 
+	def sub(self, data):
+		self.flag = data.success
+		self.Pose = data.object_pose
 		
 
 	def Asm_callback(self, data):
@@ -120,7 +167,18 @@ class Assembly_mode():
 				test_null.asm_pose.TransStamped = pin_pose
 
 			elif 'part5' in data.child.name[0]:
-				pass
+				robot = True
+				self.pr.part5_movement(robot)
+				# rob2 hold part pose
+				# rob2 part up
+				# rob2 movepoint1
+				# rob2 movepoint2
+				# rob2 forcemode -z [0,0,1,0,0,0]
+				# rob1 part2 spiral y+-
+				# rob1 part5 forcemode -z [0,0,1,0,0,0]
+				# rob2 등판 위(part5) 를 잡고 앞뒤로 흔들기
+				# rob2 part5 중심위치 눌러주기
+
 
 			else:
 
@@ -132,9 +190,12 @@ class Assembly_mode():
 				test_null.asm_pose.TransStamped = asm_pose
 		
 		elif data.type == 'screw':
-			if 'c104322' in data.child.name[0]:
+			if 'C104322' in data.child.name[0]:
 				print 'screw'
 				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
+
+			# else 'C122925' in data.child.name[0]:
+				# move position rob1, rob2
 
 
 		elif data.type == 'half_screw':
@@ -145,14 +206,21 @@ class Assembly_mode():
 
 			if abs(data.rot_radians) < 100:
 				msg = 90
+				self.pub.publish(msg)
+				self.flag = False 
+				
 
 			else:
 				msg = 180
-			result = self.rotate_client(msg)
+				self.pub.publish(msg)
+				self.flag = False 
 
-			print "result : {0}".format(result)
 
-			asm_pose = self.Trans_to_Pose(result.object_pose,'world','part6_1')
+			while self.flag is False:
+				time.sleep(0.1)
+
+
+			asm_pose = self.Trans_to_Pose(self.Pose,'world','part6_1')
 
 			test_null.result = True
 
@@ -180,6 +248,10 @@ class Assembly_mode():
 	def attach_test(self):
 		robot = False
 
+		self.tool_station(robot)
+
+		#tool station move
+
 		self.pr.grab_screw_tool(robot, 'tool2')
 
 		self.pr.attach_plate(robot)
@@ -192,6 +264,10 @@ class Assembly_mode():
 	def screw_pin_test(self, pin, part_hole, part_name):
 
 		robot = self.pr.hand_over_hole_check(part_hole)
+
+		self.tool_station(robot)
+
+		#tool station move
 
 		self.pr.grab_pin(robot, pin)
 
@@ -219,6 +295,10 @@ class Assembly_mode():
 		# robot = self.pr.hand_over_pin_check(pin, part_hole) #asm_msg.parent.target.name
 
 		robot = self.pr.hand_over_hole_check(part_hole)
+
+		self.tool_station(robot)
+
+		#tool station move
 		
 		self.pr.grab_pin(robot, pin) #asm_msg.child.pin
 

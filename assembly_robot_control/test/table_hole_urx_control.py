@@ -302,7 +302,7 @@ class UrxMotion():
         print "go??"
         raw_input()
 
-        hole_num = [2,3,1]#data input
+        hole_num = [1,2,3]#data input
 
         pin_num = [2,3,1]
 

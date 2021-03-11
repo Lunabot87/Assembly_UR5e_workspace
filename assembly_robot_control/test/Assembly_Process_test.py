@@ -241,7 +241,7 @@ class Assembly_process():
 
 			hole_trans_l[2] += 0.18 #why use?
 
-			if hole_name not in ['hole2-5', 'hole2-6', 'hole3-5', 'hole3-6']:
+			if hole_name not in ['part3_1-hole_7', 'part3_1-hole_8', 'part2_1-hole_8', 'part2_1-hole_7']:
 				hole_trans_l[3] = 3.1415
 				hole_trans_l[4] = 0
 				hole_trans_l[5] = -1.5707
@@ -252,7 +252,7 @@ class Assembly_process():
 		# self.am.move_to(xyz, robot)
 
 		
-			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.10, robot, collision=False)
+			result = self.am.move_motion(hole_trans_l[:3], tf.transformations.quaternion_from_euler(hole_trans_l[3],hole_trans_l[4],hole_trans_l[5]), 0.10, robot, c=True ,collision=False)
 			if result < -1: return -1 
 
 			# print return_hole
@@ -415,8 +415,34 @@ class Assembly_process():
 	###############################################################################################
 
 
+	def part5_movement(self, robot):
+		rob1 = False
+		rob2 = True
+
+		self.attach_motion(rob2, [])	# rob2 hold part pose
+		self.attach_motion(rob2, [])	# rob2 part up
+		self.attach_motion(rob2, [])	# rob2 movepoint1
+		self.attach_motion(rob2, [])	# rob2 movepoint2
+		self.torque_mode(rob2 ,[0,0,1,0,0,0], [0,0,-10,0,0,0])
+
+		self.attach_move(rob1, []) #hold part2 pre pose
+		self.attach_move(rob1, []) #hold part2 pose
+		self.gripper_control(rob1, 255)
+
+		#force control(spiral y-axis)
+
+		self.gripper_control(rob1, 0)
+
+		self.attach_move(rob1, []) #hold part2 pre pose
+
+		grab_ = self.tfBuffer.lookup_transform('world', 'part5_1-GRASP-1', self.rospy.Time(0))
+
+		grab_ = self.list_from_trans(grab_)
 
 
+		self.hold_assist(grab_[:3], grab[3:], 0.1, rob1) 
+
+		#motion rob1 
 
 
 
@@ -443,6 +469,10 @@ class Assembly_process():
 				if result.result is False:
 					print "result : {0}".format(result)
 					self.am.move_current_to(result.x, result.y, result.z, robot)
+
+					hole_ = self.tfBuffer.lookup_transform('world', hole_name, self.rospy.Time(0))
+
+					hole_ = self.list_from_trans(hole_)
 
 					trans_[0] = hole_[0] + result.x
 					trans_[1] = hole_[1] + result.y

@@ -63,9 +63,13 @@ class Assembly_motion():
     def torque_mode(self, robot ,force_mod, force_toq, tool = False, sleep = 0):
         urx = self.urx_rob1 if robot is False else self.urx_rob2
         urx.torque_mode(force_mod, force_toq, tool)
-        time.sleep(sleep)
+    
+    def end_mode(self, robot, gripper):
+        urx = self.urx_rob1 if robot is False else self.urx_rob2
+        urx.end_mode()
+        time.sleep()
+        urx.gripper_move_and_wait(gripper)
         self.program_running()
-       
 
     def suction_attach(self, robot, force_mod, force_toq):
         urx = self.urx_rob1 if robot is False else self.urx_rob2

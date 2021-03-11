@@ -59,6 +59,7 @@ add_message_files(
   hole_pose.msg
   String_list.msg
   Tool.msg
+  two_finsh.msg
 )
 
 ## Generate services in the 'srv' folder

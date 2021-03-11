@@ -59,7 +59,7 @@ part3_pose.pose.orientation.w = orientation_list[3]
 
 
 part5_pose.pose.position.x = -0.09
-part5_pose.pose.position.y = -0.36
+part5_pose.pose.position.y = -0.45
 part5_pose.pose.position.z += 0.01
 orientation_list = quaternion_from_euler(3.1415,-0.09,-1.5707)
 part5_pose.pose.orientation.x = orientation_list[0]

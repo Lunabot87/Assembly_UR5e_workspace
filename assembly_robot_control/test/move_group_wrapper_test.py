@@ -128,6 +128,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     z_axis = [0,0,1]
     return np.dot(z_axis, rot_zaxis)
 
+
   def _get_best_ik_plan(self, trans, rot, c, collision = True):
     '''
     [output]
