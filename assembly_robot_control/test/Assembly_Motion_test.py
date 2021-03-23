@@ -2,13 +2,13 @@
 #-*- coding:utf-8 -*-
 # import moveit_commander
 # import moveit_msgs.msg
-from Assembly_Urx_test import UrxMotion
+
 from Assembly_Math_test import *
 from move_group_wrapper_test import MoveGroupCommanderWrapper
 from std_srvs.srv import *
 from sensor_msgs.msg import *
 from ur_dashboard_msgs.srv import *
-
+from pandas import Series, DataFrame
 
 from utils.conversions import *
 
@@ -26,19 +26,16 @@ class Assembly_motion():
         
         self.mg_rob1.set_planner_id("RRTConnectkConfigDefault")
         self.mg_rob2.set_planner_id("RRTConnectkConfigDefault")
-        
-        self.urx_rob1 = UrxMotion("192.168.13.101")
-        self.urx_rob2 = UrxMotion("192.168.13.100")
 
-        self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
-        self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
+        # self.rob1_client = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/play', Trigger)
+        # self.rob2_client = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/play', Trigger)
 
-        self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
-        self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        # self.rob1_check = ros.ServiceProxy('/rob1/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
+        # self.rob2_check = ros.ServiceProxy('/rob2/ur_hardware_interface/dashboard/program_running', IsProgramRunning)
 
         self.rob_hand = ros.Publisher('/hand/joint_states', JointState, queue_size=10)
       
-        self.program_running()
+        # self.program_running()
 
         self.init_pose()
 
@@ -46,7 +43,7 @@ class Assembly_motion():
         # time = ros.Time()
 
 
-    def hand_mode(self, robot, pose):
+    def hand_mode(self, robot, pose): #그리퍼 작동 여부 적용
         if robot is False:
             hand = 'rob1_finger_joint'
         else:
@@ -58,32 +55,35 @@ class Assembly_motion():
         data.name.append(hand)
         data.position.append((pose/255.0)*0.8)
 
-        # self.rob_hand.publish(data)
+        self.rob_hand.publish(data)
 
     def torque_mode(self, robot ,force_mod, force_toq, tool = False, sleep = 0):
-        urx = self.urx_rob1 if robot is False else self.urx_rob2
-        urx.torque_mode(force_mod, force_toq, tool)
+        data = {'robot' : [robot],
+            "force_mod"  : [force_mod],
+            "force_toq" : [force_toq],
+            "tool" :  [tool],
+            "sleep" : [sleep]}
+        print "+++++++++++++torque_mode+++++++++++++++"
+        print DataFrame(data, columns = ['robot', "force_mod", "force_toq", "tool", "sleep"])
     
     def end_mode(self, robot, gripper):
-        urx = self.urx_rob1 if robot is False else self.urx_rob2
-        urx.end_mode()
-        time.sleep()
-        urx.gripper_move_and_wait(gripper)
-        self.program_running()
+        data = {'robot' : [robot],
+            "gripper"  : [force_mod]}
+        print "+++++++++++++end_mode+++++++++++++++"
+        print DataFrame(data, columns = ['robot', "gripper"])
 
     def suction_attach(self, robot, force_mod, force_toq):
-        urx = self.urx_rob1 if robot is False else self.urx_rob2
-        urx.suction_attach(force_mod, force_toq)
-        urx.gripper_move_and_wait(255)
-
-        self.program_running()
+        data = {'robot' : [robot],
+            "force_mod"  : [force_mod],
+            "force_toq" : [force_toq]}
+        print "+++++++++++++suction_attach+++++++++++++++"
+        print DataFrame(data, columns = ['robot', "force_mod", "force_toq"])
 
 
     def suction_align(self, robot):
-        urx = self.urx_rob1 if robot is False else self.urx_rob2
-        urx.suction_align()
-        urx.gripper_move_and_wait(255)
-        self.program_running()
+        data = {'robot' : [robot]}
+        print "+++++++++++++suction_align+++++++++++++++"
+        print DataFrame(data, columns = ['robot'])
 
 
 
@@ -134,73 +134,49 @@ class Assembly_motion():
     def camera_pose(self, robot):
         if robot is False:
             camera_pose_data = self.mg_rob1.get_named_target_values("rob1_camera_pose")
-            #self.mg_rob1.go(camera_pose_data)
             plan = self.mg_rob1.plan(camera_pose_data)
-            # print "move_camera?"
-            # raw_input()
             self.mg_rob2.execute(plan)
         else:
             camera_pose_data = self.mg_rob2.get_named_target_values("rob2_camera_pose")
             plan = self.mg_rob2.plan(camera_pose_data)
-            # print "move_camera?"
-            # raw_input()
             self.mg_rob2.execute(plan)
 
     def grab_tool(self, robot, tool, reverse = False):
         if robot is False:
             rob_tool = 'rob1'
             rob = self.mg_rob1
-            urx = self.urx_rob1
         else:
             rob_tool = 'rob2'
             rob = self.mg_rob2
-            urx = self.urx_rob2
 
         if reverse is False:
-            urx.gripper_move_and_wait(0)
             self.hand_mode(robot, 0)
-            self.program_running()
         else:
-            urx.gripper_move_and_wait(255)
             self.hand_mode(robot, 255)
-            self.program_running()
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
-        # print "move_camera?"
-        # raw_input()
         rob.execute(plan, wait=True)
 
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_pre_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
-        # print "move_camera?"
-        # raw_input()
         rob.execute(plan, wait=True)
 
 
         tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_grasp_pose")
         plan = rob.plan(tool_pre_grab) 
-        # print "move_camera?"
-        # raw_input()
         rob.execute(plan, wait=True)
 
         if reverse is False:
-            urx.gripper_move_and_wait(255)
             self.hand_mode(robot, 255)
-            self.program_running()
         else:
-            urx.gripper_move_and_wait(0)
             self.hand_mode(robot, 0)
-            self.program_running()
 
         if tool is not 'tool2':
 
-
             tool_pre_grab = rob.get_named_target_values(rob_tool + "_"+tool+"_pre_grasp_pose")
             plan = rob.plan(tool_pre_grab) 
-            # print "move_camera?"
-            # raw_input()
             rob.execute(plan)
 
 
@@ -224,13 +200,11 @@ class Assembly_motion():
             rob_pin_pre_grasp = self.mg_rob1.get_named_target_values("rob1_" + pin_name + "_pre_grasp")
             rob_pin_grasp = self.mg_rob1.get_named_target_values("rob1_" + pin_name + "_grasp")
             mg_rob = self.mg_rob1
-            urx_rob = self.urx_rob1
         else:
             rob = "rob2"
             rob_pin_pre_grasp = self.mg_rob2.get_named_target_values("rob2_" + pin_name + "_pre_grasp")
             rob_pin_grasp = self.mg_rob2.get_named_target_values("rob2_" + pin_name + "_grasp")
             mg_rob = self.mg_rob2
-            urx_rob = self.urx_rob2
         #################################################################################
         # 핀 고유의 이름에 맞춘 위치 지점으로 가도록 함
         # rob1_pin1_pre_grasp = self.mg_rob1.get_named_target_values("rob1_"+pin_name+"_pre_grasp")
@@ -239,15 +213,15 @@ class Assembly_motion():
 
         mg_rob.go(rob_pin_pre_grasp)
         time.sleep(0.2)
-        urx_rob.gripper_move_and_wait(150)
+
         self.hand_mode(False ,150)
-        self.program_running()
+
 
         
         mg_rob.go(rob_pin_grasp)
-        urx_rob.gripper_move_and_wait(255)
+
         self.hand_mode(False, 255)
-        self.program_running()
+
 
         waylist = []
 
@@ -257,27 +231,10 @@ class Assembly_motion():
 
         waylist.append(copy.deepcopy(waypoint))
 
-        # waypoint.position.z += 0.1
-
-        # waylist.append(copy.deepcopy(waypoint))
-
-        # waypoint.position.z += 0.1
-
-        # waylist.append(copy.deepcopy(waypoint))
-
         plan, fraction = mg_rob.compute_cartesian_path(waylist, 0.01, 0)
 
         print "plan : {0}".format(plan)
         mg_rob.execute(plan, wait=True)
-
-        # print "addbox"
-        # raw_input()
-
-        # mg_rob.addbox(rob, pin_name)
-        # print "attachbox"
-        # raw_input()
-
-        # mg_rob.attachbox(rob, pin_name)
 
     def cartestian_move(self, robot, waypoint):
         if robot is False:
@@ -312,11 +269,8 @@ class Assembly_motion():
             rob = self.mg_rob2
 
         pose = euler2Pose(target_pose)
-        print pose
         traj = rob.set_pose_target(pose)
         plan = rob.plan(traj)
-        print "move_to_go?"
-        raw_input()
         rob.execute(plan, wait=True)
 
     def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False, _check = False, collision = True):
@@ -361,17 +315,12 @@ class Assembly_motion():
         c_pose.position.x += x
         c_pose.position.y += y
 
-        # print c_pose
-
         traj = rob.set_pose_target(c_pose)
 
 
         plan = rob.plan(traj)
-        # print "go?"
-        # raw_input()
-        rob.execute(plan, wait=True)
 
-        # rob.go(traj)
+        rob.execute(plan, wait=True)
 
 
     def move_current_up(self, z, robot):
@@ -385,14 +334,11 @@ class Assembly_motion():
 
         traj = rob.set_pose_target(c_pose)
         plan = rob.plan(traj)
-        # print "go?"
-        # raw_input()
+
         rob.execute(plan, wait=True)
 
     def current_pose(self, robot, reset = False, pose = None):
         rob = self.mg_rob1 if robot is False else self.mg_rob2
-
-        print rob.get_current_pose().pose
 
         if reset is False:
             return rob.get_current_pose().pose
@@ -411,9 +357,6 @@ class Assembly_motion():
         rob.set_joint_value_target(joint_value)
 
         plan = rob.plan()
-
-        print"go?"
-        raw_input()
 
         rob.execute(plan, wait=True)
             
@@ -435,10 +378,8 @@ class Assembly_motion():
         self.mg_rob2.go(rob2_hand_over_pin)
 
         # rob2 close gripper
-        self.urx_rob2.gripper_move_and_wait(255)
         self.hand_mode(True, 255)
         # rob1 open gripper
-        self.urx_rob1.gripper_move_and_wait(0)
         self.hand_mode(False, 0)
 
         self.program_running()
@@ -453,65 +394,39 @@ class Assembly_motion():
     def hold_assistant(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False):
         if robot is False:
             rob = self.mg_rob1
-            urx = self.urx_rob1
         else:
             rob = self.mg_rob2
-            urx = self.urx_rob2
 
-        urx.gripper_move_and_wait(0)
         self.hand_mode(robot, 0)
-        self.program_running()
 
         r = rob.move_to_hold_part(grasp_trans, grasp_rot, grasp_offset, c)
         if r is False: return r
 
-
-        urx.gripper_move_and_wait(255)
         self.hand_mode(robot, 255)
-        self.program_running()
 
 
         
     def gripper_control(self, robot, target):
-        if robot is False:
-            rob = self.mg_rob1
-            urx = self.urx_rob1
-        else:
-            rob = self.mg_rob2
-            urx = self.urx_rob2
-        urx.gripper_move_and_wait(target)
         self.hand_mode(robot, target)
-        self.program_running()
 
 
 
  
     def sprial_pin(self, robot = False, pitch = 0, gripper = 0):
-        # spiral motion을 진행하면서 pin을 insert 하는 작업
-        # force값을 받아서 pin이 insert가 되었는지 아닌지 확인
-        # insert가 되면 모션 중지하고 True를 반환
-        # motion을 끝까지 진행하였는데도 insert가 안되었으면 False를 반환
-        #####
-        urx = self.urx_rob2 if robot is True else self.urx_rob1          
+       
+        print "*****************spiral*****************"
 
-        result = urx.spiral_motion(pitch)
-        urx.gripper_move_and_wait(gripper)
         self.hand_mode(robot, gripper)
-        self.program_running()
 
-        return result
+        return True
 
     def screw_motion(self, pitch = 0, robot = False):
-
-        urx = self.urx_rob2 if robot is True else self.urx_rob1  
 
 
         print "go down now? \n\ncheck tool?"
         raw_input()        
 
-        result = urx.screw_motion(pitch)
-
-        return result
+        return True
         # return is_inserted
 
 

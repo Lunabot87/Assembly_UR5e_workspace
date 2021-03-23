@@ -28,13 +28,11 @@ class Assembly_mode():
 
 		self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback)
 
-		# self.srv = rospy.Service('to_RobotControl', asm_Srv, self.Asm_callback_pass)
-
 		self.rotate_client = rospy.ServiceProxy('two_robot_task', twoRobot_Srv)
 
-		self.table = rospy.ServiceProxy('/rob1/ur_hardware_interface/set_io', SetIO)
+		# self.table = rospy.ServiceProxy('/rob1/ur_hardware_interface/set_io', SetIO)
 
-		self.state = rospy.Subscriber("/rob1/ur_hardware_interface/io_states", IOStates, self.io_state)
+		# self.state = rospy.Subscriber("/rob1/ur_hardware_interface/io_states", IOStates, self.io_state)
 		
 		self.srv = rospy.Service('to_HoleCheck', asm_Srv, self.Asm_tfupdate_server)
 		#chan cotrol
@@ -50,17 +48,7 @@ class Assembly_mode():
 
 		self.pose = Pose()
 
-		# rospy.wait_for_service('update_tf')
-		# rospy.wait_for_service('camera_server_1')
-		# rospy.wait_for_service('camera_server_2')
-		
-		# tf_update = rospy.ServiceProxy('update_tf', SetBool)
-		# tf_update(True)
-
-		
-		# asm = TransStamped().TransStamped.header
-
-		# print asm
+		rospy.wait_for_service('update_tf')
 
 		print "set"
 
@@ -157,7 +145,7 @@ class Assembly_mode():
 
 		# 실제 작업용 
 		if data.type == 'insert':
-			if 'C101350' in data.child.name[0] or 'C122620' in data.child.name[0]:
+			if 'c101350' in data.child.name[0] or 'c122620' in data.child.name[0]:
 				print "pin"
 				_result, pin_pose = self.insert_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 				pin_list.append(pin_pose)
@@ -190,7 +178,7 @@ class Assembly_mode():
 				test_null.asm_pose.TransStamped = asm_pose
 		
 		elif data.type == 'screw':
-			if 'C104322' in data.child.name[0]:
+			if 'c104322' in data.child.name[0]:
 				print 'screw'
 				_result, pin_pose = self.screw_pin_test(data.child.name[0], data.parent.holepin[0], data.parent.name[0])
 
@@ -220,7 +208,7 @@ class Assembly_mode():
 				time.sleep(0.1)
 
 
-			asm_pose = self.Trans_to_Pose(self.Pose,'world','part6_1')
+			asm_pose = self.Trans_to_Pose(self.Pose,'world','part6')
 
 			test_null.result = True
 
@@ -248,7 +236,7 @@ class Assembly_mode():
 	def attach_test(self):
 		robot = False
 
-		self.tool_station(robot)
+		# self.tool_station(robot)
 
 		#tool station move
 
@@ -265,7 +253,7 @@ class Assembly_mode():
 
 		robot = self.pr.hand_over_hole_check(part_hole)
 
-		self.tool_station(robot)
+		# self.tool_station(robot)
 
 		#tool station move
 
@@ -296,7 +284,7 @@ class Assembly_mode():
 
 		robot = self.pr.hand_over_hole_check(part_hole)
 
-		self.tool_station(robot)
+		# self.tool_station(robot)
 
 		#tool station move
 		
@@ -320,9 +308,6 @@ class Assembly_mode():
 
 	def insert_part_test(self, pa_name, pa_hole_list, ch_name, ch_hole_list):
 		# rob1, rob2 작업, rob1이 작업 중심
-
-		
-
 
 		if len(pa_name) < 2:
 			self.pr.am.init_pose()

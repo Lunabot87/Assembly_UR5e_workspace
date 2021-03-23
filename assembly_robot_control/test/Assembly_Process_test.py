@@ -62,7 +62,7 @@ class Assembly_process():
 
 	def hole_find_update(self, pa_part, hole_name):
 
-		not_hand_over = ['C122620_1','C122620_2' ,'C122620_3' ,'C122620_4']
+		not_hand_over = ['c122620_1','c122620_2' ,'c122620_3' ,'c122620_4']
 
 		rob1_trans = self.tfBuffer.lookup_transform('rob1_real_base_link', hole_name, self.rospy.Time(0))
 
@@ -241,7 +241,7 @@ class Assembly_process():
 
 			hole_trans_l[2] += 0.18 #why use?
 
-			if hole_name not in ['part3_1-hole_7', 'part3_1-hole_8', 'part2_1-hole_8', 'part2_1-hole_7']:
+			if hole_name not in ['hole3-1', 'hole3-2', 'hole2-1', 'hole2-2']:
 				hole_trans_l[3] = 3.1415
 				hole_trans_l[4] = 0
 				hole_trans_l[5] = -1.5707
@@ -435,7 +435,7 @@ class Assembly_process():
 
 		self.attach_move(rob1, []) #hold part2 pre pose
 
-		grab_ = self.tfBuffer.lookup_transform('world', 'part5_1-GRASP-1', self.rospy.Time(0))
+		grab_ = self.tfBuffer.lookup_transform('world', 'part5-GRASP-1', self.rospy.Time(0))
 
 		grab_ = self.list_from_trans(grab_)
 
@@ -452,7 +452,7 @@ class Assembly_process():
 
 		hole_ = self.list_from_trans(hole_)
 
-		trans_ = [0,0,0,0,0,0,0]
+		trans_ = hole_
 		
 		for count in range(10):
 
@@ -495,6 +495,8 @@ class Assembly_process():
 
 					return trans_[:2]+hole_[2:]
 						
+		self.br.sendTransform(self.trans_from_list(hole_, 'world', 'update'))
+
 		return trans_[:2]+hole_[2:]
 
 

@@ -126,7 +126,9 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
     rot_zaxis = eef_mat[:3,1]
 
     z_axis = [0,0,1]
-    return np.dot(z_axis, rot_zaxis)
+    y_axis = [0,1,0]
+    x_axis = [1,0,0]
+    return [np.dot(x_axis, rot_zaxis), np.dot(y_axis, rot_zaxis), np.dot(z_axis, rot_zaxis)]
 
 
   def _get_best_ik_plan(self, trans, rot, c, collision = True):
@@ -175,7 +177,7 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         abs_axis = map(abs, axis)
 
         if c is True:
-          if self._wrist_joint_axis(selected_q) < 0:
+          if self._wrist_joint_axis(selected_q)[2] < 0:
             continue
 
         if abs_axis.index(max(abs_axis)) == 1 and m.ceil(axis[1]) == 1:
@@ -184,6 +186,9 @@ class MoveGroupCommanderWrapper(MoveGroupCommander):
         #     continue
         elif selected_q[2] > 0 and selected_q[0] < 0 or selected_q[2] < 0 and selected_q[0] > 0:
           continue
+
+        # elif selected_q[3] > 0.8:
+        #   continue
         else:
           traj = self.plan(self._list_to_js(selected_q))
           print "selected q: ", selected_q
