@@ -35,6 +35,8 @@ class Assembly_process():
 
 		self.mid_check = ros.ServiceProxy('check_ASM_possible', check_Srv)
 
+		# self.tool_pub = rospy.Publisher("/tool/control", Tool)
+
 		time.sleep(2)
 
 
@@ -912,8 +914,8 @@ class Assembly_process():
 			base_link= 'rob2_real_base_link'
 			rob = "rob2_"
 
-		print "screw_drive"
-		raw_input()
+		# print "screw_drive"
+		# raw_input()
 
 		trans = self.tfBuffer.lookup_transform(rob + 'screw_tool_link', ee_link, self.rospy.Time(0))
 
@@ -1140,49 +1142,61 @@ class Assembly_process():
 	def attach_plate(self, robot):
 
 		# waypoint1 
-		print "waypoint1"
-		raw_input()
+		# print "waypoint1"
+		# raw_input()
 
 		self.am.attach_motion(robot, [-1.34457284609, -1.42656166971, -0.667553901672, -4.17625465016, -1.46750957171, -0.00291997591128])
 
 		# waypoint2
 
-		print "waypoint2"
-		raw_input()
+		# print "waypoint2"
+		# raw_input()
 
 		self.am.attach_motion(robot, [-2.56117803255, -1.45668204248, -1.61196041107, -3.21516432385, -0.987765614186, 0.000255584716797])
 
 
-		print "suction_attach"
-		raw_input()
+		# print "suction_attach"
+		# raw_input()
 
 		self.am.suction_attach(robot, [0,0,1,0,0,0], [0,0,-5,0,0,0])
 
-		print "suction on"
-		raw_input()
+		data = Tool()
 
-		print "waypoint3"
-		raw_input()
+		data.name = 'tool2'
+		data.switch = True
+
+		self.tool_pub(data)
+
+		# print "waypoint3"
+		# raw_input()
 
 		self.am.attach_motion(robot, [-2.48155194918, -1.67284931759, -0.77380657196, -3.83269800762, -1.64082271258, 1.57356262207e-05])
 
-		print "waypoint4"
-		raw_input()
+		# print "waypoint4"
+		# raw_input()
 
 		self.am.attach_motion(robot, [-1.0631535689, -1.53731520594, -0.916102409363, -3.82601179699, -1.14120322863, -0.00082236925234])
 
-		print "align"
-		raw_input()
+		# print "align"
+		# raw_input()
 
 		self.am.suction_align(robot)
 
-		print "suction off"
-		raw_input()
+
+		data = Tool()
+
+		data.name = 'tool2'
+		data.switch = False
+
+		self.tool_pub(data)
+
+		# print "suction off"
+		# raw_input()
 
 		self.am.move_current_up(0.02, robot)
 
-		print "back?"
-		raw_input()
+		# print "back?"
+		# raw_input()
 
 
 		 

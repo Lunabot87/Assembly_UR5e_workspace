@@ -70,7 +70,19 @@ class Assembly_mode():
 
 	def tool_station(self, robot):
 		state = self.state
+
+		print"table"
+
 		if robot is False:
+
+			self.table(1,0,0)
+			self.table(1,1,0)
+			self.table(1,2,0)
+			self.table(1,3,0)
+
+
+			time.sleep(0.1)
+
 			self.table(1,0,1)
 			self.table(1,1,0)
 			self.table(1,2,0)
@@ -78,14 +90,19 @@ class Assembly_mode():
 
 		else:
 			self.table(1,0,0)
+			self.table(1,1,0)
+			self.table(1,2,0)
+			self.table(1,3,0)
+
+
+			time.sleep(0.1)
+			
+			self.table(1,0,0)
 			self.table(1,1,1)
 			self.table(1,2,0)
 			self.table(1,3,0)
 
-		time.sleep(0.5)
-
-		while state is not True:
-			time.sleep(0.1)
+		time.sleep(30)
 
 
 	def chan_CB(self, srv):
@@ -187,7 +204,7 @@ class Assembly_mode():
 				asm_pose = self.insert_part_test(data.parent.name, data.parent.holepin, data.child.name, data.child.holepin)
 
 				test_null.result = True
-				test_null.asm_pose.TransStamped = asm_pose
+				
 		
 		elif data.type == 'screw':
 			if 'C104322' in data.child.name[0]:

@@ -199,8 +199,10 @@ class UR5eInvKinForTF():
     # sorted_idx, sorted_diff = self._get_diff_idx(inv_sol, cur_joint)
 
     inv_sol_full = []
-    wrist_down = []
-    # wrist_down = [1, 2, 6, 7] if c is True else [0 ,5, 6, 7] 
+    # wrist_down = []
+    wrist_down = [1, 2, 6, 7] 
+    if c is True: 
+      wrist_down = [0,5,6,7]
     for i in range(8):
       diff = 0.0
       if i in wrist_down:

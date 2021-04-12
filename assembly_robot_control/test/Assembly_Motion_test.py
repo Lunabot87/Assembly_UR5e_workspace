@@ -315,8 +315,8 @@ class Assembly_motion():
         print pose
         traj = rob.set_pose_target(pose)
         plan = rob.plan(traj)
-        print "move_to_go?"
-        raw_input()
+        # print "move_to_go?"
+        # raw_input()
         rob.execute(plan, wait=True)
 
     def move_motion(self, grasp_trans, grasp_rot, grasp_offset, robot, c=False, _check = False, collision = True):
@@ -412,8 +412,8 @@ class Assembly_motion():
 
         plan = rob.plan()
 
-        print"go?"
-        raw_input()
+        # print"go?"
+        # raw_input()
 
         rob.execute(plan, wait=True)
             
@@ -506,8 +506,8 @@ class Assembly_motion():
         urx = self.urx_rob2 if robot is True else self.urx_rob1  
 
 
-        print "go down now? \n\ncheck tool?"
-        raw_input()        
+        # print "go down now? \n\ncheck tool?"
+        # raw_input()        
 
         result = urx.screw_motion(pitch)
 

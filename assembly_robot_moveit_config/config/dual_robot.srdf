@@ -160,16 +160,16 @@
 
 
     <group_state name="rob2_tool1_pre_grasp_pose" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.31786996523" />
-        <joint name="rob2_shoulder_lift_joint" value="-1.72406496624" />
-        <joint name="rob2_elbow_joint" value="-2.16645908356" />        
-        <joint name="rob2_wrist_1_joint" value="-2.39162792782" />
-        <joint name="rob2_wrist_2_joint" value="-0.743960205709" />
-        <joint name="rob2_wrist_3_joint" value="-0.000592533742086" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.35440332094" />
+        <joint name="rob2_shoulder_lift_joint" value="-1.76200880627" />
+        <joint name="rob2_elbow_joint" value="-2.11928653717" />        
+        <joint name="rob2_wrist_1_joint" value="-2.40068258862" />
+        <joint name="rob2_wrist_2_joint" value="-0.781638447438" />
+        <joint name="rob2_wrist_3_joint" value="-0.000736538563864" />
     </group_state>
 
 
-         
+              
 
 
 <!--tool1_grasp pose-->
@@ -195,17 +195,17 @@
     </group_state>
 
     <group_state name="rob2_tool1_grasp_pose" group="rob2_arm">
-        <joint name="rob2_shoulder_pan_joint" value="-2.58330995241" />
-        <joint name="rob2_shoulder_lift_joint" value="-2.07509579281" />
-        <joint name="rob2_elbow_joint" value="-1.65911579132" />        
-        <joint name="rob2_wrist_1_joint" value="-2.54793276409" />
-        <joint name="rob2_wrist_2_joint" value="-1.01055747667" />
-        <joint name="rob2_wrist_3_joint" value="-0.000448528920309" />
+        <joint name="rob2_shoulder_pan_joint" value="-2.49540788332" />
+        <joint name="rob2_shoulder_lift_joint" value="-2.12605347256" />
+        <joint name="rob2_elbow_joint" value="-1.56428432465" />        
+        <joint name="rob2_wrist_1_joint" value="-2.59166588406" />
+        <joint name="rob2_wrist_2_joint" value="-0.92279845873" />
+        <joint name="rob2_wrist_3_joint" value="-0.00062829652895" />
     </group_state>
 
 
      
-
+    
 
 
 <!--pre grasp-->

@@ -448,8 +448,8 @@ class UrxMotion():
                 break
         time.sleep(0.1)
 
-        print "real_insert now?"
-        raw_input()
+        # print "real_insert now?"
+        # raw_input()
 
         
 
@@ -467,8 +467,8 @@ class UrxMotion():
 
         time.sleep(3)
 
-        print "reverse now?"
-        raw_input()
+        # print "reverse now?"
+        # raw_input()
 
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
@@ -708,8 +708,8 @@ class UrxMotion():
                 break
         time.sleep(0.1)
 
-        print "real_insert now?"
-        raw_input()
+        # print "real_insert now?"
+        # raw_input()
 
         
 
@@ -727,8 +727,8 @@ class UrxMotion():
 
         time.sleep(3)
 
-        print "reverse now?"
-        raw_input()
+        # print "reverse now?"
+        # raw_input()
 
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
@@ -791,8 +791,8 @@ class UrxMotion():
         force_mod = [0,0,1,1,0,0]
         force_toq = [0,0,-15,0,0,0] 
 
-        print "down?"
-        raw_input()
+        # print "down?"
+        # raw_input()
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.05)\n"
@@ -815,11 +815,11 @@ class UrxMotion():
                 self.robot.send_program("end_force_mode()")
                 break
 
-        force_mod = [1,0,1,1,1,0]
-        force_toq = [0,0,-15,0,2,0] 
+        force_mod = [1,0,1,1,0,0]
+        force_toq = [0,0,-15,0,0,0] 
 
-        print "down?"
-        raw_input()
+        # print "down?"
+        # raw_input()
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.05)\n"
@@ -930,10 +930,10 @@ def main():
 
     # rob1.torque_mode([0,0,1,0,0,0], [0,0,10,0,0,0])
 
-    print "free_drive"
-    raw_input()
+    # print "free_drive"
+    # raw_input()
 
-    rob2.screw_motion_cus()
+    # rob2.screw_motion_cus()
     # rob2.freedrive_mode()
 
     # rob2._gripper_move(100)

@@ -18,7 +18,7 @@ class Tool_pulisher():
 
 		self.io_pub = rospy.ServiceProxy('/rob2/ur_hardware_interface/set_io', SetIO)
 		self.state = rospy.Subscriber("/rob2/ur_hardware_interface/io_states", IOStates, self.io_state)
-		self.tool_sub = rospy.Subscriber("/tool/control", String, self.tool_cb)
+		self.tool_sub = rospy.Subscriber("/tool/control", Tool, self.tool_cb)
 		
 
 		self.run = False
@@ -36,64 +36,70 @@ class Tool_pulisher():
 		self.run = False
 		if 'tool1' in data.name :
 
-			self.io_pub(1,4,1)
-			self.io_pub(1,5,0)
+			self.io_pub(1,7,1)
+			self.io_pub(1,6,0)
 
 			if data.switch is True:
 
 				if data.speed == 1:
-					self.io_pub(1,6,0)
-					self.io_pub(1,7,1)
+					self.io_pub(1,5,1)
+					self.io_pub(1,4,0)
 
 				elif data.speed == 2:
-					self.io_pub(1,6,1)
 					self.io_pub(1,7,0)
+					self.io_pub(1,6,1)
+					self.io_pub(1,5,1)
+					self.io_pub(1,4,0)
 
 				else:
-					self.io_pub(1,6,0)
-					self.io_pub(1,7,0)
+					self.io_pub(1,4,0)
+					self.io_pub(1,5,1)
+					self.io_pub(1,6,1)
+					self.io_pub(1,7,1)
 
 			else:
-				self.io_pub(1,4,1)
-				self.io_pub(1,5,1)
-				self.io_pub(1,6,1)
-				self.io_pub(1,7,1)
+				self.io_pub(1,4,0)
+				self.io_pub(1,5,0)
+				self.io_pub(1,6,0)
+				self.io_pub(1,7,0)
 
 		elif 'tool2' in data.name:
 
-			self.io_pub(1, 4, 0)
+			self.io_pub(1, 7, 0)
 
-			self.io_pub(1, 5, 0)
+			self.io_pub(1, 6, 0)
 
-			self.io_pub(1, 6, 1)
+			self.io_pub(1, 5, 1)
 
 			if data.switch is True:
 
-				self.io_pub(1, 7, 1)
+				self.io_pub(1, 4, 1)
 
 			else:
-				self.io_pub(1, 7, 0)
+				self.io_pub(1, 4, 0)
 
 		elif 'tool3' in data.name:
 
-			self.io_pub(1,4,0)
+			self.io_pub(1,7,0)
 
-			self.io_pub(1,5,1)
+			self.io_pub(1,6,1)
 
 			if data.switch is True:
 
 				if data.speed == 1:
-					self.io_pub(1,6,0)
-					self.io_pub(1,7,1)
+					self.io_pub(1,5,0)
+					self.io_pub(1,4,1)
 
 				else:
-					self.io_pub(1,6,1)
-					self.io_pub(1,7,0)
+					self.io_pub(1,4,1)
+					self.io_pub(1,5,0)
+					self.io_pub(1,6,0)
+					self.io_pub(1,7,1)
 			else:
-				self.io_pub(1,4,1)
-				self.io_pub(1,5,1)
-				self.io_pub(1,6,1)
-				self.io_pub(1,7,1)
+				self.io_pub(1,7,0)
+				self.io_pub(1,6,0)
+				self.io_pub(1,5,0)
+				self.io_pub(1,4,0)
 		else:
 			print "no mode"
 
