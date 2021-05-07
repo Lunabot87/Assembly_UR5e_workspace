@@ -21,7 +21,7 @@ class UrxMotion():
                 self.robot = urx.URRobot(self.robot_ip, use_rt=True)        
                 connected = True    
             except:     
-                time.sleep(1)  
+                time.sleep(0.5)  
 
     def _format_move(self, command, tpose, acc, vel, radius=0, prefix=""):
         tpose = [round(i, 6) for i in tpose]

@@ -44,7 +44,7 @@ class Interface_for_Robot():
         # raw_input()
 
         # parent = Asm_test(["chair_part6"], ["hole6-1"])
-        # child = Asm_test(["c101350_1"], ['c101350_1'])
+        # child = Asm_test(["C101350_1"], ['C101350_1'])
         # resp = self.client_for_robot("insert", parent, child, 0)
         # print "next?"
         # raw_input()
@@ -85,9 +85,9 @@ class Interface_for_Robot():
         # print "next?"
         # raw_input()
 
-        parent = Asm_test(["chair_part6"], ["hole6-3", "hole6-4"])
-        child = Asm_test(["chair_part3"], ["hole3-3", "hole3-4"])
-        resp = self.client_for_robot("insert", parent, child, 0)
+        # parent = Asm_test(["chair_part6"], ["hole6-3", "hole6-4"])
+        # child = Asm_test(["chair_part3"], ["hole3-3", "hole3-4"])
+        # resp = self.client_for_robot("insert", parent, child, 0)
         # print "fin?"
         # raw_input()
 

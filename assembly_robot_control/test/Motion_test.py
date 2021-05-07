@@ -212,18 +212,218 @@ class Motion_test():
         ##################################
 
 
-        ###### part6 start #####
-        self.urx_rob1.gripper_move_and_wait(120)
-        cur = self.urx_rob1.robot.getl()
-        cur[1] += 0.3
-        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        self.urx_rob1.gripper_move_and_wait(0)
-        cur[2] += 0.3
-        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        ###### part6 start init #####
+        # self.urx_rob1.gripper_move_and_wait(120)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[1] += 0.3
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob1.gripper_move_and_wait(0)
+        # cur[2] += 0.3
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
 
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
+        ###############################
+
+        ###### part6 insert ##########
+        self.urx_rob2.robot.movej(part5_grap_pre, vel = 1.05, acc = 1.4)
+        cur = self.urx_rob2.robot.getl()
+        cur[2] -= 0.4
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        self.urx_rob2.gripper_move_and_wait(255)
+        cur[2] += 0.4
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        self.urx_rob2.robot.movej(waypoint1, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(waypoint2, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(waypoint3, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(waypoint4, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(goal1, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(goal2, vel = 1.05, acc = 1.4)
+
+        self.urx_rob2.robot.send_program("zero_ftsensor()")
+        time.sleep(0.1)
+
+        force_mod = [0,0,1,1,0,0]
+        force_toq = [0,0,-15,0,0,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob2.robot.send_program(cmd_str)
+
+        while(True):
+            try:
+                force = self.urx_rob2.robot.get_tcp_force()
+
+                if force[2] > 10:
+                    self.urx_rob2.robot.send_program("end_force_mode()")
+                    break
+            except KeyboardInterrupt:
+                self.urx_rob2.robot.send_program("end_force_mode()")
+                break
+
+        force_mod = [1,0,1,1,1,0]
+        force_toq = [0,0,-15,0,2,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob2.robot.send_program(cmd_str)
+
+        #######part6_part2_insert motion#########
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.robot.movej(part6_pose1_1, vel = 1.05, acc = 1.4)
+        self.urx_rob1.robot.movej(part6_pose1_2, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[0] -= 0.2
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+        self.urx_rob1.spiral_motion()
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(part6_pose1_2, vel = 1.05, acc = 1.4)
+        self.urx_rob1.robot.movej(part6_pose1_1, vel = 1.05, acc = 1.4)
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+
+
+        self.urx_rob1.robot.movej(part6_hold1_rob1, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[2] -= 0.1
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+        force_mod = [1,1,1,0,1,0]
+        force_toq = [0,0,-15,0,-2,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+
+        ################part4 insert motion####################
+
+        self.urx_rob2.robot.send_program("end_force_mode()")
+
+        self.urx_rob2.gripper_move_and_wait(0)
+
+
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
+        cur = self.urx_rob2.robot.getl()
+        cur[2] -= 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob2.gripper_move_and_wait(255)
+
+        self.urx_rob2.spiral_motion()
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(part6_hold2_rob1, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+        force_mod = [1,1,1,0,0,0]
+        force_toq = [0,0,-15,0,0,0] 
+
+        print "down?"
+        raw_input()
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+
+        ###############part3 insert motion ########################
+
+        self.urx_rob2.gripper_move_and_wait(0)
+        cur = self.urx_rob2.robot.getl()
+        cur[2] += 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+
+        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob2.robot.getl()
+        cur[0] += 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob2.gripper_move_and_wait(255)
+
+        self.urx_rob2.spiral_motion()
+
+        self.urx_rob2.gripper_move_and_wait(0)
+
+        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+
+
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+
+
+        self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
+        cur = self.urx_rob2.robot.getl()
+        cur[2] -= 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        print "down?"
+        raw_input()
+
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-50,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob2.robot.send_program(cmd_str)
 
 
 
