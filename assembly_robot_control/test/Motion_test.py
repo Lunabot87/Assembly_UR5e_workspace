@@ -80,147 +80,7 @@ class Motion_test():
             self.mg_rob1.go(rob1_init_pose)
             self.mg_rob2.go(rob2_init_pose)
 
-    def test_motion(self):
-        # self.urx_rob2.robot.movej(part2_hold_pre_2)
-        # cur = self.urx_rob2.robot.getl()
-        # cur[2] -= 0.2
-        # self.urx_rob2.robot.movel(cur)
-
-        ###### part2 insert ######
-        # self.urx_rob1.robot.movej(part2_grap_pre, vel = 1.05, acc = 1.4)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] -= 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.gripper_move_and_wait(255)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] += 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.robot.movej(part2_rotate, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.robot.movej(part2_insert, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.spiral_motion()
-
-
-        #####gripper open#####
-        # self.urx_rob1.gripper_move_and_wait(0)
-
-        ##init pose##
-
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] += 0.4
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.mg_rob1.get_named_target_values("rob1_init_pose")
-
-        #############################
-
-
-        ###### part3 insert ######
-
-        # self.urx_rob2.robot.movej(part3_grap_pre, vel = 1.05, acc = 1.4)
-
-        # cur = self.urx_rob2.robot.getl()
-        # cur[2] -= 0.2
-        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.gripper_move_and_wait(255)
-        # cur = self.urx_rob2.robot.getl()
-        # cur[2] += 0.2
-        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.robot.movej(part3_rotate, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.robot.movej(part3_insert, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.spiral_motion()
-
-
-        #####gripper open#####
-        # self.urx_rob2.gripper_move_and_wait(0)
-
-        ############################
-
-        ### part3  wood pin insert ###
-
-        # self.urx_rob1.robot.movej(rob1_101350_pre_2, vel = 1.05, acc = 1.4)
-        # print "grip?"
-        # raw_input()
-        # self.urx_rob1.robot.movej(part3_hole3, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.spiral_motion()
-        # self.urx_rob1.gripper_move_and_wait(180)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] += 0.1
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.robot.movej(rob1_101350_pre_2, vel = 1.05, acc = 1.4)
-        # print "grip?"
-        # raw_input()
-        # self.urx_rob1.robot.movej(part3_hole4, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.spiral_motion()
-        # self.urx_rob1.gripper_move_and_wait(180)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] += 0.1
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
-
-        ##################################
-
-        ##### part4 move #####
-
-        # self.urx_rob1.robot.movej(part4_move_grap, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] -= 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.gripper_move_and_wait(255)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] += 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.robot.movej(part4_move_point, vel = 1.05, acc = 1.4)
-
-
-        # ###### part4 insert ######
-
-        # self.urx_rob2.robot.movej(part4_grap_pre, vel = 1.05, acc = 1.4)
-
-        # cur = self.urx_rob2.robot.getl()
-        # cur[1] -= 0.2
-        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob2.gripper_move_and_wait(255)
-
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[2] -= 0.1
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-
-        # cur = self.urx_rob2.robot.getl()
-        # cur[1] += 0.2
-        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
-
-
-        # self.urx_rob2.robot.movej(part4_rotate, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.robot.movej(part4_insert, vel = 1.05, acc = 1.4)
-        # self.urx_rob2.spiral_motion()
-
-        # self.urx_rob2.gripper_move_and_wait(0)
-        # cur = self.urx_rob2.robot.getl()
-        # cur[2] += 0.2
-        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
-
-        # ###########################
-
-        # ###### part4 wood pin hold ######
-        # self.urx_rob1.robot.movej(part4_hold_pre, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[1] -= 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.gripper_move_and_wait(255)
-
-        ##################################
-
-
-        ###### part6 start init #####
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[1] += 0.3
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.gripper_move_and_wait(0)
-        # cur[2] += 0.3
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-
+    def part5_insert_motion(self):
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
@@ -271,8 +131,12 @@ class Motion_test():
                 self.urx_rob2.robot.send_program("end_force_mode()")
                 break
 
+        self.urx_rob2.spiral_motion()
+
+
         force_mod = [1,0,1,1,1,0]
         force_toq = [0,0,-15,0,2,0] 
+
 
         print "down?"
         raw_input()
@@ -425,6 +289,262 @@ class Motion_test():
 
         self.urx_rob2.robot.send_program(cmd_str)
 
+        time.sleep(3)
+
+        self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
+
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+
+
+    def long_screw_insert1(self):
+
+        #######long screw############
+
+        ####pin을 잡았다고 가정(수정 필요 필수)########
+        # self.urx_rob1.robot.movel(rob1_104322_pre_1, vel = 1.05, acc = 0.25)
+
+        # self.urx_rob1.gripper_move_and_wait(100)
+
+        # self.urx_rob1.robot.movel(rob1_104322_1, vel = 1.05, acc = 0.25)
+
+        # print "down?"
+        # raw_input()
+
+        # self.urx_rob1.gripper_move_and_wait(255)
+
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.4
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        #############################
+        #pin insertion#
+
+        self.urx_rob2.robot.movej(screw_hold_pose_1, vel = 1.05, acc = 1.4)
+        cur = self.urx_rob2.robot.getl()
+        cur[2] -= 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob2.gripper_move_and_wait(255)
+
+
+        # self.urx_rob1.robot.movej(screw_long_pre_1, vel = 1.05, acc = 0.25)
+
+        # self.urx_rob1.robot.movej(screw_long_1, vel = 1.05, acc = 0.25)
+
+        # self.urx_rob1.spiral_motion()
+
+        # self.urx_rob1.gripper_move_and_wait(0)
+
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.15
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+
+        ######
+        ###tool connect#######
+
+
+        self.urx_rob1.robot.movej(screw_long_tool_pre_1, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[0] += 0.2
+
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+
+        cur = self.urx_rob1.robot.getl()
+        cur[2] += 0.4
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        curj = self.urx_rob1.robot.getj()
+
+        self.urx_rob1.robot.movej(screw_long_tool_1, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.screw_motion()
+
+
+        ##############초기화#############
+
+        self.urx_rob1.robot.movej(curj, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.robot.movej(screw_long_tool_pre_1, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+
+        cur[0] += 0.2
+
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(screw_long_tool_pre_1, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[2] += 0.4
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+
+        self.urx_rob2.robot.send_program("end_force_mode()")
+
+        self.urx_rob2.gripper_move_and_wait(0)
+
+        
+        cur = self.urx_rob2.robot.getl()
+        cur[2] += 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob2.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+        self.urx_rob1.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+
+
+    def test_motion(self):
+        # self.urx_rob2.robot.movej(part2_hold_pre_2)
+        # cur = self.urx_rob2.robot.getl()
+        # cur[2] -= 0.2
+        # self.urx_rob2.robot.movel(cur)
+
+        ###### part2 insert ######
+        # self.urx_rob1.robot.movej(part2_grap_pre, vel = 1.05, acc = 1.4)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] -= 0.2
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.gripper_move_and_wait(255)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.2
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.robot.movej(part2_rotate, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.robot.movej(part2_insert, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.spiral_motion()
+
+
+        #####gripper open#####
+        # self.urx_rob1.gripper_move_and_wait(0)
+
+        ##init pose##
+
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.4
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.mg_rob1.get_named_target_values("rob1_init_pose")
+
+        #############################
+
+
+        ###### part3 insert ######
+
+        # self.urx_rob2.robot.movej(part3_grap_pre, vel = 1.05, acc = 1.4)
+
+        # cur = self.urx_rob2.robot.getl()
+        # cur[2] -= 0.2
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.gripper_move_and_wait(255)
+        # cur = self.urx_rob2.robot.getl()
+        # cur[2] += 0.2
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part3_rotate, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part3_insert, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.spiral_motion()
+
+
+        #####gripper open#####
+        # self.urx_rob2.gripper_move_and_wait(0)
+
+        ############################
+
+        ### part3  wood pin insert ###
+
+        # self.urx_rob1.robot.movej(rob1_101350_pre_2, vel = 1.05, acc = 1.4)
+        # print "grip?"
+        # raw_input()
+        # self.urx_rob1.robot.movej(part3_hole3, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.spiral_motion()
+        # self.urx_rob1.gripper_move_and_wait(180)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.1
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.robot.movej(rob1_101350_pre_2, vel = 1.05, acc = 1.4)
+        # print "grip?"
+        # raw_input()
+        # self.urx_rob1.robot.movej(part3_hole4, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.spiral_motion()
+        # self.urx_rob1.gripper_move_and_wait(180)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.1
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 1.4)
+
+        ##################################
+
+        ##### part4 move #####
+
+        # self.urx_rob1.robot.movej(part4_move_grap, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.gripper_move_and_wait(120)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] -= 0.2
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob1.gripper_move_and_wait(255)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] += 0.2
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob1.robot.movej(part4_move_point, vel = 1.05, acc = 1.4)
+
+
+        # ###### part4 insert ######
+
+        # self.urx_rob2.robot.movej(part4_grap_pre, vel = 1.05, acc = 1.4)
+
+        # cur = self.urx_rob2.robot.getl()
+        # cur[1] -= 0.2
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob2.gripper_move_and_wait(255)
+
+        # self.urx_rob1.gripper_move_and_wait(120)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[2] -= 0.1
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        # cur = self.urx_rob2.robot.getl()
+        # cur[1] += 0.2
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+
+        # self.urx_rob2.robot.movej(part4_rotate, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part4_insert, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.spiral_motion()
+
+        # self.urx_rob2.gripper_move_and_wait(0)
+        # cur = self.urx_rob2.robot.getl()
+        # cur[2] += 0.2
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        # ###########################
+
+        # ###### part4 wood pin hold ######
+        # self.urx_rob1.robot.movej(part4_hold_pre, vel = 1.05, acc = 1.4)
+        # self.urx_rob1.gripper_move_and_wait(120)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[1] -= 0.2
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob1.gripper_move_and_wait(255)
+
+        ##################################
+
+
+        ###### part6 start init #####
+        # self.urx_rob1.gripper_move_and_wait(120)
+        # cur = self.urx_rob1.robot.getl()
+        # cur[1] += 0.3
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob1.gripper_move_and_wait(0)
+        # cur[2] += 0.3
+        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        
 
 
 def main():

@@ -473,7 +473,7 @@ class UrxMotion():
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
         init_pose = copy.deepcopy(initial)
-        spiral_cmd = self._get_spiral_cmd(init_pose)
+        spiral_cmd = self._get_spiral_cmd(init_pose, reverse=True)
         self.robot.send_program(spiral_cmd)
 
         while(True):
