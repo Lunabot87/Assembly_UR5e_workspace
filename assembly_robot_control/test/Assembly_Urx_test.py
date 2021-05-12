@@ -30,13 +30,24 @@ class UrxMotion():
         tpose.append(radius)
         return "{}({}[{},{},{},{},{},{}], a={}, v={}, r={})".format(command, prefix, *tpose)  
 
-    def _get_spiral_cmd(self, initial, reverse = False):
+    def _get_spiral_cmd(self, initial, reverse = False, screw = False):
         vel = 0.5
         acc = 0.25
         radius = 0.0005
 
-        force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-12,0,0,0] if reverse is False else [0,0,12,0,0,0]
+        if screw:
+            f = 30
+        else:
+            f = 12
+
+        if reverse:
+            axis = 1
+        else:
+            axis = 0
+
+        force_mod = [0,0,1,axis,0,0]
+        force_toq = [0,0,-1*f,0,0,1] if reverse is False else [0,0,f,0,0,1]
+
 
         # spiral motion
         R = 0.008  #0.006 #0.003
@@ -127,8 +138,19 @@ class UrxMotion():
             return msg
 
 
-    def _gripper_move(self, pos):
+    def _gripper_move(self, pos, force = False):
         msg  = "def UR5_gripper_action():\n"
+
+        if force:
+            msg += "\tthread Thread_1():\n"
+            msg += "\t\twhile (True):\n"
+            msg += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+ '[0,1,0,0,0,0]' +"," + '[0,0,0,0,0,0]' +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+            msg += "\t\t\tsync()\n"
+            msg += "\t\tend\n"
+            msg += "\tend\n"
+            msg += "\tglobal thrd = run Thread_1()\n"
+
+
         msg += "\tsocket_open(\"127.0.0.1\", 63352, \"gripper_socket\")\n"
         msg += "\tsocket_set_var(\"POS\", %s, \"gripper_socket\")\n"%(str(pos)) #catched chair!
         msg += "\trq_pos_1 = socket_get_var(\"POS\",\"gripper_socket\")\n"
@@ -146,6 +168,31 @@ class UrxMotion():
         msg += "end\n"
 
         return msg
+
+
+    def _gripper_move_t(self, pos, force = False):
+        msg  = "def UR5_gripper_action():\n"
+
+        if force:
+            msg += "\tthread Thread_1():\n"
+            msg += "\t\twhile (True):\n"
+            msg += "\t\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+ '[0,1,0,0,0,0]' +"," + '[0,0,0,0,0,0]' +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+            msg += "\t\t\tsync()\n"
+            msg += "\t\tend\n"
+            msg += "\tend\n"
+            msg += "\tglobal thrd = run Thread_1()\n"
+
+            
+        msg += "\tsocket_open(\"127.0.0.1\", 63352, \"gripper_socket\")\n"
+        msg += "\tsocket_set_var(\"POS\", %s, \"gripper_socket\")\n"%(str(pos)) #catched chair!
+        msg += "\trq_pos_1 = socket_get_var(\"POS\",\"gripper_socket\")\n"
+        msg += "\tsleep(0.01)\n"
+        msg += "\trq_pos = socket_get_var(\"POS\",\"gripper_socket\")\n"
+        #msg += "\t\ttextmsg(\"rq_pos:\", rq_pos)\n"
+        msg += "end\n"
+
+        self.robot.send_program(msg)
+        time.sleep(0.1)
 
     def suction_attach(self, force_mod, force_toq):
 
@@ -214,10 +261,10 @@ class UrxMotion():
         time.sleep(0.2)
 
 
-    def gripper_move_and_wait(self ,pos):
+    def gripper_move_and_wait(self ,pos, force = False):
         robot = self.robot
 
-        robot.send_program(self._gripper_move(pos))
+        robot.send_program(self._gripper_move(pos, force = force))
 
         while True:
             if self.robot.get_digital_out(6) != 0:
@@ -387,6 +434,8 @@ class UrxMotion():
         # raw_input()
 
         # go down
+
+
         print "="*20 +"go_down"+"="*20
         force_mod = [0,0,1,0,0,0]
         force_toq = [0,0,-5,0,0,0] 
@@ -420,12 +469,10 @@ class UrxMotion():
                 break
 
 
-        time.sleep(0.5)
-
         # spiral    
         print "="*20 +"spiral"+"="*20
         initial = self.robot.getl()
-        spiral_cmd = self._get_spiral_cmd(initial)
+        spiral_cmd = self._get_spiral_cmd(initial, screw = True)
         self.robot.send_program(spiral_cmd)
 
         while(True):
@@ -438,7 +485,7 @@ class UrxMotion():
                     self.robot.send_program("set_digital_out(6, False)")
                     return False
 
-                if abs(force[0]) > 15 or abs(force[1]) > 15:
+                if abs(force[0]) > 40 or abs(force[1]) > 40:
                     # print force[0], force[1]
                     self.robot.send_program("end_force_mode()")
                     break
@@ -453,6 +500,8 @@ class UrxMotion():
 
         
 
+    def screw_motion_insert(self):
+
         print "="*20 +"real_insert"+"="*20
         force_mod = [0,0,1,0,0,0]
         force_toq = [0,0,-30,0,0,0]
@@ -465,10 +514,10 @@ class UrxMotion():
         cmd_str += "end\n"
         self.robot.send_program(cmd_str)
 
-        time.sleep(3)
-
         # print "reverse now?"
         # raw_input()
+
+    def screw_motion_reverse(self):
 
         print "="*20 +"spiral_reverse"+"="*20
         initial = self.robot.getl()
