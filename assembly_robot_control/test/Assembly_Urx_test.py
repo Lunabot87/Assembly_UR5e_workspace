@@ -94,8 +94,8 @@ class UrxMotion():
             cmd_str += test_cmd
         
         cmd_str += "\tend_force_mode()\n"
-        cmd_str += "\tkill thrd\n"
         cmd_str += "\tset_digital_out(6, True)\n"
+        cmd_str += "\tkill thrd\n"
         cmd_str += "end\n"
 
         return cmd_str
@@ -182,7 +182,7 @@ class UrxMotion():
             msg += "\tend\n"
             msg += "\tglobal thrd = run Thread_1()\n"
 
-            
+
         msg += "\tsocket_open(\"127.0.0.1\", 63352, \"gripper_socket\")\n"
         msg += "\tsocket_set_var(\"POS\", %s, \"gripper_socket\")\n"%(str(pos)) #catched chair!
         msg += "\trq_pos_1 = socket_get_var(\"POS\",\"gripper_socket\")\n"
@@ -358,7 +358,7 @@ class UrxMotion():
 
                 if digi > 0: #spiral 실패시
                     self.robot.send_program("set_digital_out(6, False)")
-                    return False #실패모드 사용시 주석 해제 
+                    break 
 
                 if abs(force[0]) > 25 or abs(force[1]) > 25:
                     # print force[0], force[1]

@@ -12,6 +12,10 @@ from ur_dashboard_msgs.srv import *
 from pin_grasp_pose import *
 from ASP_pose import *
 
+
+from assembly_robot_msgs.srv import *
+from assembly_robot_msgs.msg import *
+
 from utils.conversions import *
 
 import time
@@ -48,6 +52,70 @@ class Motion_test():
 
         self.rospy = rospy
         # time = ros.Time()
+
+    def elp_camera_client(self, name, robot):
+        rob_cam = ''
+        if robot is False:
+            rob_cam = 'camera_server_1'
+        else:
+            rob_cam = 'camera_server_2'
+
+        for count in range(10):
+
+            # self.rospy.wait_for_service(rob_cam)
+            try:
+                rob_client = self.rospy.ServiceProxy(rob_cam, cam_Srv)
+                basler_data = rob_client(name)
+                # print basler_client
+                return basler_data
+                break
+            except self.rospy.ServiceException as e:
+                print("Service call failed: %s"%e)
+
+        return False
+
+
+    def client(self, hole_name, robot, tool = False):
+
+
+        if robot is False:
+            urx_rob = self.urx_rob1
+
+        else:
+            urx_rob = self.urx_rob2
+        
+        for count in range(10):
+
+            result = self.elp_camera_client(hole_name, robot)
+
+            if result is False:
+                print "not found"
+                break
+                return False
+                
+
+            else:
+                if tool is False:
+                    time.sleep(0.2)
+
+                    pose = urx_rob.robot.getl()
+                    
+                    pose[0] += result.x 
+                    pose[1] += result.y - 0.0721
+
+                    return pose
+                else:
+                    time.sleep(0.2)
+
+                    pose = urx_rob.robot.getl()
+                    
+                    pose[0] += result.x 
+                    pose[1] += result.y + 0.0719
+
+                    return pose
+
+
+        return [0,0,0,0,0,0]
 
     def program_running(self):
         rob1_connect = self.rob1_check()
@@ -281,54 +349,60 @@ class Motion_test():
         self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
-        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
-        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
-        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
 
-        cur = self.urx_rob2.robot.getl()
-        cur[0] += 0.1
-        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        ######################8min################################
 
-        self.urx_rob2.gripper_move_and_wait(255)
+        # self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
 
-        self.urx_rob2.spiral_motion()
+        # cur = self.urx_rob2.robot.getl()
+        # cur[0] += 0.1
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
 
-        self.urx_rob2.gripper_move_and_wait(0)
+        # self.urx_rob2.gripper_move_and_wait(255)
 
-        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
-        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
-        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.spiral_motion()
+
+        # self.urx_rob2.gripper_move_and_wait(0)
+
+        # self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
 
 
-        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
 
-        self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
-        cur = self.urx_rob2.robot.getl()
-        cur[2] -= 0.1
-        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+        # self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
+        # cur = self.urx_rob2.robot.getl()
+        # cur[2] -= 0.1
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
 
-        # print "down?"
-        # raw_input()
+        # # print "down?"
+        # # raw_input()
 
-        force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-50,0,0,0] 
+        # force_mod = [0,0,1,0,0,0]
+        # force_toq = [0,0,-50,0,0,0] 
 
-        cmd_str  = "def go_down():"
-        cmd_str += "\tforce_mode_set_damping(0.05)\n"
-        cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
-        cmd_str += "\t\tsync()\n"
-        cmd_str += "\tend\n"
-        cmd_str += "end\n"
+        # cmd_str  = "def go_down():"
+        # cmd_str += "\tforce_mode_set_damping(0.05)\n"
+        # cmd_str += "\twhile (True):\n"
+        # cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # cmd_str += "\t\tsync()\n"
+        # cmd_str += "\tend\n"
+        # cmd_str += "end\n"
 
-        self.urx_rob2.robot.send_program(cmd_str)
+        # self.urx_rob2.robot.send_program(cmd_str)
 
-        time.sleep(3)
+        # time.sleep(3)
 
-        self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(part6_pose2_1, vel = 1.05, acc = 1.4)
 
-        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+        # self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
+
+
+        #####################################################
 
         self.urx_rob1.gripper_move_and_wait(0)
 
@@ -379,6 +453,11 @@ class Motion_test():
     def long_screw_insert1(self):
 
         #######long screw############
+        self.urx_rob1.robot.movej(screw_cam_pose_1, vel = 1.05, acc = 1.4)
+
+        move_offset = self.client("hole5-8", False)
+
+        print "move_offset\n{0}".format(move_offset)
 
         ####pin을 잡았다고 가정(수정 필요 필수)########
         self.urx_rob1.robot.movej(rob1_104322_pre_1, vel = 1.05, acc = 1.4)
@@ -387,12 +466,12 @@ class Motion_test():
 
         self.urx_rob1.robot.movej(rob1_104322_1, vel = 1.05, acc = 0.25)
 
-        self.urx_rob1.gripper_move_and_wait(255)
+        self.urx_rob1.gripper_move_and_wait(255, force = True)
 
         cur = self.urx_rob1.robot.getl()
 
         force_mod = [1,1,1,0,0,0]
-        force_toq = [0,0,20,0,0,0] 
+        force_toq = [0,0,30,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.05)\n"
@@ -405,14 +484,14 @@ class Motion_test():
         self.urx_rob1.robot.send_program(cmd_str)
 
         while True:
-            print self.urx_rob1.robot.getl()[2] - cur[2]
+            # print self.urx_rob1.robot.getl()[2] - cur[2]
             if self.urx_rob1.robot.getl()[2] - cur[2] > 0.1:
                 self.urx_rob1.robot.send_program("end_force_mode()")
                 break
 
         cur = self.urx_rob1.robot.getl()
         cur[2] += 0.3
-        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25, wait=False)
         
         #############################
         #pin insertion#
@@ -424,11 +503,16 @@ class Motion_test():
         self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
 
         self.urx_rob2.gripper_move_and_wait(255)
-        ####hold####
+        #############
 
         self.urx_rob1.robot.movej(screw_long_pre_1, vel = 1.05, acc = 1.4)
 
         self.urx_rob1.robot.movej(screw_long_1, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[0] = move_offset[0]
+        cur[1] = move_offset[1]
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25, wait = False)
 
         self.urx_rob1.spiral_motion()
 
@@ -437,6 +521,12 @@ class Motion_test():
         cur = self.urx_rob1.robot.getl()
         cur[2] += 0.05
         self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        # self.urx_rob1.robot.movej(screw_cam_pose_1, vel = 1.05, acc = 1.4)
+
+        # move_offset = self.client("hole5-8", False, tool=True)
+
+        # print "move_offset\n{0}".format(move_offset)
 
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
 
@@ -462,6 +552,11 @@ class Motion_test():
 
         self.urx_rob1.robot.movej(screw_long_tool_1, vel = 1.05, acc = 1.4)
 
+        cur = self.urx_rob1.robot.getl()
+        cur[0] = move_offset[0]
+        cur[1] = (move_offset[1] + 0.154)
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
         self.screw_motion(self.urx_rob1)
 
 
@@ -485,6 +580,7 @@ class Motion_test():
         cur[2] += 0.4
         self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
 
+        self.tool_station(True)
 
         self.urx_rob2.robot.send_program("end_force_mode()")
 
@@ -498,10 +594,18 @@ class Motion_test():
         self.urx_rob2.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
         self.urx_rob1.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
+        time.sleep(10)
+
 
     def long_screw_insert2(self):
 
         #######long screw############
+
+        self.urx_rob2.robot.movej(screw_cam_pose_2, vel = 1.05, acc = 1.4)
+
+        move_offset = self.client("hole5-9", True)
+
+        print "move_offset\n{0}".format(move_offset)
 
         ####pin을 잡았다고 가정(수정 필요 필수)########
         self.urx_rob2.robot.movej(rob2_104322_pre_3, vel = 1.05, acc = 1.4)
@@ -510,12 +614,12 @@ class Motion_test():
 
         self.urx_rob2.robot.movej(rob2_104322_3, vel = 1.05, acc = 0.25)
 
-        self.urx_rob2.gripper_move_and_wait(255)
+        self.urx_rob2.gripper_move_and_wait(255, force = True)
 
         cur = self.urx_rob2.robot.getl()
 
         force_mod = [1,1,1,0,0,0]
-        force_toq = [0,0,20,0,0,0] 
+        force_toq = [0,0,30,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.05)\n"
@@ -528,7 +632,7 @@ class Motion_test():
         self.urx_rob2.robot.send_program(cmd_str)
 
         while True:
-            print self.urx_rob2.robot.getl()[2] - cur[2]
+            
             if self.urx_rob2.robot.getl()[2] - cur[2] > 0.1:
                 self.urx_rob2.robot.send_program("end_force_mode()")
                 break
@@ -553,8 +657,14 @@ class Motion_test():
 
         self.urx_rob2.robot.movej(screw_long_2, vel = 1.05, acc = 1.4)
 
-        print "stop!!!"
-        raw_input()
+
+
+        # cur = self.urx_rob2.robot.getl()
+        # cur[0] = move_offset[0]
+        # cur[1] = move_offset[1]
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25, wait = False)
+
+
 
         self.urx_rob2.spiral_motion()
 
@@ -580,10 +690,6 @@ class Motion_test():
         self.urx_rob2.gripper_move_and_wait(255)
 
 
-        print "stop!!!"
-        raw_input()
-
-
         cur = self.urx_rob2.robot.getl()
         cur[2] += 0.4
         self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
@@ -591,6 +697,11 @@ class Motion_test():
         curj = self.urx_rob2.robot.getj()
 
         self.urx_rob2.robot.movej(screw_long_tool_2, vel = 1.05, acc = 1.4)
+
+        # cur = self.urx_rob2.robot.getl()
+        # cur[0] = move_offset[0]
+        # cur[1] = (move_offset[1] + 0.154)
+        # self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
 
         self.screw_motion(self.urx_rob2)
 
@@ -640,12 +751,12 @@ class Motion_test():
 
         self.urx_rob2.robot.movej(rob2_104322_5, vel = 1.05, acc = 0.25)
 
-        self.urx_rob2.gripper_move_and_wait(255)
+        self.urx_rob2.gripper_move_and_wait(255, force = True)
 
         cur = self.urx_rob2.robot.getl()
 
         force_mod = [1,1,1,0,0,0]
-        force_toq = [0,0,20,0,0,0] 
+        force_toq = [0,0,30,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.05)\n"
@@ -683,8 +794,8 @@ class Motion_test():
 
         self.urx_rob2.robot.movej(screw_long_3, vel = 1.05, acc = 0.4)
 
-        print "stop!!!"
-        raw_input()
+        # print "stop!!!"
+        # raw_input()
 
         self.urx_rob2.spiral_motion()
 
@@ -710,8 +821,8 @@ class Motion_test():
         self.urx_rob2.gripper_move_and_wait(255)
 
 
-        print "stop!!!"
-        raw_input()
+        # print "stop!!!"
+        # raw_input()
 
 
         cur = self.urx_rob2.robot.getl()
@@ -745,6 +856,7 @@ class Motion_test():
         cur[2] += 0.4
         self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
 
+        self.tool_station(False)
 
         self.urx_rob1.robot.send_program("end_force_mode()")
 
@@ -758,9 +870,23 @@ class Motion_test():
         self.urx_rob2.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
         self.urx_rob1.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
+    def tool_station(self, rob = False):
+        self.urx_rob2.robot.set_digital_out(0, False)
+        self.urx_rob2.robot.set_digital_out(1, False)
+        self.urx_rob2.robot.set_digital_out(2, False)
+        self.urx_rob2.robot.set_digital_out(3, False)
 
+        if rob is False:
+            self.urx_rob2.robot.set_digital_out(0, True)
+            self.urx_rob2.robot.set_digital_out(1, False)
+        else:
+            self.urx_rob2.robot.set_digital_out(0, False)
+            self.urx_rob2.robot.set_digital_out(1, True)
+        
+        self.urx_rob2.robot.set_digital_out(2, False)
+        self.urx_rob2.robot.set_digital_out(3, False)
 
-    def wood_pin_motion(self, urx_rob, pre_pin, pin, pose):
+    def wood_pin_motion(self, urx_rob, pre_pin, pin, pose, tool):
 
         urx_rob._gripper_move_t(170)
 
@@ -771,6 +897,8 @@ class Motion_test():
         urx_rob.gripper_move_and_wait(255, force = True)
 
         self.pin_grab_up(urx_rob)
+
+        self.tool_station(tool)
 
         cur = urx_rob.robot.getl()
         cur[2] += 0.2
@@ -789,30 +917,35 @@ class Motion_test():
         urx_rob.robot.movel(cur, vel = 1.57, acc = 1.57)
 
     def base_wood_pin_insert(self):
+        
+        self.tool_station(False)
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.57, acc = 1.57)
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.57, acc = 1.57)
 
-        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_1, rob1_101350_1, part5_hole1)
+
+        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_1, rob1_101350_1, part5_hole1, tool = False)
 
         # print "go?"
         # raw_input()
 
-        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_2, rob1_101350_2, part5_hole2)
+        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_2, rob1_101350_2, part5_hole2, tool = True)
 
         print "move station"
         # raw_input()
 
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 3, acc = 2, wait=False)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_3, rob2_101350_3, part5_hole3)
+        time.sleep(14)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_4, rob2_101350_4, part5_hole4)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_3, rob2_101350_3, part5_hole3, tool = True)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_5, rob2_101350_5, part5_hole5)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_4, rob2_101350_4, part5_hole4, tool = True)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_6, rob2_101350_6, part5_hole6)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_5, rob2_101350_5, part5_hole5, tool = True)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_7, rob2_101350_7, part5_hole7)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_6, rob2_101350_6, part5_hole6, tool = True)
+
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_7, rob2_101350_7, part5_hole7, tool = True)
         
         # print "move station"
         # raw_input()
@@ -823,9 +956,9 @@ class Motion_test():
 
     def part2_wood_pin_insert(self):
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_10, rob2_101350_10, part2_hole3)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_10, rob2_101350_10, part2_hole3, tool = True)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_11, rob2_101350_11, part2_hole4)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_11, rob2_101350_11, part2_hole4, tool = False)
 
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 3, acc = 2, wait = False)
 
@@ -863,15 +996,15 @@ class Motion_test():
         self.urx_rob1.robot.movel(cur, vel = 1.57, acc = 1.57)
         self.urx_rob1.robot.movej(rob1_101350_pre_8, vel = 3, acc = 2, wait=False)
 
-
+        time.sleep(2)
 
         ############################
 
     def part3_wood_pin_insert(self):
 
-        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_8, rob1_101350_8, part3_hole3)
+        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_8, rob1_101350_8, part3_hole3, tool = False)
 
-        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_9, rob1_101350_9, part3_hole4)
+        self.wood_pin_motion(self.urx_rob1, rob1_101350_pre_9, rob1_101350_9, part3_hole4, tool = True)
 
         self.urx_rob1.robot.movej(part4_move_grap, vel = 3, acc = 2, wait = False)
 
@@ -905,6 +1038,7 @@ class Motion_test():
 
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 3, acc = 2, wait=True)
 
+        time.sleep(2)
 
     def part4_insert_motion(self):
 
@@ -986,9 +1120,9 @@ class Motion_test():
 
         self.urx_rob1.robot.send_program(cmd_str)
 
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_12, rob2_101350_12, part4_hole1)
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_13, rob2_101350_13, part4_hole2)
-        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_14, rob2_101350_14, part4_hole3)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_12, rob2_101350_12, part4_hole1, tool = True)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_13, rob2_101350_13, part4_hole2, tool = True)
+        self.wood_pin_motion(self.urx_rob2, rob2_101350_pre_14, rob2_101350_14, part4_hole3, tool = False)
 
         self.urx_rob2.robot.movej(rob2_init_pose, vel = 3, acc = 2, wait=False)
 
@@ -1002,35 +1136,120 @@ class Motion_test():
 
         self.urx_rob1.robot.movej(rob1_init_pose, vel = 3, acc = 2)
 
+    def table_screw(self, mod):
+        self.urx_rob2.robot.set_digital_out(0, False)
+        self.urx_rob2.robot.set_digital_out(1, False)
+        self.urx_rob2.robot.set_digital_out(2, False)
+        self.urx_rob2.robot.set_digital_out(3, False)
 
+        if mod is 1:
+            self.urx_rob2.robot.set_digital_out(3, True)
+            self.urx_rob2.robot.set_digital_out(2, True)
+            self.urx_rob2.robot.set_digital_out(1, True)
+        elif mod is 2:
+            self.urx_rob2.robot.set_digital_out(3, True)
+            self.urx_rob2.robot.set_digital_out(1, True)
+
+        elif mod is 3:
+            self.urx_rob2.robot.set_digital_out(2, True)
+            self.urx_rob2.robot.set_digital_out(1, True)
+        else:
+            self.urx_rob2.robot.set_digital_out(0, False)
+            self.urx_rob2.robot.set_digital_out(1, False)
+            self.urx_rob2.robot.set_digital_out(2, False)
+            self.urx_rob2.robot.set_digital_out(3, False)
+            
+    def table_screw_insert1(self):
+        self.urx_rob1._gripper_move_t(120)
+        self.urx_rob1.robot.movej(part4_hold_pre, vel = 3, acc = 2)
+        
+        cur = self.urx_rob1.robot.getl()
+        cur[1] -= 0.2
+        self.urx_rob1.robot.movel(cur, vel = 1.57, acc = 1.57)
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-30,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+        self.table_screw(1)
+
+        time.sleep(40)
+
+        self.urx_rob1.robot.send_program("end_force_mode()")
+
+        self.urx_rob1.gripper_move_and_wait(120)
+        cur = self.urx_rob1.robot.getl()
+        cur[1] += 0.2
+        self.urx_rob1.robot.movel(cur, vel = 1.57, acc = 1.57)
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 3, acc = 2)
+
+    def table_screw_insert2(self):
+
+        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob2.robot.getl()
+        cur[0] += 0.1
+        self.urx_rob2.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob2.gripper_move_and_wait(255)
+
+        self.table_screw(2)
+
+        time.sleep(40)
+
+        self.urx_rob2.gripper_move_and_wait(0)
+
+        self.urx_rob2.robot.movej(part6_pose3_3, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_2, vel = 1.05, acc = 1.4)
+        self.urx_rob2.robot.movej(part6_pose3_1, vel = 1.05, acc = 1.4)
+        self.urx_rob2.gripper_move_and_wait(255)
+
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 3, acc = 2)
+
+    def table_screw_insert3(self):
+        self.urx_rob1.robot.movej(part6_pose1_1, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.robot.movej(part6_pose1_2, vel = 1.05, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[0] -= 0.2
+        self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+
+        self.urx_rob1.gripper_move_and_wait(255)
+
+        self.table_screw(3)
+
+        time.sleep(40)
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        self.urx_rob1.robot.movej(part6_pose1_2, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.robot.movej(part6_pose1_1, vel = 1.05, acc = 1.4)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4)
+
+        self.table_screw(4)
 
     def test_motion(self):
-        # self.urx_rob2.robot.movej(part2_hold_pre_2)
-        # cur = self.urx_rob2.robot.getl()
-        # cur[2] -= 0.2
-        # self.urx_rob2.robot.movel(cur)
 
-        # ###########################
-
-        # ###### part4 wood pin hold ######
-        # self.urx_rob1.robot.movej(part4_hold_pre, vel = 1.05, acc = 1.4)
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[1] -= 0.2
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.gripper_move_and_wait(255)
-
-        ##################################
-
-
-        # ##### part6 start init #####
-        # self.urx_rob1.gripper_move_and_wait(120)
-        # cur = self.urx_rob1.robot.getl()
-        # cur[1] += 0.3
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
-        # self.urx_rob1.gripper_move_and_wait(0)
-        # cur[2] += 0.3
-        # self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 3, acc = 2)
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 3, acc = 2)
 
         self.base_wood_pin_insert()
 
@@ -1062,8 +1281,52 @@ class Motion_test():
         print "part5 fin"
         raw_input()
 
-        # self.long_screw_insert2()
+        self.long_screw_insert1()
 
+        # print "insert1"
+        # raw_input()
+
+        self.long_screw_insert2()
+
+        # print "insert2"
+        # raw_input()
+
+        self.long_screw_insert3()
+
+        # print "insert3"
+        # raw_input()
+
+        self.table_screw_insert1()
+
+        # print "table_insert1"
+        # raw_input()
+
+        self.table_screw_insert2()
+
+        # print "table_insert2"
+        # raw_input()
+
+        self.table_screw_insert3()
+
+        # print "table_insert3"
+        # raw_input()
+
+
+
+
+
+
+        # self.urx_rob1.robot.movej(screw_cam_pose_1, vel = 1.05, acc = 1.4)
+
+        # move_offset = self.client("hole5-8", False)
+
+        # print "move_offset\n{0}".format(move_offset)
+
+        # print "*"*20
+
+        # move_offset = self.client("hole5-8", False, tool = True)
+
+        # print "move_offset\n{0}".format(move_offset)
        
 def main():
     mt = Motion_test()
