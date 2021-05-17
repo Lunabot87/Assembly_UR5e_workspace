@@ -14,10 +14,10 @@ class Table_pulisher():
 	def __init__(self):
 		rospy.init_node('table_pulisher', anonymous=True)
 
-		rospy.wait_for_service('/rob2/ur_hardware_interface/set_io')
+		rospy.wait_for_service('/rob1/ur_hardware_interface/set_io')
 
-		self.table = rospy.ServiceProxy('/rob2/ur_hardware_interface/set_io', SetIO)
-		self.state = rospy.Subscriber("/rob2/ur_hardware_interface/io_states", IOStates, self.io_state)
+		self.table = rospy.ServiceProxy('/rob1/ur_hardware_interface/set_io', SetIO)
+		self.state = rospy.Subscriber("/rob1/ur_hardware_interface/io_states", IOStates, self.io_state)
 		self.state1_update = rospy.Subscriber("/station1/control", String, self.st1_cb)
 		self.state2_update = rospy.Subscriber("/station2/control", String, self.st2_cb)
 		

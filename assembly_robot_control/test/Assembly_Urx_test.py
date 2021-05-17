@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        self.robot.send_program(self._set_gripper())
+        # self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -45,7 +45,7 @@ class UrxMotion():
         else:
             axis = 0
 
-        force_mod = [0,0,1,axis,0,0]
+        force_mod = [0,0,1,axis,0,axis]
         force_toq = [0,0,-1*f,0,0,1] if reverse is False else [0,0,f,0,0,1]
 
 
@@ -504,9 +504,9 @@ class UrxMotion():
 
         print "="*20 +"real_insert"+"="*20
         force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-30,0,0,0]
+        force_toq = [0,0,-50,0,0,0]
         cmd_str  = "def real_insert():"
-        cmd_str += "\tforce_mode_set_damping(0.005)\n"
+        cmd_str += "\tforce_mode_set_damping(0.000)\n"
         cmd_str += "\twhile (True):\n"
         cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.2, 0.17, 0.17, 0.17])\n"
         cmd_str += "\t\tsync()\n"
@@ -572,8 +572,8 @@ class UrxMotion():
 
 
         print "="*20 +"go_front"+"="*20
-        force_mod = [0,1,0,0,0,0]
-        force_toq = [0,-5,0,0,0,0] 
+        force_mod = [0,1,0,0,0,1]
+        force_toq = [0,-5,0,0,0,-0.1] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
