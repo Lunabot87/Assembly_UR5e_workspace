@@ -11,7 +11,7 @@ class UrxMotion():
     def __init__(self, robot_ip):
         self.robot_ip = robot_ip
         self.reset()
-        # self.robot.send_program(self._set_gripper())
+        self.robot.send_program(self._set_gripper())
         time.sleep(3)
 
     def reset(self):
@@ -539,8 +539,8 @@ class UrxMotion():
         time.sleep(0.2)
 
         print "="*20 +"go_down"+"="*20
-        force_mod = [0,0,1,0,0,0]
-        force_toq = [0,0,-5,0,0,0] 
+        force_mod = [0,0,1,0,0,1]
+        force_toq = [0,0,-5,0,0,-0.1] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.005)\n"
@@ -604,8 +604,11 @@ class UrxMotion():
                 break
 
 
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.2)
+
         print "="*20 +"go_side"+"="*20
-        force_mod = [1,0,0,0,0,1]
+        force_mod = [1,0,0,0,0,0]
         force_toq = [8,0,0,0,0,0] 
 
         cmd_str  = "def go_down():"
@@ -628,7 +631,7 @@ class UrxMotion():
                 force = self.robot.get_tcp_force()
                 # print "force z : {0}".format(force[2])
                 # print force[2]
-                if abs(force[0]) > 4:
+                if abs(force[0]) > 8:
                     # print force[2]
                     self.robot.send_program("end_force_mode()")
                     break
@@ -636,6 +639,9 @@ class UrxMotion():
                 self.robot.send_program("end_force_mode()")
                 break
 
+
+        self.robot.send_program("zero_ftsensor()")
+        time.sleep(0.2)
 
         print "="*20 +"go_side"+"="*20
         force_mod = [1,1,1,0,0,1]
@@ -663,7 +669,7 @@ class UrxMotion():
                 force = self.robot.get_tcp_force()
                 # print "force z : {0}".format(force[2])
                 # print force[2]
-                if abs(force[2]) > 8 or time.time() - start_time > 20:
+                if abs(force[2]) > 20 or time.time() - start_time > 10:
                     # print force[2]
                     self.robot.send_program("end_force_mode()")
                     print "end"

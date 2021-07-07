@@ -137,16 +137,19 @@ class Motion_test():
         time.sleep(2)
 
     def init_pose(self, robot=None):
-        rob1_init_pose = self.mg_rob1.get_named_target_values("rob1_init_pose")
-        rob2_init_pose = self.mg_rob2.get_named_target_values("rob2_init_pose")
+        # rob1_init_pose = self.mg_rob1.get_named_target_values("rob1_init_pose")
+        # rob2_init_pose = self.mg_rob2.get_named_target_values("rob2_init_pose")
 
-        if robot is False:
-            self.mg_rob1.go(rob1_init_pose)
-        elif robot is True:
-            self.mg_rob2.go(rob2_init_pose)
-        else:
-            self.mg_rob1.go(rob1_init_pose)
-            self.mg_rob2.go(rob2_init_pose)
+        # if robot is False:
+        #     self.mg_rob1.go(rob1_init_pose)
+        # elif robot is True:
+        #     self.mg_rob2.go(rob2_init_pose)
+        # else:
+        #     self.mg_rob1.go(rob1_init_pose)
+        #     self.mg_rob2.go(rob2_init_pose)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.05, acc = 1.4, wait=False)
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.05, acc = 1.4)
 
     def pin_grab_up(self, urx_rob):
         cur = urx_rob.robot.getl()
@@ -1762,6 +1765,9 @@ class Motion_test():
                 self.urx_rob1.robot.send_program("end_force_mode()")
                 break
 
+
+        time.sleep(1)
+
         cur = self.urx_rob1.robot.getl()
         cur[2] += 0.2
         self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
@@ -1777,7 +1783,7 @@ class Motion_test():
         time.sleep(1)
 
         cur = self.urx_rob1.robot.getl()
-        cur[2] += 0.05
+        cur[2] += 0.01
         self.urx_rob1.robot.movel(cur, vel = 1.05, acc = 0.25)
 
         self.urx_rob1.robot.movej(sucktion_pose_1, vel=1.05, acc=0.4)
@@ -2058,7 +2064,7 @@ class Motion_test():
         while(True):
             try:
                 force = self.urx_rob1.robot.get_tcp_force()
-                print force[0]
+                # print force[0]
 
                 if abs(force[2]) > 3:
                     # print force[0], force[1]
@@ -2077,6 +2083,48 @@ class Motion_test():
         self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
 
         self.urx_rob1.robot.movej(screw_short_tool_pre1, vel = 1.5, acc = 1.4)
+
+
+    def insert_short_screw_pin(self):
+
+        self.urx_rob1.robot.set_digital_out(4, False)
+        self.urx_rob1.robot.set_digital_out(5, False)
+        self.urx_rob1.robot.set_digital_out(6, False)
+        self.urx_rob1.robot.set_digital_out(7, False)
+
+        time.sleep(0.1)
+
+        
+        self.urx_rob1.robot.set_digital_out(7, True)
+        self.urx_rob1.robot.set_digital_out(4, True)
+
+
+        self.urx_rob1.robot.send_program("zero_ftsensor()")
+
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-35,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # cmd_str += "\t\tfreedrive_mode()\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+        time.sleep(6)
+
+        while self.urx_rob1.robot.get_digital_in(4) is not True:
+            time.sleep(0.1)
+            # print self.robot.get_digital_in(5)
+            if self.urx_rob1.robot.get_digital_in(4):
+                break
+
+        self.urx_rob1.robot.set_digital_out(7, False)
+        self.urx_rob1.robot.set_digital_out(4, False)
 
     def test_motion(self):
 
@@ -2168,7 +2216,7 @@ class Motion_test():
         while(True):
             try:
                 force = self.urx_rob2.robot.get_tcp_force()
-                print force[1]
+                # print force[1]
 
                 if abs(force[1]) > 10:
                     # print force[0], force[1]
@@ -2211,7 +2259,7 @@ class Motion_test():
         while(True):
             try:
                 force = self.urx_rob2.robot.get_tcp_force()
-                print force[0]
+                # print force[0]
 
                 if abs(force[0]) > 2:
                     # print force[0], force[1]
@@ -2224,8 +2272,12 @@ class Motion_test():
 
         pose1 = self.urx_rob2.robot.getl()
 
+        time.sleep(0.1)
+
+        self.urx_rob2.robot.send_program("zero_ftsensor()")
+
         force_mod = [1,0,0,0,0,0]
-        force_toq = [1,0,0,0,0,0] 
+        force_toq = [2,0,0,0,0,0] 
 
         cmd_str  = "def go_down():"
         cmd_str += "\tforce_mode_set_damping(0.00)\n"
@@ -2241,9 +2293,9 @@ class Motion_test():
         while(True):
             try:
                 force = self.urx_rob2.robot.get_tcp_force()
-                print force[0]
+                # print force[0]
 
-                if abs(force[0]) > 3:
+                if abs(force[0]) > 2:
                     # print force[0], force[1]
                     self.urx_rob2.robot.send_program("end_force_mode()")
                     break
@@ -2264,53 +2316,57 @@ class Motion_test():
 
         default = self.urx_rob2.robot.getl()
 
+        print "default : {0}".format(default)
+
         cur = self.urx_rob2.robot.getl()
         cur[1] += 0.200
         self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
 
-        self.urx_rob2.robot.movej(screw_hold_point4_rob2, vel = 1.5, acc = 1.4)
+        self.urx_rob2.robot.movej(rob2_init_pose, vel = 1.5, acc = 1.4)
 
-        cur = self.urx_rob2.robot.getl()
-        cur[0] = default[0] - 0.085
-        self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
+        # self.urx_rob2.robot.movej(screw_hold_point4_rob2, vel = 1.5, acc = 1.4)
 
-        cur[1] -= 0.200
-        self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
+        # cur = self.urx_rob2.robot.getl()
+        # cur[0] = default[0] - 0.085
+        # self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
 
-        cur[2] -= 0.100
-        self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
+        # cur[1] -= 0.200
+        # self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
 
-        self.urx_rob2._gripper_move_t(255)
+        # cur[2] -= 0.100
+        # self.urx_rob2.robot.movel(cur, vel=1.05, acc=0.25)
 
-        force_mod = [0,1,0,0,0,0]
-        force_toq = [0,0,0,0,0,0] 
+        # self.urx_rob2._gripper_move_t(255)
 
-        cmd_str  = "def go_down():"
-        cmd_str += "\tforce_mode_set_damping(0.00)\n"
-        cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
-        # cmd_str += "\t\tfreedrive_mode()\n"
-        cmd_str += "\t\tsync()\n"
-        cmd_str += "\tend\n"
-        cmd_str += "end\n"
+        # force_mod = [0,1,0,0,0,0]
+        # force_toq = [0,0,0,0,0,0] 
 
-        self.urx_rob2.robot.send_program(cmd_str)
+        # cmd_str  = "def go_down():"
+        # cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        # cmd_str += "\twhile (True):\n"
+        # cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # # cmd_str += "\t\tfreedrive_mode()\n"
+        # cmd_str += "\t\tsync()\n"
+        # cmd_str += "\tend\n"
+        # cmd_str += "end\n"
 
-        time.sleep(1)
+        # self.urx_rob2.robot.send_program(cmd_str)
 
-        force_mod = [0,1,1,0,0,0]
-        force_toq = [0,-5,-30,0,0,0] 
+        # time.sleep(1)
 
-        cmd_str  = "def go_down():"
-        cmd_str += "\tforce_mode_set_damping(0.00)\n"
-        cmd_str += "\twhile (True):\n"
-        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
-        # cmd_str += "\t\tfreedrive_mode()\n"
-        cmd_str += "\t\tsync()\n"
-        cmd_str += "\tend\n"
-        cmd_str += "end\n"
+        # force_mod = [0,1,1,0,0,0]
+        # force_toq = [0,-5,-30,0,0,0] 
 
-        self.urx_rob2.robot.send_program(cmd_str)
+        # cmd_str  = "def go_down():"
+        # cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        # cmd_str += "\twhile (True):\n"
+        # cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # # cmd_str += "\t\tfreedrive_mode()\n"
+        # cmd_str += "\t\tsync()\n"
+        # cmd_str += "\tend\n"
+        # cmd_str += "end\n"
+
+        # self.urx_rob2.robot.send_program(cmd_str)
 
 
 
@@ -2341,6 +2397,8 @@ class Motion_test():
 
         ########################
 
+        # default = [-0.08866491471027739, -0.410699567708501, 0.45350151182252113, 1.5712126646784381, 0.0004798291127022182, 0.0005734253208223237]
+
         self.urx_rob1.robot.movej(part4_hole_pre, vel = 1.5, acc = 1.4)
 
         cur = self.urx_rob1.robot.getl()
@@ -2350,40 +2408,200 @@ class Motion_test():
         cur[1] -= 0.250
         self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
 
-        cur = part4_hole_1
-        cur[0] = (-1 * default[0]) - 0.01628
-        cur[1] -= 0.01 
-        self.urx_rob1.robot.movel(cur, vel=0.5, acc=0.25)
+        curj = self.urx_rob1.robot.getj()
 
-        print "hole 1"
-        raw_input()
-
-
-        cur = part4_hole_2
-        cur[0] = (-1 * default[0]) +0.0019
-        cur[1] -= 0.01 
-        self.urx_rob1.robot.movel(cur)
-
-        print "hole 2"
-        raw_input()
 
         cur = part4_hole_3
         cur[0] = (-1 * default[0]) - 0.01916
-        cur[1] += 0.01 
-        self.urx_rob1.robot.movel(cur)
+        cur[1] -= 0.005
+        self.urx_rob1.robot.movel(cur, vel=0.5, acc=0.25)
 
-        print "hole 3"
-        raw_input()
+        # print "screw?"
+        # raw_input()
 
-        cur = part4_hole_4
-        cur[0] = (-1 * default[0]) - 0.08919
-        cur[1] += 0.01 
-        self.urx_rob1.robot.movel(cur)
+        force_mod = [0,0,1,0,0,0]
+        force_toq = [0,0,-5,0,0,0] 
 
-        print self.urx_rob1.robot.getl()
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # cmd_str += "\t\tfreedrive_mode()\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+
+        while(True):
+            try:
+                force = self.urx_rob1.robot.get_tcp_force()
+                # print force[0]
+
+                if abs(force[2]) > 5:
+                    # print force[0], force[1]
+                    self.urx_rob1.robot.send_program("end_force_mode()")
+                    break
+
+            except KeyboardInterrupt:
+                self.urx_rob2.robot.send_program("end_force_mode()")
+                break
+
+
+        self.insert_short_screw_pin()
+
+
+        force_mod = [0,0,1,1,1,0]
+        force_toq = [0,0,10,0,0,0] 
+
+        cmd_str  = "def go_down():"
+        cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        cmd_str += "\twhile (True):\n"
+        cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # cmd_str += "\t\tfreedrive_mode()\n"
+        cmd_str += "\t\tsync()\n"
+        cmd_str += "\tend\n"
+        cmd_str += "end\n"
+
+        self.urx_rob1.robot.send_program(cmd_str)
+
+        init = self.urx_rob1.robot.getl()
+
+        while True:
+            print self.urx_rob1.robot.getl()[2] - init[2]
+            if (self.urx_rob1.robot.getl()[2] - init[2]) >0.006:
+                self.urx_rob1.robot.send_program("end_force_mode()")
+                break
+
         
-        cur = part4_hole_1
-        self.urx_rob1.robot.movel(cur)
+        
+        self.urx_rob1.robot.movej(curj, vel = 1.5, acc = 1.4)
+        curj = self.urx_rob1.robot.getl()
+
+        curj[1] += 0.250
+        self.urx_rob1.robot.movel(curj, vel=1.05, acc=0.25)
+
+        self.urx_rob1.robot.movej(part4_hole_pre, vel = 1.5, acc = 1.4)
+
+        ######################################################################3
+
+        # self.urx_rob1.robot.movej(screw_short_tool_pre1, vel = 1.5, acc = 1.4)
+
+        # ####나사 가져오기#####
+
+        # self.short_screw_pin(screw_pin_pose2)
+
+        ########################
+
+        # self.urx_rob1.robot.movej(part4_hole_pre, vel = 1.5, acc = 1.4)
+
+        # cur = self.urx_rob1.robot.getl()
+        # cur[0] = -1*default[0]
+        # self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        # cur[1] -= 0.250
+        # self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        curj = self.urx_rob1.robot.getj()
+
+        # print "hole 4"
+        # raw_input()
+
+        # cur = part4_hole_4
+        # cur[0] = (-1 * default[0]) - 0.08919
+        # cur[1] -= 0.1 
+        # self.urx_rob1.robot.movel(cur, vel=0.5, acc=0.25)
+
+        # print self.urx_rob1.robot.getl()
+
+        # force_mod = [0,0,1,0,0,0]
+        # force_toq = [0,0,-5,0,0,0] 
+
+        # cmd_str  = "def go_down():"
+        # cmd_str += "\tforce_mode_set_damping(0.00)\n"
+        # cmd_str += "\twhile (True):\n"
+        # cmd_str += "\t\tforce_mode(p[0.0,0.0,0.0,0.0,0.0,0.0], "+str(force_mod) +"," + str(force_toq) +", 2, [0.1, 0.1, 0.15, 0.17, 0.17, 0.17])\n"
+        # # cmd_str += "\t\tfreedrive_mode()\n"
+        # cmd_str += "\t\tsync()\n"
+        # cmd_str += "\tend\n"
+        # cmd_str += "end\n"
+
+        # self.urx_rob1.robot.send_program(cmd_str)
+
+        # print "screw?"
+        # raw_input()
+
+        # init = self.urx_rob1.robot.getl()
+
+        # while True:
+        #     if (self.urx_rob1.robot.getl()[2] - init[2]) >0.005:
+        #         self.urx_rob1.robot.send_program("end_force_mode()")
+        #         break
+        
+        # self.urx_rob1.robot.movej(curj, vel=0.5, acc=0.25)
+        # curj = self.urx_rob1.robot.getl()
+
+        # curj[1] += 0.250
+        # self.urx_rob1.robot.movel(curj, vel=1.05, acc=0.25)
+
+        # print "screw pin?"
+        # raw_input()
+
+        # self.urx_rob1.robot.movej(part4_hole_pre, vel = 1.5, acc = 1.4)
+
+
+        self.urx_rob1.robot.movej(screw_short_tool_pre1, vel = 1.5, acc = 1.4)
+        self.urx_rob1.robot.movej(screw_short_tool_pre2, vel = 1.5, acc = 1.4)
+
+        cur = self.urx_rob1.robot.getl()
+        cur[2] -= 0.2
+        self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        cur[0] += 0.1
+        self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        self.urx_rob1.gripper_move_and_wait(0)
+
+        cur[0] -= 0.1
+        self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        cur[2] += 0.2
+        self.urx_rob1.robot.movel(cur, vel=1.05, acc=0.25)
+
+        self.urx_rob1.robot.movej(screw_short_tool_pre1, vel = 1.5, acc = 1.4)
+        self.urx_rob1.robot.movej(screw_short_tool_pre0, vel = 1.5, acc = 1.4)
+
+        self.urx_rob1.robot.movej(rob1_init_pose, vel = 1.5, acc = 1.4)
+
+
+        ######################################################################3
+
+
+
+
+        # print "hole 1"
+        # raw_input()
+
+        # cur = part4_hole_1
+        # cur[0] = (-1 * default[0]) - 0.01628
+        # cur[1] -= 0.01 
+        # self.urx_rob1.robot.movel(cur, vel=0.5, acc=0.25)
+
+
+
+
+        # print "hole 2"
+        # raw_input()
+
+
+        # cur = part4_hole_2
+        # cur[0] = (-1 * default[0]) +0.0019
+        # cur[1] -= 0.01 
+        # self.urx_rob1.robot.movel(cur, vel=0.5, acc=0.25)
+
+        
+        
 
         print "end"
 
@@ -2395,6 +2613,9 @@ class Motion_test():
 
 def main():
     mt = Motion_test()
+    print "go?"
+    raw_input()
+    mt.init_pose()
     print "go?"
     raw_input()
     mt.test_motion()
